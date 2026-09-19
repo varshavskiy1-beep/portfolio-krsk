@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import EquityChart from "./EquityChart.jsx";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -15,85 +16,6 @@ const num = (v) => (v == null || v === "" ? null : Number(v));
 
 function seriesKey(a) {
   return `${a.bot_id}::${a.account_id}`;
-}
-
-/** SVG chart: money or % vs seed (or first point). */
-function EquityChart({ points, seed, currency, mode }) {
-  if (!points || points.length < 2) {
-    return (
-      <div className="empty-chart">
-        {points?.length === 1
-          ? "Пока одна точка — график появится после следующих снимков (раз в 5 мин)."
-          : "История эквити появится, когда накопятся точки."}
-      </div>
-    );
-  }
-
-  const seedN = num(seed);
-  const values = points.map((p) => {
-    const eq = num(p.equity);
-    if (eq == null) return null;
-    if (mode === "pct") {
-      const base = seedN && seedN !== 0 ? seedN : num(points[0].equity);
-      if (base == null || base === 0) return null;
-      return ((eq - base) / base) * 100;
-    }
-    return eq;
-  });
-
-  const valid = values.map((v, i) => ({ v, t: points[i].t, i })).filter((x) => x.v != null);
-  if (valid.length < 2) {
-    return <div className="empty-chart">Недостаточно точек для графика.</div>;
-  }
-
-  const W = 320;
-  const H = 120;
-  const pad = { t: 8, r: 8, b: 18, l: 8 };
-  const innerW = W - pad.l - pad.r;
-  const innerH = H - pad.t - pad.b;
-  const minV = Math.min(...valid.map((x) => x.v));
-  const maxV = Math.max(...valid.map((x) => x.v));
-  const span = maxV - minV || 1;
-  const xs = valid.map((_, idx) => pad.l + (innerW * idx) / (valid.length - 1));
-  const ys = valid.map((x) => pad.t + innerH * (1 - (x.v - minV) / span));
-  const d = xs.map((x, i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ");
-  const last = valid[valid.length - 1].v;
-  const first = valid[0].v;
-  const up = last >= first;
-  const stroke = up ? "#1f7a4c" : "#a33";
-  const lastLabel =
-    mode === "pct"
-      ? `${last >= 0 ? "+" : ""}${last.toFixed(2)}%`
-      : `${fmt(last, currency)} ${currency || ""}`.trim();
-  const t0 = valid[0].t?.slice(0, 10) || "";
-  const t1 = valid[valid.length - 1].t?.slice(0, 10) || "";
-
-  return (
-    <div className="chart-wrap">
-      <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img" aria-label="график эквити">
-        <line x1={pad.l} y1={pad.t + innerH} x2={W - pad.r} y2={pad.t + innerH} stroke="#e5e1d8" />
-        {mode === "pct" && minV < 0 && maxV > 0 ? (
-          <line
-            x1={pad.l}
-            x2={W - pad.r}
-            y1={pad.t + innerH * (1 - (0 - minV) / span)}
-            y2={pad.t + innerH * (1 - (0 - minV) / span)}
-            stroke="#ccc"
-            strokeDasharray="3 3"
-          />
-        ) : null}
-        <path d={d} fill="none" stroke={stroke} strokeWidth="2" />
-        <circle cx={xs[xs.length - 1]} cy={ys[ys.length - 1]} r="3" fill={stroke} />
-        <text x={pad.l} y={H - 4} fontSize="10" fill="#666">
-          {t0}
-        </text>
-        <text x={W - pad.r} y={H - 4} fontSize="10" fill="#666" textAnchor="end">
-          {t1}
-        </text>
-      </svg>
-      <div className={`chart-last ${up ? "pos" : "neg"}`}>{lastLabel}</div>
-    </div>
-  );
 }
 
 function AccountCard({ a, historyPoints }) {

@@ -82,3 +82,20 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 .chart-last { font-size: 0.85rem; margin-top: 4px; font-weight: 600; }
 .chart-last.pos { color: var(--good); }
 .chart-last.neg { color: var(--bad); }
+
+.tv-chart { margin-top: 8px; }
+.tv-chart-host {
+  width: 100%;
+  height: 200px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #faf9f6;
+}
+.chart-hint {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--muted);
+  align-self: center;
+}
+.chart-toolbar { flex-wrap: wrap; align-items: center; }
