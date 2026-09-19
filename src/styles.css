@@ -1,0 +1,76 @@
+:root {
+  color-scheme: light;
+  --bg: #f6f4ef;
+  --card: #fff;
+  --ink: #1a1a1a;
+  --muted: #666;
+  --line: #e5e1d8;
+  --good: #1f7a4c;
+  --bad: #a33;
+  --accent: #2b4c7e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+.wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 64px; }
+header h1 { margin: 0 0 4px; font-size: 1.6rem; }
+header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+.chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.bot { margin-bottom: 28px; }
+.bot h2 { font-size: 1.15rem; margin: 0 0 8px; }
+.logic {
+  background: #efebe3;
+  border-left: 3px solid var(--accent);
+  padding: 10px 12px;
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+}
+.row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.badge {
+  font-size: 0.75rem;
+  border-radius: 6px;
+  padding: 2px 7px;
+  background: #e8eef7;
+  color: var(--accent);
+  font-weight: 600;
+}
+.equity { font-size: 1.35rem; font-weight: 700; margin: 8px 0 2px; }
+.delta.pos { color: var(--good); }
+.delta.neg { color: var(--bad); }
+.note, .updated { color: var(--muted); font-size: 0.85rem; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 10px; }
+th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line); }
+.empty-chart {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.foot { margin-top: 28px; color: var(--muted); font-size: 0.88rem; }

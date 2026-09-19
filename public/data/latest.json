@@ -1,0 +1,188 @@
+{
+  "schema": "equity_ro.v1",
+  "generated_at": "2026-09-19T05:34:14Z",
+  "scope": "paper_only",
+  "excluded": [
+    {
+      "id": "us_jpm_beta_live",
+      "reason": "live Finam"
+    },
+    {
+      "id": "three_robots_finam_live",
+      "reason": "live Finam"
+    },
+    {
+      "id": "three_robots_okx_nasdaq_1h",
+      "reason": "live OKX"
+    },
+    {
+      "id": "three_robots_okx_spcx_btc_4h",
+      "reason": "live OKX"
+    }
+  ],
+  "accounts": [
+    {
+      "bot_id": "v6b1",
+      "account_id": "v6b1",
+      "currency": "USD",
+      "equity": "9994.000011976",
+      "cash": "9994.000011976",
+      "seed": "10000",
+      "updated_utc": "2026-09-19T03:58:23Z",
+      "positions": [
+        {
+          "symbol": "ONE-USDT-SWAP",
+          "side": "long",
+          "qty": "40188",
+          "avg_px": "0.0024883",
+          "margin": "9999.9800400"
+        }
+      ],
+      "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
+    },
+    {
+      "bot_id": "grail_b20_3x",
+      "account_id": "grail_b20_3x",
+      "currency": "USD",
+      "equity": "9814.9906309",
+      "cash": "9814.9906309",
+      "seed": "10000",
+      "updated_utc": "2026-09-19T05:06:20Z",
+      "positions": [
+        {
+          "symbol": "ORDI-USDT-SWAP",
+          "side": "short",
+          "qty": "57986",
+          "avg_px": "4.587",
+          "margin": "8866.0594"
+        }
+      ],
+      "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_us_eq",
+      "venue": "US_EQ",
+      "currency": "USD",
+      "equity": null,
+      "positions": [],
+      "error": "ledger_missing"
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_ru_eq",
+      "venue": "RU_EQ",
+      "currency": "RUB",
+      "equity": null,
+      "positions": [],
+      "error": "ledger_missing"
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_forts",
+      "venue": "FORTS",
+      "currency": "RUB",
+      "equity": null,
+      "positions": [],
+      "error": "ledger_missing"
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_crypto_spot",
+      "venue": "CRYPTO_SPOT",
+      "currency": "USDT",
+      "equity": null,
+      "positions": [],
+      "error": "ledger_missing"
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_crypto_perp",
+      "venue": "CRYPTO_PERP",
+      "currency": "USDT",
+      "equity": null,
+      "positions": [],
+      "error": "ledger_missing"
+    },
+    {
+      "bot_id": "forts_adr_adaptive",
+      "account_id": "forts_adr_adaptive",
+      "currency": "RUB",
+      "equity": null,
+      "seed": "1500000",
+      "updated_utc": null,
+      "positions": [],
+      "note": "Отдельного mark-леджера нет, только state.json. seed — конфиг, не переоценка. equity null. Позиции в state не хранятся."
+    },
+    {
+      "bot_id": "forts_adr_static",
+      "account_id": "forts_adr_static",
+      "currency": "RUB",
+      "equity": "1508999.9999124017",
+      "seed": "1500000",
+      "updated_utc": "2026-09-19T03:58:39.659026Z",
+      "positions": []
+    },
+    {
+      "bot_id": "pump_radar",
+      "account_id": "pump_radar",
+      "currency": "USDT",
+      "equity": "4913.42000000",
+      "cash": "2873.42000000",
+      "updated_utc": "2026-09-18",
+      "positions": [],
+      "pending_limits": [
+        {
+          "id": "pump-2026-09-18-GUSDT",
+          "symbol": "GUSDT",
+          "limit": "0.00717250",
+          "notional": "510.00000000"
+        },
+        {
+          "id": "pump-2026-09-18-FUSDT",
+          "symbol": "FUSDT",
+          "limit": "0.00498370",
+          "notional": "510.00000000"
+        },
+        {
+          "id": "pump-2026-09-18-STRKUSDT",
+          "symbol": "STRKUSDT",
+          "limit": "0.04203750",
+          "notional": "510.00000000"
+        },
+        {
+          "id": "pump-2026-09-18-NEARUSDT",
+          "symbol": "NEARUSDT",
+          "limit": "3.57485000",
+          "notional": "510.00000000"
+        }
+      ]
+    }
+  ],
+  "manifest": [
+    {
+      "bot_id": "v6b1",
+      "logic": "OKX USDT-SWAP, бумага. Час закрылся — если цена у дневного хая и радар дня включён, лонг на весь свободный кэш. Стоп и тейк на бумаге. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "grail_b20_3x",
+      "logic": "OKX, бумага, плечо 3, одна позиция. Сигнал на закрытии часа, вход со следующего часа. Нет кандидата — кэш. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "who_pays",
+      "logic": "Пять отдельных бумажных счетов: США, РФ, FORTS, крипто-спот, крипто-перп. Новая сделка только если биржа открыта и в latest.json есть сигнал S2–S5. Валюты не складываются. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "forts_adr_adaptive",
+      "logic": "FORTS, бумага. Раз в месяц выбирает один из трёх вариантов полос ADR и в эту сессию торгует только его. В конце дня позиции закрывает. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "forts_adr_static",
+      "logic": "FORTS, бумага. Фиксированные полосы ADR: лимитная покупка у нижней, лимитная продажа у верхней, тейк и стоп, к концу дня в ноль. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "pump_radar",
+      "logic": "OKX спот, бумага, раз в день. После отбора имён ставит лимитки ниже закрытия. Пока лимитка не исполнена, это не позиция."
+    }
+  ]
+}
