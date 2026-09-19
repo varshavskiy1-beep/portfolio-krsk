@@ -1,0 +1,96 @@
+{
+  "schema": "equity_history.v1",
+  "updated_at": "2026-09-19T06:00:34Z",
+  "series": {
+    "v6b1::v6b1": {
+      "bot_id": "v6b1",
+      "account_id": "v6b1",
+      "currency": "USD",
+      "seed": 10000,
+      "points": [
+        {
+          "t": "2026-09-19T03:58:23Z",
+          "equity": 9994.000011976
+        }
+      ]
+    },
+    "grail_b20_3x::grail_b20_3x": {
+      "bot_id": "grail_b20_3x",
+      "account_id": "grail_b20_3x",
+      "currency": "USD",
+      "seed": 10000,
+      "points": [
+        {
+          "t": "2026-09-19T05:06:20Z",
+          "equity": 9814.9906309
+        }
+      ]
+    },
+    "who_pays::paper_us_eq": {
+      "bot_id": "who_pays",
+      "account_id": "paper_us_eq",
+      "currency": "USD",
+      "seed": null,
+      "points": []
+    },
+    "who_pays::paper_ru_eq": {
+      "bot_id": "who_pays",
+      "account_id": "paper_ru_eq",
+      "currency": "RUB",
+      "seed": null,
+      "points": []
+    },
+    "who_pays::paper_forts": {
+      "bot_id": "who_pays",
+      "account_id": "paper_forts",
+      "currency": "RUB",
+      "seed": null,
+      "points": []
+    },
+    "who_pays::paper_crypto_spot": {
+      "bot_id": "who_pays",
+      "account_id": "paper_crypto_spot",
+      "currency": "USDT",
+      "seed": null,
+      "points": []
+    },
+    "who_pays::paper_crypto_perp": {
+      "bot_id": "who_pays",
+      "account_id": "paper_crypto_perp",
+      "currency": "USDT",
+      "seed": null,
+      "points": []
+    },
+    "forts_adr_adaptive::forts_adr_adaptive": {
+      "bot_id": "forts_adr_adaptive",
+      "account_id": "forts_adr_adaptive",
+      "currency": "RUB",
+      "seed": 1500000,
+      "points": []
+    },
+    "forts_adr_static::forts_adr_static": {
+      "bot_id": "forts_adr_static",
+      "account_id": "forts_adr_static",
+      "currency": "RUB",
+      "seed": 1500000,
+      "points": [
+        {
+          "t": "2026-09-19T03:58:39.659026Z",
+          "equity": 1508999.9999124017
+        }
+      ]
+    },
+    "pump_radar::pump_radar": {
+      "bot_id": "pump_radar",
+      "account_id": "pump_radar",
+      "currency": "USDT",
+      "seed": null,
+      "points": [
+        {
+          "t": "2026-09-18",
+          "equity": 4913.42
+        }
+      ]
+    }
+  }
+}

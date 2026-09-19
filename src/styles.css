@@ -74,3 +74,11 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   font-size: 0.88rem;
 }
 .foot { margin-top: 28px; color: var(--muted); font-size: 0.88rem; }
+
+.chart-toolbar { display: flex; gap: 6px; margin: 10px 0 6px; }
+.chip.tiny { padding: 3px 10px; font-size: 0.82rem; }
+.chart-wrap { margin-top: 4px; }
+.chart-svg { width: 100%; height: auto; display: block; background: #faf9f6; border-radius: 8px; border: 1px solid var(--line); }
+.chart-last { font-size: 0.85rem; margin-top: 4px; font-weight: 600; }
+.chart-last.pos { color: var(--good); }
+.chart-last.neg { color: var(--bad); }
