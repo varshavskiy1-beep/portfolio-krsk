@@ -1,6 +1,6 @@
 {
   "schema": "equity_history.v1",
-  "updated_at": "2026-09-19T06:20:24Z",
+  "updated_at": "2026-09-19T06:34:54Z",
   "series": {
     "v6b1::v6b1": {
       "bot_id": "v6b1",
@@ -31,35 +31,60 @@
       "account_id": "paper_us_eq",
       "currency": "USD",
       "seed": null,
-      "points": []
+      "points": [
+        {
+          "t": "2026-09-19T06:34:49.608222Z",
+          "equity": 25000
+        }
+      ]
     },
     "who_pays::paper_ru_eq": {
       "bot_id": "who_pays",
       "account_id": "paper_ru_eq",
       "currency": "RUB",
       "seed": null,
-      "points": []
+      "points": [
+        {
+          "t": "2026-09-19T06:34:49.611227Z",
+          "equity": 2000000
+        }
+      ]
     },
     "who_pays::paper_forts": {
       "bot_id": "who_pays",
       "account_id": "paper_forts",
       "currency": "RUB",
       "seed": null,
-      "points": []
+      "points": [
+        {
+          "t": "2026-09-19T06:34:49.614300Z",
+          "equity": 1500000
+        }
+      ]
     },
     "who_pays::paper_crypto_spot": {
       "bot_id": "who_pays",
       "account_id": "paper_crypto_spot",
       "currency": "USDT",
       "seed": null,
-      "points": []
+      "points": [
+        {
+          "t": "2026-09-19T06:34:49.618606Z",
+          "equity": 15000
+        }
+      ]
     },
     "who_pays::paper_crypto_perp": {
       "bot_id": "who_pays",
       "account_id": "paper_crypto_perp",
       "currency": "USDT",
       "seed": null,
-      "points": []
+      "points": [
+        {
+          "t": "2026-09-19T06:34:49.622357Z",
+          "equity": 15000
+        }
+      ]
     },
     "forts_adr_adaptive::forts_adr_adaptive": {
       "bot_id": "forts_adr_adaptive",

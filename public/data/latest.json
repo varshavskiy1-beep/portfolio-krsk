@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-19T06:20:24Z",
+  "generated_at": "2026-09-19T06:34:54Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -64,45 +64,45 @@
       "account_id": "paper_us_eq",
       "venue": "US_EQ",
       "currency": "USD",
-      "equity": null,
-      "positions": [],
-      "error": "ledger_missing"
+      "equity": "25000.0",
+      "updated_utc": "2026-09-19T06:34:49.608222Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": null,
-      "positions": [],
-      "error": "ledger_missing"
+      "equity": "2000000.0",
+      "updated_utc": "2026-09-19T06:34:49.611227Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": null,
-      "positions": [],
-      "error": "ledger_missing"
+      "equity": "1500000.0",
+      "updated_utc": "2026-09-19T06:34:49.614300Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": null,
-      "positions": [],
-      "error": "ledger_missing"
+      "equity": "15000.0",
+      "updated_utc": "2026-09-19T06:34:49.618606Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": null,
-      "positions": [],
-      "error": "ledger_missing"
+      "equity": "15000.0",
+      "updated_utc": "2026-09-19T06:34:49.622357Z",
+      "positions": []
     },
     {
       "bot_id": "forts_adr_adaptive",
