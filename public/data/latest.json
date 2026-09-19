@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-19T09:44:57Z",
+  "generated_at": "2026-09-19T10:08:29Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -44,19 +44,11 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USD",
-      "equity": "10228.7458151",
-      "cash": "10228.7458151",
+      "equity": "10819.5756456",
+      "cash": "10819.5756456",
       "seed": "10000",
-      "updated_utc": "2026-09-19T09:05:46Z",
-      "positions": [
-        {
-          "symbol": "AVAX-USDT-SWAP",
-          "side": "long",
-          "qty": "3151.0",
-          "avg_px": "8.797",
-          "margin": "9239.782333333333333333333333"
-        }
-      ],
+      "updated_utc": "2026-09-19T10:06:13Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -65,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-19T09:44:52.773205Z",
+      "updated_utc": "2026-09-19T10:08:27.860466Z",
       "positions": []
     },
     {
@@ -74,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-19T09:44:52.775771Z",
+      "updated_utc": "2026-09-19T10:08:27.863430Z",
       "positions": []
     },
     {
@@ -83,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-19T09:44:52.778097Z",
+      "updated_utc": "2026-09-19T10:08:27.866564Z",
       "positions": []
     },
     {
@@ -91,8 +83,8 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14991.421053541",
-      "updated_utc": "2026-09-19T09:44:52.780723Z",
+      "equity": "14987.097130621",
+      "updated_utc": "2026-09-19T10:08:27.869657Z",
       "positions": []
     },
     {
@@ -101,7 +93,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-19T09:44:52.782958Z",
+      "updated_utc": "2026-09-19T10:08:27.873164Z",
       "positions": []
     },
     {
