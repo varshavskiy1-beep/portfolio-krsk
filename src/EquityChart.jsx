@@ -60,16 +60,10 @@ function applyRange(chart, series, rangeId) {
 
 function fitChart(chart, el) {
   if (!chart || !el) return;
-  const rect = el.getBoundingClientRect();
-  const cs = window.getComputedStyle(el);
-  const padX =
-    (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
-  const padY =
-    (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
-  // clientHeight включает padding при border-box — canvas нельзя делать выше content-box,
-  // иначе time-scale обрезает overflow:hidden
-  const w = Math.max(Math.floor(rect.width - padX), 40);
-  const h = Math.max(Math.floor(rect.height - padY), 140);
+  // client* = content box; при height:0+flex хост уже ограничен родителем
+  const w = Math.max(Math.floor(el.clientWidth), 40);
+  const h = Math.max(Math.floor(el.clientHeight), 140);
+  if (w < 40 || h < 140) return;
   chart.applyOptions({ width: w, height: h });
 }
 
@@ -200,7 +194,10 @@ export default function EquityChart({
 
   // при смене fill/height — пересчитать размер
   useEffect(() => {
-    fitChart(chartRef.current, wrapRef.current);
+    const run = () => fitChart(chartRef.current, wrapRef.current);
+    run();
+    const id = requestAnimationFrame(() => requestAnimationFrame(run));
+    return () => cancelAnimationFrame(id);
   }, [fill, height]);
 
   return (
