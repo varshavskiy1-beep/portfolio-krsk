@@ -61,9 +61,15 @@ function applyRange(chart, series, rangeId) {
 function fitChart(chart, el) {
   if (!chart || !el) return;
   const rect = el.getBoundingClientRect();
-  // floor + небольшой запас: иначе time-scale подписи срезает overflow/viewport
-  const w = Math.max(Math.floor(rect.width), 40);
-  const h = Math.max(Math.floor(rect.height) - 8, 120);
+  const cs = window.getComputedStyle(el);
+  const padX =
+    (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+  const padY =
+    (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+  // clientHeight включает padding при border-box — canvas нельзя делать выше content-box,
+  // иначе time-scale обрезает overflow:hidden
+  const w = Math.max(Math.floor(rect.width - padX), 40);
+  const h = Math.max(Math.floor(rect.height - padY), 140);
   chart.applyOptions({ width: w, height: h });
 }
 
