@@ -1,6 +1,7 @@
 /**
  * Static share page for Telegram / Open Graph crawlers.
- * No JS, no SPA shell — meta tags + visible JPEG fallback.
+ * Meta tags stay in the document so bots can read the chart preview;
+ * real browsers (including Telegram in-app) redirect immediately to `/`.
  */
 import { OG_SITE, ogDescription, ogTitle } from "./ogWinner.js";
 
@@ -15,7 +16,7 @@ export function escapeHtml(s) {
 export function renderSharePage({ row, image }) {
   const title = ogTitle(row);
   const desc = ogDescription(row);
-  const pageUrl = `${OG_SITE}/share.html`;
+  const pageUrl = `${OG_SITE}/`;
   const t = escapeHtml(title);
   const d = escapeHtml(desc);
   const img = escapeHtml(image);
@@ -43,6 +44,8 @@ export function renderSharePage({ row, image }) {
     <meta name="twitter:title" content="${t}" />
     <meta name="twitter:description" content="${d}" />
     <meta name="twitter:image" content="${img}" />
+    <meta http-equiv="refresh" content="0; url=/" />
+    <script>location.replace("/")</script>
     <style>
       :root { color-scheme: light; }
       body {
@@ -70,8 +73,10 @@ export function renderSharePage({ row, image }) {
   <body>
     <main>
       <img src="${img}" alt="${t}" width="1200" height="630" />
-      <p>${d}</p>
-      <p><a href="${escapeHtml(OG_SITE)}/">Открыть кабинет portfolio_krsk</a></p>
+      <noscript>
+        <p>${d}</p>
+        <p><a href="/">Открыть кабинет portfolio_krsk</a></p>
+      </noscript>
     </main>
   </body>
 </html>

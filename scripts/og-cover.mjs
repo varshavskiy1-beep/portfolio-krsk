@@ -2,8 +2,8 @@
 /**
  * Renders public/og-cover.jpg (1200×630, q≈85) plus a PNG fallback for the
  * account with the largest absolute profit in money (equity − seed, no FX),
- * patches OG tags in index.html, and writes static public/share.html
- * (no SPA/JS — crawlers that cannot execute JS still see image + tags).
+ * patches OG tags in index.html, and writes public/share.html
+ * (og/twitter meta for crawlers; browsers redirect immediately to `/`).
  */
 import fs from "node:fs";
 import path from "node:path";
