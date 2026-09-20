@@ -145,6 +145,7 @@ function AccountBlock({ a, points }) {
           fill={fs}
           height={280}
         />
+        {fs ? <div className="fs-bottom-spacer" aria-hidden="true" /> : null}
       </div>
 
       <h3 className="subhead">Открытые позиции</h3>

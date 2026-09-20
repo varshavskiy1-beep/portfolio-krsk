@@ -86,7 +86,7 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 .tv-chart { margin-top: 8px; }
 .tv-chart-host {
   width: 100%;
-  height: 200px;
+  height: 280px;
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
@@ -140,13 +140,17 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 .chip.accent { border-color: var(--accent); color: var(--accent); }
 .chip.accent:hover, .chip.tiny.accent.active { background: var(--accent); color: #fff; }
 
-/* Fullscreen equity chart — весь экран, шкала дат целиком */
+/* Fullscreen equity chart — шкала дат целиком, запас снизу */
 .chart-panel-fs {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 2000;
   background: #f6f4ef;
-  padding: 12px 16px 28px;
+  padding: 12px 16px 0;
+  padding-bottom: max(40px, env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -169,18 +173,18 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 .chart-panel-fs .tv-chart .chart-toolbar {
   flex: 0 0 auto;
 }
-.chart-panel-fs .tv-chart-host,
-.tv-chart-fill .tv-chart-host {
+.chart-panel-fs .tv-chart-host {
   flex: 1 1 auto;
   min-height: 0 !important;
   height: auto !important;
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
-  /* НЕ overflow:hidden — иначе подписи time-scale срезаются на 1–2px */
-  overflow: visible;
+  overflow: hidden;
   background: #faf9f6;
-  position: relative;
+  /* внутренний отступ снизу внутри хоста — место под time-scale */
+  box-sizing: border-box;
+  padding-bottom: 4px;
 }
 .tv-chart-fill {
   display: flex;
@@ -188,11 +192,7 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   flex: 1;
   min-height: 0;
 }
-.tv-chart-host {
-  width: 100%;
-  height: 280px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #faf9f6;
-  overflow: visible;
+.fs-bottom-spacer {
+  flex: 0 0 12px;
+  height: 12px;
 }

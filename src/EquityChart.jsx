@@ -63,7 +63,7 @@ function fitChart(chart, el) {
   const rect = el.getBoundingClientRect();
   // floor + небольшой запас: иначе time-scale подписи срезает overflow/viewport
   const w = Math.max(Math.floor(rect.width), 40);
-  const h = Math.max(Math.floor(rect.height) - 2, 120);
+  const h = Math.max(Math.floor(rect.height) - 8, 120);
   chart.applyOptions({ width: w, height: h });
 }
 
@@ -183,6 +183,13 @@ export default function EquityChart({
     area.setData(series);
     fitChart(chart, wrapRef.current);
     applyRange(chart, series, range);
+    // дать layout дорисоваться, потом ещё раз подогнать высоту
+    requestAnimationFrame(() => {
+      fitChart(chart, wrapRef.current);
+      try {
+        chart.timeScale().applyOptions({ visible: true });
+      } catch (_) {}
+    });
   }, [series, mode, currency, range, ready]);
 
   // при смене fill/height — пересчитать размер
