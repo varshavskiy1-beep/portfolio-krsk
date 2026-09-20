@@ -5,7 +5,7 @@
     "v6b1::v6b1": {
       "bot_id": "v6b1",
       "account_id": "v6b1",
-      "currency": "USD",
+      "currency": "USDT",
       "seed": 10000,
       "points": [
         {
@@ -49,7 +49,7 @@
     "grail_b20_3x::grail_b20_3x": {
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
-      "currency": "USD",
+      "currency": "USDT",
       "seed": 10000,
       "points": [
         {

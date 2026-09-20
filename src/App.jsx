@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
 import StrategyPage from "./StrategyPage.jsx";
+import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -35,6 +36,7 @@ function goHome() {
 
 function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const [mode, setMode] = useState("money");
+  const currency = canonicalCurrency(a);
   const equity = num(a.equity);
   const seed = num(a.seed);
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -49,18 +51,18 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         <button type="button" className="linkish" onClick={() => onOpenStrategy(a.bot_id)}>
           <strong>{a.account_id}</strong>
         </button>
-        <span className="badge">{a.currency}</span>
+        <span className="badge">{currency}</span>
       </div>
       {a.bot_id && a.bot_id !== a.account_id ? <div className="bot-label">{a.bot_id}</div> : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
-        {equity == null ? "нет переоценки" : `${fmt(equity, a.currency)} ${a.currency}`}
+        {equity == null ? "нет переоценки" : `${fmt(equity, currency)} ${currency}`}
       </div>
       {seed != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от seed {fmt(seed, a.currency)}
+          от seed {fmt(seed, currency)}
           {delta != null
-            ? `: ${delta >= 0 ? "+" : ""}${fmt(delta, a.currency)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`
+            ? `: ${delta >= 0 ? "+" : ""}${fmt(delta, currency)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`
             : ""}
         </div>
       ) : null}
@@ -85,7 +87,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           Открыть →
         </button>
       </div>
-      <EquityChart points={curve} seed={seed} currency={a.currency} mode={mode} />
+      <EquityChart points={curve} seed={seed} currency={currency} mode={mode} />
 
       {positions.length ? (
         <table>
@@ -237,8 +239,8 @@ export default function App() {
         .catch(() => null),
     ])
       .then(([latest, hist]) => {
-        setData(latest);
-        setHistory(hist);
+        setData(normalizeLatest(latest));
+        setHistory(normalizeHistory(hist));
       })
       .catch((e) => setErr(String(e.message || e)));
   }, []);
