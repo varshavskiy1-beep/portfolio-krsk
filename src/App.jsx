@@ -90,26 +90,28 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       <EquityChart points={curve} seed={seed} currency={currency} mode={mode} />
 
       {positions.length ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Позиция</th>
-              <th>Сторона</th>
-              <th>Кол-во</th>
-              <th>Цена</th>
-            </tr>
-          </thead>
-          <tbody>
-            {positions.map((p, i) => (
-              <tr key={p.position_id || p.symbol || i}>
-                <td>{p.symbol}</td>
-                <td>{p.side}</td>
-                <td>{p.qty}</td>
-                <td>{p.avg_px ?? "—"}</td>
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Позиция</th>
+                <th>Сторона</th>
+                <th>Кол-во</th>
+                <th>Цена</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {positions.map((p, i) => (
+                <tr key={p.position_id || p.symbol || i}>
+                  <td>{p.symbol}</td>
+                  <td>{p.side}</td>
+                  <td>{p.qty}</td>
+                  <td>{p.avg_px ?? "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : null}
 
       {limits.length ? (
@@ -117,24 +119,26 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           <div className="updated" style={{ marginTop: 10 }}>
             Лимитки (ещё не позиция)
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Тикер</th>
-                <th>Лимит</th>
-                <th>Нотионал</th>
-              </tr>
-            </thead>
-            <tbody>
-              {limits.map((l) => (
-                <tr key={l.id}>
-                  <td>{l.symbol}</td>
-                  <td>{l.limit}</td>
-                  <td>{l.notional}</td>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Тикер</th>
+                  <th>Лимит</th>
+                  <th>Нотионал</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {limits.map((l) => (
+                  <tr key={l.id}>
+                    <td>{l.symbol}</td>
+                    <td>{l.limit}</td>
+                    <td>{l.notional}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       ) : null}
     </article>

@@ -24,28 +24,30 @@ function PositionsTable({ positions }) {
     return <p className="muted">Открытых позиций сейчас нет.</p>;
   }
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Инструмент</th>
-          <th>Сторона</th>
-          <th>Кол-во</th>
-          <th>Цена входа</th>
-          <th>Стоп</th>
-        </tr>
-      </thead>
-      <tbody>
-        {positions.map((p, i) => (
-          <tr key={p.position_id || `${p.symbol}-${i}`}>
-            <td>{p.symbol}</td>
-            <td>{p.side === "long" ? "лонг" : p.side === "short" ? "шорт" : p.side}</td>
-            <td>{p.qty}</td>
-            <td>{p.avg_px ?? "—"}</td>
-            <td>{p.stop_px ?? "—"}</td>
+    <div className="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Инструмент</th>
+            <th>Сторона</th>
+            <th>Кол-во</th>
+            <th>Цена входа</th>
+            <th>Стоп</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {positions.map((p, i) => (
+            <tr key={p.position_id || `${p.symbol}-${i}`}>
+              <td>{p.symbol}</td>
+              <td>{p.side === "long" ? "лонг" : p.side === "short" ? "шорт" : p.side}</td>
+              <td>{p.qty}</td>
+              <td>{p.avg_px ?? "—"}</td>
+              <td>{p.stop_px ?? "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -54,24 +56,26 @@ function LimitsTable({ limits }) {
   return (
     <>
       <h3 className="subhead">Лимитки (ещё не позиция)</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Тикер</th>
-            <th>Цена лимита</th>
-            <th>Нотионал</th>
-          </tr>
-        </thead>
-        <tbody>
-          {limits.map((l) => (
-            <tr key={l.id || l.symbol}>
-              <td>{l.symbol}</td>
-              <td>{l.limit}</td>
-              <td>{l.notional}</td>
+      <div className="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Тикер</th>
+              <th>Цена лимита</th>
+              <th>Нотионал</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {limits.map((l) => (
+              <tr key={l.id || l.symbol}>
+                <td>{l.symbol}</td>
+                <td>{l.limit}</td>
+                <td>{l.notional}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }
@@ -90,11 +94,18 @@ function AccountBlock({ a, points }) {
     const onKey = (e) => {
       if (e.key === "Escape") setFs(false);
     };
-    document.body.style.overflow = "hidden";
+    const y = window.scrollY;
+    const root = document.documentElement;
+    root.classList.add("chart-fs-open");
+    document.body.classList.add("chart-fs-open");
+    document.body.style.top = `-${y}px`;
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      root.classList.remove("chart-fs-open");
+      document.body.classList.remove("chart-fs-open");
+      document.body.style.top = "";
       window.removeEventListener("keydown", onKey);
+      window.scrollTo(0, y);
     };
   }, [fs]);
 
@@ -136,7 +147,12 @@ function AccountBlock({ a, points }) {
           <button type="button" className="chip tiny accent" onClick={() => setFs((v) => !v)}>
             {fs ? "Свернуть" : "На весь экран"}
           </button>
-          {fs ? <span className="chart-hint">Esc — закрыть</span> : null}
+          {fs ? (
+            <span className="chart-hint">
+              <span className="hint-esc">Esc — закрыть</span>
+              <span className="hint-rotate">Поверните телефон</span>
+            </span>
+          ) : null}
         </div>
         <EquityChart
           key={fs ? "fs" : "norm"}
