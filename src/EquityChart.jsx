@@ -30,11 +30,7 @@ function buildSeries(points, seed, mode) {
   }
   if (!dedup.length) return [];
   const base =
-    mode === "pct"
-      ? seedN && seedN !== 0
-        ? seedN
-        : dedup[0].eq
-      : null;
+    mode === "pct" ? (seedN && seedN !== 0 ? seedN : dedup[0].eq) : null;
   return dedup.map(({ time, eq }) => ({
     time,
     value: mode === "pct" ? ((eq - base) / base) * 100 : eq,
@@ -62,7 +58,26 @@ function applyRange(chart, series, rangeId) {
   }
 }
 
-export default function EquityChart({ points, seed, currency, mode, height = 200 }) {
+function fitChart(chart, el) {
+  if (!chart || !el) return;
+  const w = Math.max(el.clientWidth || 0, 40);
+  const h = Math.max(el.clientHeight || 0, 120);
+  chart.applyOptions({ width: w, height: h });
+}
+
+/**
+ * @param {object} props
+ * @param {number} [props.height=280] — высота хоста, если не fill
+ * @param {boolean} [props.fill=false] — хост тянется на 100% родителя (fullscreen)
+ */
+export default function EquityChart({
+  points,
+  seed,
+  currency,
+  mode,
+  height = 280,
+  fill = false,
+}) {
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
@@ -70,27 +85,36 @@ export default function EquityChart({ points, seed, currency, mode, height = 200
   const series = buildSeries(points, seed, mode);
   const ready = series.length >= 2;
 
-  // create chart once
   useEffect(() => {
     if (!wrapRef.current) return undefined;
-    const chart = createChart(wrapRef.current, {
+    const el = wrapRef.current;
+    const chart = createChart(el, {
       layout: {
         background: { type: ColorType.Solid, color: "#faf9f6" },
-        textColor: "#666",
-        fontSize: 11,
+        textColor: "#555",
+        fontSize: 12,
       },
       grid: {
         vertLines: { color: "#eeeae3" },
         horzLines: { color: "#eeeae3" },
       },
-      width: wrapRef.current.clientWidth || 320,
-      height: height || 200,
-      rightPriceScale: { borderVisible: false },
+      width: Math.max(el.clientWidth, 40),
+      height: Math.max(el.clientHeight || height || 280, 120),
+      rightPriceScale: {
+        borderVisible: false,
+        scaleMargins: { top: 0.08, bottom: 0.08 },
+      },
       timeScale: {
         borderVisible: false,
         timeVisible: true,
         secondsVisible: false,
-        rightOffset: 2,
+        rightOffset: 4,
+        fixLeftEdge: false,
+        fixRightEdge: false,
+      },
+      crosshair: {
+        horzLine: { labelVisible: true },
+        vertLine: { labelVisible: true },
       },
       handleScroll: {
         mouseWheel: true,
@@ -112,15 +136,12 @@ export default function EquityChart({ points, seed, currency, mode, height = 200
     });
     chartRef.current = chart;
     seriesRef.current = area;
-    const ro = new ResizeObserver(() => {
-      if (wrapRef.current) {
-        chart.applyOptions({
-          width: wrapRef.current.clientWidth,
-          height: height || wrapRef.current.clientHeight || 200,
-        });
-      }
-    });
-    ro.observe(wrapRef.current);
+
+    const ro = new ResizeObserver(() => fitChart(chart, el));
+    ro.observe(el);
+    // после layout
+    requestAnimationFrame(() => fitChart(chart, el));
+
     return () => {
       ro.disconnect();
       chart.remove();
@@ -156,17 +177,17 @@ export default function EquityChart({ points, seed, currency, mode, height = 200
       bottomColor: up ? "rgba(31, 122, 76, 0.02)" : "rgba(170, 51, 51, 0.02)",
     });
     area.setData(series);
-    if (wrapRef.current) {
-      chart.applyOptions({
-        width: wrapRef.current.clientWidth,
-        height: height || 200,
-      });
-    }
+    fitChart(chart, wrapRef.current);
     applyRange(chart, series, range);
-  }, [series, mode, currency, range, ready, height]);
+  }, [series, mode, currency, range, ready]);
+
+  // при смене fill/height — пересчитать размер
+  useEffect(() => {
+    fitChart(chartRef.current, wrapRef.current);
+  }, [fill, height]);
 
   return (
-    <div className="tv-chart">
+    <div className={`tv-chart ${fill ? "tv-chart-fill" : ""}`}>
       <div className="chart-toolbar">
         {RANGES.map((r) => (
           <button
@@ -192,14 +213,20 @@ export default function EquityChart({ points, seed, currency, mode, height = 200
       {!ready ? (
         <div className="empty-chart">
           {series.length === 1
-            ? "Пока одна точка — зум и 1Д/1Н/1М/1Г появятся после следующих снимков. Полная история с первого дня — выгрузка из леджеров."
+            ? "Пока одна точка — зум и периоды появятся после следующих снимков."
             : "Нет точек истории для графика."}
         </div>
       ) : null}
       <div
         ref={wrapRef}
         className="tv-chart-host"
-        style={{ display: ready ? "block" : "none", height: height || 200 }}
+        style={
+          ready
+            ? fill
+              ? { flex: 1, minHeight: 0, width: "100%" }
+              : { display: "block", height: height || 280, width: "100%" }
+            : { display: "none" }
+        }
       />
     </div>
   );

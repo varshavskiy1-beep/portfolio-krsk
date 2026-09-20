@@ -82,7 +82,6 @@ function AccountBlock({ a, points }) {
   const seed = num(a.seed);
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
-  const chartH = fs ? Math.max(280, (typeof window !== "undefined" ? window.innerHeight : 800) - 140) : 280;
 
   useEffect(() => {
     if (!fs) return undefined;
@@ -142,7 +141,8 @@ function AccountBlock({ a, points }) {
           seed={seed}
           currency={a.currency}
           mode={mode}
-          height={chartH}
+          fill={fs}
+          height={280}
         />
       </div>
 
