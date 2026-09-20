@@ -11,6 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applyCanonicalCurrencies, canonicalCurrency } from "../src/cashCurrency.js";
+import { generateOgCover } from "./og-cover.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -101,3 +102,4 @@ fs.writeFileSync(latestPath, `${JSON.stringify(latest, null, 2)}\n`);
 const hist = appendHistory(latest);
 const n = Object.values(hist.series).reduce((s, x) => s + x.points.length, 0);
 console.log(`ok latest=${latest.generated_at} series=${Object.keys(hist.series).length} points=${n}`);
+generateOgCover({ latest, history: hist, root });
