@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
+import { canonicalCurrency } from "./cashCurrency.js";
 import { plainExplain } from "./plainExplain.js";
 
 const fmt = (n, currency) => {
@@ -78,6 +79,7 @@ function LimitsTable({ limits }) {
 function AccountBlock({ a, points }) {
   const [mode, setMode] = useState("money");
   const [fs, setFs] = useState(false);
+  const currency = canonicalCurrency(a);
   const equity = num(a.equity);
   const seed = num(a.seed);
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -100,15 +102,15 @@ function AccountBlock({ a, points }) {
     <section className="card strategy-account">
       <div className="row">
         <strong>{a.account_id}</strong>
-        <span className="badge">{a.currency}</span>
+        <span className="badge">{currency}</span>
       </div>
       <div className="equity">
-        {equity == null ? "нет переоценки" : `${fmt(equity, a.currency)} ${a.currency}`}
+        {equity == null ? "нет переоценки" : `${fmt(equity, currency)} ${currency}`}
       </div>
       {seed != null && delta != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от seed {fmt(seed, a.currency)}: {delta >= 0 ? "+" : ""}
-          {fmt(delta, a.currency)} ({pct >= 0 ? "+" : ""}
+          от seed {fmt(seed, currency)}: {delta >= 0 ? "+" : ""}
+          {fmt(delta, currency)} ({pct >= 0 ? "+" : ""}
           {pct.toFixed(2)}%)
         </div>
       ) : null}
@@ -140,7 +142,7 @@ function AccountBlock({ a, points }) {
           key={fs ? "fs" : "norm"}
           points={points}
           seed={seed}
-          currency={a.currency}
+          currency={currency}
           mode={mode}
           fill={fs}
           height={280}

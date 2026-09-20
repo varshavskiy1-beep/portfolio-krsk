@@ -24,7 +24,7 @@
     {
       "bot_id": "v6b1",
       "account_id": "v6b1",
-      "currency": "USD",
+      "currency": "USDT",
       "equity": "14515.612549474",
       "cash": "14515.612549474",
       "seed": "10000",
@@ -35,7 +35,7 @@
     {
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
-      "currency": "USD",
+      "currency": "USDT",
       "equity": "10508.47342930",
       "cash": "10508.47342930",
       "seed": "10000",

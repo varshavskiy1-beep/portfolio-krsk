@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
  * Pull equity-ro latest.json and append points into public/data/history.json.
+ * After SCP, remaps cash currency by venue / bot_id (OKX crypto → USDT, FORTS/RU → RUB, US_EQ → USD).
+ * --local skips SCP and only remaps the existing public/data snapshot + history series currency.
  * Env: EQUITY_HOST (default 193.109.85.48), EQUITY_USER (equity-ro),
  *      EQUITY_KEY (path to private key), EQUITY_REMOTE (/var/lib/equity-ro/latest.json)
  */
@@ -8,6 +10,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { applyCanonicalCurrencies, canonicalCurrency } from "../src/cashCurrency.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -57,18 +60,19 @@ function appendHistory(latest) {
     const k = keyOf(a);
     const eq = a.equity == null || a.equity === "" ? null : Number(a.equity);
     const ts = a.updated_utc || gen;
+    const currency = canonicalCurrency(a);
     if (!hist.series[k]) {
       hist.series[k] = {
         bot_id: a.bot_id,
         account_id: a.account_id,
-        currency: a.currency,
+        currency,
         seed: a.seed == null || a.seed === "" ? null : Number(a.seed),
         points: [],
       };
     }
     const s = hist.series[k];
     if (a.seed != null && a.seed !== "") s.seed = Number(a.seed);
-    s.currency = a.currency;
+    s.currency = currency;
     if (eq == null || Number.isNaN(eq)) continue;
     const pts = s.points;
     const last = pts[pts.length - 1];
@@ -88,9 +92,12 @@ function appendHistory(latest) {
   return hist;
 }
 
-scpLatest();
+const skipScp = process.argv.includes("--local");
+if (!skipScp) scpLatest();
 const latest = loadJson(latestPath, null);
-if (!latest) throw new Error("latest.json missing after scp");
+if (!latest) throw new Error(skipScp ? "latest.json missing" : "latest.json missing after scp");
+applyCanonicalCurrencies(latest);
+fs.writeFileSync(latestPath, `${JSON.stringify(latest, null, 2)}\n`);
 const hist = appendHistory(latest);
 const n = Object.values(hist.series).reduce((s, x) => s + x.points.length, 0);
 console.log(`ok latest=${latest.generated_at} series=${Object.keys(hist.series).length} points=${n}`);
