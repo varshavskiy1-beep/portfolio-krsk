@@ -65,7 +65,31 @@ function fitChart(chart, el) {
   const w = Math.floor(el.clientWidth);
   const h = Math.floor(el.clientHeight);
   if (w < 40 || h < 80) return;
-  chart.applyOptions({ width: w, height: h });
+  const shortPhone =
+    typeof window !== "undefined" &&
+    window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches;
+  chart.applyOptions({
+    width: w,
+    height: h,
+    layout: { fontSize: shortPhone ? 11 : 12 },
+  });
+}
+
+function subscribeViewportFit(run) {
+  const delayed = () => {
+    run();
+    requestAnimationFrame(run);
+    window.setTimeout(run, 120);
+    window.setTimeout(run, 400);
+  };
+  window.addEventListener("orientationchange", delayed);
+  window.addEventListener("resize", run);
+  window.visualViewport?.addEventListener("resize", run);
+  return () => {
+    window.removeEventListener("orientationchange", delayed);
+    window.removeEventListener("resize", run);
+    window.visualViewport?.removeEventListener("resize", run);
+  };
 }
 
 const TIME_SCALE_MIN_H = { fill: 40, normal: 26 };
@@ -148,10 +172,12 @@ export default function EquityChart({
 
     const ro = new ResizeObserver(() => fitChart(chart, el));
     ro.observe(el);
+    const unsubVv = subscribeViewportFit(() => fitChart(chart, el));
     // после layout
     requestAnimationFrame(() => fitChart(chart, el));
 
     return () => {
+      unsubVv();
       ro.disconnect();
       chart.remove();
       chartRef.current = null;
@@ -210,11 +236,10 @@ export default function EquityChart({
     }
     run();
     const id = requestAnimationFrame(() => requestAnimationFrame(run));
-    const onVv = () => run();
-    window.visualViewport?.addEventListener("resize", onVv);
+    const unsubVv = subscribeViewportFit(run);
     return () => {
       cancelAnimationFrame(id);
-      window.visualViewport?.removeEventListener("resize", onVv);
+      unsubVv();
     };
   }, [fill, height]);
 
@@ -240,7 +265,7 @@ export default function EquityChart({
         >
           Всё
         </button>
-        <span className="chart-hint">колёсико — зум · тяни — сдвиг</span>
+        <span className="chart-hint hint-desktop">колёсико — зум · тяни — сдвиг</span>
       </div>
       {!ready ? (
         <div className="empty-chart">
@@ -253,13 +278,7 @@ export default function EquityChart({
         <div
           ref={wrapRef}
           className="tv-chart-host"
-          style={
-            ready
-              ? fill
-                ? undefined
-                : { height: height || 280 }
-              : { display: "none" }
-          }
+          style={ready ? undefined : { display: "none" }}
         />
         {fill ? <div className="tv-chart-timeband" aria-hidden="true" /> : null}
       </div>
