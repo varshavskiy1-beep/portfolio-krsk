@@ -137,6 +137,7 @@ function AccountBlock({ a, points }) {
           {fs ? <span className="chart-hint">Esc — закрыть</span> : null}
         </div>
         <EquityChart
+          key={fs ? "fs" : "norm"}
           points={points}
           seed={seed}
           currency={a.currency}

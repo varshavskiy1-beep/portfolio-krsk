@@ -60,8 +60,10 @@ function applyRange(chart, series, rangeId) {
 
 function fitChart(chart, el) {
   if (!chart || !el) return;
-  const w = Math.max(el.clientWidth || 0, 40);
-  const h = Math.max(el.clientHeight || 0, 120);
+  const rect = el.getBoundingClientRect();
+  // floor + небольшой запас: иначе time-scale подписи срезает overflow/viewport
+  const w = Math.max(Math.floor(rect.width), 40);
+  const h = Math.max(Math.floor(rect.height) - 2, 120);
   chart.applyOptions({ width: w, height: h });
 }
 
@@ -102,15 +104,17 @@ export default function EquityChart({
       height: Math.max(el.clientHeight || height || 280, 120),
       rightPriceScale: {
         borderVisible: false,
-        scaleMargins: { top: 0.08, bottom: 0.08 },
+        scaleMargins: { top: 0.06, bottom: 0.12 },
       },
       timeScale: {
-        borderVisible: false,
+        borderVisible: true,
+        borderColor: "#e5e1d8",
         timeVisible: true,
         secondsVisible: false,
-        rightOffset: 4,
+        rightOffset: 6,
         fixLeftEdge: false,
         fixRightEdge: false,
+        tickMarkMaxCharacterLength: 12,
       },
       crosshair: {
         horzLine: { labelVisible: true },
