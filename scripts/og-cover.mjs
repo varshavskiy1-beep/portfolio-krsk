@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 /**
  * Renders public/og-cover.jpg (1200×630, q≈85) plus a PNG fallback for the
- * account with the largest absolute profit in money (equity − seed, no FX)
- * and patches OG tags in index.html.
+ * account with the largest absolute profit in money (equity − seed, no FX),
+ * patches OG tags in index.html, and writes static public/share.html
+ * (no SPA/JS — crawlers that cannot execute JS still see image + tags).
  */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 import { canonicalCurrency } from "../src/cashCurrency.js";
+import { renderSharePage } from "../src/ogSharePage.js";
 import {
   formatPct,
   formatSignedMoney,
-  ogCacheBust,
   ogDescription,
+  ogImageHref,
   ogTitle,
   pickOgWinner,
   winnerLabel,
@@ -306,10 +308,9 @@ function upsertLink(html, rel, href) {
   return insertBeforeHeadClose(html, tag);
 }
 
-function patchIndexHtml(root, row, version) {
+function patchIndexHtml(root, row, image) {
   const indexPath = path.join(root, "index.html");
   let html = fs.readFileSync(indexPath, "utf8");
-  const image = `${SITE}/og-cover.jpg?v=${version}`;
   const desc = ogDescription(row);
   html = upsertMeta(html, "property", "og:title", ogTitle(row));
   html = upsertMeta(html, "property", "og:description", desc);
@@ -330,6 +331,12 @@ function patchIndexHtml(root, row, version) {
   html = upsertLink(html, "image_src", image);
   fs.writeFileSync(indexPath, html);
   return image;
+}
+
+function writeShareHtml(root, row, image) {
+  const sharePath = path.join(root, "public", "share.html");
+  fs.writeFileSync(sharePath, renderSharePage({ row, image }));
+  return sharePath;
 }
 
 export function generateOgCover({ latest, history, root } = {}) {
@@ -354,11 +361,13 @@ export function generateOgCover({ latest, history, root } = {}) {
   const pngOut = path.join(base, "public", "og-cover.png");
   fs.writeFileSync(jpgOut, canvas.encodeSync("jpeg", 85));
   fs.writeFileSync(pngOut, canvas.encodeSync("png"));
-  const image = patchIndexHtml(base, row, ogCacheBust(generatedAt));
+  const image = ogImageHref(generatedAt);
+  patchIndexHtml(base, row, image);
+  const sharePath = writeShareHtml(base, row, image);
 
   const label = row ? `${row.key} pnl=${row.pnl} ${row.currency}` : "no-winner";
-  console.log(`og-cover ${jpgOut} ${W}x${H} q=85 winner=${label} image=${image}`);
-  return { row, image, out: jpgOut, jpgOut, pngOut };
+  console.log(`og-cover ${jpgOut} ${W}x${H} q=85 winner=${label} image=${image} share=${sharePath}`);
+  return { row, image, out: jpgOut, jpgOut, pngOut, sharePath };
 }
 
 const isMain =

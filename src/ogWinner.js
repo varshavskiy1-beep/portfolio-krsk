@@ -114,12 +114,23 @@ export function formatPct(pct) {
   return `${sign}${groupInt(intPart)},${frac}`;
 }
 
+export const OG_SITE = "https://portfolio-krsk.vercel.app";
+
 /** Short cache-bust for crawlers: YYYYMMDDHHMM (UTC), no ISO colons. */
 export function ogCacheBust(iso) {
   const d = iso ? new Date(iso) : new Date();
   const t = Number.isNaN(d.getTime()) ? new Date() : d;
   const pad = (n) => String(n).padStart(2, "0");
   return `${t.getUTCFullYear()}${pad(t.getUTCMonth() + 1)}${pad(t.getUTCDate())}${pad(t.getUTCHours())}${pad(t.getUTCMinutes())}`;
+}
+
+/**
+ * Absolute JPEG URL. Never use ISO timestamps (colons become %3A and
+ * some crawlers drop the card). Short ?v=YYYYMMDDHHMM is optional cache-bust.
+ */
+export function ogImageHref(generatedAt, { cacheBust = true } = {}) {
+  if (!cacheBust) return `${OG_SITE}/og-cover.jpg`;
+  return `${OG_SITE}/og-cover.jpg?v=${ogCacheBust(generatedAt)}`;
 }
 
 export function formatSignedMoney(n, currency) {
