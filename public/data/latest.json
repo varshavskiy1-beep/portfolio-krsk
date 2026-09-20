@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-20T08:45:43Z",
+  "generated_at": "2026-09-20T10:07:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -36,11 +36,19 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "10508.47342930",
-      "cash": "10508.47342930",
+      "equity": "10494.25446580",
+      "cash": "10494.25446580",
       "seed": "10000",
-      "updated_utc": "2026-09-20T08:05:58Z",
-      "positions": [],
+      "updated_utc": "2026-09-20T10:05:29Z",
+      "positions": [
+        {
+          "symbol": "LTC-USDT-SWAP",
+          "side": "long",
+          "qty": "499.7",
+          "avg_px": "56.91",
+          "margin": "9479.309"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -49,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-20T08:45:39.552769Z",
+      "updated_utc": "2026-09-20T10:07:16.749735Z",
       "positions": []
     },
     {
@@ -58,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-20T08:45:39.555763Z",
+      "updated_utc": "2026-09-20T10:07:16.755416Z",
       "positions": []
     },
     {
@@ -67,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-20T08:45:39.559623Z",
+      "updated_utc": "2026-09-20T10:07:16.758087Z",
       "positions": []
     },
     {
@@ -75,23 +83,23 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "15027.052469321",
-      "updated_utc": "2026-09-20T08:45:39.563565Z",
+      "equity": "15015.960097611001",
+      "updated_utc": "2026-09-20T10:07:16.762795Z",
       "positions": [
-        {
-          "position_id": "p_08b625884ea5",
-          "symbol": "BTC-USDT",
-          "side": "long",
-          "qty": "0.046",
-          "avg_px": "80573.66485",
-          "stop_px": null
-        },
         {
           "position_id": "p_b5ce9deeb195",
           "symbol": "ETH-USDT",
           "side": "long",
           "qty": "1.457",
           "avg_px": "2578.083193",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_86afecce5998",
+          "symbol": "BTC-USDT",
+          "side": "long",
+          "qty": "0.046",
+          "avg_px": "80545.95654",
           "stop_px": null
         }
       ]
@@ -102,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-20T08:45:39.567386Z",
+      "updated_utc": "2026-09-20T10:07:16.767596Z",
       "positions": []
     },
     {
