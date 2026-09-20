@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
+import StrategyPage from "./StrategyPage.jsx";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -18,7 +19,21 @@ function seriesKey(a) {
   return `${a.bot_id}::${a.account_id}`;
 }
 
-function AccountCard({ a, historyPoints }) {
+function readRoute() {
+  const h = (window.location.hash || "").replace(/^#/, "");
+  const m = h.match(/^\/?s\/([^/]+)\/?$/);
+  return m ? { name: "strategy", botId: decodeURIComponent(m[1]) } : { name: "home" };
+}
+
+function goStrategy(botId) {
+  window.location.hash = `#/s/${encodeURIComponent(botId)}`;
+}
+
+function goHome() {
+  window.location.hash = "";
+}
+
+function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const [mode, setMode] = useState("money");
   const equity = num(a.equity);
   const seed = num(a.seed);
@@ -31,7 +46,9 @@ function AccountCard({ a, historyPoints }) {
   return (
     <article className="card">
       <div className="row">
-        <strong>{a.account_id}</strong>
+        <button type="button" className="linkish" onClick={() => onOpenStrategy(a.bot_id)}>
+          <strong>{a.account_id}</strong>
+        </button>
         <span className="badge">{a.currency}</span>
       </div>
       {a.venue ? <div className="updated">{a.venue}</div> : null}
@@ -47,7 +64,6 @@ function AccountCard({ a, historyPoints }) {
         </div>
       ) : null}
       {a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
-      {a.note ? <p className="note">{a.note}</p> : null}
 
       <div className="chart-toolbar">
         <button
@@ -63,6 +79,9 @@ function AccountCard({ a, historyPoints }) {
           onClick={() => setMode("pct")}
         >
           В %
+        </button>
+        <button type="button" className="chip tiny" onClick={() => onOpenStrategy(a.bot_id)}>
+          Открыть →
         </button>
       </div>
       <EquityChart points={curve} seed={seed} currency={a.currency} mode={mode} />
@@ -119,11 +138,104 @@ function AccountCard({ a, historyPoints }) {
   );
 }
 
+function Home({ data, history, filter, setFilter }) {
+  const bots = useMemo(() => {
+    const map = new Map();
+    for (const a of data.accounts || []) {
+      if (!map.has(a.bot_id)) map.set(a.bot_id, []);
+      map.get(a.bot_id).push(a);
+    }
+    return [...map.entries()];
+  }, [data]);
+
+  const currencies = useMemo(
+    () => [...new Set((data.accounts || []).map((a) => a.currency))],
+    [data],
+  );
+
+  const logic = (botId) =>
+    (data.manifest || []).find((m) => m.bot_id === botId)?.logic ||
+    "Описание логики уточняется.";
+
+  const pointsFor = (a) => {
+    if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
+    return history?.series?.[seriesKey(a)]?.points || [];
+  };
+
+  const visibleBots = bots
+    .map(([botId, accounts]) => [
+      botId,
+      filter === "all" || filter === botId || currencies.includes(filter)
+        ? accounts.filter((a) => filter === "all" || filter === botId || a.currency === filter)
+        : accounts,
+    ])
+    .filter(([, accounts]) => accounts.length);
+
+  return (
+    <div className="wrap">
+      <header>
+        <h1>portfolio_krsk — бумажные боты</h1>
+        <div className="meta">
+          снимок {data.generated_at} · только paper · валюты не складываются
+        </div>
+      </header>
+
+      <div className="chips">
+        <button className={`chip ${filter === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
+          Все
+        </button>
+        {bots.map(([id]) => (
+          <button
+            key={id}
+            className={`chip ${filter === id ? "active" : ""}`}
+            onClick={() => goStrategy(id)}
+            title="Открыть страницу стратегии"
+          >
+            {id}
+          </button>
+        ))}
+        {currencies.map((c) => (
+          <button key={c} className={`chip ${filter === c ? "active" : ""}`} onClick={() => setFilter(c)}>
+            {c}
+          </button>
+        ))}
+      </div>
+
+      {visibleBots.map(([botId, accounts]) => (
+        <section className="bot" key={botId}>
+          <h2>
+            <button type="button" className="linkish h2-link" onClick={() => goStrategy(botId)}>
+              {botId}
+            </button>
+          </h2>
+          <p className="logic">{logic(botId)}</p>
+          <div className="grid">
+            {accounts.map((a) => (
+              <AccountCard
+                key={`${a.bot_id}-${a.account_id}`}
+                a={a}
+                historyPoints={pointsFor(a)}
+                onOpenStrategy={goStrategy}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      <footer className="foot">
+        Не на сайте (live): {(data.excluded || []).map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
+        счетов, не торговые рекомендации. Нажмите название стратегии — откроется подробная страница.
+      </footer>
+    </div>
+  );
+}
+
 export default function App() {
   const [data, setData] = useState(null);
   const [history, setHistory] = useState(null);
   const [err, setErr] = useState(null);
   const [filter, setFilter] = useState("all");
+  const [route, setRoute] = useState(readRoute);
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
@@ -143,89 +255,25 @@ export default function App() {
       .catch((e) => setErr(String(e.message || e)));
   }, []);
 
-  const bots = useMemo(() => {
-    if (!data) return [];
-    const map = new Map();
-    for (const a of data.accounts || []) {
-      if (!map.has(a.bot_id)) map.set(a.bot_id, []);
-      map.get(a.bot_id).push(a);
-    }
-    return [...map.entries()];
-  }, [data]);
-
-  const currencies = useMemo(() => {
-    if (!data) return [];
-    return [...new Set((data.accounts || []).map((a) => a.currency))];
-  }, [data]);
-
-  const logic = (botId) =>
-    (data?.manifest || []).find((m) => m.bot_id === botId)?.logic ||
-    "Описание логики уточняется.";
-
-  const pointsFor = (a) => {
-    if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
-    const k = seriesKey(a);
-    return history?.series?.[k]?.points || [];
-  };
+  useEffect(() => {
+    const onHash = () => setRoute(readRoute());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   if (err) return <div className="wrap">Не удалось загрузить данные: {err}</div>;
   if (!data) return <div className="wrap">Загрузка…</div>;
 
-  const snap = data.generated_at;
-  const visibleBots = bots
-    .map(([botId, accounts]) => [
-      botId,
-      filter === "all" || filter === botId || currencies.includes(filter)
-        ? accounts.filter((a) => filter === "all" || filter === botId || a.currency === filter)
-        : accounts,
-    ])
-    .filter(([, accounts]) => accounts.length);
+  if (route.name === "strategy") {
+    return (
+      <StrategyPage
+        botId={route.botId}
+        data={data}
+        history={history}
+        onBack={goHome}
+      />
+    );
+  }
 
-  return (
-    <div className="wrap">
-      <header>
-        <h1>portfolio_krsk — бумажные боты</h1>
-        <div className="meta">
-          снимок {snap} · только paper · валюты не складываются
-        </div>
-      </header>
-
-      <div className="chips">
-        <button className={`chip ${filter === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
-          Все
-        </button>
-        {bots.map(([id]) => (
-          <button key={id} className={`chip ${filter === id ? "active" : ""}`} onClick={() => setFilter(id)}>
-            {id}
-          </button>
-        ))}
-        {currencies.map((c) => (
-          <button key={c} className={`chip ${filter === c ? "active" : ""}`} onClick={() => setFilter(c)}>
-            {c}
-          </button>
-        ))}
-      </div>
-
-      {visibleBots.map(([botId, accounts]) => (
-        <section className="bot" key={botId}>
-          <h2>{botId}</h2>
-          <p className="logic">{logic(botId)}</p>
-          <div className="grid">
-            {accounts.map((a) => (
-              <AccountCard
-                key={`${a.bot_id}-${a.account_id}`}
-                a={a}
-                historyPoints={pointsFor(a)}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
-
-      <footer className="foot">
-        Не на сайте (live): {(data.excluded || []).map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
-        счетов, не торговые рекомендации.
-      </footer>
-    </div>
-  );
+  return <Home data={data} history={history} filter={filter} setFilter={setFilter} />;
 }

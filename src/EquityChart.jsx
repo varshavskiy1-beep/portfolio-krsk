@@ -62,7 +62,7 @@ function applyRange(chart, series, rangeId) {
   }
 }
 
-export default function EquityChart({ points, seed, currency, mode }) {
+export default function EquityChart({ points, seed, currency, mode, height = 200 }) {
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
@@ -84,7 +84,7 @@ export default function EquityChart({ points, seed, currency, mode }) {
         horzLines: { color: "#eeeae3" },
       },
       width: wrapRef.current.clientWidth || 320,
-      height: 200,
+      height: height || 200,
       rightPriceScale: { borderVisible: false },
       timeScale: {
         borderVisible: false,
@@ -113,7 +113,12 @@ export default function EquityChart({ points, seed, currency, mode }) {
     chartRef.current = chart;
     seriesRef.current = area;
     const ro = new ResizeObserver(() => {
-      if (wrapRef.current) chart.applyOptions({ width: wrapRef.current.clientWidth });
+      if (wrapRef.current) {
+        chart.applyOptions({
+          width: wrapRef.current.clientWidth,
+          height: height || wrapRef.current.clientHeight || 200,
+        });
+      }
     });
     ro.observe(wrapRef.current);
     return () => {
@@ -151,8 +156,14 @@ export default function EquityChart({ points, seed, currency, mode }) {
       bottomColor: up ? "rgba(31, 122, 76, 0.02)" : "rgba(170, 51, 51, 0.02)",
     });
     area.setData(series);
+    if (wrapRef.current) {
+      chart.applyOptions({
+        width: wrapRef.current.clientWidth,
+        height: height || 200,
+      });
+    }
     applyRange(chart, series, range);
-  }, [series, mode, currency, range, ready]);
+  }, [series, mode, currency, range, ready, height]);
 
   return (
     <div className="tv-chart">
@@ -188,7 +199,7 @@ export default function EquityChart({ points, seed, currency, mode }) {
       <div
         ref={wrapRef}
         className="tv-chart-host"
-        style={{ display: ready ? "block" : "none" }}
+        style={{ display: ready ? "block" : "none", height: height || 200 }}
       />
     </div>
   );
