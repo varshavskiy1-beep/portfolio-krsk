@@ -8,6 +8,7 @@ import {
   formatPct,
   ogCacheBust,
   ogDescription,
+  ogImageHref,
 } from "./ogWinner.js";
 
 function acc(partial) {
@@ -114,4 +115,12 @@ test("formats money and description with regular spaces and ASCII digits", () =>
 test("og cache-bust is YYYYMMDDHHMM UTC without colons", () => {
   assert.equal(ogCacheBust("2026-09-20T08:45:43Z"), "202609200845");
   assert.match(ogCacheBust("not-a-date"), /^\d{12}$/);
+});
+
+test("og:image prefers JPEG path without encoded ISO timestamps", () => {
+  const href = ogImageHref("2026-09-20T08:45:43Z");
+  assert.equal(href, "https://portfolio-krsk.vercel.app/og-cover.jpg?v=202609200845");
+  assert.equal(href.includes("%3A"), false);
+  assert.equal(href.includes("T08"), false);
+  assert.equal(ogImageHref("2026-09-20T08:45:43Z", { cacheBust: false }), "https://portfolio-krsk.vercel.app/og-cover.jpg");
 });
