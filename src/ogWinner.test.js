@@ -6,6 +6,7 @@ import {
   scoreAccount,
   formatSignedMoney,
   formatPct,
+  ogCacheBust,
   ogDescription,
 } from "./ogWinner.js";
 
@@ -93,9 +94,9 @@ test("same-currency pnl tie uses higher percent", () => {
   assert.equal(winner.pnl, 1000);
 });
 
-test("formats money and description in Russian locale", () => {
-  assert.match(formatSignedMoney(4515.61, "USDT"), /^\+4[\s\u00a0\u202f]516$/);
-  assert.match(formatPct(0.451561), /^\+45,16$/);
+test("formats money and description with regular spaces and ASCII digits", () => {
+  assert.equal(formatSignedMoney(4515.61, "USDT"), "+4 516");
+  assert.equal(formatPct(0.451561), "+45,16");
   const desc = ogDescription({
     account: { bot_id: "v6b1", account_id: "v6b1" },
     pnl: 4515.61,
@@ -103,7 +104,14 @@ test("formats money and description in Russian locale", () => {
     currency: "USDT",
     key: "v6b1::v6b1",
   });
-  assert.match(desc, /v6b1/);
-  assert.match(desc, /USDT/);
-  assert.match(desc, /\+4/);
+  assert.equal(
+    desc,
+    "v6b1: +4 516 USDT (+45,16%) с запуска. Бумажный кабинет, валюты не складываются.",
+  );
+  assert.equal(/[\u00a0\u202f\u2007\u2009]/.test(desc), false);
+});
+
+test("og cache-bust is YYYYMMDDHHMM UTC without colons", () => {
+  assert.equal(ogCacheBust("2026-09-20T08:45:43Z"), "202609200845");
+  assert.match(ogCacheBust("not-a-date"), /^\d{12}$/);
 });
