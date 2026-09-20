@@ -51,6 +51,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         </button>
         <span className="badge">{a.currency}</span>
       </div>
+      {a.bot_id && a.bot_id !== a.account_id ? <div className="bot-label">{a.bot_id}</div> : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
         {equity == null ? "нет переоценки" : `${fmt(equity, a.currency)} ${a.currency}`}
@@ -140,12 +141,15 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
 
 function Home({ data, history, filter, setFilter }) {
   const bots = useMemo(() => {
-    const map = new Map();
+    const ids = [];
+    const seen = new Set();
     for (const a of data.accounts || []) {
-      if (!map.has(a.bot_id)) map.set(a.bot_id, []);
-      map.get(a.bot_id).push(a);
+      if (!seen.has(a.bot_id)) {
+        seen.add(a.bot_id);
+        ids.push(a.bot_id);
+      }
     }
-    return [...map.entries()];
+    return ids;
   }, [data]);
 
   const currencies = useMemo(
@@ -153,23 +157,17 @@ function Home({ data, history, filter, setFilter }) {
     [data],
   );
 
-  const logic = (botId) =>
-    (data.manifest || []).find((m) => m.bot_id === botId)?.logic ||
-    "Описание логики уточняется.";
-
   const pointsFor = (a) => {
     if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
     return history?.series?.[seriesKey(a)]?.points || [];
   };
 
-  const visibleBots = bots
-    .map(([botId, accounts]) => [
-      botId,
-      filter === "all" || filter === botId || currencies.includes(filter)
-        ? accounts.filter((a) => filter === "all" || filter === botId || a.currency === filter)
-        : accounts,
-    ])
-    .filter(([, accounts]) => accounts.length);
+  const visibleAccounts = useMemo(() => {
+    const accounts = data.accounts || [];
+    if (filter === "all") return accounts;
+    if (currencies.includes(filter)) return accounts.filter((a) => a.currency === filter);
+    return accounts.filter((a) => a.bot_id === filter);
+  }, [data, filter, currencies]);
 
   return (
     <div className="wrap">
@@ -184,7 +182,7 @@ function Home({ data, history, filter, setFilter }) {
         <button className={`chip ${filter === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
           Все
         </button>
-        {bots.map(([id]) => (
+        {bots.map((id) => (
           <button
             key={id}
             className={`chip ${filter === id ? "active" : ""}`}
@@ -201,30 +199,20 @@ function Home({ data, history, filter, setFilter }) {
         ))}
       </div>
 
-      {visibleBots.map(([botId, accounts]) => (
-        <section className="bot" key={botId}>
-          <h2>
-            <button type="button" className="linkish h2-link" onClick={() => goStrategy(botId)}>
-              {botId}
-            </button>
-          </h2>
-          <p className="logic">{logic(botId)}</p>
-          <div className="grid">
-            {accounts.map((a) => (
-              <AccountCard
-                key={`${a.bot_id}-${a.account_id}`}
-                a={a}
-                historyPoints={pointsFor(a)}
-                onOpenStrategy={goStrategy}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
+      <div className="grid">
+        {visibleAccounts.map((a) => (
+          <AccountCard
+            key={`${a.bot_id}-${a.account_id}`}
+            a={a}
+            historyPoints={pointsFor(a)}
+            onOpenStrategy={goStrategy}
+          />
+        ))}
+      </div>
 
       <footer className="foot">
         Не на сайте (live): {(data.excluded || []).map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
-        счетов, не торговые рекомендации. Нажмите название стратегии — откроется подробная страница.
+        счетов, не торговые рекомендации. Нажмите карточку — откроется подробная страница стратегии.
       </footer>
     </div>
   );
