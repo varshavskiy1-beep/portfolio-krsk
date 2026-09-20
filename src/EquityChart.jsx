@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { createChart, ColorType } from "lightweight-charts";
+import { createChart, ColorType, AreaSeries } from "lightweight-charts";
 
 const RANGES = [
   { id: "1d", label: "1Д", ms: 1 * 24 * 3600 * 1000 },
@@ -60,12 +60,15 @@ function applyRange(chart, series, rangeId) {
 
 function fitChart(chart, el) {
   if (!chart || !el) return;
-  // client* = content box; при height:0+flex хост уже ограничен родителем
-  const w = Math.max(Math.floor(el.clientWidth), 40);
-  const h = Math.max(Math.floor(el.clientHeight), 140);
-  if (w < 40 || h < 140) return;
+  // Только content-box хоста. Хост не зависит от canvas (LWC absolute),
+  // поэтому clientHeight — реальная выделенная область, не «раздутая» виджетом.
+  const w = Math.floor(el.clientWidth);
+  const h = Math.floor(el.clientHeight);
+  if (w < 40 || h < 80) return;
   chart.applyOptions({ width: w, height: h });
 }
+
+const TIME_SCALE_MIN_H = { fill: 40, normal: 26 };
 
 /**
  * @param {object} props
@@ -100,8 +103,8 @@ export default function EquityChart({
         vertLines: { color: "#eeeae3" },
         horzLines: { color: "#eeeae3" },
       },
-      width: Math.max(el.clientWidth, 40),
-      height: Math.max(el.clientHeight || height || 280, 120),
+      width: Math.max(Math.floor(el.clientWidth) || 40, 40),
+      height: Math.max(Math.floor(el.clientHeight) || 80, 80),
       rightPriceScale: {
         borderVisible: false,
         scaleMargins: { top: 0.06, bottom: 0.12 },
@@ -115,6 +118,8 @@ export default function EquityChart({
         fixLeftEdge: false,
         fixRightEdge: false,
         tickMarkMaxCharacterLength: 12,
+        // v5: запас внутри оси, чтобы цифры не прилипали к нижнему краю canvas
+        minimumHeight: fill ? TIME_SCALE_MIN_H.fill : TIME_SCALE_MIN_H.normal,
       },
       crosshair: {
         horzLine: { labelVisible: true },
@@ -132,7 +137,7 @@ export default function EquityChart({
         pinch: true,
       },
     });
-    const area = chart.addAreaSeries({
+    const area = chart.addSeries(AreaSeries, {
       lineColor: "#2b4c7e",
       topColor: "rgba(43, 76, 126, 0.28)",
       bottomColor: "rgba(43, 76, 126, 0.02)",
@@ -152,7 +157,7 @@ export default function EquityChart({
       chartRef.current = null;
       seriesRef.current = null;
     };
-  }, []);
+  }, [fill, height]);
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -192,12 +197,25 @@ export default function EquityChart({
     });
   }, [series, mode, currency, range, ready]);
 
-  // при смене fill/height — пересчитать размер
+  // при смене fill/height — пересчитать размер и высоту time-scale
   useEffect(() => {
-    const run = () => fitChart(chartRef.current, wrapRef.current);
+    const chart = chartRef.current;
+    const run = () => fitChart(chart, wrapRef.current);
+    if (chart) {
+      try {
+        chart.timeScale().applyOptions({
+          minimumHeight: fill ? TIME_SCALE_MIN_H.fill : TIME_SCALE_MIN_H.normal,
+        });
+      } catch (_) {}
+    }
     run();
     const id = requestAnimationFrame(() => requestAnimationFrame(run));
-    return () => cancelAnimationFrame(id);
+    const onVv = () => run();
+    window.visualViewport?.addEventListener("resize", onVv);
+    return () => {
+      cancelAnimationFrame(id);
+      window.visualViewport?.removeEventListener("resize", onVv);
+    };
   }, [fill, height]);
 
   return (
@@ -231,17 +249,20 @@ export default function EquityChart({
             : "Нет точек истории для графика."}
         </div>
       ) : null}
-      <div
-        ref={wrapRef}
-        className="tv-chart-host"
-        style={
-          ready
-            ? fill
-              ? { flex: 1, minHeight: 0, width: "100%" }
-              : { display: "block", height: height || 280, width: "100%" }
-            : { display: "none" }
-        }
-      />
+      <div className="tv-chart-stage">
+        <div
+          ref={wrapRef}
+          className="tv-chart-host"
+          style={
+            ready
+              ? fill
+                ? undefined
+                : { height: height || 280 }
+              : { display: "none" }
+          }
+        />
+        {fill ? <div className="tv-chart-timeband" aria-hidden="true" /> : null}
+      </div>
     </div>
   );
 }
