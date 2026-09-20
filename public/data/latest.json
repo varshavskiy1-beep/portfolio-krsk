@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-20T00:39:35Z",
+  "generated_at": "2026-09-20T00:51:46Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-20T00:39:30.123372Z",
+      "updated_utc": "2026-09-20T00:51:41.613822Z",
       "positions": []
     },
     {
@@ -66,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-20T00:39:30.126492Z",
+      "updated_utc": "2026-09-20T00:51:41.616496Z",
       "positions": []
     },
     {
@@ -75,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-20T00:39:30.130064Z",
+      "updated_utc": "2026-09-20T00:51:41.619806Z",
       "positions": []
     },
     {
@@ -84,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14985.565197853",
-      "updated_utc": "2026-09-20T00:39:30.133994Z",
+      "updated_utc": "2026-09-20T00:51:41.623768Z",
       "positions": [
         {
           "position_id": "p_5d1d3d0cd43a",
@@ -110,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-20T00:39:30.137481Z",
+      "updated_utc": "2026-09-20T00:51:41.628225Z",
       "positions": []
     },
     {
@@ -136,34 +136,28 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "4913.42000000",
-      "cash": "2873.42000000",
-      "updated_utc": "2026-09-18",
+      "equity": "4971.1600000000",
+      "cash": "3497.1340000000",
+      "updated_utc": "2026-09-19",
       "positions": [],
       "pending_limits": [
         {
-          "id": "pump-2026-09-18-GUSDT",
-          "symbol": "GUSDT",
-          "limit": "0.00717250",
-          "notional": "510.00000000"
+          "id": "pump-2026-09-19-CELRUSDT",
+          "symbol": "CELRUSDT",
+          "limit": "0.00317965",
+          "notional": "491.3420000000"
         },
         {
-          "id": "pump-2026-09-18-FUSDT",
-          "symbol": "FUSDT",
-          "limit": "0.00498370",
-          "notional": "510.00000000"
+          "id": "pump-2026-09-19-ARUSDT",
+          "symbol": "ARUSDT",
+          "limit": "4.20090000",
+          "notional": "491.3420000000"
         },
         {
-          "id": "pump-2026-09-18-STRKUSDT",
-          "symbol": "STRKUSDT",
-          "limit": "0.04203750",
-          "notional": "510.00000000"
-        },
-        {
-          "id": "pump-2026-09-18-NEARUSDT",
-          "symbol": "NEARUSDT",
-          "limit": "3.57485000",
-          "notional": "510.00000000"
+          "id": "pump-2026-09-19-ZAMAUSDT",
+          "symbol": "ZAMAUSDT",
+          "limit": "0.07820400",
+          "notional": "491.3420000000"
         }
       ]
     }
