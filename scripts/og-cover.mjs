@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
- * Renders public/og-cover.png (1200×630) for the account with the largest
- * absolute profit in money (equity − seed, no FX) and patches OG tags in index.html.
+ * Renders public/og-cover.jpg (1200×630, q≈85) plus a PNG fallback for the
+ * account with the largest absolute profit in money (equity − seed, no FX)
+ * and patches OG tags in index.html.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -11,6 +12,7 @@ import { canonicalCurrency } from "../src/cashCurrency.js";
 import {
   formatPct,
   formatSignedMoney,
+  ogCacheBust,
   ogDescription,
   ogTitle,
   pickOgWinner,
@@ -286,28 +288,46 @@ function escapeAttr(s) {
     .replace(/</g, "&lt;");
 }
 
+function insertBeforeHeadClose(html, tag) {
+  return html.replace(/\n?[ \t]*<\/head>/i, `\n    ${tag}\n  </head>`);
+}
+
 function upsertMeta(html, attr, key, content) {
   const re = new RegExp(`<meta\\s+[^>]*${attr}="${key}"[^>]*>`, "i");
   const tag = `<meta ${attr}="${key}" content="${escapeAttr(content)}" />`;
   if (re.test(html)) return html.replace(re, tag);
-  return html.replace("</head>", `    ${tag}\n  </head>`);
+  return insertBeforeHeadClose(html, tag);
+}
+
+function upsertLink(html, rel, href) {
+  const re = new RegExp(`<link\\s+[^>]*rel="${rel}"[^>]*>`, "i");
+  const tag = `<link rel="${rel}" href="${escapeAttr(href)}" />`;
+  if (re.test(html)) return html.replace(re, tag);
+  return insertBeforeHeadClose(html, tag);
 }
 
 function patchIndexHtml(root, row, version) {
   const indexPath = path.join(root, "index.html");
   let html = fs.readFileSync(indexPath, "utf8");
-  const image = `${SITE}/og-cover.png?v=${encodeURIComponent(version)}`;
+  const image = `${SITE}/og-cover.jpg?v=${version}`;
+  const desc = ogDescription(row);
   html = upsertMeta(html, "property", "og:title", ogTitle(row));
-  html = upsertMeta(html, "property", "og:description", ogDescription(row));
+  html = upsertMeta(html, "property", "og:description", desc);
   html = upsertMeta(html, "property", "og:url", `${SITE}/`);
+  html = upsertMeta(html, "property", "og:site_name", "portfolio_krsk");
+  html = upsertMeta(html, "property", "og:locale", "ru_RU");
   html = upsertMeta(html, "property", "og:image", image);
+  html = upsertMeta(html, "property", "og:image:secure_url", image);
+  html = upsertMeta(html, "property", "og:image:type", "image/jpeg");
   html = upsertMeta(html, "property", "og:image:width", "1200");
   html = upsertMeta(html, "property", "og:image:height", "630");
   html = upsertMeta(html, "property", "og:type", "website");
+  html = upsertMeta(html, "name", "description", desc);
   html = upsertMeta(html, "name", "twitter:card", "summary_large_image");
   html = upsertMeta(html, "name", "twitter:title", ogTitle(row));
-  html = upsertMeta(html, "name", "twitter:description", ogDescription(row));
+  html = upsertMeta(html, "name", "twitter:description", desc);
   html = upsertMeta(html, "name", "twitter:image", image);
+  html = upsertLink(html, "image_src", image);
   fs.writeFileSync(indexPath, html);
   return image;
 }
@@ -330,13 +350,15 @@ export function generateOgCover({ latest, history, root } = {}) {
   ctx.antialias = "subpixel";
   drawCard(ctx, row, generatedAt, fontFamily);
 
-  const out = path.join(base, "public", "og-cover.png");
-  fs.writeFileSync(out, canvas.toBuffer("image/png"));
-  const image = patchIndexHtml(base, row, generatedAt);
+  const jpgOut = path.join(base, "public", "og-cover.jpg");
+  const pngOut = path.join(base, "public", "og-cover.png");
+  fs.writeFileSync(jpgOut, canvas.encodeSync("jpeg", 85));
+  fs.writeFileSync(pngOut, canvas.encodeSync("png"));
+  const image = patchIndexHtml(base, row, ogCacheBust(generatedAt));
 
   const label = row ? `${row.key} pnl=${row.pnl} ${row.currency}` : "no-winner";
-  console.log(`og-cover ${out} ${W}x${H} winner=${label} image=${image}`);
-  return { row, image, out };
+  console.log(`og-cover ${jpgOut} ${W}x${H} q=85 winner=${label} image=${image}`);
+  return { row, image, out: jpgOut, jpgOut, pngOut };
 }
 
 const isMain =

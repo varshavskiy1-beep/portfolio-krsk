@@ -83,32 +83,43 @@ export function pickOgWinner(latest, history, currencyFn) {
   return scored[0];
 }
 
+const ODD_SPACES = /[\u00a0\u202f\u2007\u2008\u2009\u200a\u2060\ufeff]/g;
+
+/** Telegram (and some crawlers) drop cards when description has NBSP/NNBSP. */
+export function asciiOgText(s) {
+  return String(s)
+    .replace(ODD_SPACES, " ")
+    .replace(/[\u2212\u2013\u2014]/g, "-")
+    .replace(/ {2,}/g, " ")
+    .trim();
+}
+
+function groupInt(intPart) {
+  return intPart.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 export function formatMoney(n, currency) {
-  if (n == null || !Number.isFinite(n)) return "—";
+  if (n == null || !Number.isFinite(n)) return "-";
   const abs = Math.abs(n);
   const digits = currency === "RUB" || abs >= 100 ? 0 : 2;
-  try {
-    return new Intl.NumberFormat("ru-RU", {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits,
-    }).format(n);
-  } catch {
-    return String(n);
-  }
+  const sign = n < 0 ? "-" : "";
+  const [intPart, frac] = abs.toFixed(digits).split(".");
+  return frac != null ? `${sign}${groupInt(intPart)},${frac}` : `${sign}${groupInt(intPart)}`;
 }
 
 export function formatPct(pct) {
-  if (pct == null || !Number.isFinite(pct)) return "—";
-  try {
-    return new Intl.NumberFormat("ru-RU", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-      signDisplay: "exceptZero",
-    }).format(pct * 100);
-  } catch {
-    const v = (pct * 100).toFixed(2);
-    return `${pct > 0 ? "+" : ""}${v}`;
-  }
+  if (pct == null || !Number.isFinite(pct)) return "-";
+  const sign = pct > 0 ? "+" : pct < 0 ? "-" : "";
+  const [intPart, frac] = Math.abs(pct * 100).toFixed(2).split(".");
+  return `${sign}${groupInt(intPart)},${frac}`;
+}
+
+/** Short cache-bust for crawlers: YYYYMMDDHHMM (UTC), no ISO colons. */
+export function ogCacheBust(iso) {
+  const d = iso ? new Date(iso) : new Date();
+  const t = Number.isNaN(d.getTime()) ? new Date() : d;
+  const pad = (n) => String(n).padStart(2, "0");
+  return `${t.getUTCFullYear()}${pad(t.getUTCMonth() + 1)}${pad(t.getUTCDate())}${pad(t.getUTCHours())}${pad(t.getUTCMinutes())}`;
 }
 
 export function formatSignedMoney(n, currency) {
@@ -130,10 +141,12 @@ export function ogDescription(row) {
   if (!row) return "Бумажные торговые боты. Валюты не складываются.";
   const money = formatSignedMoney(row.pnl, row.currency);
   const pct = formatPct(row.pct);
-  return `${winnerLabel(row)}: ${money} ${row.currency} (${pct}%) с запуска. Бумажный кабинет, валюты не складываются.`;
+  return asciiOgText(
+    `${winnerLabel(row)}: ${money} ${row.currency} (${pct}%) с запуска. Бумажный кабинет, валюты не складываются.`,
+  );
 }
 
 export function ogTitle(row) {
-  if (!row) return "portfolio_krsk — бумажные боты";
-  return `portfolio_krsk — ${winnerLabel(row)}`;
+  if (!row) return "portfolio_krsk - бумажные боты";
+  return asciiOgText(`portfolio_krsk - ${winnerLabel(row)}`);
 }
