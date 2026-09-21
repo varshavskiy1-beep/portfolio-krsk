@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-20T23:53:04Z",
+  "generated_at": "2026-09-21T00:12:15Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-20T23:53:03.929634Z",
+      "updated_utc": "2026-09-21T00:12:12.005399Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-20T23:53:03.932380Z",
+      "updated_utc": "2026-09-21T00:12:12.012415Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-20T23:53:03.936196Z",
+      "updated_utc": "2026-09-21T00:12:12.018783Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "15114.674181050004",
-      "updated_utc": "2026-09-20T23:53:03.939191Z",
+      "updated_utc": "2026-09-21T00:12:12.026735Z",
       "positions": []
     },
     {
@@ -101,7 +101,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-20T23:53:03.941947Z",
+      "updated_utc": "2026-09-21T00:12:12.034526Z",
       "positions": []
     },
     {
@@ -127,9 +127,9 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "4971.1600000000",
-      "cash": "3497.1340000000",
-      "updated_utc": "2026-09-19",
+      "equity": "5167.700000000000",
+      "cash": "3682.126000000000",
+      "updated_utc": "2026-09-20",
       "positions": [],
       "pending_limits": [
         {
@@ -139,16 +139,16 @@
           "notional": "491.3420000000"
         },
         {
-          "id": "pump-2026-09-19-ARUSDT",
-          "symbol": "ARUSDT",
-          "limit": "4.20090000",
-          "notional": "491.3420000000"
+          "id": "pump-2026-09-20-SAGAUSDT",
+          "symbol": "SAGAUSDT",
+          "limit": "0.03586250",
+          "notional": "497.116000000000"
         },
         {
-          "id": "pump-2026-09-19-ZAMAUSDT",
-          "symbol": "ZAMAUSDT",
-          "limit": "0.07820400",
-          "notional": "491.3420000000"
+          "id": "pump-2026-09-20-EPICUSDT",
+          "symbol": "EPICUSDT",
+          "limit": "0.54169000",
+          "notional": "497.116000000000"
         }
       ]
     }
