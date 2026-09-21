@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-21T12:45:08Z",
+  "generated_at": "2026-09-21T13:18:27Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -44,11 +44,19 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "10801.55963370",
-      "cash": "10801.55963370",
+      "equity": "10786.94515870",
+      "cash": "10786.94515870",
       "seed": "10000",
-      "updated_utc": "2026-09-21T12:05:33Z",
-      "positions": [],
+      "updated_utc": "2026-09-21T13:06:10Z",
+      "positions": [
+        {
+          "symbol": "LTC-USDT-SWAP",
+          "side": "long",
+          "qty": "465.8",
+          "avg_px": "62.75",
+          "margin": "9742.983333333333333333333333"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -57,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-21T12:45:04.291261Z",
+      "updated_utc": "2026-09-21T13:18:26.441786Z",
       "positions": []
     },
     {
@@ -66,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-21T12:45:04.294805Z",
+      "updated_utc": "2026-09-21T13:18:26.444775Z",
       "positions": []
     },
     {
@@ -75,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-21T12:45:04.298417Z",
+      "updated_utc": "2026-09-21T13:18:26.449328Z",
       "positions": []
     },
     {
@@ -84,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14941.721925360005",
-      "updated_utc": "2026-09-21T12:45:04.301767Z",
+      "updated_utc": "2026-09-21T13:18:26.452373Z",
       "positions": []
     },
     {
@@ -93,7 +101,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-21T12:45:04.305206Z",
+      "updated_utc": "2026-09-21T13:18:26.456179Z",
       "positions": []
     },
     {
