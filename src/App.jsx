@@ -2,6 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
+import {
+  chipLabel,
+  displayTitle,
+  hasAccountData,
+  mergePortalAccounts,
+  portalExcluded,
+  showsPaperBadge,
+} from "./strategyMeta.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -37,28 +45,41 @@ function goHome() {
 function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const [mode, setMode] = useState("money");
   const currency = canonicalCurrency(a);
-  const equity = num(a.equity);
-  const seed = num(a.seed);
+  const title = displayTitle(a);
+  const paper = showsPaperBadge(a);
+  const hasData = hasAccountData(a);
+  const equity = hasData ? num(a.equity) : null;
+  const seed = hasData ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
-  const positions = a.positions || [];
-  const limits = a.pending_limits || [];
-  const curve = a.equity_curve || historyPoints || [];
+  const positions = hasData ? a.positions || [] : [];
+  const limits = hasData ? a.pending_limits || [] : [];
+  const curve = hasData ? a.equity_curve || historyPoints || [] : historyPoints || [];
 
   return (
     <article className="card">
       <div className="row">
         <button type="button" className="linkish" onClick={() => onOpenStrategy(a.bot_id)}>
-          <strong>{a.account_id}</strong>
+          <strong>{title}</strong>
         </button>
-        <span className="badge">{currency}</span>
+        <div className="badges">
+          {paper ? <span className="badge badge-paper">бумага</span> : null}
+          <span className="badge">{currency}</span>
+        </div>
       </div>
-      {a.bot_id && a.bot_id !== a.account_id ? <div className="bot-label">{a.bot_id}</div> : null}
+      {title !== a.account_id ? <div className="bot-label">{a.account_id}</div> : null}
+      {a.bot_id && a.bot_id !== a.account_id && title === a.account_id ? (
+        <div className="bot-label">{a.bot_id}</div>
+      ) : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
-        {equity == null ? "нет переоценки" : `${fmt(equity, currency)} ${currency}`}
+        {!hasData
+          ? "нет данных"
+          : equity == null
+            ? "нет переоценки"
+            : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {seed != null ? (
+      {hasData && seed != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           от seed {fmt(seed, currency)}
           {delta != null
@@ -66,7 +87,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
             : ""}
         </div>
       ) : null}
-      {a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
+      {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
 
       <div className="chart-toolbar">
         <button
@@ -146,34 +167,37 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
 }
 
 function Home({ data, history, filter, setFilter }) {
+  const accounts = useMemo(() => mergePortalAccounts(data.accounts || []), [data]);
+
   const bots = useMemo(() => {
     const ids = [];
     const seen = new Set();
-    for (const a of data.accounts || []) {
+    for (const a of accounts) {
       if (!seen.has(a.bot_id)) {
         seen.add(a.bot_id);
         ids.push(a.bot_id);
       }
     }
     return ids;
-  }, [data]);
+  }, [accounts]);
 
-  const currencies = useMemo(
-    () => [...new Set((data.accounts || []).map((a) => a.currency))],
-    [data],
-  );
+  const currencies = useMemo(() => [...new Set(accounts.map((a) => canonicalCurrency(a)))], [accounts]);
 
   const pointsFor = (a) => {
+    if (!hasAccountData(a)) return [];
     if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
     return history?.series?.[seriesKey(a)]?.points || [];
   };
 
   const visibleAccounts = useMemo(() => {
-    const accounts = data.accounts || [];
     if (filter === "all") return accounts;
-    if (currencies.includes(filter)) return accounts.filter((a) => a.currency === filter);
+    if (currencies.includes(filter)) {
+      return accounts.filter((a) => canonicalCurrency(a) === filter);
+    }
     return accounts.filter((a) => a.bot_id === filter);
-  }, [data, filter, currencies]);
+  }, [accounts, filter, currencies]);
+
+  const liveExcluded = portalExcluded(data.excluded || []);
 
   return (
     <div className="wrap">
@@ -195,7 +219,7 @@ function Home({ data, history, filter, setFilter }) {
             onClick={() => goStrategy(id)}
             title="Открыть страницу стратегии"
           >
-            {id}
+            {chipLabel(id)}
           </button>
         ))}
         {currencies.map((c) => (
@@ -217,7 +241,7 @@ function Home({ data, history, filter, setFilter }) {
       </div>
 
       <footer className="foot">
-        Не на сайте (live): {(data.excluded || []).map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
+        Не на сайте (live): {liveExcluded.map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
         счетов, не торговые рекомендации. Нажмите карточку — откроется подробная страница стратегии.
       </footer>
     </div>

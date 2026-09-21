@@ -40,6 +40,19 @@ test("bot_id maps crypto and FORTS when venue is missing", () => {
   );
 });
 
+test("robot 2 paper account maps to USD", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "three_robots_okx_nasdaq_1h",
+      account_id: "paper_block2",
+      currency: "USDT",
+    }),
+    "USD",
+  );
+  assert.equal(canonicalCurrency({ bot_id: "three_robots_okx_nasdaq_1h", account_id: "x", currency: "RUB" }), "USD");
+  assert.equal(canonicalCurrency({ bot_id: "other", account_id: "paper_block2", currency: "RUB" }), "USD");
+});
+
 test("unknown bot keeps feed currency", () => {
   assert.equal(canonicalCurrency({ bot_id: "new_bot", account_id: "x", currency: "EUR" }), "EUR");
 });

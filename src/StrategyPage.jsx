@@ -2,6 +2,14 @@ import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { plainExplain } from "./plainExplain.js";
+import {
+  chipLabel,
+  displayTitle,
+  hasAccountData,
+  isKnownPortalBot,
+  mergePortalAccounts,
+  showsPaperBadge,
+} from "./strategyMeta.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -84,8 +92,11 @@ function AccountBlock({ a, points }) {
   const [mode, setMode] = useState("money");
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
-  const equity = num(a.equity);
-  const seed = num(a.seed);
+  const title = displayTitle(a);
+  const paper = showsPaperBadge(a);
+  const hasData = hasAccountData(a);
+  const equity = hasData ? num(a.equity) : null;
+  const seed = hasData ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
 
@@ -112,20 +123,28 @@ function AccountBlock({ a, points }) {
   return (
     <section className="card strategy-account">
       <div className="row">
-        <strong>{a.account_id}</strong>
-        <span className="badge">{currency}</span>
+        <strong>{title}</strong>
+        <div className="badges">
+          {paper ? <span className="badge badge-paper">бумага</span> : null}
+          <span className="badge">{currency}</span>
+        </div>
       </div>
+      {title !== a.account_id ? <div className="bot-label">{a.account_id}</div> : null}
       <div className="equity">
-        {equity == null ? "нет переоценки" : `${fmt(equity, currency)} ${currency}`}
+        {!hasData
+          ? "нет данных"
+          : equity == null
+            ? "нет переоценки"
+            : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {seed != null && delta != null ? (
+      {hasData && seed != null && delta != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           от seed {fmt(seed, currency)}: {delta >= 0 ? "+" : ""}
           {fmt(delta, currency)} ({pct >= 0 ? "+" : ""}
           {pct.toFixed(2)}%)
         </div>
       ) : null}
-      {a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
+      {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
 
       <h3 className="subhead">График эквити</h3>
       <div className={`chart-panel ${fs ? "chart-panel-fs" : ""}`}>
@@ -166,29 +185,37 @@ function AccountBlock({ a, points }) {
       </div>
 
       <h3 className="subhead">Открытые позиции</h3>
-      <PositionsTable positions={a.positions || []} />
-      <LimitsTable limits={a.pending_limits || []} />
-      {a.note ? <p className="note">{a.note}</p> : null}
+      {hasData ? (
+        <>
+          <PositionsTable positions={a.positions || []} />
+          <LimitsTable limits={a.pending_limits || []} />
+        </>
+      ) : (
+        <p className="muted">нет данных</p>
+      )}
+      {hasData && a.note ? <p className="note">{a.note}</p> : null}
     </section>
   );
 }
 
 export default function StrategyPage({ botId, data, history, onBack }) {
   const accounts = useMemo(
-    () => (data?.accounts || []).filter((a) => a.bot_id === botId),
+    () => mergePortalAccounts(data?.accounts || []).filter((a) => a.bot_id === botId),
     [data, botId],
   );
   const logic =
     (data?.manifest || []).find((m) => m.bot_id === botId)?.logic || "";
   const plain = plainExplain(botId, logic);
+  const pageTitle = chipLabel(botId);
 
   const pointsFor = (a) => {
+    if (!hasAccountData(a)) return [];
     if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
     const k = seriesKey(a);
     return history?.series?.[k]?.points || [];
   };
 
-  if (!accounts.length) {
+  if (!accounts.length && !isKnownPortalBot(botId)) {
     return (
       <div className="wrap">
         <button type="button" className="chip" onClick={onBack}>
@@ -205,8 +232,9 @@ export default function StrategyPage({ botId, data, history, onBack }) {
         ← Все стратегии
       </button>
       <header>
-        <h1>{botId}</h1>
-        <p className="strategy-title">{plain.title}</p>
+        <h1>{pageTitle}</h1>
+        {pageTitle !== botId ? <p className="strategy-title">{botId}</p> : null}
+        {pageTitle === botId && plain.title !== botId ? <p className="strategy-title">{plain.title}</p> : null}
         <div className="meta">снимок {data.generated_at} · только paper</div>
       </header>
 

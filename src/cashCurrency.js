@@ -18,6 +18,7 @@ export const BOT_CURRENCY = {
   pump_radar: "USDT",
   forts_adr_adaptive: "RUB",
   forts_adr_static: "RUB",
+  three_robots_okx_nasdaq_1h: "USD",
 };
 
 /** who_pays и прочие счета, если venue в снимке нет. */
@@ -27,6 +28,7 @@ export const ACCOUNT_CURRENCY = {
   paper_forts: "RUB",
   paper_crypto_spot: "USDT",
   paper_crypto_perp: "USDT",
+  paper_block2: "USD",
 };
 
 export function canonicalCurrency(account) {
