@@ -101,6 +101,16 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
   color: var(--accent);
   font-weight: 600;
 }
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-end;
+}
+.badge-paper {
+  background: #e8f5e9;
+  color: var(--good);
+}
 .equity {
   font-size: 1.35rem;
   font-weight: 700;
