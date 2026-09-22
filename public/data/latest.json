@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-22T08:43:03Z",
+  "generated_at": "2026-09-22T08:57:23Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-22T08:43:03.185515Z",
+      "updated_utc": "2026-09-22T08:55:57.381904Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-22T08:43:03.189172Z",
+      "updated_utc": "2026-09-22T08:55:57.385894Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-22T08:43:03.192716Z",
+      "updated_utc": "2026-09-22T08:55:57.389462Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14945.064845740006",
-      "updated_utc": "2026-09-22T08:43:03.197335Z",
+      "updated_utc": "2026-09-22T08:55:57.393581Z",
       "positions": [
         {
           "position_id": "p_48d48681afd5",
@@ -118,26 +118,27 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-22T08:43:03.200721Z",
+      "updated_utc": "2026-09-22T08:55:57.397987Z",
       "positions": []
     },
     {
       "bot_id": "forts_adr_adaptive",
       "account_id": "forts_adr_adaptive",
       "currency": "RUB",
-      "equity": null,
       "seed": "1500000",
-      "updated_utc": null,
+      "equity": "1950000.0",
+      "cash": "1950000.0",
+      "updated_utc": "2026-09-21T13:10:00Z",
       "positions": [],
-      "note": "Отдельного mark-леджера нет, только state.json. seed — конфиг, не переоценка. equity null. Позиции в state не хранятся."
+      "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
     },
     {
       "bot_id": "forts_adr_static",
       "account_id": "forts_adr_static",
       "currency": "RUB",
-      "equity": "1500000.0",
+      "equity": "1508999.9999124017",
       "seed": "1500000",
-      "updated_utc": "2026-09-21T13:21:16.771443Z",
+      "updated_utc": "2026-09-22T08:52:09.296331Z",
       "positions": []
     },
     {
