@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
-  base: "/",
+  // Vercel: "/". GitHub Pages: "VITE_BASE=/portfolio-krsk/ npm run build"
+  base: process.env.VITE_BASE || "/",
   build: { outDir: "dist" },
 });

@@ -3,9 +3,13 @@ import assert from "node:assert/strict";
 import {
   CHART_NEG,
   CHART_POS,
+  DAY_SEC,
   buildSeries,
   chartSeriesColors,
+  defaultChartRange,
   isChartUpVsSeed,
+  isNearSeed,
+  toUnix,
 } from "./equityChartModel.js";
 
 const adaptivePoints = [
@@ -14,25 +18,84 @@ const adaptivePoints = [
 ];
 const seed = 1_500_000;
 
-test("forts_adr_adaptive: window slopes down but last equity is above seed → green", () => {
+test("forts_adr_adaptive: prepends seed baseline so % starts at 0 and money at seed", () => {
+  const firstReal = toUnix(adaptivePoints[0].t);
   const pct = buildSeries(adaptivePoints, seed, "pct");
-  assert.ok(pct[0].value > pct[pct.length - 1].value, "окно 1М реально вниз");
-  assert.ok(pct[pct.length - 1].value > 22 && pct[pct.length - 1].value < 23);
+  assert.equal(pct.length, 3);
+  assert.equal(pct[0].time, firstReal - DAY_SEC);
+  assert.equal(pct[0].value, 0);
+  assert.ok(pct[1].value > 29 && pct[1].value < 31);
+  assert.ok(pct[2].value > 22 && pct[2].value < 23);
+  assert.ok(pct[1].value > pct[2].value, "последний отрезок всё ещё вниз");
+
+  const money = buildSeries(adaptivePoints, seed, "money");
+  assert.equal(money.length, 3);
+  assert.equal(money[0].value, seed);
+  assert.equal(money[1].value, 1950000);
+  assert.ok(money[2].value > 1_830_000 && money[2].value < 1_840_000);
+});
+
+test("forts_adr_adaptive: last equity above seed stays green after prepend", () => {
+  const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), true);
   assert.equal(chartSeriesColors(true).lineColor, CHART_POS.lineColor);
 
   const money = buildSeries(adaptivePoints, seed, "money");
-  assert.ok(money[0].value > money[money.length - 1].value);
   assert.equal(isChartUpVsSeed(money, seed, "money"), true);
 });
 
-test("below seed stays red even if the visible window slopes up", () => {
+test("short series (adaptive) defaults to «Всё» so seed stays in view", () => {
+  const pct = buildSeries(adaptivePoints, seed, "pct");
+  assert.equal(defaultChartRange(pct), "all");
+});
+
+test("history longer than 1M defaults to 1m", () => {
+  const points = [
+    { t: "2026-07-01T00:00:00Z", equity: 1_600_000 },
+    { t: "2026-09-22T00:00:00Z", equity: 1_800_000 },
+  ];
+  const series = buildSeries(points, seed, "money");
+  assert.ok(series.length >= 3, "seed prepended before July");
+  assert.equal(defaultChartRange(series), "1m");
+});
+
+test("does not prepend when first point is already at seed", () => {
+  const points = [
+    { t: "2026-09-01T00:00:00Z", equity: seed },
+    { t: "2026-09-22T00:00:00Z", equity: 1_800_000 },
+  ];
+  const money = buildSeries(points, seed, "money");
+  assert.equal(money.length, 2);
+  assert.equal(money[0].value, seed);
+  assert.equal(money[0].time, toUnix(points[0].t));
+});
+
+test("does not prepend when first point is near seed (≤1%)", () => {
+  assert.equal(isNearSeed(9994, 10_000), true);
+  const points = [
+    { t: "2026-09-19T00:00:00Z", equity: 9994 },
+    { t: "2026-09-22T00:00:00Z", equity: 12721 },
+  ];
+  const money = buildSeries(points, 10_000, "money");
+  assert.equal(money.length, 2);
+  assert.equal(money[0].value, 9994);
+});
+
+test("no seed → no synthetic point", () => {
+  const money = buildSeries(adaptivePoints, null, "money");
+  assert.equal(money.length, 2);
+  assert.equal(money[0].value, 1950000);
+});
+
+test("below seed stays red even if the later window slopes up", () => {
   const points = [
     { t: "2026-09-01T00:00:00Z", equity: 1_200_000 },
     { t: "2026-09-22T00:00:00Z", equity: 1_400_000 },
   ];
   const pct = buildSeries(points, seed, "pct");
-  assert.ok(pct[pct.length - 1].value > pct[0].value);
+  assert.equal(pct[0].value, 0);
+  assert.ok(pct[pct.length - 1].value < 0);
+  assert.ok(pct[pct.length - 1].value > pct[1].value, "реальные точки идут вверх");
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), false);
   assert.equal(isChartUpVsSeed(buildSeries(points, seed, "money"), seed, "money"), false);
   assert.equal(chartSeriesColors(false).lineColor, CHART_NEG.lineColor);
@@ -47,9 +110,9 @@ test("exactly at seed is green — same as header delta >= 0", () => {
   assert.equal(isChartUpVsSeed(buildSeries(points, seed, "money"), seed, "money"), true);
 });
 
-test("old first→last rule would paint adaptive red — we do not use it", () => {
+test("color follows seed, not the last drawdown leg", () => {
   const pct = buildSeries(adaptivePoints, seed, "pct");
-  const oldUp = pct[pct.length - 1].value >= pct[0].value;
-  assert.equal(oldUp, false);
+  const lastLegUp = pct[pct.length - 1].value >= pct[pct.length - 2].value;
+  assert.equal(lastLegUp, false);
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), true);
 });

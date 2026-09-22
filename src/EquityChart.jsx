@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { createChart, ColorType, AreaSeries } from "lightweight-charts";
-import { buildSeries, chartSeriesColors, isChartUpVsSeed } from "./equityChartModel.js";
+import {
+  buildSeries,
+  chartSeriesColors,
+  defaultChartRange,
+  isChartUpVsSeed,
+} from "./equityChartModel.js";
 
 const RANGES = [
   { id: "1d", label: "1Д", ms: 1 * 24 * 3600 * 1000 },
@@ -82,8 +87,9 @@ export default function EquityChart({
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
-  const [range, setRange] = useState("1m");
+  const [userRange, setUserRange] = useState(null);
   const series = buildSeries(points, seed, mode);
+  const range = userRange ?? defaultChartRange(series);
   const ready = series.length >= 2;
 
   useEffect(() => {
@@ -219,7 +225,7 @@ export default function EquityChart({
             key={r.id}
             type="button"
             className={`chip tiny ${range === r.id ? "active" : ""}`}
-            onClick={() => setRange(r.id)}
+            onClick={() => setUserRange(r.id)}
             disabled={!ready}
           >
             {r.label}
@@ -229,7 +235,7 @@ export default function EquityChart({
           type="button"
           className={`chip tiny ${range === "all" ? "active" : ""}`}
           disabled={!ready}
-          onClick={() => setRange("all")}
+          onClick={() => setUserRange("all")}
         >
           Всё
         </button>

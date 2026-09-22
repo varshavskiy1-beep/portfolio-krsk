@@ -1,6 +1,11 @@
 /**
  * Цвет графика эквити = знак PnL от seed (как в шапке «от seed …»),
  * а не наклон линии внутри выбранного окна 1Д/1Н/1М.
+ *
+ * Если seed известен и первая реальная точка далеко от него, в серию
+ * добавляется синтетическая база (equity = seed, время = сутки до первой
+ * точки). Тогда короткая история показывает рост от старта, а не только
+ * последний отрезок просадки.
  */
 
 export const CHART_POS = {
@@ -17,9 +22,27 @@ export const CHART_NEG = {
   priceLineColor: "#a33",
 };
 
+export const DAY_SEC = 24 * 3600;
+export const RANGE_1M_SEC = 30 * DAY_SEC;
+/** Первая точка «уже у seed» — синтетическую базу не добавляем. */
+export const NEAR_SEED_REL = 0.01;
+
 export function toUnix(t) {
   const ms = Date.parse(t);
   return Number.isNaN(ms) ? null : Math.floor(ms / 1000);
+}
+
+export function isNearSeed(equity, seedN) {
+  if (!Number.isFinite(seedN) || seedN === 0 || !Number.isFinite(equity)) return false;
+  return Math.abs(equity - seedN) / Math.abs(seedN) <= NEAR_SEED_REL;
+}
+
+function prependSeedBaseline(dedup, seedN) {
+  if (!Number.isFinite(seedN) || !dedup.length) return dedup;
+  if (isNearSeed(dedup[0].eq, seedN)) return dedup;
+  const t0 = dedup[0].time - DAY_SEC;
+  if (t0 >= dedup[0].time) return dedup;
+  return [{ time: t0, eq: seedN }, ...dedup];
 }
 
 export function buildSeries(points, seed, mode) {
@@ -38,12 +61,23 @@ export function buildSeries(points, seed, mode) {
     else dedup.push(row);
   }
   if (!dedup.length) return [];
+  const withSeed = prependSeedBaseline(dedup, seedN);
   const base =
-    mode === "pct" ? (seedN && seedN !== 0 ? seedN : dedup[0].eq) : null;
-  return dedup.map(({ time, eq }) => ({
+    mode === "pct" ? (seedN && seedN !== 0 ? seedN : withSeed[0].eq) : null;
+  return withSeed.map(({ time, eq }) => ({
     time,
     value: mode === "pct" ? ((eq - base) / base) * 100 : eq,
   }));
+}
+
+/**
+ * Короткая история (весь ряд короче 1М) — по умолчанию «Всё», чтобы
+ * синтетический seed и все реальные точки были в кадре. Длинный ряд — «1М».
+ */
+export function defaultChartRange(series) {
+  if (!series || series.length < 2) return "all";
+  const span = series[series.length - 1].time - series[0].time;
+  return span < RANGE_1M_SEC ? "all" : "1m";
 }
 
 /**
