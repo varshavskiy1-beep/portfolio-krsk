@@ -7,8 +7,10 @@ import {
   buildSeries,
   chartSeriesColors,
   defaultChartRange,
+  expandPriceRange,
+  isAlreadySeed,
   isChartUpVsSeed,
-  isNearSeed,
+  priceRangeIncludingSeed,
   toUnix,
 } from "./equityChartModel.js";
 
@@ -70,15 +72,33 @@ test("does not prepend when first point is already at seed", () => {
   assert.equal(money[0].time, toUnix(points[0].t));
 });
 
-test("does not prepend when first point is near seed (≤1%)", () => {
-  assert.equal(isNearSeed(9994, 10_000), true);
+test("always prepends baseline unless first point is already seed", () => {
+  assert.equal(isAlreadySeed(9994, 10_000), false);
   const points = [
     { t: "2026-09-19T00:00:00Z", equity: 9994 },
     { t: "2026-09-22T00:00:00Z", equity: 12721 },
   ];
   const money = buildSeries(points, 10_000, "money");
-  assert.equal(money.length, 2);
-  assert.equal(money[0].value, 9994);
+  assert.equal(money.length, 3);
+  assert.equal(money[0].value, 10_000);
+  assert.equal(money[1].value, 9994);
+});
+
+test("Y-axis range includes seed even when visible window is only the peak", () => {
+  const windowOnly = { minValue: 1_830_000, maxValue: 1_960_000 };
+  const money = expandPriceRange(windowOnly, seed, "money");
+  assert.equal(money.minValue, seed);
+  assert.equal(money.maxValue, 1_960_000);
+
+  const pctWindow = { minValue: 22, maxValue: 31 };
+  const pct = expandPriceRange(pctWindow, seed, "pct");
+  assert.equal(pct.minValue, 0);
+  assert.equal(pct.maxValue, 31);
+
+  const series = buildSeries(adaptivePoints, seed, "money");
+  const full = priceRangeIncludingSeed(series, seed, "money");
+  assert.equal(full.minValue, seed);
+  assert.ok(full.maxValue >= 1_950_000);
 });
 
 test("no seed → no synthetic point", () => {

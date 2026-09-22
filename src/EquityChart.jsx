@@ -4,7 +4,9 @@ import {
   buildSeries,
   chartSeriesColors,
   defaultChartRange,
+  expandPriceRange,
   isChartUpVsSeed,
+  priceRangeIncludingSeed,
 } from "./equityChartModel.js";
 
 const RANGES = [
@@ -16,22 +18,26 @@ const RANGES = [
 
 function applyRange(chart, series, rangeId) {
   if (!chart || !series.length) return;
-  if (rangeId === "all") {
-    chart.timeScale().fitContent();
-    return;
-  }
-  const spec = RANGES.find((r) => r.id === rangeId);
-  if (!spec) {
-    chart.timeScale().fitContent();
-    return;
-  }
+  const timeScale = chart.timeScale();
   const last = series[series.length - 1].time;
   const first = series[0].time;
-  const from = Math.max(last - Math.floor(spec.ms / 1000), first);
+  const spec = RANGES.find((r) => r.id === rangeId);
+  const windowSec = spec ? spec.ms / 1000 : Infinity;
+  const span = last - first;
+  const showAll = rangeId === "all" || !spec || span <= windowSec;
   try {
-    chart.timeScale().setVisibleRange({ from, to: last + 3600 });
+    timeScale.applyOptions({
+      fixLeftEdge: showAll,
+      rightOffset: showAll ? 2 : 6,
+    });
+    if (showAll) {
+      timeScale.fitContent();
+      return;
+    }
+    const from = Math.max(last - Math.floor(windowSec), first);
+    timeScale.setVisibleRange({ from, to: last + 3600 });
   } catch {
-    chart.timeScale().fitContent();
+    timeScale.fitContent();
   }
 }
 
@@ -184,15 +190,28 @@ export default function EquityChart({
       return;
     }
     const up = isChartUpVsSeed(series, seed, mode);
-    area.applyOptions(chartSeriesColors(up));
+    area.applyOptions({
+      ...chartSeriesColors(up),
+      autoscaleInfoProvider: (original) => {
+        const res = original();
+        const fallback = priceRangeIncludingSeed(series, seed, mode);
+        if (!res?.priceRange) {
+          return fallback ? { priceRange: fallback } : res;
+        }
+        return { ...res, priceRange: expandPriceRange(res.priceRange, seed, mode) };
+      },
+    });
     area.setData(series);
+    try {
+      chart.priceScale("right").applyOptions({ autoScale: true });
+    } catch (_) {}
     fitChart(chart, wrapRef.current);
     applyRange(chart, series, range);
-    // дать layout дорисоваться, потом ещё раз подогнать высоту
     requestAnimationFrame(() => {
       fitChart(chart, wrapRef.current);
       try {
         chart.timeScale().applyOptions({ visible: true });
+        chart.priceScale("right").applyOptions({ autoScale: true });
       } catch (_) {}
     });
   }, [series, mode, currency, range, ready, seed]);

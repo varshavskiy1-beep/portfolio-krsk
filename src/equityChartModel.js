@@ -1,11 +1,7 @@
 /**
- * Цвет графика эквити = знак PnL от seed (как в шапке «от seed …»),
- * а не наклон линии внутри выбранного окна 1Д/1Н/1М.
- *
- * Если seed известен и первая реальная точка далеко от него, в серию
- * добавляется синтетическая база (equity = seed, время = сутки до первой
- * точки). Тогда короткая история показывает рост от старта, а не только
- * последний отрезок просадки.
+ * Цвет графика = знак PnL от начального капитала.
+ * Ряд всегда начинается с equity = начальный капитал (синтетическая точка,
+ * если в истории её нет). Ось Y обязана включать этот уровень.
  */
 
 export const CHART_POS = {
@@ -24,29 +20,65 @@ export const CHART_NEG = {
 
 export const DAY_SEC = 24 * 3600;
 export const RANGE_1M_SEC = 30 * DAY_SEC;
-/** Первая точка «уже у seed» — синтетическую базу не добавляем. */
-export const NEAR_SEED_REL = 0.01;
 
 export function toUnix(t) {
   const ms = Date.parse(t);
   return Number.isNaN(ms) ? null : Math.floor(ms / 1000);
 }
 
-export function isNearSeed(equity, seedN) {
-  if (!Number.isFinite(seedN) || seedN === 0 || !Number.isFinite(equity)) return false;
-  return Math.abs(equity - seedN) / Math.abs(seedN) <= NEAR_SEED_REL;
+export function parseSeed(seed) {
+  const seedN = seed == null || seed === "" ? NaN : Number(seed);
+  return Number.isFinite(seedN) ? seedN : null;
+}
+
+/** Первая точка уже равна начальному капиталу — вторую не клеим. */
+export function isAlreadySeed(equity, seedN) {
+  if (!Number.isFinite(seedN) || !Number.isFinite(equity)) return false;
+  return Math.abs(equity - seedN) <= Math.max(1e-6, Math.abs(seedN) * 1e-9);
 }
 
 function prependSeedBaseline(dedup, seedN) {
   if (!Number.isFinite(seedN) || !dedup.length) return dedup;
-  if (isNearSeed(dedup[0].eq, seedN)) return dedup;
+  if (isAlreadySeed(dedup[0].eq, seedN)) return dedup;
   const t0 = dedup[0].time - DAY_SEC;
   if (t0 >= dedup[0].time) return dedup;
   return [{ time: t0, eq: seedN }, ...dedup];
 }
 
+/** Уровень начального капитала на оси: 0% или сумма seed. */
+export function seedAxisValue(seed, mode) {
+  const seedN = parseSeed(seed);
+  if (seedN == null) return null;
+  return mode === "pct" ? 0 : seedN;
+}
+
+/** Ось Y всегда захватывает начальный капитал, не только пик окна. */
+export function expandPriceRange(range, seed, mode) {
+  if (!range || !Number.isFinite(range.minValue) || !Number.isFinite(range.maxValue)) return range;
+  const anchor = seedAxisValue(seed, mode);
+  if (anchor == null) return range;
+  return {
+    minValue: Math.min(range.minValue, anchor),
+    maxValue: Math.max(range.maxValue, anchor),
+  };
+}
+
+export function priceRangeIncludingSeed(series, seed, mode) {
+  const vals = (series || []).map((p) => p.value).filter((v) => Number.isFinite(v));
+  if (!vals.length) {
+    const anchor = seedAxisValue(seed, mode);
+    if (anchor == null) return null;
+    return { minValue: anchor, maxValue: anchor };
+  }
+  return expandPriceRange(
+    { minValue: Math.min(...vals), maxValue: Math.max(...vals) },
+    seed,
+    mode,
+  );
+}
+
 export function buildSeries(points, seed, mode) {
-  const seedN = seed == null || seed === "" ? null : Number(seed);
+  const seedN = parseSeed(seed);
   const raw = [];
   for (const p of points || []) {
     const time = toUnix(p.t);
@@ -91,8 +123,8 @@ export function isChartUpVsSeed(series, seed, mode) {
   const last = series[series.length - 1].value;
   if (!Number.isFinite(last)) return true;
   if (mode === "pct") return last >= 0;
-  const seedN = seed == null || seed === "" ? NaN : Number(seed);
-  if (Number.isFinite(seedN)) return last >= seedN;
+  const seedN = parseSeed(seed);
+  if (seedN != null) return last >= seedN;
   return last >= series[0].value;
 }
 

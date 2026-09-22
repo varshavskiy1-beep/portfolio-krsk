@@ -139,7 +139,7 @@ function AccountBlock({ a, points }) {
       </div>
       {hasData && seed != null && delta != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от seed {fmt(seed, currency)}: {delta >= 0 ? "+" : ""}
+          от начального капитала {fmt(seed, currency)}: {delta >= 0 ? "+" : ""}
           {fmt(delta, currency)} ({pct >= 0 ? "+" : ""}
           {pct.toFixed(2)}%)
         </div>

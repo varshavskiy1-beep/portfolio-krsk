@@ -81,7 +81,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       {hasData && seed != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от seed {fmt(seed, currency)}
+          от начального капитала {fmt(seed, currency)}
           {delta != null
             ? `: ${delta >= 0 ? "+" : ""}${fmt(delta, currency)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`
             : ""}
