@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-22T18:49:37Z",
+  "generated_at": "2026-09-22T19:15:51Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-22T18:49:36.900824Z",
+      "updated_utc": "2026-09-22T19:15:42.413248Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-22T18:49:36.904078Z",
+      "updated_utc": "2026-09-22T19:15:42.416608Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-22T18:49:36.907156Z",
+      "updated_utc": "2026-09-22T19:15:42.424180Z",
       "positions": []
     },
     {
@@ -92,8 +92,17 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14870.319878250006",
-      "updated_utc": "2026-09-22T18:49:36.910089Z",
-      "positions": []
+      "updated_utc": "2026-09-22T19:15:42.434808Z",
+      "positions": [
+        {
+          "position_id": "p_c688e0246248",
+          "symbol": "BTC-USDT",
+          "side": "short",
+          "qty": "0.042",
+          "avg_px": "86445.35861",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -101,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-22T18:49:36.912869Z",
+      "updated_utc": "2026-09-22T19:15:42.456202Z",
       "positions": [
         {
           "position_id": "p_854271c783cf",
@@ -109,6 +118,14 @@
           "side": "short",
           "qty": "0.043",
           "avg_px": "86328.79359",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_5dc334ca1ae3",
+          "symbol": "ETH-USDT-SWAP",
+          "side": "short",
+          "qty": "1.36",
+          "avg_px": "2755.07323",
           "stop_px": null
         }
       ]
