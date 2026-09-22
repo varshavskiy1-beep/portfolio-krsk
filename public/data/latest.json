@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-22T12:53:45Z",
+  "generated_at": "2026-09-22T13:42:17Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -44,19 +44,11 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "14401.97145692000",
-      "cash": "14401.97145692000",
+      "equity": "13893.02230157600",
+      "cash": "13893.02230157600",
       "seed": "10000",
-      "updated_utc": "2026-09-22T10:06:09Z",
-      "positions": [
-        {
-          "symbol": "APE-USDT-SWAP",
-          "side": "short",
-          "qty": "2658642",
-          "avg_px": "0.1468",
-          "margin": "13009.62152"
-        }
-      ],
+      "updated_utc": "2026-09-22T13:06:08Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -65,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-22T12:53:44.950239Z",
+      "updated_utc": "2026-09-22T13:42:16.494625Z",
       "positions": []
     },
     {
@@ -74,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-22T12:53:44.953162Z",
+      "updated_utc": "2026-09-22T13:42:16.497239Z",
       "positions": []
     },
     {
@@ -83,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-22T12:53:44.955591Z",
+      "updated_utc": "2026-09-22T13:42:16.500209Z",
       "positions": []
     },
     {
@@ -92,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14870.319878250006",
-      "updated_utc": "2026-09-22T12:53:44.958177Z",
+      "updated_utc": "2026-09-22T13:42:16.502775Z",
       "positions": []
     },
     {
@@ -101,7 +93,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-22T12:53:44.960525Z",
+      "updated_utc": "2026-09-22T13:42:16.506705Z",
       "positions": []
     },
     {
@@ -109,9 +101,9 @@
       "account_id": "forts_adr_adaptive",
       "currency": "RUB",
       "seed": "1500000",
-      "equity": "1950000.0",
-      "cash": "1950000.0",
-      "updated_utc": "2026-09-21T13:10:00Z",
+      "equity": "1837991.6832610487",
+      "cash": "1837991.6832610487",
+      "updated_utc": "2026-09-22T13:10:33.697900Z",
       "positions": [],
       "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
     },
@@ -119,9 +111,9 @@
       "bot_id": "forts_adr_static",
       "account_id": "forts_adr_static",
       "currency": "RUB",
-      "equity": "1508999.9999124017",
+      "equity": "1500499.9995284856",
       "seed": "1500000",
-      "updated_utc": "2026-09-22T08:52:09.296331Z",
+      "updated_utc": "2026-09-22T13:21:26.826825Z",
       "positions": []
     },
     {
