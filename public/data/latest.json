@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-22T07:57:49Z",
+  "generated_at": "2026-09-22T08:17:53Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-22T07:57:44.536436Z",
+      "updated_utc": "2026-09-22T08:17:51.853351Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-22T07:57:44.540307Z",
+      "updated_utc": "2026-09-22T08:17:51.855495Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-22T07:57:44.544369Z",
+      "updated_utc": "2026-09-22T08:17:51.857708Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14945.064845740006",
-      "updated_utc": "2026-09-22T07:57:44.547198Z",
+      "updated_utc": "2026-09-22T08:17:51.859947Z",
       "positions": [
         {
           "position_id": "p_48d48681afd5",
@@ -100,6 +100,14 @@
           "side": "short",
           "qty": "0.043",
           "avg_px": "85436.16146",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_4d04f0c818fe",
+          "symbol": "SOL-USDT",
+          "side": "short",
+          "qty": "32.072",
+          "avg_px": "116.46505",
           "stop_px": null
         }
       ]
@@ -110,7 +118,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15000.0",
-      "updated_utc": "2026-09-22T07:57:44.550168Z",
+      "updated_utc": "2026-09-22T08:17:51.862299Z",
       "positions": []
     },
     {
@@ -154,6 +162,39 @@
           "notional": "516.77000000000000"
         }
       ]
+    },
+    {
+      "bot_id": "three_robots_okx_nasdaq_1h",
+      "account_id": "paper_block2",
+      "currency": "USD",
+      "seed": "10000",
+      "equity": "10000",
+      "cash": "10000",
+      "updated_utc": "2026-09-21T14:11:01Z",
+      "positions": [
+        {
+          "symbol": "MSTR-USDT-SWAP",
+          "side": "short",
+          "qty": "26.04",
+          "avg_px": "153.6",
+          "margin": null
+        },
+        {
+          "symbol": "TSLA-USDT-SWAP",
+          "side": "long",
+          "qty": "10.97",
+          "avg_px": "364.5",
+          "margin": null
+        },
+        {
+          "symbol": "SPCX-USDT-SWAP",
+          "side": "short",
+          "qty": "13.11",
+          "avg_px": "152.46",
+          "margin": null
+        }
+      ],
+      "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. На биржу ордера не идут."
     }
   ],
   "manifest": [
@@ -180,6 +221,10 @@
     {
       "bot_id": "pump_radar",
       "logic": "OKX спот, бумага, раз в день. После отбора имён ставит лимитки ниже закрытия. Пока лимитка не исполнена, это не позиция."
+    },
+    {
+      "bot_id": "three_robots_okx_nasdaq_1h",
+      "logic": "OKX USDT-SWAP, бумага, 1h. MSTR/TSLA/SPCX. На биржу ордера не идут."
     }
   ]
 }
