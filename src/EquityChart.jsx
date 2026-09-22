@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createChart, ColorType, AreaSeries } from "lightweight-charts";
+import { buildSeries, chartSeriesColors, isChartUpVsSeed } from "./equityChartModel.js";
 
 const RANGES = [
   { id: "1d", label: "1Д", ms: 1 * 24 * 3600 * 1000 },
@@ -7,35 +8,6 @@ const RANGES = [
   { id: "1m", label: "1М", ms: 30 * 24 * 3600 * 1000 },
   { id: "1y", label: "1Г", ms: 365 * 24 * 3600 * 1000 },
 ];
-
-function toUnix(t) {
-  const ms = Date.parse(t);
-  return Number.isNaN(ms) ? null : Math.floor(ms / 1000);
-}
-
-function buildSeries(points, seed, mode) {
-  const seedN = seed == null || seed === "" ? null : Number(seed);
-  const raw = [];
-  for (const p of points || []) {
-    const time = toUnix(p.t);
-    const eq = p.equity == null || p.equity === "" ? null : Number(p.equity);
-    if (time == null || eq == null || Number.isNaN(eq)) continue;
-    raw.push({ time, eq });
-  }
-  raw.sort((a, b) => a.time - b.time);
-  const dedup = [];
-  for (const row of raw) {
-    if (dedup.length && dedup[dedup.length - 1].time === row.time) dedup[dedup.length - 1] = row;
-    else dedup.push(row);
-  }
-  if (!dedup.length) return [];
-  const base =
-    mode === "pct" ? (seedN && seedN !== 0 ? seedN : dedup[0].eq) : null;
-  return dedup.map(({ time, eq }) => ({
-    time,
-    value: mode === "pct" ? ((eq - base) / base) * 100 : eq,
-  }));
-}
 
 function applyRange(chart, series, rangeId) {
   if (!chart || !series.length) return;
@@ -205,12 +177,8 @@ export default function EquityChart({
       area.setData([]);
       return;
     }
-    const up = series[series.length - 1].value >= series[0].value;
-    area.applyOptions({
-      lineColor: up ? "#1f7a4c" : "#a33",
-      topColor: up ? "rgba(31, 122, 76, 0.28)" : "rgba(170, 51, 51, 0.25)",
-      bottomColor: up ? "rgba(31, 122, 76, 0.02)" : "rgba(170, 51, 51, 0.02)",
-    });
+    const up = isChartUpVsSeed(series, seed, mode);
+    area.applyOptions(chartSeriesColors(up));
     area.setData(series);
     fitChart(chart, wrapRef.current);
     applyRange(chart, series, range);
@@ -221,7 +189,7 @@ export default function EquityChart({
         chart.timeScale().applyOptions({ visible: true });
       } catch (_) {}
     });
-  }, [series, mode, currency, range, ready]);
+  }, [series, mode, currency, range, ready, seed]);
 
   // при смене fill/height — пересчитать размер и высоту time-scale
   useEffect(() => {
