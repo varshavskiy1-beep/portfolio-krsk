@@ -8,7 +8,7 @@
     "og": "node scripts/og-cover.mjs",
     "build": "node scripts/og-cover.mjs && vite build",
     "preview": "vite preview",
-    "test": "node --test src/cashCurrency.test.js src/strategyMeta.test.js src/ogWinner.test.js src/ogSharePage.test.js src/equityChartModel.test.js"
+    "test": "node --test src/cashCurrency.test.js src/strategyMeta.test.js src/ogWinner.test.js src/ogSharePage.test.js src/equityChartModel.test.js src/uiCopy.test.js"
   },
   "dependencies": {
     "lightweight-charts": "^5.0.8",

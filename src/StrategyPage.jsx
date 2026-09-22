@@ -10,6 +10,7 @@ import {
   mergePortalAccounts,
   showsPaperBadge,
 } from "./strategyMeta.js";
+import { displayNote, fromCapitalLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -139,9 +140,7 @@ function AccountBlock({ a, points }) {
       </div>
       {hasData && seed != null && delta != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от начального капитала {fmt(seed, currency)}: {delta >= 0 ? "+" : ""}
-          {fmt(delta, currency)} ({pct >= 0 ? "+" : ""}
-          {pct.toFixed(2)}%)
+          {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
       {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
@@ -193,7 +192,7 @@ function AccountBlock({ a, points }) {
       ) : (
         <p className="muted">нет данных</p>
       )}
-      {hasData && a.note ? <p className="note">{a.note}</p> : null}
+      {hasData && a.note ? <p className="note">{displayNote(a.note)}</p> : null}
     </section>
   );
 }
