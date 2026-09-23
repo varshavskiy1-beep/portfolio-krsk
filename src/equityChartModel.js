@@ -1,3 +1,5 @@
+import { hasAccountData } from "./strategyMeta.js";
+
 /**
  * Цвет графика = знак PnL от начального капитала (поле JSON `seed`).
  * Ряд начинается с equity = начальный капитал: если такой точки нет —
@@ -61,17 +63,52 @@ export function normalizePoints(points) {
   return dedup;
 }
 
+function pointEquity(p) {
+  if (p == null) return null;
+  if (typeof p === "number" || typeof p === "string") {
+    const n = Number(p);
+    return Number.isFinite(n) ? n : null;
+  }
+  const v = p.equity ?? p.value;
+  if (v == null || v === "") return null;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+}
+
+/** Текущая эквити: скаляр `equity` или последняя точка ряда. */
+export function lastEquityValue(account) {
+  if (!account) return null;
+  const eq = account.equity;
+  if (Array.isArray(eq)) {
+    for (let i = eq.length - 1; i >= 0; i--) {
+      const v = pointEquity(eq[i]);
+      if (v != null) return v;
+    }
+    return null;
+  }
+  return pointEquity(eq);
+}
+
 /**
- * Кривая для карточки: equity_curve счёта, иначе history.series[bot::account].
- * Пустой массив equity_curve не перекрывает историю (иначе карточка без Area).
+ * Кривая для карточки: ряд в поле `equity`, иначе equity_curve,
+ * иначе history.series[bot::account], иначе одна точка из скаляра.
+ * error + пустой ряд → [] (не рисуем нулевую линию).
  */
 export function resolveEquityPoints(account, history) {
-  if (!account || account.no_data) return [];
+  if (!hasAccountData(account)) return [];
+  if (Array.isArray(account.equity) && account.equity.length) {
+    return account.equity;
+  }
   if (Array.isArray(account.equity_curve) && account.equity_curve.length) {
     return account.equity_curve;
   }
   const key = `${account.bot_id}::${account.account_id}`;
-  return history?.series?.[key]?.points || [];
+  const hist = history?.series?.[key]?.points || [];
+  if (hist.length) return hist;
+  const v = lastEquityValue(account);
+  const t = account.updated_utc || account.as_of;
+  if (v != null && t) return [{ t, equity: v }];
+  return [];
 }
 
 function prependSeedBaseline(dedup, seedN) {

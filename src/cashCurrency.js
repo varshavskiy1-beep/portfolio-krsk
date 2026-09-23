@@ -19,6 +19,12 @@ export const BOT_CURRENCY = {
   forts_adr_adaptive: "RUB",
   forts_adr_static: "RUB",
   three_robots_okx_nasdaq_1h: "USD",
+  young_bounce_combo: "USD",
+};
+
+/** Валюта важнее venue: Young Bounce — USD-бумага, не USDT спота. */
+export const FORCE_CURRENCY = {
+  young_bounce_combo: "USD",
 };
 
 /** who_pays и прочие счета, если venue в снимке нет. */
@@ -29,10 +35,13 @@ export const ACCOUNT_CURRENCY = {
   paper_crypto_spot: "USDT",
   paper_crypto_perp: "USDT",
   paper_block2: "USD",
+  young_bounce_combo: "USD",
 };
 
 export function canonicalCurrency(account) {
   if (!account) return undefined;
+  const forced = FORCE_CURRENCY[account.bot_id] || FORCE_CURRENCY[account.account_id];
+  if (forced) return forced;
   const byVenue = account.venue && VENUE_CURRENCY[account.venue];
   if (byVenue) return byVenue;
   const byBot = account.bot_id && BOT_CURRENCY[account.bot_id];

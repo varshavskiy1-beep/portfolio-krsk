@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
+import PositionsTable from "./PositionsTable.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
-import { resolveEquityPoints } from "./equityChartModel.js";
+import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { plainExplain } from "./plainExplain.js";
 import {
   chipLabel,
@@ -24,38 +25,6 @@ const fmt = (n, currency) => {
   }
 };
 const num = (v) => (v == null || v === "" ? null : Number(v));
-
-function PositionsTable({ positions }) {
-  if (!positions?.length) {
-    return <p className="muted">Открытых позиций сейчас нет.</p>;
-  }
-  return (
-    <div className="table-scroll">
-      <table>
-        <thead>
-          <tr>
-            <th>Инструмент</th>
-            <th>Сторона</th>
-            <th>Кол-во</th>
-            <th>Цена входа</th>
-            <th>Стоп</th>
-          </tr>
-        </thead>
-        <tbody>
-          {positions.map((p, i) => (
-            <tr key={p.position_id || `${p.symbol}-${i}`}>
-              <td>{p.symbol}</td>
-              <td>{p.side === "long" ? "лонг" : p.side === "short" ? "шорт" : p.side}</td>
-              <td>{p.qty}</td>
-              <td>{p.avg_px ?? "—"}</td>
-              <td>{p.stop_px ?? "—"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
 
 function LimitsTable({ limits }) {
   if (!limits?.length) return null;
@@ -93,7 +62,7 @@ function AccountBlock({ a, points }) {
   const title = displayTitle(a);
   const paper = showsPaperBadge(a);
   const hasData = hasAccountData(a);
-  const equity = hasData ? num(a.equity) : null;
+  const equity = hasData ? lastEquityValue(a) : null;
   const seed = hasData ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;

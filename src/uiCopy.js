@@ -32,3 +32,26 @@ export function displayNote(note) {
   if (note == null || note === "") return "";
   return String(note).replace(/\bseed\b/gi, "начальный капитал");
 }
+
+/** Паттерны Young Bounce Combo: короткие русские подписи, значение не врём. */
+export const PATTERN_LABEL = {
+  crash: "обвал",
+  listing_dump: "дамп листинга",
+};
+
+export function patternLabel(pattern) {
+  if (pattern == null || pattern === "") return "—";
+  return PATTERN_LABEL[pattern] || String(pattern);
+}
+
+export function sideLabel(side) {
+  if (side === "long") return "лонг";
+  if (side === "short") return "шорт";
+  return side == null || side === "" ? "—" : String(side);
+}
+
+export function positionHasField(position, field) {
+  if (!position) return false;
+  const v = position[field];
+  return v != null && v !== "";
+}
