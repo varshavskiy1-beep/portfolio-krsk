@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
+import { resolveEquityPoints } from "./equityChartModel.js";
 import { plainExplain } from "./plainExplain.js";
 import {
   chipLabel,
@@ -10,6 +11,7 @@ import {
   mergePortalAccounts,
   showsPaperBadge,
 } from "./strategyMeta.js";
+import { displayNote, fromCapitalLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -22,10 +24,6 @@ const fmt = (n, currency) => {
   }
 };
 const num = (v) => (v == null || v === "" ? null : Number(v));
-
-function seriesKey(a) {
-  return `${a.bot_id}::${a.account_id}`;
-}
 
 function PositionsTable({ positions }) {
   if (!positions?.length) {
@@ -139,9 +137,7 @@ function AccountBlock({ a, points }) {
       </div>
       {hasData && seed != null && delta != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от seed {fmt(seed, currency)}: {delta >= 0 ? "+" : ""}
-          {fmt(delta, currency)} ({pct >= 0 ? "+" : ""}
-          {pct.toFixed(2)}%)
+          {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
       {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
@@ -193,7 +189,7 @@ function AccountBlock({ a, points }) {
       ) : (
         <p className="muted">нет данных</p>
       )}
-      {hasData && a.note ? <p className="note">{a.note}</p> : null}
+      {hasData && a.note ? <p className="note">{displayNote(a.note)}</p> : null}
     </section>
   );
 }
@@ -208,12 +204,7 @@ export default function StrategyPage({ botId, data, history, onBack }) {
   const plain = plainExplain(botId, logic);
   const pageTitle = chipLabel(botId);
 
-  const pointsFor = (a) => {
-    if (!hasAccountData(a)) return [];
-    if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
-    const k = seriesKey(a);
-    return history?.series?.[k]?.points || [];
-  };
+  const pointsFor = (a) => resolveEquityPoints(a, history);
 
   if (!accounts.length && !isKnownPortalBot(botId)) {
     return (

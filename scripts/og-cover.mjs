@@ -120,12 +120,11 @@ function historyPoints(row) {
     pts.push({ t: Number.isFinite(t) ? t : pts.length, eq });
   }
   pts.sort((a, b) => a.t - b.t);
-  if (pts.length >= 2) return pts;
-  if (row) {
-    if (row.seed != null) pts.unshift({ t: (pts[0]?.t ?? 0) - 1, eq: row.seed });
-    if (row.equity != null && (pts.length === 0 || pts[pts.length - 1].eq !== row.equity)) {
-      pts.push({ t: (pts[pts.length - 1]?.t ?? 1) + 1, eq: row.equity });
-    }
+  if (row?.seed != null && (pts.length === 0 || pts[0].eq !== row.seed)) {
+    pts.unshift({ t: (pts[0]?.t ?? 0) - 86_400_000, eq: row.seed });
+  }
+  if (row && row.equity != null && (pts.length === 0 || pts[pts.length - 1].eq !== row.equity)) {
+    pts.push({ t: (pts[pts.length - 1]?.t ?? 1) + 1, eq: row.equity });
   }
   return pts;
 }
@@ -265,8 +264,8 @@ function drawCard(ctx, row, generatedAt, fontFamily) {
 
   const seedAmt = row ? formatSignedMoney(row.seed, row.currency).replace(/^\+/, "") : "";
   const pctLine = row
-    ? `${formatPct(row.pct)}% от seed ${seedAmt} ${row.currency}`
-    : "эквити − seed, без конвертации валют";
+    ? `${formatPct(row.pct)}% от начального капитала ${seedAmt} ${row.currency}`
+    : "эквити − начальный капитал, без конвертации валют";
   ctx.fillStyle = COLORS.muted;
   ctx.font = font(28, 400);
   ctx.fillText(pctLine, 78, 282);

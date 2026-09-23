@@ -6,6 +6,7 @@ import {
   displayTitle,
   mergePortalAccounts,
   portalExcluded,
+  showsPaperBadge,
 } from "./strategyMeta.js";
 
 test("portalExcluded drops outdated live OKX mark for robot 2", () => {
@@ -49,4 +50,11 @@ test("mergePortalAccounts keeps published paper account", () => {
 
 test("displayTitle maps robot 2 ids to human title", () => {
   assert.equal(displayTitle({ bot_id: ROBOT2_BOT_ID, account_id: ROBOT2_ACCOUNT_ID }), "Робот 2 · MSTR/TSLA/SPCX");
+});
+
+test("paper badge is on every account card, not only robot 2", () => {
+  assert.equal(showsPaperBadge({ bot_id: "forts_adr_adaptive", account_id: "forts_adr_adaptive" }), true);
+  assert.equal(showsPaperBadge({ bot_id: "forts_adr_static", account_id: "forts_adr_static" }), true);
+  assert.equal(showsPaperBadge({ bot_id: ROBOT2_BOT_ID, account_id: ROBOT2_ACCOUNT_ID }), true);
+  assert.equal(showsPaperBadge(null), false);
 });

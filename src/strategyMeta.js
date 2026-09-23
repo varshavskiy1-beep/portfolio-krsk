@@ -24,9 +24,6 @@ export const PORTAL_SHELLS = [
   },
 ];
 
-export const PAPER_BADGE_BOTS = new Set([ROBOT2_BOT_ID]);
-export const PAPER_BADGE_ACCOUNTS = new Set([ROBOT2_ACCOUNT_ID]);
-
 export function accountKey(a) {
   return `${a.bot_id}::${a.account_id}`;
 }
@@ -51,8 +48,7 @@ export function chipLabel(botId) {
 }
 
 export function showsPaperBadge(account) {
-  if (!account) return false;
-  return PAPER_BADGE_BOTS.has(account.bot_id) || PAPER_BADGE_ACCOUNTS.has(account.account_id);
+  return Boolean(account);
 }
 
 export function isKnownPortalBot(botId) {

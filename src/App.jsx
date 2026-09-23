@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
+import { resolveEquityPoints } from "./equityChartModel.js";
 import {
   chipLabel,
   displayTitle,
@@ -10,6 +11,7 @@ import {
   portalExcluded,
   showsPaperBadge,
 } from "./strategyMeta.js";
+import { fromCapitalLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -23,10 +25,6 @@ const fmt = (n, currency) => {
 };
 
 const num = (v) => (v == null || v === "" ? null : Number(v));
-
-function seriesKey(a) {
-  return `${a.bot_id}::${a.account_id}`;
-}
 
 function readRoute() {
   const h = (window.location.hash || "").replace(/^#/, "");
@@ -54,7 +52,6 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
   const positions = hasData ? a.positions || [] : [];
   const limits = hasData ? a.pending_limits || [] : [];
-  const curve = hasData ? a.equity_curve || historyPoints || [] : historyPoints || [];
 
   return (
     <article className="card">
@@ -81,10 +78,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       {hasData && seed != null ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
-          от seed {fmt(seed, currency)}
-          {delta != null
-            ? `: ${delta >= 0 ? "+" : ""}${fmt(delta, currency)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`
-            : ""}
+          {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
       {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
@@ -108,7 +102,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           Открыть →
         </button>
       </div>
-      <EquityChart points={curve} seed={seed} currency={currency} mode={mode} />
+      <EquityChart points={historyPoints} seed={seed} currency={currency} mode={mode} />
 
       {positions.length ? (
         <div className="table-scroll">
@@ -183,11 +177,7 @@ function Home({ data, history, filter, setFilter }) {
 
   const currencies = useMemo(() => [...new Set(accounts.map((a) => canonicalCurrency(a)))], [accounts]);
 
-  const pointsFor = (a) => {
-    if (!hasAccountData(a)) return [];
-    if (Array.isArray(a.equity_curve) && a.equity_curve.length) return a.equity_curve;
-    return history?.series?.[seriesKey(a)]?.points || [];
-  };
+  const pointsFor = (a) => resolveEquityPoints(a, history);
 
   const visibleAccounts = useMemo(() => {
     if (filter === "all") return accounts;
