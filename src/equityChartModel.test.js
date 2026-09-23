@@ -11,6 +11,7 @@ import {
   isAlreadySeed,
   isChartUpVsSeed,
   priceRangeIncludingSeed,
+  lastEquityValue,
   resolveEquityPoints,
   toUnix,
 } from "./equityChartModel.js";
@@ -203,4 +204,61 @@ test("resolveEquityPoints prefers non-empty equity_curve, else history", () => {
     [{ t: "x", equity: 1 }],
   );
   assert.deepEqual(resolveEquityPoints({ ...account, no_data: true }, history), []);
+});
+
+test("young bounce: equity series at seed stays on 10000, no fake zero", () => {
+  const points = [
+    { t: "2026-09-21T00:00:00Z", equity: 10000 },
+    { t: "2026-09-22T00:00:00Z", equity: 10000 },
+  ];
+  const money = buildSeries(points, 10000, "money");
+  assert.equal(money.length, 2);
+  assert.equal(money[0].value, 10000);
+  assert.equal(money[1].value, 10000);
+  assert.ok(money.every((p) => p.value !== 0));
+  assert.equal(isChartUpVsSeed(money, 10000, "money"), true);
+});
+
+test("resolveEquityPoints uses equity field when it is a series", () => {
+  const series = [
+    { t: "2026-09-22T00:00:00Z", equity: 10000 },
+    { t: "2026-09-23T00:00:00Z", equity: 10000 },
+  ];
+  const account = {
+    bot_id: "young_bounce_combo",
+    account_id: "young_bounce_combo",
+    equity: series,
+    seed: "10000",
+    positions: [],
+  };
+  assert.deepEqual(resolveEquityPoints(account, null), series);
+  assert.equal(lastEquityValue(account), 10000);
+});
+
+test("error + empty equity yields no chart points (not a zero line)", () => {
+  const account = {
+    bot_id: "young_bounce_combo",
+    account_id: "young_bounce_combo",
+    error: "feed timeout",
+    equity: [],
+    seed: "10000",
+  };
+  assert.deepEqual(resolveEquityPoints(account, { series: {} }), []);
+  assert.deepEqual(buildSeries([], 10000, "money"), []);
+  assert.equal(lastEquityValue(account), null);
+});
+
+test("lastEquityValue reads scalar or last series point", () => {
+  assert.equal(lastEquityValue({ equity: "10000" }), 10000);
+  assert.equal(
+    lastEquityValue({
+      equity: [
+        { t: "a", equity: 10000 },
+        { t: "b", equity: 10125.5 },
+      ],
+    }),
+    10125.5,
+  );
+  assert.equal(lastEquityValue({ equity: [] }), null);
+  assert.equal(lastEquityValue(null), null);
 });

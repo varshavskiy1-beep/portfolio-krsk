@@ -3,12 +3,17 @@
 export const ROBOT2_BOT_ID = "three_robots_okx_nasdaq_1h";
 export const ROBOT2_ACCOUNT_ID = "paper_block2";
 
+export const YOUNG_BOUNCE_BOT_ID = "young_bounce_combo";
+export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
+
 export const BOT_TITLE = {
   [ROBOT2_BOT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
+  [YOUNG_BOUNCE_BOT_ID]: "Young Bounce Combo",
 };
 
 export const ACCOUNT_TITLE = {
   [ROBOT2_ACCOUNT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
+  [YOUNG_BOUNCE_ACCOUNT_ID]: "Young Bounce Combo",
 };
 
 /** Устаревшая пометка live OKX в excluded — на портале не показываем как live. */
@@ -19,6 +24,12 @@ export const PORTAL_SHELLS = [
   {
     bot_id: ROBOT2_BOT_ID,
     account_id: ROBOT2_ACCOUNT_ID,
+    currency: "USD",
+    seed: "10000",
+  },
+  {
+    bot_id: YOUNG_BOUNCE_BOT_ID,
+    account_id: YOUNG_BOUNCE_ACCOUNT_ID,
     currency: "USD",
     seed: "10000",
   },
@@ -73,6 +84,26 @@ export function mergePortalAccounts(accounts = []) {
   return merged;
 }
 
+/** Пустое поле equity / equity_curve: нет числа и нет ряда точек. */
+export function isEmptyEquityField(value) {
+  if (value == null || value === "") return true;
+  if (Array.isArray(value)) return value.length === 0;
+  const n = Number(value);
+  return !Number.isFinite(n);
+}
+
+/**
+ * Есть что показать: не shell и не «error + пустой ряд equity».
+ * Пустой ряд при error → «нет данных», никогда не ноль.
+ */
 export function hasAccountData(account) {
-  return account != null && !account.no_data;
+  if (account == null || account.no_data) return false;
+  if (
+    account.error &&
+    isEmptyEquityField(account.equity) &&
+    isEmptyEquityField(account.equity_curve)
+  ) {
+    return false;
+  }
+  return true;
 }

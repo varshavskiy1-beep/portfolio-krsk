@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import EquityChart from "./EquityChart.jsx";
+import PositionsTable from "./PositionsTable.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
-import { resolveEquityPoints } from "./equityChartModel.js";
+import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import {
   chipLabel,
   displayTitle,
@@ -46,7 +47,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const title = displayTitle(a);
   const paper = showsPaperBadge(a);
   const hasData = hasAccountData(a);
-  const equity = hasData ? num(a.equity) : null;
+  const equity = hasData ? lastEquityValue(a) : null;
   const seed = hasData ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
@@ -104,30 +105,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       <EquityChart points={historyPoints} seed={seed} currency={currency} mode={mode} />
 
-      {positions.length ? (
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Позиция</th>
-                <th>Сторона</th>
-                <th>Кол-во</th>
-                <th>Цена</th>
-              </tr>
-            </thead>
-            <tbody>
-              {positions.map((p, i) => (
-                <tr key={p.position_id || p.symbol || i}>
-                  <td>{p.symbol}</td>
-                  <td>{p.side}</td>
-                  <td>{p.qty}</td>
-                  <td>{p.avg_px ?? "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : null}
+      <PositionsTable positions={positions} compact />
 
       {limits.length ? (
         <>
