@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-23T12:17:54Z",
+  "generated_at": "2026-09-23T12:48:12Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-23T12:17:49.225494Z",
+      "updated_utc": "2026-09-23T12:48:10.207945Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-23T12:17:49.229146Z",
+      "updated_utc": "2026-09-23T12:48:10.210661Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-23T12:17:49.232309Z",
+      "updated_utc": "2026-09-23T12:48:10.213237Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14900.990112851006",
-      "updated_utc": "2026-09-23T12:17:49.237253Z",
+      "updated_utc": "2026-09-23T12:48:10.215720Z",
       "positions": [
         {
           "position_id": "p_13d4132ecc2a",
@@ -110,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15012.35287342",
-      "updated_utc": "2026-09-23T12:17:49.241325Z",
+      "updated_utc": "2026-09-23T12:48:10.218557Z",
       "positions": []
     },
     {
@@ -194,6 +194,18 @@
         }
       ],
       "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "young_bounce_combo",
+      "account_id": "young_bounce_combo",
+      "currency": "USD",
+      "seed": "10000",
+      "equity": "10000.0",
+      "cash": "10000.0",
+      "updated_utc": "2026-09-23T12:19:32Z",
+      "positions": [],
+      "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
+      "as_of": "2026-09-22"
     }
   ],
   "manifest": [
@@ -224,6 +236,10 @@
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
       "logic": "OKX USDT-SWAP, бумага, 1h. MSTR/TSLA/SPCX. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "young_bounce_combo",
+      "logic": "Binance spot, бумага, $10 000. Монеты возрастом 25–90 дней: обвал дня или отскок от листингового дна. Выход по трейлингу или через 10 дней. На биржу ордера не идут."
     }
   ]
 }
