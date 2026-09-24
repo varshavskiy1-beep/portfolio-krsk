@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-24T03:47:01Z",
+  "generated_at": "2026-09-24T04:06:13Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -36,11 +36,19 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "14755.27708255700",
-      "cash": "14755.27708255700",
+      "equity": "14735.31118205700",
+      "cash": "14735.31118205700",
       "seed": "10000",
-      "updated_utc": "2026-09-24T03:05:34Z",
-      "positions": [],
+      "updated_utc": "2026-09-24T04:05:46Z",
+      "positions": [
+        {
+          "symbol": "MSTR-USDT-SWAP",
+          "side": "short",
+          "qty": "249.34",
+          "avg_px": "160.15",
+          "margin": "13310.60033333333333333333333"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -49,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-24T03:46:56.666140Z",
+      "updated_utc": "2026-09-24T04:06:11.718265Z",
       "positions": []
     },
     {
@@ -58,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-24T03:46:56.669923Z",
+      "updated_utc": "2026-09-24T04:06:11.722167Z",
       "positions": []
     },
     {
@@ -67,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-24T03:46:56.673570Z",
+      "updated_utc": "2026-09-24T04:06:11.726050Z",
       "positions": []
     },
     {
@@ -76,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14793.348247218006",
-      "updated_utc": "2026-09-24T03:46:56.677988Z",
+      "updated_utc": "2026-09-24T04:06:11.731979Z",
       "positions": []
     },
     {
@@ -85,7 +93,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15003.729421402002",
-      "updated_utc": "2026-09-24T03:46:56.682816Z",
+      "updated_utc": "2026-09-24T04:06:11.735821Z",
       "positions": [
         {
           "position_id": "p_e268301f85b1",
