@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-24T00:00:09Z",
+  "generated_at": "2026-09-24T00:22:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,17 +25,17 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10665.9942135540",
-      "cash": "10665.9942135540",
+      "equity": "10941.1117265540",
+      "cash": "10941.1117265540",
       "seed": "10000",
-      "updated_utc": "2026-09-23T23:02:51Z",
+      "updated_utc": "2026-09-24T00:03:09Z",
       "positions": [
         {
           "symbol": "CAP-USDT-SWAP",
           "side": "long",
-          "qty": "2059",
-          "avg_px": "0.05183",
-          "margin": "10671.79700"
+          "qty": "2056",
+          "avg_px": "0.05323",
+          "margin": "10944.08800"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-24T00:00:03.286200Z",
+      "updated_utc": "2026-09-24T00:22:13.540213Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-24T00:00:03.290990Z",
+      "updated_utc": "2026-09-24T00:22:13.544713Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-24T00:00:03.294272Z",
+      "updated_utc": "2026-09-24T00:22:13.548191Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14821.941418821007",
-      "updated_utc": "2026-09-24T00:00:03.299652Z",
+      "updated_utc": "2026-09-24T00:22:13.550566Z",
       "positions": [
         {
           "position_id": "p_43eed165c88a",
@@ -118,7 +118,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15008.103682522002",
-      "updated_utc": "2026-09-24T00:00:06.546572Z",
+      "updated_utc": "2026-09-24T00:22:13.553611Z",
       "positions": [
         {
           "position_id": "p_55aabab6a12d",
@@ -126,6 +126,14 @@
           "side": "long",
           "qty": "32.634",
           "avg_px": "115.0345",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_e268301f85b1",
+          "symbol": "BTC-USDT-SWAP",
+          "side": "long",
+          "qty": "0.044",
+          "avg_px": "84411.81595",
           "stop_px": null
         }
       ]
@@ -154,23 +162,11 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "5437.3700000000000000",
-      "cash": "3842.8280000000000000",
-      "updated_utc": "2026-09-22",
+      "equity": "5315.8700000000000000",
+      "cash": "4784.3560000000000000",
+      "updated_utc": "2026-09-23",
       "positions": [],
       "pending_limits": [
-        {
-          "id": "pump-2026-09-22-MUBARAKUSDT",
-          "symbol": "MUBARAKUSDT",
-          "limit": "0.07472700",
-          "notional": "531.5140000000000000"
-        },
-        {
-          "id": "pump-2026-09-22-KERNELUSDT",
-          "symbol": "KERNELUSDT",
-          "limit": "0.05785500",
-          "notional": "531.5140000000000000"
-        },
         {
           "id": "pump-2026-09-22-NILUSDT",
           "symbol": "NILUSDT",
@@ -219,10 +215,10 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-23T12:19:32Z",
+      "updated_utc": "2026-09-24T00:07:07Z",
       "positions": [],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-09-22"
+      "as_of": "2026-09-23"
     }
   ],
   "manifest": [
