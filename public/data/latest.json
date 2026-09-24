@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-24T03:04:40Z",
+  "generated_at": "2026-09-24T03:23:49Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -36,19 +36,11 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "15181.55198977100",
-      "cash": "15181.55198977100",
+      "equity": "14755.27708255700",
+      "cash": "14755.27708255700",
       "seed": "10000",
-      "updated_utc": "2026-09-24T02:05:38Z",
-      "positions": [
-        {
-          "symbol": "APE-USDT-SWAP",
-          "side": "short",
-          "qty": "2815982",
-          "avg_px": "0.1461",
-          "margin": "13713.83234"
-        }
-      ],
+      "updated_utc": "2026-09-24T03:05:34Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -57,7 +49,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-24T03:04:38.299887Z",
+      "updated_utc": "2026-09-24T03:23:46.085715Z",
       "positions": []
     },
     {
@@ -66,7 +58,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-24T03:04:38.303158Z",
+      "updated_utc": "2026-09-24T03:23:46.089181Z",
       "positions": []
     },
     {
@@ -75,7 +67,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-24T03:04:38.306233Z",
+      "updated_utc": "2026-09-24T03:23:46.092917Z",
       "positions": []
     },
     {
@@ -84,7 +76,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14793.348247218006",
-      "updated_utc": "2026-09-24T03:04:38.309114Z",
+      "updated_utc": "2026-09-24T03:23:46.096290Z",
       "positions": []
     },
     {
@@ -92,17 +84,9 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "15008.103682522002",
-      "updated_utc": "2026-09-24T03:04:38.312951Z",
+      "equity": "15003.729421402002",
+      "updated_utc": "2026-09-24T03:23:46.099591Z",
       "positions": [
-        {
-          "position_id": "p_55aabab6a12d",
-          "symbol": "SOL-USDT-SWAP",
-          "side": "long",
-          "qty": "32.634",
-          "avg_px": "115.0345",
-          "stop_px": null
-        },
         {
           "position_id": "p_e268301f85b1",
           "symbol": "BTC-USDT-SWAP",
