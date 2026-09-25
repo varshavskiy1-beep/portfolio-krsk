@@ -121,6 +121,9 @@ export function cardSubtitle(account) {
 /** id счёта в бейджах для известных portal-ботов (не под заголовком). */
 export function accountIdBadge(account) {
   if (!account?.account_id) return null;
+  if (account.bot_id === OAC_PAPER_BOT_ID || account.account_id === OAC_PAPER_ACCOUNT_ID) {
+    return OAC_PAPER_ACCOUNT_ID;
+  }
   if (isKnownPortalBot(account.bot_id)) return account.account_id;
   return null;
 }
