@@ -248,6 +248,36 @@ test("error + empty equity yields no chart points (not a zero line)", () => {
   assert.equal(lastEquityValue(account), null);
 });
 
+test("oac paper: scalar equity at seed draws line at 10000, not zero", () => {
+  const account = {
+    bot_id: "oac_paper",
+    account_id: "oac_paper",
+    equity: "10000.0",
+    seed: "10000",
+    updated_utc: "2026-09-25T14:34:39Z",
+    as_of: "2026-09-24",
+    positions: [],
+  };
+  const points = resolveEquityPoints(account, null);
+  assert.equal(points.length, 1);
+  assert.equal(lastEquityValue(account), 10000);
+  const money = buildSeries(points, 10000, "money");
+  assert.ok(money.every((p) => p.value !== 0));
+  assert.equal(isChartUpVsSeed(money, 10000, "money"), true);
+});
+
+test("oac paper: error + empty equity yields no chart points", () => {
+  const account = {
+    bot_id: "oac_paper",
+    account_id: "oac_paper",
+    error: "ledger_missing",
+    equity: [],
+    seed: "10000",
+  };
+  assert.deepEqual(resolveEquityPoints(account, { series: {} }), []);
+  assert.equal(lastEquityValue(account), null);
+});
+
 test("lastEquityValue reads scalar or last series point", () => {
   assert.equal(lastEquityValue({ equity: "10000" }), 10000);
   assert.equal(

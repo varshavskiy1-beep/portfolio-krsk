@@ -58,12 +58,13 @@ test("USD chip would not mix young bounce with RUB or USDT accounts", () => {
     { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB" },
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
+    { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
     { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
   ];
   const usd = accounts.filter((a) => canonicalCurrency(a) === "USD");
   assert.deepEqual(
     usd.map((a) => a.account_id),
-    ["young_bounce_combo", "paper_us_eq"],
+    ["young_bounce_combo", "oac_paper", "paper_us_eq"],
   );
   assert.ok(usd.every((a) => canonicalCurrency(a) === "USD"));
 });
@@ -88,6 +89,30 @@ test("young bounce is always USD and never remapped to USDT/RUB", () => {
   );
   assert.equal(
     canonicalCurrency({ bot_id: "young_bounce_combo", account_id: "x", currency: "RUB" }),
+    "USD",
+  );
+});
+
+test("oac paper is always USD and never remapped to USDT/RUB", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "oac_paper",
+      account_id: "oac_paper",
+      currency: "USD",
+    }),
+    "USD",
+  );
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "oac_paper",
+      account_id: "oac_paper",
+      venue: "US_EQ",
+      currency: "RUB",
+    }),
+    "USD",
+  );
+  assert.equal(
+    canonicalCurrency({ bot_id: "oac_paper", account_id: "x", currency: "USDT" }),
     "USD",
   );
 });

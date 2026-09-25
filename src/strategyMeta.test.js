@@ -1,14 +1,21 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  OAC_PAPER_ACCOUNT_ID,
+  OAC_PAPER_BOT_ID,
   ROBOT2_ACCOUNT_ID,
   ROBOT2_BOT_ID,
   YOUNG_BOUNCE_ACCOUNT_ID,
   YOUNG_BOUNCE_BOT_ID,
+  accountSubtitle,
   displayTitle,
+  formatUpdatedLine,
   hasAccountData,
+  hasBoxxCash,
+  isOacPaper,
   mergePortalAccounts,
   portalExcluded,
+  showsDefenceBadge,
   showsPaperBadge,
 } from "./strategyMeta.js";
 
@@ -135,4 +142,86 @@ test("error with equity series still has data", () => {
     }),
     true,
   );
+});
+
+test("displayTitle maps oac paper ids to human title", () => {
+  assert.equal(
+    displayTitle({ bot_id: OAC_PAPER_BOT_ID, account_id: OAC_PAPER_ACCOUNT_ID }),
+    "Ядро внимания",
+  );
+});
+
+test("mergePortalAccounts adds oac paper shell when absent", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const oac = merged.find((a) => a.bot_id === OAC_PAPER_BOT_ID);
+  assert.ok(oac);
+  assert.equal(oac.account_id, OAC_PAPER_ACCOUNT_ID);
+  assert.equal(oac.no_data, true);
+  assert.equal(oac.currency, "USD");
+  assert.equal(oac.seed, "10000");
+  assert.equal(hasAccountData(oac), false);
+});
+
+test("mergePortalAccounts keeps published oac paper account", () => {
+  const published = {
+    bot_id: OAC_PAPER_BOT_ID,
+    account_id: OAC_PAPER_ACCOUNT_ID,
+    currency: "USD",
+    equity: "10000.0",
+    seed: "10000",
+    cash: "10000.0",
+    boxx_usd: "0.0",
+    positions: [],
+    defence: true,
+    as_of: "2026-09-24",
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === OAC_PAPER_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(rows[0].equity, "10000.0");
+  assert.equal(hasAccountData(rows[0]), true);
+});
+
+test("oac paper error + empty equity is no data", () => {
+  assert.equal(
+    hasAccountData({
+      bot_id: OAC_PAPER_BOT_ID,
+      account_id: OAC_PAPER_ACCOUNT_ID,
+      error: "ledger_missing",
+      equity: [],
+      seed: "10000",
+    }),
+    false,
+  );
+  assert.equal(
+    hasAccountData({
+      bot_id: OAC_PAPER_BOT_ID,
+      account_id: OAC_PAPER_ACCOUNT_ID,
+      error: "no_equity_yet",
+      equity: null,
+      seed: "10000",
+    }),
+    false,
+  );
+});
+
+test("oac paper helpers: subtitle, defence, updated line, boxx", () => {
+  const account = {
+    bot_id: OAC_PAPER_BOT_ID,
+    account_id: OAC_PAPER_ACCOUNT_ID,
+    as_of: "2026-09-24",
+    updated_utc: "2026-09-25T14:34:39Z",
+    defence: true,
+    boxx_usd: "125.5",
+  };
+  assert.match(accountSubtitle(account), /акции США/);
+  assert.equal(showsDefenceBadge(account), true);
+  assert.equal(showsDefenceBadge({ defence: false }), false);
+  assert.match(formatUpdatedLine(account), /сессия 2026-09-24/);
+  assert.match(formatUpdatedLine(account), /обновлено 2026-09-25T14:34:39Z/);
+  assert.equal(hasBoxxCash(account), true);
+  assert.equal(isOacPaper(account), true);
 });

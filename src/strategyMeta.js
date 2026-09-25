@@ -6,14 +6,24 @@ export const ROBOT2_ACCOUNT_ID = "paper_block2";
 export const YOUNG_BOUNCE_BOT_ID = "young_bounce_combo";
 export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
 
+export const OAC_PAPER_BOT_ID = "oac_paper";
+export const OAC_PAPER_ACCOUNT_ID = "oac_paper";
+
 export const BOT_TITLE = {
   [ROBOT2_BOT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_BOT_ID]: "Young Bounce Combo",
+  [OAC_PAPER_BOT_ID]: "Ядро внимания",
 };
 
 export const ACCOUNT_TITLE = {
   [ROBOT2_ACCOUNT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_ACCOUNT_ID]: "Young Bounce Combo",
+  [OAC_PAPER_ACCOUNT_ID]: "Ядро внимания",
+};
+
+/** Подзаголовок на карточке (только для отдельных paper-ботов). */
+export const ACCOUNT_SUBTITLE = {
+  [OAC_PAPER_BOT_ID]: "акции США, старт $10 000. На биржу ордера не идут.",
 };
 
 /** Устаревшая пометка live OKX в excluded — на портале не показываем как live. */
@@ -30,6 +40,12 @@ export const PORTAL_SHELLS = [
   {
     bot_id: YOUNG_BOUNCE_BOT_ID,
     account_id: YOUNG_BOUNCE_ACCOUNT_ID,
+    currency: "USD",
+    seed: "10000",
+  },
+  {
+    bot_id: OAC_PAPER_BOT_ID,
+    account_id: OAC_PAPER_ACCOUNT_ID,
     currency: "USD",
     seed: "10000",
   },
@@ -60,6 +76,31 @@ export function chipLabel(botId) {
 
 export function showsPaperBadge(account) {
   return Boolean(account);
+}
+
+export function accountSubtitle(account) {
+  if (!account) return "";
+  return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
+}
+
+export function showsDefenceBadge(account) {
+  return account?.defence === true;
+}
+
+export function formatUpdatedLine(account) {
+  if (!account) return "";
+  const parts = [];
+  if (account.as_of) parts.push(`сессия ${account.as_of}`);
+  if (account.updated_utc) parts.push(`обновлено ${account.updated_utc}`);
+  return parts.join(" · ");
+}
+
+export function hasBoxxCash(account) {
+  return account?.boxx_usd != null && account.boxx_usd !== "";
+}
+
+export function isOacPaper(account) {
+  return account?.bot_id === OAC_PAPER_BOT_ID || account?.account_id === OAC_PAPER_ACCOUNT_ID;
 }
 
 export function isKnownPortalBot(botId) {
