@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-25T00:04:14Z",
+  "generated_at": "2026-09-25T00:13:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -44,19 +44,11 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "15362.85099815700",
-      "cash": "15362.85099815700",
+      "equity": "15179.21795215700",
+      "cash": "15179.21795215700",
       "seed": "10000",
-      "updated_utc": "2026-09-24T18:05:55Z",
-      "positions": [
-        {
-          "symbol": "LTC-USDT-SWAP",
-          "side": "short",
-          "qty": "581.2",
-          "avg_px": "71.63",
-          "margin": "13877.11866666666666666666667"
-        }
-      ],
+      "updated_utc": "2026-09-25T00:05:19Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -65,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-25T00:04:12.148719Z",
+      "updated_utc": "2026-09-25T00:13:15.516631Z",
       "positions": []
     },
     {
@@ -74,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-25T00:04:12.152069Z",
+      "updated_utc": "2026-09-25T00:13:15.519980Z",
       "positions": []
     },
     {
@@ -83,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-25T00:04:12.156787Z",
+      "updated_utc": "2026-09-25T00:13:15.523395Z",
       "positions": []
     },
     {
@@ -92,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14892.364563840007",
-      "updated_utc": "2026-09-25T00:04:12.160506Z",
+      "updated_utc": "2026-09-25T00:13:15.527410Z",
       "positions": [
         {
           "position_id": "p_8d3677f6844a",
@@ -118,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14988.100052217",
-      "updated_utc": "2026-09-25T00:04:12.163764Z",
+      "updated_utc": "2026-09-25T00:13:15.530452Z",
       "positions": [
         {
           "position_id": "p_c54c5ab0df11",
@@ -221,10 +213,10 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-24T00:07:07Z",
+      "updated_utc": "2026-09-25T00:07:23Z",
       "positions": [],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-09-23"
+      "as_of": "2026-09-24"
     }
   ],
   "manifest": [
