@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-25T00:59:35Z",
+  "generated_at": "2026-09-25T01:09:43Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,17 +25,17 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10156.2848488340",
-      "cash": "10156.2848488340",
+      "equity": "10219.9414315340",
+      "cash": "10219.9414315340",
       "seed": "10000",
-      "updated_utc": "2026-09-25T00:03:22Z",
+      "updated_utc": "2026-09-25T01:02:53Z",
       "positions": [
         {
-          "symbol": "ONDO-USDT-SWAP",
+          "symbol": "SUI-USDT-SWAP",
           "side": "long",
-          "qty": "1947",
-          "avg_px": "0.5218",
-          "margin": "10159.4460"
+          "qty": "9695",
+          "avg_px": "1.0547",
+          "margin": "10225.3165"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -44,11 +44,19 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "15179.21795215700",
-      "cash": "15179.21795215700",
+      "equity": "15158.67903415700",
+      "cash": "15158.67903415700",
       "seed": "10000",
-      "updated_utc": "2026-09-25T00:05:19Z",
-      "positions": [],
+      "updated_utc": "2026-09-25T01:06:04Z",
+      "positions": [
+        {
+          "symbol": "ADA-USDT-SWAP",
+          "side": "long",
+          "qty": "1641.8",
+          "avg_px": "0.2502",
+          "margin": "13692.61200"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -57,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-25T00:59:30.978790Z",
+      "updated_utc": "2026-09-25T01:09:42.564024Z",
       "positions": []
     },
     {
@@ -66,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-25T00:59:30.982333Z",
+      "updated_utc": "2026-09-25T01:09:42.566842Z",
       "positions": []
     },
     {
@@ -75,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-25T00:59:30.984946Z",
+      "updated_utc": "2026-09-25T01:09:42.569773Z",
       "positions": []
     },
     {
@@ -84,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14871.429502940007",
-      "updated_utc": "2026-09-25T00:59:30.987455Z",
+      "updated_utc": "2026-09-25T01:09:42.572748Z",
       "positions": [
         {
           "position_id": "p_d47aab2d74b7",
@@ -102,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14988.100052217",
-      "updated_utc": "2026-09-25T00:59:30.991444Z",
+      "updated_utc": "2026-09-25T01:09:42.575888Z",
       "positions": [
         {
           "position_id": "p_c54c5ab0df11",
