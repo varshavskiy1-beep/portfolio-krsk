@@ -1,0 +1,239 @@
+{
+  "schema": "equity_ro.v1",
+  "generated_at": "2026-09-25T01:45:05Z",
+  "scope": "paper_only",
+  "excluded": [
+    {
+      "id": "us_jpm_beta_live",
+      "reason": "live Finam"
+    },
+    {
+      "id": "three_robots_finam_live",
+      "reason": "live Finam"
+    },
+    {
+      "id": "three_robots_okx_nasdaq_1h",
+      "reason": "live OKX"
+    },
+    {
+      "id": "three_robots_okx_spcx_btc_4h",
+      "reason": "live OKX"
+    }
+  ],
+  "accounts": [
+    {
+      "bot_id": "v6b1",
+      "account_id": "v6b1",
+      "currency": "USDT",
+      "equity": "10219.9414315340",
+      "cash": "10219.9414315340",
+      "seed": "10000",
+      "updated_utc": "2026-09-25T01:02:53Z",
+      "positions": [
+        {
+          "symbol": "SUI-USDT-SWAP",
+          "side": "long",
+          "qty": "9695",
+          "avg_px": "1.0547",
+          "margin": "10225.3165"
+        }
+      ],
+      "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
+    },
+    {
+      "bot_id": "grail_b20_3x",
+      "account_id": "grail_b20_3x",
+      "currency": "USDT",
+      "equity": "15158.67903415700",
+      "cash": "15158.67903415700",
+      "seed": "10000",
+      "updated_utc": "2026-09-25T01:06:04Z",
+      "positions": [
+        {
+          "symbol": "ADA-USDT-SWAP",
+          "side": "long",
+          "qty": "1641.8",
+          "avg_px": "0.2502",
+          "margin": "13692.61200"
+        }
+      ],
+      "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_us_eq",
+      "venue": "US_EQ",
+      "currency": "USD",
+      "equity": "25000.0",
+      "updated_utc": "2026-09-25T01:45:00.540738Z",
+      "positions": []
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_ru_eq",
+      "venue": "RU_EQ",
+      "currency": "RUB",
+      "equity": "2000000.0",
+      "updated_utc": "2026-09-25T01:45:00.543254Z",
+      "positions": []
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_forts",
+      "venue": "FORTS",
+      "currency": "RUB",
+      "equity": "1500000.0",
+      "updated_utc": "2026-09-25T01:45:00.545724Z",
+      "positions": []
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_crypto_spot",
+      "venue": "CRYPTO_SPOT",
+      "currency": "USDT",
+      "equity": "14872.088125660008",
+      "updated_utc": "2026-09-25T01:45:00.548113Z",
+      "positions": []
+    },
+    {
+      "bot_id": "who_pays",
+      "account_id": "paper_crypto_perp",
+      "venue": "CRYPTO_PERP",
+      "currency": "USDT",
+      "equity": "14946.752883637",
+      "updated_utc": "2026-09-25T01:45:00.550568Z",
+      "positions": [
+        {
+          "position_id": "p_78518590697e",
+          "symbol": "BTC-USDT-SWAP",
+          "side": "long",
+          "qty": "0.044",
+          "avg_px": "84332.69222",
+          "stop_px": null
+        }
+      ]
+    },
+    {
+      "bot_id": "forts_adr_adaptive",
+      "account_id": "forts_adr_adaptive",
+      "currency": "RUB",
+      "seed": "1500000",
+      "equity": "1837991.6832610487",
+      "cash": "1837991.6832610487",
+      "updated_utc": "2026-09-24T13:10:00Z",
+      "positions": [],
+      "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
+    },
+    {
+      "bot_id": "forts_adr_static",
+      "account_id": "forts_adr_static",
+      "currency": "RUB",
+      "equity": "1500499.9995284856",
+      "seed": "1500000",
+      "updated_utc": "2026-09-24T13:20:24.845671Z",
+      "positions": []
+    },
+    {
+      "bot_id": "pump_radar",
+      "account_id": "pump_radar",
+      "currency": "USDT",
+      "equity": "5315.870000000000000000",
+      "cash": "4252.769000000000000000",
+      "updated_utc": "2026-09-24",
+      "positions": [],
+      "pending_limits": [
+        {
+          "id": "pump-2026-09-22-NILUSDT",
+          "symbol": "NILUSDT",
+          "limit": "0.07774800",
+          "notional": "531.5140000000000000"
+        },
+        {
+          "id": "pump-2026-09-24-BROCCOLI714USDT",
+          "symbol": "BROCCOLI714USDT",
+          "limit": "0.02747400",
+          "notional": "531.587000000000000000"
+        }
+      ]
+    },
+    {
+      "bot_id": "three_robots_okx_nasdaq_1h",
+      "account_id": "paper_block2",
+      "currency": "USD",
+      "seed": "10000",
+      "equity": "10000",
+      "cash": "10000",
+      "updated_utc": "2026-09-21T14:11:01Z",
+      "positions": [
+        {
+          "symbol": "MSTR-USDT-SWAP",
+          "side": "short",
+          "qty": "26.04",
+          "avg_px": "153.6",
+          "margin": null
+        },
+        {
+          "symbol": "TSLA-USDT-SWAP",
+          "side": "long",
+          "qty": "10.97",
+          "avg_px": "364.5",
+          "margin": null
+        },
+        {
+          "symbol": "SPCX-USDT-SWAP",
+          "side": "short",
+          "qty": "13.11",
+          "avg_px": "152.46",
+          "margin": null
+        }
+      ],
+      "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "young_bounce_combo",
+      "account_id": "young_bounce_combo",
+      "currency": "USD",
+      "seed": "10000",
+      "equity": "10000.0",
+      "cash": "10000.0",
+      "updated_utc": "2026-09-25T00:07:23Z",
+      "positions": [],
+      "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
+      "as_of": "2026-09-24"
+    }
+  ],
+  "manifest": [
+    {
+      "bot_id": "v6b1",
+      "logic": "OKX USDT-SWAP, бумага. Час закрылся — если цена у дневного хая и радар дня включён, лонг на весь свободный кэш. Стоп и тейк на бумаге. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "grail_b20_3x",
+      "logic": "OKX, бумага, плечо 3, одна позиция. Сигнал на закрытии часа, вход со следующего часа. Нет кандидата — кэш. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "who_pays",
+      "logic": "Пять отдельных бумажных счетов: США, РФ, FORTS, крипто-спот, крипто-перп. Новая сделка только если биржа открыта и в latest.json есть сигнал S2–S5. Валюты не складываются. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "forts_adr_adaptive",
+      "logic": "FORTS, бумага. Раз в месяц выбирает один из трёх вариантов полос ADR и в эту сессию торгует только его. В конце дня позиции закрывает. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "forts_adr_static",
+      "logic": "FORTS, бумага. Фиксированные полосы ADR: лимитная покупка у нижней, лимитная продажа у верхней, тейк и стоп, к концу дня в ноль. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "pump_radar",
+      "logic": "OKX спот, бумага, раз в день. После отбора имён ставит лимитки ниже закрытия. Пока лимитка не исполнена, это не позиция."
+    },
+    {
+      "bot_id": "three_robots_okx_nasdaq_1h",
+      "logic": "OKX USDT-SWAP, бумага, 1h. MSTR/TSLA/SPCX. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "young_bounce_combo",
+      "logic": "Binance spot, бумага, $10 000. Монеты возрастом 25–90 дней: обвал дня или отскок от листингового дна. Выход по трейлингу или через 10 дней. На биржу ордера не идут."
+    }
+  ]
+}
