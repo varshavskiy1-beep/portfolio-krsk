@@ -27,10 +27,14 @@ export function fromCapitalLine({ seed, currency, delta, pct }) {
   return `${line}: ${sign}${formatMoneyRu(delta, currency)}${pctPart}`;
 }
 
-/** Технические note из снимка: seed → «начальный капитал». */
+/** Технические note из снимка: seed → «начальный капитал», без сырых id. */
 export function displayNote(note) {
   if (note == null || note === "") return "";
-  return String(note).replace(/\bseed\b/gi, "начальный капитал");
+  return String(note)
+    .replace(/\bseed\b/gi, "начальный капитал")
+    .replace(/\bmir_caps\b/gi, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 /** Паттерны Young Bounce Combo: короткие русские подписи, значение не врём. */
