@@ -1,20 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
+import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { plainExplain } from "./plainExplain.js";
 import {
-  accountSubtitle,
+  cardSubtitle,
+  cardTitle,
   chipLabel,
-  displayTitle,
   formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
   isKnownPortalBot,
   mergePortalAccounts,
-  showsDefenceBadge,
-  showsPaperBadge,
+  underTitleLabel,
 } from "./strategyMeta.js";
 import { displayNote, fromCapitalLine } from "./uiCopy.js";
 
@@ -63,10 +63,9 @@ function AccountBlock({ a, points }) {
   const [mode, setMode] = useState("money");
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
-  const title = displayTitle(a);
-  const subtitle = accountSubtitle(a);
-  const paper = showsPaperBadge(a);
-  const defence = showsDefenceBadge(a);
+  const title = cardTitle(a);
+  const subtitle = cardSubtitle(a);
+  const idUnderTitle = underTitleLabel(a);
   const hasData = hasAccountData(a);
   const equity = hasData ? lastEquityValue(a) : null;
   const seed = hasData ? num(a.seed) : null;
@@ -97,14 +96,10 @@ function AccountBlock({ a, points }) {
     <section className="card strategy-account">
       <div className="row">
         <strong>{title}</strong>
-        <div className="badges">
-          {paper ? <span className="badge badge-paper">бумага</span> : null}
-          {defence ? <span className="badge badge-defence">защита</span> : null}
-          <span className="badge">{currency}</span>
-        </div>
+        <AccountBadges account={a} currency={currency} />
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
-      {title !== a.account_id ? <div className="bot-label">{a.account_id}</div> : null}
+      {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       <div className="equity">
         {!hasData
           ? "нет данных"

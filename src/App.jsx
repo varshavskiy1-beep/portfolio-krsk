@@ -1,20 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
+import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import {
-  accountSubtitle,
+  cardSubtitle,
+  cardTitle,
   chipLabel,
-  displayTitle,
   formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
   mergePortalAccounts,
   portalExcluded,
-  showsDefenceBadge,
-  showsPaperBadge,
+  underTitleLabel,
 } from "./strategyMeta.js";
 import { displayNote, fromCapitalLine } from "./uiCopy.js";
 
@@ -48,10 +48,9 @@ function goHome() {
 function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const [mode, setMode] = useState("money");
   const currency = canonicalCurrency(a);
-  const title = displayTitle(a);
-  const subtitle = accountSubtitle(a);
-  const paper = showsPaperBadge(a);
-  const defence = showsDefenceBadge(a);
+  const title = cardTitle(a);
+  const subtitle = cardSubtitle(a);
+  const idUnderTitle = underTitleLabel(a);
   const hasData = hasAccountData(a);
   const equity = hasData ? lastEquityValue(a) : null;
   const seed = hasData ? num(a.seed) : null;
@@ -66,17 +65,10 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         <button type="button" className="linkish" onClick={() => onOpenStrategy(a.bot_id)}>
           <strong>{title}</strong>
         </button>
-        <div className="badges">
-          {paper ? <span className="badge badge-paper">бумага</span> : null}
-          {defence ? <span className="badge badge-defence">защита</span> : null}
-          <span className="badge">{currency}</span>
-        </div>
+        <AccountBadges account={a} currency={currency} />
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
-      {title !== a.account_id ? <div className="bot-label">{a.account_id}</div> : null}
-      {a.bot_id && a.bot_id !== a.account_id && title === a.account_id ? (
-        <div className="bot-label">{a.bot_id}</div>
-      ) : null}
+      {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
         {!hasData
