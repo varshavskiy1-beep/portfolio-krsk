@@ -61,6 +61,12 @@ export function portalExcluded(excluded = []) {
 
 export function displayTitle(account) {
   if (!account) return "";
+  if (account.bot_id === OAC_PAPER_BOT_ID || account.account_id === OAC_PAPER_ACCOUNT_ID) {
+    return "Ядро внимания";
+  }
+  if (account.bot_id === YOUNG_BOUNCE_BOT_ID || account.account_id === YOUNG_BOUNCE_ACCOUNT_ID) {
+    return "Young Bounce Combo";
+  }
   return (
     ACCOUNT_TITLE[account.account_id] ||
     BOT_TITLE[account.bot_id] ||
@@ -70,7 +76,23 @@ export function displayTitle(account) {
   );
 }
 
+/** Заголовок карточки: displayTitle + страховка для portal-ботов. */
+export function cardTitle(account) {
+  const title = displayTitle(account);
+  if (account?.bot_id === OAC_PAPER_BOT_ID || account?.account_id === OAC_PAPER_ACCOUNT_ID) {
+    return title === OAC_PAPER_ACCOUNT_ID || title === OAC_PAPER_BOT_ID ? "Ядро внимания" : title;
+  }
+  if (account?.bot_id === YOUNG_BOUNCE_BOT_ID || account?.account_id === YOUNG_BOUNCE_ACCOUNT_ID) {
+    return title === YOUNG_BOUNCE_ACCOUNT_ID || title === YOUNG_BOUNCE_BOT_ID
+      ? "Young Bounce Combo"
+      : title;
+  }
+  return title;
+}
+
 export function chipLabel(botId) {
+  if (botId === OAC_PAPER_BOT_ID) return "Ядро внимания";
+  if (botId === YOUNG_BOUNCE_BOT_ID) return "Young Bounce Combo";
   return BOT_TITLE[botId] || botId;
 }
 
@@ -80,7 +102,39 @@ export function showsPaperBadge(account) {
 
 export function accountSubtitle(account) {
   if (!account) return "";
+  if (account.bot_id === OAC_PAPER_BOT_ID || account.account_id === OAC_PAPER_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[OAC_PAPER_BOT_ID];
+  }
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
+}
+
+/** Подзаголовок карточки (обязателен для OAC даже при пустом фиде). */
+export function cardSubtitle(account) {
+  const subtitle = accountSubtitle(account);
+  if (subtitle) return subtitle;
+  if (account?.bot_id === OAC_PAPER_BOT_ID || account?.account_id === OAC_PAPER_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[OAC_PAPER_BOT_ID];
+  }
+  return "";
+}
+
+/** id счёта в бейджах для известных portal-ботов (не под заголовком). */
+export function accountIdBadge(account) {
+  if (!account?.account_id) return null;
+  if (isKnownPortalBot(account.bot_id)) return account.account_id;
+  return null;
+}
+
+/** Сырую строку id под заголовком не показываем для portal-ботов. */
+export function underTitleLabel(account) {
+  if (!account) return null;
+  if (isKnownPortalBot(account.bot_id)) return null;
+  const title = cardTitle(account);
+  if (title !== account.account_id) return account.account_id;
+  if (account.bot_id && account.bot_id !== account.account_id && title === account.account_id) {
+    return account.bot_id;
+  }
+  return null;
 }
 
 export function showsDefenceBadge(account) {

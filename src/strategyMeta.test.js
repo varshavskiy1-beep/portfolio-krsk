@@ -7,7 +7,11 @@ import {
   ROBOT2_BOT_ID,
   YOUNG_BOUNCE_ACCOUNT_ID,
   YOUNG_BOUNCE_BOT_ID,
+  accountIdBadge,
   accountSubtitle,
+  cardSubtitle,
+  cardTitle,
+  chipLabel,
   displayTitle,
   formatUpdatedLine,
   hasAccountData,
@@ -17,6 +21,7 @@ import {
   portalExcluded,
   showsDefenceBadge,
   showsPaperBadge,
+  underTitleLabel,
 } from "./strategyMeta.js";
 
 test("portalExcluded drops outdated live OKX mark for robot 2", () => {
@@ -218,10 +223,39 @@ test("oac paper helpers: subtitle, defence, updated line, boxx", () => {
     boxx_usd: "125.5",
   };
   assert.match(accountSubtitle(account), /акции США/);
+  assert.match(cardSubtitle(account), /акции США/);
   assert.equal(showsDefenceBadge(account), true);
   assert.equal(showsDefenceBadge({ defence: false }), false);
   assert.match(formatUpdatedLine(account), /сессия 2026-09-24/);
   assert.match(formatUpdatedLine(account), /обновлено 2026-09-25T14:34:39Z/);
   assert.equal(hasBoxxCash(account), true);
   assert.equal(isOacPaper(account), true);
+});
+
+test("cardTitle never shows raw oac_paper or young_bounce ids", () => {
+  assert.equal(cardTitle({ bot_id: OAC_PAPER_BOT_ID, account_id: OAC_PAPER_ACCOUNT_ID }), "Ядро внимания");
+  assert.equal(
+    cardTitle({ bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID }),
+    "Young Bounce Combo",
+  );
+  assert.equal(displayTitle({ bot_id: OAC_PAPER_BOT_ID, account_id: OAC_PAPER_ACCOUNT_ID }), "Ядро внимания");
+  assert.equal(chipLabel(OAC_PAPER_BOT_ID), "Ядро внимания");
+  assert.equal(chipLabel(YOUNG_BOUNCE_BOT_ID), "Young Bounce Combo");
+});
+
+test("portal bots: id in badge, not under title", () => {
+  const oac = { bot_id: OAC_PAPER_BOT_ID, account_id: OAC_PAPER_ACCOUNT_ID };
+  assert.equal(accountIdBadge(oac), OAC_PAPER_ACCOUNT_ID);
+  assert.equal(underTitleLabel(oac), null);
+  const yb = { bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID };
+  assert.equal(accountIdBadge(yb), YOUNG_BOUNCE_ACCOUNT_ID);
+  assert.equal(underTitleLabel(yb), null);
+});
+
+test("non-portal bot still shows account id under title when title differs", () => {
+  assert.equal(underTitleLabel({ bot_id: "v6b1", account_id: "v6b1" }), null);
+  assert.equal(
+    underTitleLabel({ bot_id: "x", account_id: ROBOT2_ACCOUNT_ID }),
+    ROBOT2_ACCOUNT_ID,
+  );
 });

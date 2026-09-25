@@ -85,8 +85,9 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  align-items: baseline;
+  align-items: flex-start;
   min-width: 0;
+  overflow: visible;
 }
 .row .linkish,
 .row strong {
@@ -106,10 +107,19 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
   flex-wrap: wrap;
   gap: 4px;
   justify-content: flex-end;
+  flex-shrink: 0;
+  overflow: visible;
+  max-width: 100%;
 }
 .badge-paper {
-  background: #e8f5e9;
-  color: var(--good);
+  background: #c8e6c9;
+  color: #1b5e20;
+  border: 1px solid #81c784;
+}
+.badge-id {
+  background: #eceff1;
+  color: #37474f;
+  font-weight: 500;
 }
 .badge-defence {
   background: #fff3e0;
