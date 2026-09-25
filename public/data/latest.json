@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-25T01:09:43Z",
+  "generated_at": "2026-09-25T01:33:59Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-25T01:09:42.564024Z",
+      "updated_utc": "2026-09-25T01:33:55.537791Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-25T01:09:42.566842Z",
+      "updated_utc": "2026-09-25T01:33:55.541253Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-25T01:09:42.569773Z",
+      "updated_utc": "2026-09-25T01:33:55.543774Z",
       "positions": []
     },
     {
@@ -91,35 +91,18 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14871.429502940007",
-      "updated_utc": "2026-09-25T01:09:42.572748Z",
-      "positions": [
-        {
-          "position_id": "p_d47aab2d74b7",
-          "symbol": "BTC-USDT",
-          "side": "long",
-          "qty": "0.044",
-          "avg_px": "84439.12414",
-          "stop_px": null
-        }
-      ]
+      "equity": "14872.088125660008",
+      "updated_utc": "2026-09-25T01:33:55.546309Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "14988.100052217",
-      "updated_utc": "2026-09-25T01:09:42.575888Z",
+      "equity": "14946.752883637",
+      "updated_utc": "2026-09-25T01:33:55.548810Z",
       "positions": [
-        {
-          "position_id": "p_c54c5ab0df11",
-          "symbol": "SOL-USDT-SWAP",
-          "side": "short",
-          "qty": "32.115",
-          "avg_px": "116.585014",
-          "stop_px": null
-        },
         {
           "position_id": "p_78518590697e",
           "symbol": "BTC-USDT-SWAP",
