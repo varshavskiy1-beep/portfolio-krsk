@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-25T15:11:28Z",
+  "generated_at": "2026-09-25T15:30:42Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-25T15:11:25.209367Z",
+      "updated_utc": "2026-09-25T15:30:39.620959Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-25T15:11:25.212513Z",
+      "updated_utc": "2026-09-25T15:30:39.624430Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-25T15:11:25.215890Z",
+      "updated_utc": "2026-09-25T15:30:39.629004Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14866.608973224007",
-      "updated_utc": "2026-09-25T15:11:25.219234Z",
+      "updated_utc": "2026-09-25T15:30:39.632637Z",
       "positions": []
     },
     {
@@ -101,7 +101,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14963.581104650999",
-      "updated_utc": "2026-09-25T15:11:25.222587Z",
+      "updated_utc": "2026-09-25T15:30:39.635782Z",
       "positions": []
     },
     {
@@ -191,6 +191,20 @@
       "positions": [],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-24"
+    },
+    {
+      "bot_id": "oac_paper",
+      "account_id": "oac_paper",
+      "currency": "USD",
+      "seed": "10000",
+      "equity": "10000.0",
+      "cash": "10000.0",
+      "boxx_usd": "0.0",
+      "updated_utc": "2026-09-25T14:34:39Z",
+      "positions": [],
+      "note": "Бумага. «Ядро внимания», акции США, старт 10000 USD. На биржу ордера не идут.",
+      "as_of": "2026-09-24",
+      "defence": true
     }
   ],
   "manifest": [
@@ -225,6 +239,10 @@
     {
       "bot_id": "young_bounce_combo",
       "logic": "Binance spot, бумага, $10 000. Монеты возрастом 25–90 дней: обвал дня или отскок от листингового дна. Выход по трейлингу или через 10 дней. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "oac_paper",
+      "logic": "Акции США, бумага, $10 000. Каждый день берёт топ-20 бумаг по объёму опционов OCC. Раз в неделю покупает до 10 имён, которые держались в топе 15 из последних 20 сессий, по 10% на имя. Если JPM или BTC ниже своей EMA100, по 5% на имя. Всё остальное стоит в BOXX. На биржу ордера не идут."
     }
   ]
 }
