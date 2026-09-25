@@ -45,7 +45,7 @@ test("mergePortalAccounts adds robot 2 shell when absent", () => {
   assert.ok(robot2);
   assert.equal(robot2.account_id, ROBOT2_ACCOUNT_ID);
   assert.equal(robot2.no_data, true);
-  assert.equal(robot2.currency, "USD");
+  assert.equal(robot2.currency, "USDT");
 });
 
 test("mergePortalAccounts keeps published paper account", () => {
@@ -90,7 +90,7 @@ test("mergePortalAccounts adds young bounce shell when absent", () => {
   assert.ok(yb);
   assert.equal(yb.account_id, YOUNG_BOUNCE_ACCOUNT_ID);
   assert.equal(yb.no_data, true);
-  assert.equal(yb.currency, "USD");
+  assert.equal(yb.currency, "USDT");
   assert.equal(yb.seed, "10000");
   assert.equal(hasAccountData(yb), false);
 });

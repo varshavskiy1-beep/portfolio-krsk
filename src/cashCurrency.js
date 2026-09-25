@@ -18,14 +18,16 @@ export const BOT_CURRENCY = {
   pump_radar: "USDT",
   forts_adr_adaptive: "RUB",
   forts_adr_static: "RUB",
-  three_robots_okx_nasdaq_1h: "USD",
-  young_bounce_combo: "USD",
+  three_robots_okx_nasdaq_1h: "USDT",
+  young_bounce_combo: "USDT",
   oac_paper: "USD",
 };
 
-/** Валюта важнее venue: Young Bounce / OAC — USD-бумага, не USDT спота. */
+/** Валюта карточки = инструмент: Robot 2 / Young Bounce — USDT; OAC — акции США, USD. */
 export const FORCE_CURRENCY = {
-  young_bounce_combo: "USD",
+  three_robots_okx_nasdaq_1h: "USDT",
+  paper_block2: "USDT",
+  young_bounce_combo: "USDT",
   oac_paper: "USD",
 };
 
@@ -36,8 +38,8 @@ export const ACCOUNT_CURRENCY = {
   paper_forts: "RUB",
   paper_crypto_spot: "USDT",
   paper_crypto_perp: "USDT",
-  paper_block2: "USD",
-  young_bounce_combo: "USD",
+  paper_block2: "USDT",
+  young_bounce_combo: "USDT",
   oac_paper: "USD",
 };
 

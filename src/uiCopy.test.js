@@ -1,6 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { displayNote, fromCapitalLine, patternLabel, positionHasField, sideLabel } from "./uiCopy.js";
+import {
+  displayNote,
+  fromCapitalLine,
+  patternLabel,
+  positionHasField,
+  rewriteAccountCurrencyCopy,
+  sideLabel,
+} from "./uiCopy.js";
 
 test("delta line is Russian and never says seed", () => {
   const line = fromCapitalLine({
@@ -18,6 +25,26 @@ test("displayNote replaces seed in feed comments", () => {
   const shown = displayNote(raw);
   assert.match(shown, /начальный капитал/);
   assert.doesNotMatch(shown, /seed/i);
+});
+
+test("displayNote rewrites Young Bounce / Robot 2 account currency to USDT", () => {
+  const yb = displayNote(
+    "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo" },
+  );
+  assert.match(yb, /10000 USDT/);
+  assert.doesNotMatch(yb, /\bUSD\b/);
+  const robot2 = rewriteAccountCurrencyCopy("банк $10 000 USD", {
+    bot_id: "three_robots_okx_nasdaq_1h",
+    account_id: "paper_block2",
+  });
+  assert.equal(robot2, "банк 10 000 USDT");
+  const oac = displayNote("Стартовый капитал 10 000 USD", {
+    bot_id: "oac_paper",
+    account_id: "oac_paper",
+  });
+  assert.match(oac, /10 000 USD/);
+  assert.doesNotMatch(oac, /USDT/);
 });
 
 test("young bounce position fields: Russian pattern and side labels", () => {

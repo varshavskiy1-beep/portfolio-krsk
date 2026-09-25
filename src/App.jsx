@@ -144,7 +144,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           </div>
         </>
       ) : null}
-      {hasData && a.note ? <p className="note">{displayNote(a.note)}</p> : null}
+      {hasData && a.note ? <p className="note">{displayNote(a.note, a)}</p> : null}
     </article>
   );
 }

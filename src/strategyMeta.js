@@ -34,13 +34,13 @@ export const PORTAL_SHELLS = [
   {
     bot_id: ROBOT2_BOT_ID,
     account_id: ROBOT2_ACCOUNT_ID,
-    currency: "USD",
+    currency: "USDT",
     seed: "10000",
   },
   {
     bot_id: YOUNG_BOUNCE_BOT_ID,
     account_id: YOUNG_BOUNCE_ACCOUNT_ID,
-    currency: "USD",
+    currency: "USDT",
     seed: "10000",
   },
   {
