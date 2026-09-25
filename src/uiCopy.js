@@ -27,14 +27,36 @@ export function fromCapitalLine({ seed, currency, delta, pct }) {
   return `${line}: ${sign}${formatMoneyRu(delta, currency)}${pctPart}`;
 }
 
-/** Технические note из снимка: seed → «начальный капитал», без сырых id. */
-export function displayNote(note) {
+/** Счета, где фид ещё пишет USD, а карточка должна показывать USDT. */
+const USDT_ACCOUNT_COPY_IDS = new Set([
+  "three_robots_okx_nasdaq_1h",
+  "paper_block2",
+  "young_bounce_combo",
+]);
+
+function isUsdtAccountCopy(account) {
+  if (!account) return false;
+  if (typeof account === "string") return USDT_ACCOUNT_COPY_IDS.has(account);
+  return USDT_ACCOUNT_COPY_IDS.has(account.bot_id) || USDT_ACCOUNT_COPY_IDS.has(account.account_id);
+}
+
+/** В текстах фида про валюту счёта: Robot 2 / Young Bounce → USDT; OAC не трогаем. */
+export function rewriteAccountCurrencyCopy(text, account) {
+  if (text == null || text === "") return "";
+  const raw = String(text);
+  if (!isUsdtAccountCopy(account)) return raw;
+  return raw.replace(/\$\s?(?=\d)/g, "").replace(/\bUSD\b/g, "USDT");
+}
+
+/** Технические note из снимка: seed → «начальный капитал», без сырых id; валюта — по инструменту. */
+export function displayNote(note, account) {
   if (note == null || note === "") return "";
-  return String(note)
+  const cleaned = String(note)
     .replace(/\bseed\b/gi, "начальный капитал")
     .replace(/\bmir_caps\b/gi, "")
     .replace(/\s{2,}/g, " ")
     .trim();
+  return rewriteAccountCurrencyCopy(cleaned, account);
 }
 
 /** Паттерны Young Bounce Combo: короткие русские подписи, значение не врём. */

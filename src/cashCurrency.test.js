@@ -40,56 +40,61 @@ test("bot_id maps crypto and FORTS when venue is missing", () => {
   );
 });
 
-test("robot 2 paper account maps to USD", () => {
+test("robot 2 paper account maps to USDT", () => {
   assert.equal(
     canonicalCurrency({
       bot_id: "three_robots_okx_nasdaq_1h",
       account_id: "paper_block2",
-      currency: "USDT",
+      currency: "USD",
     }),
-    "USD",
+    "USDT",
   );
-  assert.equal(canonicalCurrency({ bot_id: "three_robots_okx_nasdaq_1h", account_id: "x", currency: "RUB" }), "USD");
-  assert.equal(canonicalCurrency({ bot_id: "other", account_id: "paper_block2", currency: "RUB" }), "USD");
+  assert.equal(canonicalCurrency({ bot_id: "three_robots_okx_nasdaq_1h", account_id: "x", currency: "RUB" }), "USDT");
+  assert.equal(canonicalCurrency({ bot_id: "other", account_id: "paper_block2", currency: "RUB" }), "USDT");
 });
 
-test("USD chip would not mix young bounce with RUB or USDT accounts", () => {
+test("currency chips: Robot 2 and Young Bounce under USDT, OAC under USD", () => {
   const accounts = [
     { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB" },
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT" },
+    { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2", currency: "USD", equity: "10000" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
     { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
   ];
   const usd = accounts.filter((a) => canonicalCurrency(a) === "USD");
+  const usdt = accounts.filter((a) => canonicalCurrency(a) === "USDT");
   assert.deepEqual(
     usd.map((a) => a.account_id),
-    ["young_bounce_combo", "oac_paper", "paper_us_eq"],
+    ["oac_paper", "paper_us_eq"],
   );
-  assert.ok(usd.every((a) => canonicalCurrency(a) === "USD"));
+  assert.deepEqual(
+    usdt.map((a) => a.account_id),
+    ["v6b1", "paper_block2", "young_bounce_combo"],
+  );
 });
 
-test("young bounce is always USD and never remapped to USDT/RUB", () => {
+test("young bounce is always USDT and never remapped to USD/RUB", () => {
   assert.equal(
     canonicalCurrency({
       bot_id: "young_bounce_combo",
       account_id: "young_bounce_combo",
       currency: "USD",
     }),
-    "USD",
+    "USDT",
   );
   assert.equal(
     canonicalCurrency({
       bot_id: "young_bounce_combo",
       account_id: "young_bounce_combo",
       venue: "CRYPTO_SPOT",
-      currency: "USDT",
+      currency: "USD",
     }),
-    "USD",
+    "USDT",
   );
   assert.equal(
     canonicalCurrency({ bot_id: "young_bounce_combo", account_id: "x", currency: "RUB" }),
-    "USD",
+    "USDT",
   );
 });
 

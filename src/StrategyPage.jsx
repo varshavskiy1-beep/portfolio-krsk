@@ -16,7 +16,7 @@ import {
   mergePortalAccounts,
   underTitleLabel,
 } from "./strategyMeta.js";
-import { displayNote, fromCapitalLine } from "./uiCopy.js";
+import { displayNote, fromCapitalLine, rewriteAccountCurrencyCopy } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -171,7 +171,7 @@ function AccountBlock({ a, points }) {
       ) : (
         <p className="muted">нет данных</p>
       )}
-      {hasData && a.note ? <p className="note">{displayNote(a.note)}</p> : null}
+      {hasData && a.note ? <p className="note">{displayNote(a.note, a)}</p> : null}
     </section>
   );
 }
@@ -222,7 +222,7 @@ export default function StrategyPage({ botId, data, history, onBack }) {
         {logic ? (
           <details className="tech-details">
             <summary>Техническая формулировка</summary>
-            <p>{logic}</p>
+            <p>{rewriteAccountCurrencyCopy(logic, botId)}</p>
           </details>
         ) : null}
         <p className="risk-note">{plain.risk}</p>
