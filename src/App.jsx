@@ -5,14 +5,18 @@ import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import {
+  accountSubtitle,
   chipLabel,
   displayTitle,
+  formatUpdatedLine,
   hasAccountData,
+  hasBoxxCash,
   mergePortalAccounts,
   portalExcluded,
+  showsDefenceBadge,
   showsPaperBadge,
 } from "./strategyMeta.js";
-import { fromCapitalLine } from "./uiCopy.js";
+import { displayNote, fromCapitalLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -45,7 +49,9 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const [mode, setMode] = useState("money");
   const currency = canonicalCurrency(a);
   const title = displayTitle(a);
+  const subtitle = accountSubtitle(a);
   const paper = showsPaperBadge(a);
+  const defence = showsDefenceBadge(a);
   const hasData = hasAccountData(a);
   const equity = hasData ? lastEquityValue(a) : null;
   const seed = hasData ? num(a.seed) : null;
@@ -62,9 +68,11 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         </button>
         <div className="badges">
           {paper ? <span className="badge badge-paper">бумага</span> : null}
+          {defence ? <span className="badge badge-defence">защита</span> : null}
           <span className="badge">{currency}</span>
         </div>
       </div>
+      {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       {title !== a.account_id ? <div className="bot-label">{a.account_id}</div> : null}
       {a.bot_id && a.bot_id !== a.account_id && title === a.account_id ? (
         <div className="bot-label">{a.bot_id}</div>
@@ -82,7 +90,14 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
-      {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
+      {hasData && formatUpdatedLine(a) ? (
+        <div className="updated">{formatUpdatedLine(a)}</div>
+      ) : null}
+      {hasData && hasBoxxCash(a) ? (
+        <div className="updated">
+          BOXX (кэш): {fmt(num(a.boxx_usd), currency)} {currency}
+        </div>
+      ) : null}
 
       <div className="chart-toolbar">
         <button
@@ -105,7 +120,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       <EquityChart points={historyPoints} seed={seed} currency={currency} mode={mode} />
 
-      <PositionsTable positions={positions} compact />
+      <PositionsTable positions={positions} compact botId={a.bot_id} />
 
       {limits.length ? (
         <>
@@ -134,6 +149,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           </div>
         </>
       ) : null}
+      {hasData && a.note ? <p className="note">{displayNote(a.note)}</p> : null}
     </article>
   );
 }

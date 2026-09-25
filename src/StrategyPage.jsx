@@ -5,11 +5,15 @@ import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { plainExplain } from "./plainExplain.js";
 import {
+  accountSubtitle,
   chipLabel,
   displayTitle,
+  formatUpdatedLine,
   hasAccountData,
+  hasBoxxCash,
   isKnownPortalBot,
   mergePortalAccounts,
+  showsDefenceBadge,
   showsPaperBadge,
 } from "./strategyMeta.js";
 import { displayNote, fromCapitalLine } from "./uiCopy.js";
@@ -60,7 +64,9 @@ function AccountBlock({ a, points }) {
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
   const title = displayTitle(a);
+  const subtitle = accountSubtitle(a);
   const paper = showsPaperBadge(a);
+  const defence = showsDefenceBadge(a);
   const hasData = hasAccountData(a);
   const equity = hasData ? lastEquityValue(a) : null;
   const seed = hasData ? num(a.seed) : null;
@@ -93,9 +99,11 @@ function AccountBlock({ a, points }) {
         <strong>{title}</strong>
         <div className="badges">
           {paper ? <span className="badge badge-paper">бумага</span> : null}
+          {defence ? <span className="badge badge-defence">защита</span> : null}
           <span className="badge">{currency}</span>
         </div>
       </div>
+      {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       {title !== a.account_id ? <div className="bot-label">{a.account_id}</div> : null}
       <div className="equity">
         {!hasData
@@ -109,7 +117,14 @@ function AccountBlock({ a, points }) {
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
-      {hasData && a.updated_utc ? <div className="updated">обновлено {a.updated_utc}</div> : null}
+      {hasData && formatUpdatedLine(a) ? (
+        <div className="updated">{formatUpdatedLine(a)}</div>
+      ) : null}
+      {hasData && hasBoxxCash(a) ? (
+        <div className="updated">
+          BOXX (кэш): {fmt(num(a.boxx_usd), currency)} {currency}
+        </div>
+      ) : null}
 
       <h3 className="subhead">График эквити</h3>
       <div className={`chart-panel ${fs ? "chart-panel-fs" : ""}`}>
@@ -152,7 +167,7 @@ function AccountBlock({ a, points }) {
       <h3 className="subhead">Открытые позиции</h3>
       {hasData ? (
         <>
-          <PositionsTable positions={a.positions || []} />
+          <PositionsTable positions={a.positions || []} botId={a.bot_id} />
           <LimitsTable limits={a.pending_limits || []} />
         </>
       ) : (
