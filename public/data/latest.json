@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-25T16:49:34Z",
+  "generated_at": "2026-09-25T17:30:06Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-25T16:49:33.443677Z",
+      "updated_utc": "2026-09-25T17:30:02.158196Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-25T16:49:33.451893Z",
+      "updated_utc": "2026-09-25T17:30:02.161991Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-25T16:49:33.455190Z",
+      "updated_utc": "2026-09-25T17:30:02.166229Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14866.608973224007",
-      "updated_utc": "2026-09-25T16:49:33.459036Z",
+      "updated_utc": "2026-09-25T17:30:02.169595Z",
       "positions": []
     },
     {
@@ -101,7 +101,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14963.581104650999",
-      "updated_utc": "2026-09-25T16:49:33.462203Z",
+      "updated_utc": "2026-09-25T17:30:02.174584Z",
       "positions": []
     },
     {
@@ -150,7 +150,7 @@
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
       "account_id": "paper_block2",
-      "currency": "USD",
+      "currency": "USDT",
       "seed": "10000",
       "equity": "10000",
       "cash": "10000",
@@ -183,7 +183,7 @@
     {
       "bot_id": "young_bounce_combo",
       "account_id": "young_bounce_combo",
-      "currency": "USD",
+      "currency": "USDT",
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
