@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-25T23:55:17Z",
+  "generated_at": "2026-09-26T00:14:29Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,17 +25,17 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10219.9414315340",
-      "cash": "10219.9414315340",
+      "equity": "11558.5084904540",
+      "cash": "11558.5084904540",
       "seed": "10000",
-      "updated_utc": "2026-09-25T01:02:53Z",
+      "updated_utc": "2026-09-26T00:03:14Z",
       "positions": [
         {
           "symbol": "SUI-USDT-SWAP",
           "side": "long",
-          "qty": "9695",
-          "avg_px": "1.0547",
-          "margin": "10225.3165"
+          "qty": "9684",
+          "avg_px": "1.1942",
+          "margin": "11564.6328"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-25T23:55:11.605064Z",
+      "updated_utc": "2026-09-26T00:14:25.408299Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-25T23:55:11.607779Z",
+      "updated_utc": "2026-09-26T00:14:25.411628Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-25T23:55:11.610335Z",
+      "updated_utc": "2026-09-26T00:14:25.414627Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14863.174890944007",
-      "updated_utc": "2026-09-25T23:55:11.612811Z",
+      "updated_utc": "2026-09-26T00:14:25.417490Z",
       "positions": [
         {
           "position_id": "p_3a56a1683968",
@@ -117,8 +117,8 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "14958.019497660998",
-      "updated_utc": "2026-09-25T23:55:11.615311Z",
+      "equity": "14957.649656100999",
+      "updated_utc": "2026-09-26T00:14:25.419805Z",
       "positions": [
         {
           "position_id": "p_3cbc3b086681",
@@ -126,6 +126,14 @@
           "side": "long",
           "qty": "0.044",
           "avg_px": "83881.55692",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_6917407a1289",
+          "symbol": "ETH-USDT-SWAP",
+          "side": "short",
+          "qty": "1.39",
+          "avg_px": "2688.1933",
           "stop_px": null
         }
       ]
@@ -154,9 +162,9 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "5315.870000000000000000",
-      "cash": "4252.769000000000000000",
-      "updated_utc": "2026-09-24",
+      "equity": "5422.19000000000000000000",
+      "cash": "3827.50200000000000000000",
+      "updated_utc": "2026-09-25",
       "positions": [],
       "pending_limits": [
         {
@@ -166,10 +174,16 @@
           "notional": "531.5140000000000000"
         },
         {
-          "id": "pump-2026-09-24-BROCCOLI714USDT",
-          "symbol": "BROCCOLI714USDT",
-          "limit": "0.02747400",
-          "notional": "531.587000000000000000"
+          "id": "pump-2026-09-25-QIUSDT",
+          "symbol": "QIUSDT",
+          "limit": "0.00346465",
+          "notional": "531.58700000000000000000"
+        },
+        {
+          "id": "pump-2026-09-25-ARKUSDT",
+          "symbol": "ARKUSDT",
+          "limit": "0.24139500",
+          "notional": "531.58700000000000000000"
         }
       ]
     },
@@ -213,10 +227,10 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-25T00:07:23Z",
+      "updated_utc": "2026-09-26T00:07:38Z",
       "positions": [],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-09-24"
+      "as_of": "2026-09-25"
     },
     {
       "bot_id": "oac_paper",
