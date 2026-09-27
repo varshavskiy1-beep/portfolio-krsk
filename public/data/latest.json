@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-27T07:01:35Z",
+  "generated_at": "2026-09-27T07:16:43Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-27T07:01:31.480645Z",
+      "updated_utc": "2026-09-27T07:16:42.575819Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-27T07:01:31.483368Z",
+      "updated_utc": "2026-09-27T07:16:42.578131Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-27T07:01:31.486110Z",
+      "updated_utc": "2026-09-27T07:16:42.580258Z",
       "positions": []
     },
     {
@@ -91,17 +91,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14758.401157142009",
-      "updated_utc": "2026-09-27T07:01:31.488676Z",
+      "equity": "14746.856309022009",
+      "updated_utc": "2026-09-27T07:16:42.582218Z",
       "positions": [
-        {
-          "position_id": "p_14a489acae7d",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.043",
-          "avg_px": "84426.46446",
-          "stop_px": null
-        },
         {
           "position_id": "p_419263f7b8e6",
           "symbol": "SOL-USDT",
@@ -109,6 +101,14 @@
           "qty": "30.551",
           "avg_px": "120.796228",
           "stop_px": "120.66921"
+        },
+        {
+          "position_id": "p_bcd8a8727c68",
+          "symbol": "BTC-USDT",
+          "side": "short",
+          "qty": "0.043",
+          "avg_px": "84520.43626",
+          "stop_px": null
         }
       ]
     },
@@ -118,7 +118,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14911.148509160997",
-      "updated_utc": "2026-09-27T07:01:31.491399Z",
+      "updated_utc": "2026-09-27T07:16:42.584060Z",
       "positions": [
         {
           "position_id": "p_19b103cf8ecf",
