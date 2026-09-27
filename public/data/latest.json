@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-27T23:03:14Z",
+  "generated_at": "2026-09-27T23:12:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -44,11 +44,19 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "20059.76875655200",
-      "cash": "20059.76875655200",
+      "equity": "20032.62728755200",
+      "cash": "20032.62728755200",
       "seed": "10000",
-      "updated_utc": "2026-09-27T22:05:35Z",
-      "positions": [],
+      "updated_utc": "2026-09-27T23:06:08Z",
+      "positions": [
+        {
+          "symbol": "NEAR-USDT-SWAP",
+          "side": "short",
+          "qty": "996.2",
+          "avg_px": "5.449",
+          "margin": "18094.31266666666666666666667"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -57,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-27T23:03:11.728625Z",
+      "updated_utc": "2026-09-27T23:12:14.016750Z",
       "positions": []
     },
     {
@@ -66,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-27T23:03:11.731491Z",
+      "updated_utc": "2026-09-27T23:12:14.020795Z",
       "positions": []
     },
     {
@@ -75,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-27T23:03:11.734541Z",
+      "updated_utc": "2026-09-27T23:12:14.024912Z",
       "positions": []
     },
     {
@@ -84,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14785.907715177009",
-      "updated_utc": "2026-09-27T23:03:11.737422Z",
+      "updated_utc": "2026-09-27T23:12:14.028747Z",
       "positions": [
         {
           "position_id": "p_6738cb4f9572",
@@ -102,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14878.296890789996",
-      "updated_utc": "2026-09-27T23:03:11.740048Z",
+      "updated_utc": "2026-09-27T23:12:14.032326Z",
       "positions": [
         {
           "position_id": "p_d19d275bad98",
