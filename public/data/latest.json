@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-26T23:48:56Z",
+  "generated_at": "2026-09-27T00:02:03Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -65,7 +65,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-26T23:48:49.867699Z",
+      "updated_utc": "2026-09-27T00:02:02.944986Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-26T23:48:49.870236Z",
+      "updated_utc": "2026-09-27T00:02:02.948345Z",
       "positions": []
     },
     {
@@ -83,7 +83,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-26T23:48:49.872913Z",
+      "updated_utc": "2026-09-27T00:02:02.951519Z",
       "positions": []
     },
     {
@@ -92,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14778.591474806008",
-      "updated_utc": "2026-09-26T23:48:49.875514Z",
+      "updated_utc": "2026-09-27T00:02:02.954801Z",
       "positions": [
         {
           "position_id": "p_9975db12f350",
@@ -109,8 +109,8 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "14939.496693520998",
-      "updated_utc": "2026-09-26T23:48:49.877919Z",
+      "equity": "14939.868012160998",
+      "updated_utc": "2026-09-27T00:02:02.958032Z",
       "positions": [
         {
           "position_id": "p_be3c7405c64d",
@@ -146,9 +146,9 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "5422.19000000000000000000",
-      "cash": "3827.50200000000000000000",
-      "updated_utc": "2026-09-25",
+      "equity": "5315.8700000000000000000000",
+      "cash": "2626.1120000000000000000000",
+      "updated_utc": "2026-09-26",
       "positions": [],
       "pending_limits": [
         {
@@ -158,16 +158,28 @@
           "notional": "531.5140000000000000"
         },
         {
-          "id": "pump-2026-09-25-QIUSDT",
-          "symbol": "QIUSDT",
-          "limit": "0.00346465",
-          "notional": "531.58700000000000000000"
-        },
-        {
           "id": "pump-2026-09-25-ARKUSDT",
           "symbol": "ARKUSDT",
           "limit": "0.24139500",
           "notional": "531.58700000000000000000"
+        },
+        {
+          "id": "pump-2026-09-26-AMPUSDT",
+          "symbol": "AMPUSDT",
+          "limit": "0.00077995",
+          "notional": "542.2190000000000000000000"
+        },
+        {
+          "id": "pump-2026-09-26-RAREUSDT",
+          "symbol": "RAREUSDT",
+          "limit": "0.02035850",
+          "notional": "542.2190000000000000000000"
+        },
+        {
+          "id": "pump-2026-09-26-QNTUSDT",
+          "symbol": "QNTUSDT",
+          "limit": "143.94400000",
+          "notional": "542.2190000000000000000000"
         }
       ]
     },
