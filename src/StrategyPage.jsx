@@ -4,7 +4,8 @@ import EquityChart from "./EquityChart.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
-import { plainExplain } from "./plainExplain.js";
+import StrategyPassport from "./StrategyPassport.jsx";
+import { getPassport } from "./strategyPassport.js";
 import {
   cardSubtitle,
   cardTitle,
@@ -16,7 +17,7 @@ import {
   mergePortalAccounts,
   underTitleLabel,
 } from "./strategyMeta.js";
-import { displayNote, fromCapitalLine, rewriteAccountCurrencyCopy } from "./uiCopy.js";
+import { displayNote, fromCapitalLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -183,7 +184,7 @@ export default function StrategyPage({ botId, data, history, onBack }) {
   );
   const logic =
     (data?.manifest || []).find((m) => m.bot_id === botId)?.logic || "";
-  const plain = plainExplain(botId, logic);
+  const passport = getPassport(botId, logic);
   const pageTitle = chipLabel(botId);
 
   const pointsFor = (a) => resolveEquityPoints(a, history);
@@ -207,26 +208,13 @@ export default function StrategyPage({ botId, data, history, onBack }) {
       <header>
         <h1>{pageTitle}</h1>
         {pageTitle !== botId ? <p className="strategy-title">{botId}</p> : null}
-        {pageTitle === botId && plain.title !== botId ? <p className="strategy-title">{plain.title}</p> : null}
+        {pageTitle === botId && passport.title !== botId ? (
+          <p className="strategy-title">{passport.title}</p>
+        ) : null}
         <div className="meta">снимок {data.generated_at} · только paper</div>
       </header>
 
-      <section className="card explain-card">
-        <h2 className="subhead">Как это работает простыми словами</h2>
-        <p className="explain-summary">{plain.summary}</p>
-        <ol className="explain-list">
-          {plain.how.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ol>
-        {logic ? (
-          <details className="tech-details">
-            <summary>Техническая формулировка</summary>
-            <p>{rewriteAccountCurrencyCopy(logic, botId)}</p>
-          </details>
-        ) : null}
-        <p className="risk-note">{plain.risk}</p>
-      </section>
+      <StrategyPassport botId={botId} logic={logic} />
 
       {accounts.map((a) => (
         <AccountBlock key={`${a.bot_id}-${a.account_id}`} a={a} points={pointsFor(a)} />
