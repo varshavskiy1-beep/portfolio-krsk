@@ -4,6 +4,7 @@ import {
   TEST_STATUS,
   getPassport,
 } from "./strategyPassport.js";
+import { isHiddenPortalId } from "./strategyMeta.js";
 import { rewriteAccountCurrencyCopy } from "./uiCopy.js";
 
 function ValueCell({ row }) {
@@ -126,7 +127,9 @@ function TestingGap({ passport }) {
 }
 
 export default function StrategyPassport({ botId, logic }) {
+  if (isHiddenPortalId(botId)) return null;
   const passport = getPassport(botId, logic);
+  if (passport.hidden) return null;
   const tech = logic ? rewriteAccountCurrencyCopy(logic, botId) : "";
   const hasBook = passport.testing.status === TEST_STATUS.HAS_BOOK;
 

@@ -6,7 +6,7 @@
  * Слово seed в пользовательских строках не используем.
  */
 
-import { ACCOUNT_SUBTITLE, mergePortalAccounts } from "./strategyMeta.js";
+import { ACCOUNT_SUBTITLE, isHiddenPortalId, mergePortalAccounts } from "./strategyMeta.js";
 
 export const NO_DATA = "нет данных";
 
@@ -777,10 +777,18 @@ export function authoredPassportIds() {
 }
 
 export function hasAuthoredPassport(botId) {
+  if (isHiddenPortalId(botId)) return false;
   return Boolean(PASSPORTS[botId]);
 }
 
 export function getPassport(botId, fallbackLogic = "") {
+  if (isHiddenPortalId(botId)) {
+    return {
+      ...stubPassport("", ""),
+      hidden: true,
+      authored: false,
+    };
+  }
   const authored = PASSPORTS[botId];
   if (authored) return { ...authored, authored: true };
   return stubPassport(botId, fallbackLogic);
