@@ -1,7 +1,0 @@
-{
-  "commission_bps": 5.0,
-  "slippage_bps": 2.0,
-  "commission_currency": "USDT",
-  "model": "fixed_bps_per_side",
-  "notes": "Заложено в книгу LEV_1_VS_3 на 2026-09-04. Это не ставка живой биржи и не комиссия бумажного счёта кабинета."
-}

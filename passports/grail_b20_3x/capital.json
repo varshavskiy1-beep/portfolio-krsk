@@ -1,9 +1,0 @@
-{
-  "initial_capital": 10000.0,
-  "currency": "USDT",
-  "as_of": "2026-09-04",
-  "series": "frozen_signal_book",
-  "paper_yaml_initial_capital": 1000.0,
-  "cabinet_snapshot_initial_capital": 10000,
-  "notes": "Книга стартует с 10 000 USDT. В paper yaml указано 1 000 USDT. Снимок кабинета — отдельный бумажный учёт, не источник CAGR."
-}

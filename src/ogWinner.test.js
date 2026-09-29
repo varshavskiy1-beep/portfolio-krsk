@@ -43,11 +43,11 @@ test("picks max pnl in own units without FX conversion", () => {
   assert.equal(winner.currency, "RUB");
 });
 
-test("current-style data: v6b1 beats grail and zero RUB", () => {
+test("current-style data: v6b1 beats smaller USDT and zero RUB", () => {
   const latest = {
     accounts: [
       acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 14515.61, seed: 10000 }),
-      acc({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x", currency: "USDT", equity: 10508.47, seed: 10000 }),
+      acc({ bot_id: "pump_radar", account_id: "pump_radar", currency: "USDT", equity: 10508.47, seed: 10000 }),
       acc({ bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB", equity: 1500000, seed: 1500000 }),
       acc({
         bot_id: "who_pays",
@@ -67,6 +67,18 @@ test("current-style data: v6b1 beats grail and zero RUB", () => {
   assert.equal(winner.key, "v6b1::v6b1");
   assert.ok(winner.pnl > 4500);
   assert.equal(winner.currency, "USDT");
+});
+
+test("decommissioned grail_b20_3x is skipped even with larger paper pnl", () => {
+  const latest = {
+    accounts: [
+      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 11359.56, seed: 10000 }),
+      acc({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x", currency: "USDT", equity: 24440.08, seed: 10000 }),
+    ],
+  };
+  const winner = pickOgWinner(latest, { series: {} });
+  assert.equal(winner.key, "v6b1::v6b1");
+  assert.doesNotMatch(winner.key, /grail/i);
 });
 
 test("who_pays without seed uses first history point", () => {

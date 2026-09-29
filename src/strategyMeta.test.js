@@ -5,8 +5,6 @@ import {
   OAC_PAPER_BOT_ID,
   ROBOT2_ACCOUNT_ID,
   ROBOT2_BOT_ID,
-  GRAIL_ACCOUNT_ID,
-  GRAIL_BOT_ID,
   YOUNG_BOUNCE_ACCOUNT_ID,
   YOUNG_BOUNCE_BOT_ID,
   accountIdBadge,
@@ -18,6 +16,8 @@ import {
   formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
+  isHiddenPortalAccount,
+  isHiddenPortalId,
   isOacPaper,
   mergePortalAccounts,
   portalExcluded,
@@ -243,7 +243,7 @@ test("cardTitle never shows raw oac_paper or young_bounce ids", () => {
   assert.equal(displayTitle({ bot_id: OAC_PAPER_BOT_ID, account_id: OAC_PAPER_ACCOUNT_ID }), "Ядро внимания");
   assert.equal(chipLabel(OAC_PAPER_BOT_ID), "Ядро внимания");
   assert.equal(chipLabel(YOUNG_BOUNCE_BOT_ID), "Young Bounce Combo");
-  assert.equal(chipLabel(GRAIL_BOT_ID), "Grail B20 · плечо 3×");
+  assert.doesNotMatch(chipLabel("grail_b20_3x"), /Grail B20/);
 });
 
 test("portal bots: id in badge, not under title", () => {
@@ -253,11 +253,20 @@ test("portal bots: id in badge, not under title", () => {
   const yb = { bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID };
   assert.equal(accountIdBadge(yb), YOUNG_BOUNCE_ACCOUNT_ID);
   assert.equal(underTitleLabel(yb), null);
-  const grail = { bot_id: GRAIL_BOT_ID, account_id: GRAIL_ACCOUNT_ID };
-  assert.equal(accountIdBadge(grail), GRAIL_ACCOUNT_ID);
-  assert.equal(underTitleLabel(grail), null);
-  assert.equal(cardTitle(grail), "Grail B20 · плечо 3×");
-  assert.match(cardSubtitle(grail), /20 крипто-перпов/);
+});
+
+test("decommissioned grail_b20_3x is hidden from portal accounts", () => {
+  assert.equal(isHiddenPortalId("grail_b20_3x"), true);
+  assert.equal(isHiddenPortalAccount({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), true);
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "grail_b20_3x", account_id: "grail_b20_3x", currency: "USDT", equity: "24440" },
+  ]);
+  assert.equal(merged.some((a) => a.bot_id === "grail_b20_3x"), false);
+  assert.equal(merged.some((a) => a.account_id === "grail_b20_3x"), false);
+  assert.ok(merged.some((a) => a.bot_id === "v6b1"));
+  assert.doesNotMatch(cardTitle({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), /Grail B20/);
+  assert.equal(cardSubtitle({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), "");
 });
 
 test("non-portal bot still shows account id under title when title differs", () => {

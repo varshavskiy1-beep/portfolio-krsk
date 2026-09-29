@@ -6,7 +6,6 @@
  * Слово seed в пользовательских строках не используем.
  */
 
-import { createGrailPassport } from "./grailPassport.js";
 import { ACCOUNT_SUBTITLE, mergePortalAccounts } from "./strategyMeta.js";
 
 export const NO_DATA = "нет данных";
@@ -254,8 +253,6 @@ const PASSPORTS = {
     },
     testing: paperTesting({ extra: ["определение «радара дня»", "полный юниверс USDT-SWAP"] }),
   },
-
-  grail_b20_3x: createGrailPassport({ param, gap, NO_DATA, TEST_STATUS }),
 
   who_pays: {
     botId: "who_pays",
