@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-29T15:06:01Z",
+  "generated_at": "2026-09-29T15:26:10Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-29T15:05:56.940812Z",
+      "updated_utc": "2026-09-29T15:26:06.921569Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-29T15:05:56.944975Z",
+      "updated_utc": "2026-09-29T15:26:06.924554Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-29T15:05:56.947849Z",
+      "updated_utc": "2026-09-29T15:26:06.927289Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14697.061891222009",
-      "updated_utc": "2026-09-29T15:05:56.951794Z",
+      "updated_utc": "2026-09-29T15:26:06.931371Z",
       "positions": []
     },
     {
@@ -82,7 +82,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15031.840415597993",
-      "updated_utc": "2026-09-29T15:05:56.955562Z",
+      "updated_utc": "2026-09-29T15:26:06.936655Z",
       "positions": []
     },
     {
@@ -139,32 +139,10 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "9933.99",
-      "cash": "9933.99",
-      "updated_utc": "2026-09-28T18:13:09Z",
-      "positions": [
-        {
-          "symbol": "MSTR-USDT-SWAP",
-          "side": "long",
-          "qty": "24.73",
-          "avg_px": "160.66",
-          "margin": null
-        },
-        {
-          "symbol": "TSLA-USDT-SWAP",
-          "side": "long",
-          "qty": "11.04",
-          "avg_px": "359.74",
-          "margin": null
-        },
-        {
-          "symbol": "SPCX-USDT-SWAP",
-          "side": "long",
-          "qty": "13.47",
-          "avg_px": "147.47",
-          "margin": null
-        }
-      ],
+      "equity": "9740.56",
+      "cash": "9740.56",
+      "updated_utc": "2026-09-29T15:13:10Z",
+      "positions": [],
       "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. На биржу ордера не идут."
     },
     {
