@@ -223,6 +223,42 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 .explain-list li { margin-bottom: 6px; }
 .tech-details { margin: 8px 0; color: var(--muted); font-size: 0.9rem; }
 .tech-details summary { cursor: pointer; color: var(--accent); }
+.passport-card { margin: 16px 0 20px; }
+.passport-title { margin-top: 0; }
+.passport-p { margin: 0 0 10px; line-height: 1.5; }
+.passport-hint { margin: 0 0 10px; color: var(--muted); font-size: 0.9rem; line-height: 1.4; }
+.passport-nodata { color: var(--muted); font-style: italic; }
+.passport-unauthored {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: #f3efe6;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+.passport-table { font-size: 0.9rem; }
+.passport-table th { white-space: nowrap; }
+.passport-table td { vertical-align: top; padding: 8px 10px 8px 0; }
+.passport-table td:first-child { font-weight: 600; min-width: 8.5rem; }
+.passport-table td:nth-child(2) { min-width: 9rem; }
+.passport-steps { margin-bottom: 4px; }
+.passport-risk-list { margin: 0 0 12px; padding-left: 1.2rem; line-height: 1.45; }
+.passport-risk-list li { margin-bottom: 4px; }
+.passport-test {
+  padding: 12px;
+  border-radius: 8px;
+  background: #f3efe6;
+  margin-bottom: 8px;
+}
+.passport-test-gap { border-left: 3px solid #b8860b; }
+.passport-test-status {
+  margin: 0 0 8px;
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+.passport-dl { margin: 8px 0 0; }
+.passport-dl-row { margin-bottom: 10px; }
+.passport-dl dt { font-weight: 600; }
+.passport-dl dd { margin: 2px 0 0; line-height: 1.4; }
 .risk-note {
   margin: 12px 0 0;
   padding: 10px 12px;
@@ -336,6 +372,9 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   }
   .equity { font-size: 1.2rem; }
   .tv-chart-host { height: 240px; }
+  .passport-table { font-size: 0.84rem; }
+  .passport-table td:first-child { min-width: 7rem; }
+  .passport-title { font-size: 1.05rem; }
   .hint-esc,
   .hint-desktop { display: none; }
   .chart-hint.hint-rotate,
