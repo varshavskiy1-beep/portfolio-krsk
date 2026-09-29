@@ -12,6 +12,18 @@ export const OAC_PAPER_ACCOUNT_ID = "oac_paper";
 /** Снятые стратегии: не рисуем карточку, чип, паспорт и OG, даже если id ещё в снимке. */
 export const HIDDEN_PORTAL_IDS = new Set(["grail_b20_3x"]);
 
+/** Нормализация bot_id из hash/фида: trim, decode, без query и хвостового /. */
+export function normalizePortalId(id) {
+  if (id == null || id === "") return "";
+  let s = String(id).trim();
+  try {
+    s = decodeURIComponent(s);
+  } catch {
+    /* оставляем как есть */
+  }
+  return s.split(/[?#]/)[0].replace(/\/+$/, "").trim();
+}
+
 export const BOT_TITLE = {
   [ROBOT2_BOT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_BOT_ID]: "Young Bounce Combo",
@@ -164,7 +176,8 @@ export function isOacPaper(account) {
 }
 
 export function isHiddenPortalId(id) {
-  return Boolean(id) && HIDDEN_PORTAL_IDS.has(id);
+  const n = normalizePortalId(id).toLowerCase();
+  return Boolean(n) && HIDDEN_PORTAL_IDS.has(n);
 }
 
 export function isHiddenPortalAccount(account) {

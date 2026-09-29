@@ -4,6 +4,7 @@ import EquityChart from "./EquityChart.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
 import {
@@ -189,14 +190,7 @@ export default function StrategyPage({ botId, data, history, onBack }) {
   const pointsFor = (a) => resolveEquityPoints(a, history);
 
   if (isHiddenPortalId(botId) || (!accounts.length && !isKnownPortalBot(botId))) {
-    return (
-      <div className="wrap">
-        <button type="button" className="chip" onClick={onBack}>
-          ← Назад
-        </button>
-        <p>Стратегия не найдена в снимке.</p>
-      </div>
-    );
+    return <StrategyNotFound onBack={onBack} />;
   }
 
   const passport = getPassport(botId, logic);

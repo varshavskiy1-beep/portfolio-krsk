@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import PositionsTable from "./PositionsTable.jsx";
+import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
 import {
   cardSubtitle,
   cardTitle,
@@ -32,9 +34,7 @@ const fmt = (n, currency) => {
 const num = (v) => (v == null || v === "" ? null : Number(v));
 
 function readRoute() {
-  const h = (window.location.hash || "").replace(/^#/, "");
-  const m = h.match(/^\/?s\/([^/]+)\/?$/);
-  return m ? { name: "strategy", botId: decodeURIComponent(m[1]) } : { name: "home" };
+  return readPortalRoute();
 }
 
 function goStrategy(botId) {
@@ -258,6 +258,9 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  if (isBlockedStrategyRoute(route)) {
+    return <StrategyNotFound onBack={goHome} />;
+  }
   if (err) return <div className="wrap">Не удалось загрузить данные: {err}</div>;
   if (!data) return <div className="wrap">Загрузка…</div>;
 

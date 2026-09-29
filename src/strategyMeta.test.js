@@ -257,6 +257,7 @@ test("portal bots: id in badge, not under title", () => {
 
 test("decommissioned grail_b20_3x is hidden from portal accounts", () => {
   assert.equal(isHiddenPortalId("grail_b20_3x"), true);
+  assert.equal(isHiddenPortalId("GRAIL_B20_3X"), true);
   assert.equal(isHiddenPortalAccount({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), true);
   const merged = mergePortalAccounts([
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
