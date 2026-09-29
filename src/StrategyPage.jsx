@@ -13,6 +13,7 @@ import {
   formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
+  isHiddenPortalId,
   isKnownPortalBot,
   mergePortalAccounts,
   underTitleLabel,
@@ -183,22 +184,23 @@ export default function StrategyPage({ botId, data, history, onBack }) {
     [data, botId],
   );
   const logic =
-    (data?.manifest || []).find((m) => m.bot_id === botId)?.logic || "";
-  const passport = getPassport(botId, logic);
-  const pageTitle = chipLabel(botId);
-
+    (data?.manifest || []).find((m) => m.bot_id === botId && !isHiddenPortalId(m.bot_id))
+      ?.logic || "";
   const pointsFor = (a) => resolveEquityPoints(a, history);
 
-  if (!accounts.length && !isKnownPortalBot(botId)) {
+  if (isHiddenPortalId(botId) || (!accounts.length && !isKnownPortalBot(botId))) {
     return (
       <div className="wrap">
         <button type="button" className="chip" onClick={onBack}>
           ← Назад
         </button>
-        <p>Стратегия «{botId}» не найдена в снимке.</p>
+        <p>Стратегия не найдена в снимке.</p>
       </div>
     );
   }
+
+  const passport = getPassport(botId, logic);
+  const pageTitle = chipLabel(botId);
 
   return (
     <div className="wrap strategy-page">

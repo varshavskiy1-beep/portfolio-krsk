@@ -4,6 +4,9 @@
  * внутри одной валюты побеждает больший процент (pnl/seed).
  */
 
+import { isHiddenPortalAccount } from "./strategyMeta.js";
+
+
 export function seriesKey(account) {
   return `${account.bot_id}::${account.account_id}`;
 }
@@ -67,6 +70,7 @@ export function pickOgWinner(latest, history, currencyFn) {
   const seriesMap = history?.series || {};
   const scored = [];
   for (const account of latest?.accounts || []) {
+    if (isHiddenPortalAccount(account)) continue;
     const row = scoreAccount(account, seriesMap[seriesKey(account)], currencyFn);
     if (row) scored.push(row);
   }
