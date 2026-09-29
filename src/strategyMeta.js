@@ -9,21 +9,28 @@ export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
 export const OAC_PAPER_BOT_ID = "oac_paper";
 export const OAC_PAPER_ACCOUNT_ID = "oac_paper";
 
+export const GRAIL_BOT_ID = "grail_b20_3x";
+export const GRAIL_ACCOUNT_ID = "grail_b20_3x";
+
 export const BOT_TITLE = {
   [ROBOT2_BOT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_BOT_ID]: "Young Bounce Combo",
   [OAC_PAPER_BOT_ID]: "Ядро внимания",
+  [GRAIL_BOT_ID]: "Grail B20 · плечо 3×",
 };
 
 export const ACCOUNT_TITLE = {
   [ROBOT2_ACCOUNT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_ACCOUNT_ID]: "Young Bounce Combo",
   [OAC_PAPER_ACCOUNT_ID]: "Ядро внимания",
+  [GRAIL_ACCOUNT_ID]: "Grail B20 · плечо 3×",
 };
 
 /** Подзаголовок на карточке (только для отдельных paper-ботов). */
 export const ACCOUNT_SUBTITLE = {
   [OAC_PAPER_BOT_ID]: "акции США, старт $10 000. На биржу ордера не идут.",
+  [GRAIL_BOT_ID]:
+    "Одна позиция из корзины 20 крипто-перпов. Вход по часовому плану только с подтверждением на 5 минутах.",
 };
 
 /** Устаревшая пометка live OKX в excluded — на портале не показываем как live. */

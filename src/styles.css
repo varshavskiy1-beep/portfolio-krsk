@@ -250,11 +250,63 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   margin-bottom: 8px;
 }
 .passport-test-gap { border-left: 3px solid #b8860b; }
+.passport-test-book { border-left: 3px solid var(--accent); background: #f3f5f8; }
 .passport-test-status {
   margin: 0 0 8px;
   font-weight: 700;
   font-size: 1.02rem;
 }
+.passport-h4 {
+  margin: 16px 0 8px;
+  font-size: 1rem;
+}
+.passport-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.passport-kpi {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+}
+.passport-kpi-name {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.passport-kpi-value {
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+.passport-kpi-meaning {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+.passport-disclaimer {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  background: #f8eeee;
+  border-left: 3px solid var(--bad);
+  border-radius: 6px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+.passport-windows td { white-space: nowrap; }
+.passport-windows td:first-child { white-space: normal; }
+.passport-window-sub {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+.passport-window-weak td { background: #f8eeee; }
 .passport-dl { margin: 8px 0 0; }
 .passport-dl-row { margin-bottom: 10px; }
 .passport-dl dt { font-weight: 600; }
@@ -375,6 +427,8 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   .passport-table { font-size: 0.84rem; }
   .passport-table td:first-child { min-width: 7rem; }
   .passport-title { font-size: 1.05rem; }
+  .passport-kpis { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .passport-kpi-value { font-size: 1.05rem; }
   .hint-esc,
   .hint-desktop { display: none; }
   .chart-hint.hint-rotate,

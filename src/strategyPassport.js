@@ -1,20 +1,24 @@
 /**
  * Паспорта стратегий кабинета. Только факты из этого репозитория
- * (latest.json manifest/accounts/notes, history.json, strategyMeta, cashCurrency, uiCopy).
+ * (latest.json, history.json, strategyMeta, пакеты passports/<bot_id>/).
  * Неизвестное значение в UI всегда «нет данных» — не выдумывать.
+ * Бумажная эквити кабинета не подписывается как бэктест.
  * Слово seed в пользовательских строках не используем.
  */
 
+import { createGrailPassport } from "./grailPassport.js";
 import { ACCOUNT_SUBTITLE, mergePortalAccounts } from "./strategyMeta.js";
 
 export const NO_DATA = "нет данных";
 
 export const TEST_STATUS = {
   NEEDS_DATA: "needs_data",
+  HAS_BOOK: "has_book",
 };
 
 export const TEST_STATUS_LABEL = {
   [TEST_STATUS.NEEDS_DATA]: "Нужны данные для проверки",
+  [TEST_STATUS.HAS_BOOK]: "Историческая книга на замороженных сигналах · 2026-09-04",
 };
 
 /** Общие термины — показываем словарём, не как факты конкретной стратегии. */
@@ -85,6 +89,38 @@ export const GLOSSARY = [
   {
     term: "Out-of-sample (OOS)",
     meaning: "Участок данных, который не использовали при подборе параметров.",
+  },
+  {
+    term: "m5hard",
+    meaning: "Жёсткое подтверждение на пятиминутном графике: без него часовой план не торгуется.",
+  },
+  {
+    term: "Закрытие t → открытие t+1",
+    meaning: "Сигнал считают на закрытии часа, вход — по открытию следующего часа. Без подглядывания в будущее.",
+  },
+  {
+    term: "stretch_tp",
+    meaning: "Если цель слишком близко к входу — цель отодвигают, а сделку не отменяют. Нужно, чтобы прибыль не была мельче стопа.",
+  },
+  {
+    term: "Cross-маржа",
+    meaning: "Общая маржа по счёту, не изолированная на одну позицию.",
+  },
+  {
+    term: "Коэффициент прибыли (profit factor)",
+    meaning: "Сумма прибылей, делённая на сумму убытков. Около 1 — край почти нулевой.",
+  },
+  {
+    term: "Макс. просадка (MaxDD)",
+    meaning: "Худший спад капитала от пика до дна на выбранном окне.",
+  },
+  {
+    term: "MAR",
+    meaning: "Годовая доходность, делённая на максимальную просадку. Грубый «доход на единицу боли».",
+  },
+  {
+    term: "CAGR",
+    meaning: "Годовая доходность теста. На короткой истории сильно шумит и не является обещанием дохода.",
   },
 ];
 
@@ -219,78 +255,7 @@ const PASSPORTS = {
     testing: paperTesting({ extra: ["определение «радара дня»", "полный юниверс USDT-SWAP"] }),
   },
 
-  grail_b20_3x: {
-    botId: "grail_b20_3x",
-    title: "Одна ставка с плечом ×3",
-    accounts: [{ botId: "grail_b20_3x", accountId: "grail_b20_3x", currency: "USDT" }],
-    essence: {
-      paragraphs: [
-        "Бумажный бот на OKX: в модели не больше одной позиции, условное плечо три к одному. Ордера на живую биржу не отправляются.",
-        "Сигнал считается, когда час закрылся. Вход разрешён только со следующего часа — не в ту же минуту, когда появился сигнал. Нет подходящего кандидата — счёт остаётся в кэше.",
-        "Как именно выбирается кандидат (индикатор, порог, юниверс тикеров) в этом репозитории не описано. Имя «grail_b20_3x» само по себе правило входа не задаёт.",
-      ],
-    },
-    decisionSteps: [
-      "Дождаться закрытия часовой свечи. Сигнал внутри незакрытого часа не используется.",
-      "Проверить, есть ли кандидат на сделку. Правило отбора кандидата в репозитории не задано — в таблице это «нет данных».",
-      "Если кандидата нет — остаться в кэше, новой позиции нет.",
-      "Если кандидат есть — открыть не больше одной позиции с условным плечом ×3, но вход только со следующего часа.",
-      "Сопровождение и выход (стоп, тейк, время удержания) в манифесте не описаны.",
-      "На биржу ордера не уходят.",
-    ],
-    parameters: [
-      param("Режим", "бумага", "Ордера на живую биржу не отправляются."),
-      param("Площадка", "OKX", "Биржа бумажного счёта."),
-      gap(
-        "Инструменты",
-        "Манифест не перечисляет тикеры. Текущие позиции снимка — факт учёта, не юниверс стратегии.",
-      ),
-      param("Таймфрейм сигнала", "1 час", "Сигнал на закрытии часа."),
-      param("Момент входа", "со следующего часа", "Не мгновенно после сигнала."),
-      gap("Источник сигнала / правило кандидата", "В манифесте есть только факт «есть кандидат / нет кандидата»."),
-      param("Число позиций", "не больше одной", "Одновременно в модели одна позиция."),
-      param(
-        "Плечо",
-        "×3",
-        "Условное увеличение размера позиции в три раза относительно капитала без плеча. Конструкция маржи биржи не описана.",
-      ),
-      gap("Размер позиции в деньгах или в доле капитала", "Кроме плеча ×3 доля на сделку не указана."),
-      COMMON_GAPS.stop,
-      COMMON_GAPS.take,
-      gap("Сопровождение позиции", "Трейлинг, усреднение, перенос — в манифесте не описаны."),
-      gap("Правило выхода", "Кроме общей модели «одна позиция» выхода нет."),
-      param("Расписание", "сигнал на закрытии часа, вход со следующего часа", "Другого календаря в манифесте нет."),
-      param("Начальный капитал", "10 000 USDT", "Стартовая сумма бумажного счёта в снимке."),
-      param("Валюта счёта", "USDT", "Каноническая валюта кабинета для этого бота."),
-      param(
-        "Комиссии в учёте",
-        "эквити = кэш леджера после комиссий; ставка — нет данных",
-        "Примечание счёта: открытая маржа в позициях, нереализованный pnl не переоценён.",
-      ),
-      COMMON_GAPS.slippage,
-      param(
-        "Источник данных кабинета",
-        "equity-ro → public/data/latest.json, schema equity_ro.v1",
-        "Исходный код бота в этом репозитории отсутствует.",
-      ),
-    ],
-    risk: {
-      paragraphs: [
-        "Плечо ×3 в модели увеличивает и рост, и просадку относительно счёта без плеча. Это учебный бумажный счёт, не рекомендация.",
-        "Пока правило кандидата не задано документами, паспорт не может честно сказать, когда бот входит и когда остаётся в кэше — кроме самого факта «нет кандидата → кэш».",
-      ],
-      items: [
-        "Режим: только бумага.",
-        "Одна позиция; плечо ×3.",
-        "Ставка комиссии и проскальзывание: нет данных.",
-        "Дневной лимит убытка и стоп по счёту: нет данных.",
-        "Правила остановки бота: нет данных.",
-      ],
-    },
-    testing: paperTesting({
-      extra: ["правило отбора кандидата", "юниверс тикеров", "смысл суффикса b20 в идентификаторе"],
-    }),
-  },
+  grail_b20_3x: createGrailPassport({ param, gap, NO_DATA, TEST_STATUS }),
 
   who_pays: {
     botId: "who_pays",
@@ -850,6 +815,25 @@ function collectUiStrings(passport) {
   for (const p of passport.risk.items) out.push(p);
   out.push(passport.testing.statusLabel, passport.testing.disclaimer);
   for (const m of passport.testing.missing) out.push(m);
+  const book = passport.testing.backtest;
+  if (book) {
+    out.push(
+      book.primaryTitle,
+      book.referenceTitle,
+      book.periodTitle,
+      book.cagrDisclaimer,
+      book.equityNote,
+      book.paperNote,
+      book.weakWindowNote,
+      book.missingAfterPack,
+    );
+    for (const row of book.primaryMetrics || []) {
+      out.push(row.name, row.value, row.meaning);
+    }
+    for (const w of [...(book.windowsLev3 || []), ...(book.windowsLev1 || [])]) {
+      out.push(w.label_ru, w.period, w.cagr, w.maxDd, w.pf, w.trades, w.weak_note_ru);
+    }
+  }
   for (const g of GLOSSARY) {
     out.push(g.term, g.meaning);
   }
@@ -884,20 +868,38 @@ export function validatePassport(passport) {
   }
 
   if (passport.testing?.walkForward) {
-    errors.push("walkForward заполнен, но в репозитории нет walk-forward файлов");
+    errors.push("walkForward заполнен, но полной сетки walk-forward в репозитории нет");
   }
   if (passport.testing?.overlay) {
-    errors.push("overlay заполнен, но в репозитории нет overlay");
-  }
-  if (passport.testing?.backtest) {
-    errors.push("backtest заполнен, но в репозитории нет файлов бэктеста");
+    errors.push("overlay (эталон кривой) заполнен, но файла equity/overlay нет");
   }
   if (passport.testing?.status === TEST_STATUS.NEEDS_DATA) {
+    if (passport.testing.backtest) {
+      errors.push("backtest заполнен при статусе needs_data");
+    }
     if (passport.testing.statusLabel !== TEST_STATUS_LABEL[TEST_STATUS.NEEDS_DATA]) {
       errors.push("неверная подпись статуса «Нужны данные для проверки»");
     }
     if (!passport.testing.missing?.length) {
       errors.push("при статусе needs_data список недостающего пуст");
+    }
+  }
+  if (passport.testing?.status === TEST_STATUS.HAS_BOOK) {
+    const book = passport.testing.backtest;
+    if (!book) errors.push("has_book без блока backtest");
+    if (!passport.testing.asof) errors.push("has_book без даты книги");
+    if (!book?.primaryMetrics?.length) errors.push("has_book без метрик главной карточки");
+    if (!book?.windowsLev3?.length) errors.push("has_book без окон 3×");
+    if (!passport.testing.missing?.length) {
+      errors.push("при статусе has_book список оставшихся пробелов пуст");
+    }
+    for (const row of book?.primaryMetrics || []) {
+      if (!row.known && row.value !== NO_DATA) {
+        errors.push(`метрика «${row.name}»: неизвестное значение должно быть «${NO_DATA}»`);
+      }
+      if (row.known && (row.value == null || row.value === "")) {
+        errors.push(`метрика «${row.name}»: пустое известное значение`);
+      }
     }
   }
 

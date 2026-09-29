@@ -13,10 +13,122 @@ function ValueCell({ row }) {
   return row.value;
 }
 
+function MetricValue({ row }) {
+  if (!row.known || row.value === NO_DATA) {
+    return <span className="passport-nodata">{NO_DATA}</span>;
+  }
+  return row.value;
+}
+
+function WindowsTable({ rows, showWeak }) {
+  return (
+    <div className="table-scroll">
+      <table className="passport-table passport-windows">
+        <thead>
+          <tr>
+            <th>Период</th>
+            <th>Годовая доходность</th>
+            <th>Макс. просадка</th>
+            <th>Коэфф. прибыли</th>
+            <th>Сделок</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((w) => (
+            <tr key={w.id} className={showWeak && w.weak ? "passport-window-weak" : undefined}>
+              <td>
+                {w.label_ru}
+                <div className="passport-window-sub">{w.period}</div>
+              </td>
+              <td>{w.cagr}</td>
+              <td>{w.maxDd}</td>
+              <td>{w.pf}</td>
+              <td>{w.trades}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function TestingBook({ passport }) {
+  const book = passport.testing.backtest;
+  return (
+    <div className="passport-test passport-test-book">
+      <p className="passport-test-status">{passport.testing.statusLabel}</p>
+      <p className="passport-p">{passport.testing.disclaimer}</p>
+
+      <h4 className="passport-h4">{book.primaryTitle}</h4>
+      <div className="passport-kpis">
+        {book.primaryMetrics.map((row) => (
+          <div key={row.name} className="passport-kpi">
+            <div className="passport-kpi-name">{row.name}</div>
+            <div className="passport-kpi-value">
+              <MetricValue row={row} />
+            </div>
+            <div className="passport-kpi-meaning">{row.meaning}</div>
+          </div>
+        ))}
+      </div>
+      <p className="passport-disclaimer">{book.cagrDisclaimer}</p>
+
+      <h4 className="passport-h4">{book.periodTitle}</h4>
+      <WindowsTable rows={book.windowsLev3} showWeak />
+      <p className="passport-p">{book.weakWindowNote}</p>
+
+      <h4 className="passport-h4">{book.referenceTitle}</h4>
+      <p className="passport-hint">
+        Основной продукт — плечо 3×. Ниже — как выглядело бы без плеча. Это справка, не второй
+        продукт.
+      </p>
+      <WindowsTable rows={book.windowsLev1} />
+
+      <p className="passport-p">{book.equityNote}</p>
+      {passport.testing.paperEquity ? (
+        <p className="passport-p">{book.paperNote}</p>
+      ) : (
+        <p className="passport-p">Бумажной кривой эквити для этой стратегии в кабинете тоже нет.</p>
+      )}
+
+      <p className="passport-hint">{book.missingAfterPack}</p>
+      <ul className="passport-risk-list">
+        {passport.testing.missing.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function TestingGap({ passport }) {
+  return (
+    <div className="passport-test passport-test-gap">
+      <p className="passport-test-status">{passport.testing.statusLabel}</p>
+      <p className="passport-p">{passport.testing.disclaimer}</p>
+      {passport.testing.paperEquity ? (
+        <p className="passport-p">
+          На этой странице ниже есть график бумажной эквити кабинета. Он показывает учёт
+          paper-счёта, а не лабораторный бэктест и не walk-forward. Overlay (сравнение с эталоном)
+          в репозитории нет — график эталона не рисуем.
+        </p>
+      ) : (
+        <p className="passport-p">Бумажной кривой эквити для этой стратегии в кабинете тоже нет.</p>
+      )}
+      <p className="passport-hint">Чтобы заполнить эту секцию числами теста, не хватает:</p>
+      <ul className="passport-risk-list">
+        {passport.testing.missing.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function StrategyPassport({ botId, logic }) {
   const passport = getPassport(botId, logic);
   const tech = logic ? rewriteAccountCurrencyCopy(logic, botId) : "";
-  const needsData = passport.testing.status === TEST_STATUS.NEEDS_DATA;
+  const hasBook = passport.testing.status === TEST_STATUS.HAS_BOOK;
 
   return (
     <section className="card passport-card">
@@ -83,25 +195,7 @@ export default function StrategyPassport({ botId, logic }) {
       </ul>
 
       <h3 className="subhead">Бэктест и проверка устойчивости</h3>
-      <div className={`passport-test ${needsData ? "passport-test-gap" : ""}`}>
-        <p className="passport-test-status">{passport.testing.statusLabel}</p>
-        <p className="passport-p">{passport.testing.disclaimer}</p>
-        {passport.testing.paperEquity ? (
-          <p className="passport-p">
-            На этой странице ниже есть график бумажной эквити кабинета. Он показывает учёт
-            paper-счёта, а не лабораторный бэктест и не walk-forward. Overlay (сравнение с эталоном)
-            в репозитории нет — график эталона не рисуем.
-          </p>
-        ) : (
-          <p className="passport-p">Бумажной кривой эквити для этой стратегии в кабинете тоже нет.</p>
-        )}
-        <p className="passport-hint">Чтобы заполнить эту секцию числами теста, не хватает:</p>
-        <ul className="passport-risk-list">
-          {passport.testing.missing.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </div>
+      {hasBook ? <TestingBook passport={passport} /> : <TestingGap passport={passport} />}
 
       {tech ? (
         <details className="tech-details">

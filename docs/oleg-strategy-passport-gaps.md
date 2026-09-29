@@ -45,7 +45,7 @@ Live в кабинете не показываются (блок `excluded` сн
 | bot_id | Заполнено фактами |
 |--------|-------------------|
 | `v6b1` | OKX USDT-SWAP, бумага; сигнал на закрытии часа; вход если цена у дневного хая и «радар дня» включён; лонг на весь свободный кэш; стоп/тейк есть, но без уровней; капитал 10 000 USDT; эквити = кэш леджера после комиссий, маржа в positions, нереализованный pnl не переоценён |
-| `grail_b20_3x` | OKX, бумага, плечо ×3, одна позиция; сигнал на закрытии часа, вход со следующего часа; нет кандидата → кэш; капитал 10 000 USDT; то же примечание про комиссии/маржу |
+| `grail_b20_3x` | **Пакет 2026-09-04 подключён.** OKX USDT-SWAP, корзина 20 без mega-cap, m5hard, confidence ≥55%, одна позиция, плечо 3×, буфер 57%, стоп ≤12%, min RR 1.0 stretch_tp, cross, overlays; книга full_lev3: CAGR 1029.7%, MaxDD 47.9%, PF 1.909, MAR 21.51, 468 сделок. Бумажная эквити кабинета — не эта книга |
 | `who_pays` | пять счетов и площадок; допуск «биржа открыта + сигнал S2–S5 в latest.json»; валюты не складываются; бумага |
 | `forts_adr_adaptive` | FORTS, бумага; раз в месяц один из трёх вариантов полос ADR; eod_flat (overnight нет); капитал 1 500 000 RUB; эквити восстановлен из jsonl fills |
 | `forts_adr_static` | FORTS, бумага; фиксированные полосы ADR; лимит у нижней / лимит у верхней; тейк и стоп есть без уровней; к концу дня в ноль; капитал 1 500 000 RUB |
@@ -54,9 +54,9 @@ Live в кабинете не показываются (блок `excluded` сн
 | `young_bounce_combo` | Binance spot, бумага; 10 000 USDT; монеты 25–90 дней; паттерны crash / listing_dump; выход трейлинг или 10 дней |
 | `oac_paper` | акции США, бумага, 10 000 USD; ежедневный топ-20 OCC; раз в неделю до 10 имён, 15/20 сессий, 10% на имя (5% если JPM или BTC < EMA100); остаток в BOXX; флаг `defence` без правил |
 
-**Нет ни у одной стратегии:** walk-forward окон, отдельных файлов бэктеста, overlay/эталона, ставки комиссии, проскальзывания, полного исходника алгоритма.
+**Нет ни у одной стратегии, кроме `grail_b20_3x`:** отдельного пакета книги (algorithm/config/windows/costs). У grail есть замороженная книга LEV_1_VS_3 от 2026-09-04; у остальных по-прежнему нет файлов бэктеста.
 
-Бумажная кривая эквити в кабинете **не** называется бэктестом и **не** называется walk-forward.
+**По-прежнему ни у одной (включая grail):** Sharpe, trades.csv, equity.csv ряда, полной сетки walk-forward, overlay-графика эквити. Бумажная кривая кабинета **не** называется бэктестом и **не** называется walk-forward.
 
 ---
 
@@ -134,32 +134,42 @@ missing_fields:
 
 ### grail_b20_3x
 
+Пакет Олега от 2026-09-04 лежит в `passports/grail_b20_3x/` и читается лоадером `src/grailPassport.js`. Секция «Бэктест и проверка устойчивости» больше не пишет «Нужны данные для проверки»: показаны главная карточка `full_lev3` и окна 3× / справка 1×.
+
 ```yaml
 bot_id: grail_b20_3x
-known: [venue=OKX, paper=true, leverage=3, max_positions=1, signal_on=hour_close, entry_on=next_hour, no_candidate=cash, capital=10000 USDT]
-missing_files:
+pack_asof: 2026-09-04
+known: [venue=OKX, market=USDT-SWAP, paper_or_prelive=true, not_live_marketing=true, leverage=3, no_5x=true, max_positions=1, buffer=0.57, max_sl=12pct, min_rr=1.0, rr_action=stretch_tp, td_mode=cross, signal=m5hard, min_confidence=0.55, causality=close_t_open_t1, universe=20_no_mega, fee_bps=5, slip_bps=2, overlays="capital_tp 12 / profit_lock 7.5+25 / camarilla 3.75", primary="full_lev3 CAGR 1029.7 MaxDD 47.9 PF 1.909 MAR 21.51 n=468"]
+closed_by_this_pack:
   - passports/grail_b20_3x/algorithm.md
   - passports/grail_b20_3x/config.json
+  - passports/grail_b20_3x/dashboard_card.json
+  - passports/grail_b20_3x/dashboard_metrics.json
+  - passports/grail_b20_3x/windows.json
+  - passports/grail_b20_3x/windows.csv
+  - passports/grail_b20_3x/costs.json
+  - passports/grail_b20_3x/capital.json
+  - passports/grail_b20_3x/overlay.json   # kind=null; только правила выхода, не график
+  - passports/grail_b20_3x/aggregation.json
+missing_files:
   - passports/grail_b20_3x/trades.csv
   - passports/grail_b20_3x/equity.csv
-  - passports/grail_b20_3x/windows.json
-  - passports/grail_b20_3x/costs.json
-  - passports/grail_b20_3x/overlay.json
-  - passports/grail_b20_3x/aggregation.json
 missing_fields:
-  - candidate.rule
-  - universe.symbols
-  - position_size
-  - stop_px_or_rule
-  - take_px_or_rule
-  - manage.rules
-  - exit.rules
-  - name_suffix.b20_meaning
-  - commission_bps
-  - slippage_bps
-  - walkforward.windows
-  - overlay.benchmark
+  - sharpe
+  - winrate
+  - avg_win
+  - avg_loss
+  - vol_ann
+  - walkforward.full_grid
+  - overlay.benchmark_equity
+honest_notes:
+  - 2024H2 @ 3x PF≈1.074 — слабое окно, на сайте показано
+  - paper-smoke / latest.json equity — не источник CAGR
+  - 5x сознательно исключён
+  - BTC/ETH/SOL/BNB/XRP в корзине нет
 ```
+
+Как проверить после деплоя: открыть `#/s/grail_b20_3x`. В паспорте должны быть пять секций; в «Бэктест…» — дата книги 2026-09-04, CAGR 1029,7%, просадка 47,9%, PF 1,909, 468 сделок, дисклеймер рядом с CAGR, таблица окон 3× с подсвеченным 2024H2 (PF 1,074), справка 1×, фраза что кривая эквити теста не приложена. Ниже по странице бумажный график кабинета не должен подписываться как эта книга.
 
 ### who_pays
 
@@ -438,7 +448,7 @@ t,equity,series
 2023-12-31T00:00:00Z,10100,walkforward_oos
 ```
 
-Когда такие файлы появятся **с реальными числами**, секцию «Бэктест и проверка устойчивости» можно заполнить: окна train/test, комиссии, метрики train и OOS, число сделок, макс. просадка, доходность, стабильность по окнам. Если будет overlay — подписать, **что с чем сравнивается**. Обычный бэктест на всей истории walk-forward называть нельзя.
+Для `grail_b20_3x` реальные числа окон уже в пакете: секция заполнена как историческая книга, не как walk-forward. Когда появятся **trades.csv / equity.csv / полная сетка train/test**, можно добавить журнал, кривую теста и устойчивость по окнам обучения. Если будет overlay-ряд — подписать, **что с чем сравнивается**. Обычный бэктест на всей истории walk-forward называть нельзя. Для остальных стратегий секция по-прежнему «Нужны данные для проверки».
 
 ---
 

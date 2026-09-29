@@ -1,0 +1,16 @@
+{
+  "method": null,
+  "windows_used": [
+    "full_lev3",
+    "2024H2_lev3",
+    "2025_lev3",
+    "2026YTD_lev3"
+  ],
+  "reference_windows_used": [
+    "full_lev1",
+    "2024H2_lev1",
+    "2025_lev1",
+    "2026YTD_lev1"
+  ],
+  "notes": "Срезы одной замороженной книги, не агрегация walk-forward. Полной сетки train/test нет. wf_pf_gt_1 в эталоне — пометка 1/1 только на full_lev3."
+}

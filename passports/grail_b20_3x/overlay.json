@@ -1,0 +1,13 @@
+{
+  "kind": null,
+  "benchmark_id": null,
+  "compared_series": null,
+  "label_ru": null,
+  "strategy_exit_overlays": {
+    "capital_tp_pct": 12.0,
+    "profit_lock_peak_pct": 7.5,
+    "profit_lock_giveback_pct": 25.0,
+    "camarilla_full_exit_min_profit_pct": 3.75
+  },
+  "notes": "Кривая эквити теста не приложена — график сравнения с эталоном не рисуем. Числа capital_tp / profit_lock / camarilla — правила выхода стратегии, не бенчмарк."
+}
