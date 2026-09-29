@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-29T08:34:49Z",
+  "generated_at": "2026-09-29T08:46:55Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -44,12 +44,12 @@
       "bot_id": "grail_b20_3x",
       "account_id": "grail_b20_3x",
       "currency": "USDT",
-      "equity": "28609.86953819700",
-      "cash": "28609.86953819700",
-      "seed": "10000",
-      "updated_utc": "2026-09-29T08:05:25Z",
+      "equity": null,
+      "cash": null,
+      "seed": null,
+      "updated_utc": null,
       "positions": [],
-      "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
+      "error": "ledger_missing"
     },
     {
       "bot_id": "who_pays",
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-29T08:34:46.751617Z",
+      "updated_utc": "2026-09-29T08:46:54.821975Z",
       "positions": []
     },
     {
@@ -66,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-29T08:34:46.754820Z",
+      "updated_utc": "2026-09-29T08:46:54.824359Z",
       "positions": []
     },
     {
@@ -75,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-29T08:34:46.758192Z",
+      "updated_utc": "2026-09-29T08:46:54.827699Z",
       "positions": []
     },
     {
@@ -84,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14706.94177974001",
-      "updated_utc": "2026-09-29T08:34:46.761975Z",
+      "updated_utc": "2026-09-29T08:46:54.831902Z",
       "positions": []
     },
     {
@@ -93,7 +93,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15015.965893270994",
-      "updated_utc": "2026-09-29T08:34:46.765214Z",
+      "updated_utc": "2026-09-29T08:46:54.835050Z",
       "positions": [
         {
           "position_id": "p_21ef7878c50e",
