@@ -16,6 +16,7 @@ import {
   validateDisplayedPassports,
   validatePassport,
 } from "./strategyPassport.js";
+import { GRAIL_PACK } from "./grailPassport.js";
 import { PORTAL_SHELLS } from "./strategyMeta.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -78,15 +79,22 @@ test("UI copy never contains the word seed", () => {
   }
 });
 
-test("testing section is needs_data and does not invent walk-forward", () => {
+test("testing section is needs_data unless a real book pack is present", () => {
   for (const botId of DISPLAYED) {
     const t = getPassport(botId).testing;
-    assert.equal(t.status, TEST_STATUS.NEEDS_DATA);
-    assert.equal(t.statusLabel, TEST_STATUS_LABEL[TEST_STATUS.NEEDS_DATA]);
     assert.equal(t.walkForward, null);
-    assert.equal(t.backtest, null);
     assert.equal(t.overlay, null);
     assert.ok(t.missing.length >= 8, botId);
+    if (botId === "grail_b20_3x") {
+      assert.equal(t.status, TEST_STATUS.HAS_BOOK);
+      assert.equal(t.statusLabel, TEST_STATUS_LABEL[TEST_STATUS.HAS_BOOK]);
+      assert.ok(t.backtest);
+      assert.match(t.disclaimer, /замороженных сигналах/i);
+      continue;
+    }
+    assert.equal(t.status, TEST_STATUS.NEEDS_DATA);
+    assert.equal(t.statusLabel, TEST_STATUS_LABEL[TEST_STATUS.NEEDS_DATA]);
+    assert.equal(t.backtest, null);
     assert.match(t.disclaimer, /не бэктест и не walk-forward/i);
   }
 });
@@ -131,17 +139,20 @@ test("manifest bot_ids all have passports", () => {
   }
 });
 
-test("known facts stay tied to snapshot, not invented numbers", () => {
+test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   const grail = getPassport("grail_b20_3x");
   assert.match(
     grail.parameters.find((r) => r.name === "Плечо").value,
-    /×3/,
+    /3×/,
   );
   assert.match(
     grail.parameters.find((r) => r.name === "Число позиций").value,
     /одной/,
   );
-  assert.equal(grail.parameters.find((r) => r.name === "Инструменты").known, false);
+  assert.equal(grail.parameters.find((r) => r.name === "Инструменты").known, true);
+  assert.match(grail.parameters.find((r) => r.name === "Инструменты").value, /DOGE/);
+  assert.match(grail.parameters.find((r) => r.name === "Инструменты").value, /MSTR/);
+  assert.doesNotMatch(grail.parameters.find((r) => r.name === "Инструменты").value, /\bBTC\b/);
 
   const oac = getPassport("oac_paper");
   assert.match(oac.parameters.find((r) => r.name === "Размер позиции (базовый)").value, /10%/);
@@ -154,4 +165,91 @@ test("known facts stay tied to snapshot, not invented numbers", () => {
   const yb = getPassport("young_bounce_combo");
   assert.match(yb.parameters.find((r) => r.name === "Фильтр имён").value, /25–90/);
   assert.match(yb.parameters.find((r) => r.name === "Выход").value, /10 дней/);
+});
+
+test("grail_b20_3x reads the real passport pack and does not invent missing metrics", () => {
+  const grail = getPassport("grail_b20_3x");
+  const { card, metrics, windows, config, costs, capital } = GRAIL_PACK;
+  const book = grail.testing.backtest;
+  const kpi = (name) => book.primaryMetrics.find((r) => r.name === name);
+
+  assert.equal(grail.packSource, "passports/grail_b20_3x");
+  assert.equal(grail.title, "Grail B20 · плечо 3×");
+  assert.equal(grail.testing.status, TEST_STATUS.HAS_BOOK);
+  assert.equal(grail.testing.asof, "2026-09-04");
+  assert.equal(grail.testing.source, card.source);
+  assert.equal(card.cagr_pct, 1029.7);
+  assert.equal(card.max_dd_pct, 47.9);
+  assert.equal(card.profit_factor, 1.909);
+  assert.equal(card.n_trades, 468);
+  assert.equal(card.asof, "2026-09-04");
+  assert.equal(kpi("Годовая доходность (CAGR)").value, "1\u00a0029,7%");
+  assert.equal(kpi("Макс. просадка").value, "47,9%");
+  assert.equal(kpi("Коэффициент прибыли").value, "1,909");
+  assert.equal(kpi("Доход на единицу просадки (MAR)").value, "21,51");
+  assert.equal(kpi("Сделок").value, "468");
+  assert.equal(kpi("Дата книги").value, "2026-09-04");
+  assert.equal(kpi("Sharpe").value, NO_DATA);
+  assert.equal(kpi("Sharpe").known, false);
+  assert.equal(kpi("Доля прибыльных").value, NO_DATA);
+  assert.equal(kpi("Годовая волатильность").value, NO_DATA);
+
+  const full3 = book.windowsLev3.find((w) => w.id === "full_lev3");
+  const h2 = book.windowsLev3.find((w) => w.id === "2024H2_lev3");
+  const y25 = book.windowsLev3.find((w) => w.id === "2025_lev3");
+  const y26 = book.windowsLev3.find((w) => w.id === "2026YTD_lev3");
+  assert.equal(full3.cagr, "1\u00a0029,7%");
+  assert.equal(full3.pf, "1,909");
+  assert.equal(h2.weak, true);
+  assert.equal(h2.pf, "1,074");
+  assert.equal(h2.cagr, "26,2%");
+  assert.equal(h2.maxDd, "43,1%");
+  assert.equal(h2.trades, "113");
+  assert.equal(y25.pf, "2,129");
+  assert.equal(y26.trades, "126");
+  assert.match(book.weakWindowNote, /1,07/);
+
+  const full1 = book.windowsLev1.find((w) => w.id === "full_lev1");
+  assert.equal(full1.cagr, "100,2%");
+  assert.equal(full1.pf, "1,741");
+  assert.equal(full1.trades, "241");
+
+  assert.equal(windows.primary_window, "full_lev3");
+  assert.equal(windows.windows.length, metrics.windows.length);
+  assert.equal(config.leverage, 3);
+  assert.equal(config.margin_buffer_pct, 0.57);
+  assert.equal(config.max_sl_distance_pct, 12);
+  assert.equal(config.min_rr, 1);
+  assert.equal(config.rr_action, "stretch_tp");
+  assert.equal(config.td_mode, "cross");
+  assert.equal(config.n_symbols, 20);
+  assert.equal(config.symbols.length, 20);
+  assert.equal(costs.commission_bps, 5);
+  assert.equal(costs.slippage_bps, 2);
+  assert.equal(capital.initial_capital, 10000);
+  assert.equal(metrics.primary.sharpe, null);
+  assert.equal(metrics.overlays.capital_tp_pct, 12);
+  assert.equal(metrics.overlays.profit_lock_peak_pct, 7.5);
+  assert.equal(metrics.overlays.profit_lock_giveback_pct, 25);
+  assert.equal(metrics.overlays.camarilla_full_exit_min_profit_pct, 3.75);
+
+  assert.match(grail.parameters.find((r) => r.name === "Буфер капитала").value, /57%/);
+  assert.match(grail.parameters.find((r) => r.name === "Макс. стоп").value, /12%/);
+  assert.match(grail.parameters.find((r) => r.name === "Комиссия теста").value, /5/);
+  assert.match(grail.parameters.find((r) => r.name === "Проскальзывание теста").value, /2/);
+  assert.equal(grail.parameters.find((r) => r.name === "Sharpe").known, false);
+  assert.match(grail.parameters.find((r) => r.name === "Не торгует").value, /BTC/);
+  assert.match(grail.risk.paragraphs.join(" "), /47,9%/);
+  assert.match(grail.risk.paragraphs.join(" "), /5×/);
+  assert.match(book.cagrDisclaimer, /не гарантирует/);
+  assert.match(book.equityNote, /не приложена/);
+  assert.match(book.paperNote, /не эта книга/);
+  assert.doesNotMatch(grail.essence.paragraphs.join(" "), /гарантированн/i);
+  assert.doesNotMatch(passportUiStrings("grail_b20_3x").join("\n"), /гарантированная доходность/i);
+
+  const algo = readFileSync(join(root, "passports/grail_b20_3x/algorithm.md"), "utf8");
+  assert.match(algo, /m5hard/);
+  assert.match(algo, /55%/);
+  assert.match(algo, /обещать «живой боевой счёт/);
+  assert.ok(validatePassport(grail).length === 0, validatePassport(grail).join("; "));
 });

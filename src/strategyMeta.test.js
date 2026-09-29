@@ -5,6 +5,8 @@ import {
   OAC_PAPER_BOT_ID,
   ROBOT2_ACCOUNT_ID,
   ROBOT2_BOT_ID,
+  GRAIL_ACCOUNT_ID,
+  GRAIL_BOT_ID,
   YOUNG_BOUNCE_ACCOUNT_ID,
   YOUNG_BOUNCE_BOT_ID,
   accountIdBadge,
@@ -241,6 +243,7 @@ test("cardTitle never shows raw oac_paper or young_bounce ids", () => {
   assert.equal(displayTitle({ bot_id: OAC_PAPER_BOT_ID, account_id: OAC_PAPER_ACCOUNT_ID }), "Ядро внимания");
   assert.equal(chipLabel(OAC_PAPER_BOT_ID), "Ядро внимания");
   assert.equal(chipLabel(YOUNG_BOUNCE_BOT_ID), "Young Bounce Combo");
+  assert.equal(chipLabel(GRAIL_BOT_ID), "Grail B20 · плечо 3×");
 });
 
 test("portal bots: id in badge, not under title", () => {
@@ -250,6 +253,11 @@ test("portal bots: id in badge, not under title", () => {
   const yb = { bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID };
   assert.equal(accountIdBadge(yb), YOUNG_BOUNCE_ACCOUNT_ID);
   assert.equal(underTitleLabel(yb), null);
+  const grail = { bot_id: GRAIL_BOT_ID, account_id: GRAIL_ACCOUNT_ID };
+  assert.equal(accountIdBadge(grail), GRAIL_ACCOUNT_ID);
+  assert.equal(underTitleLabel(grail), null);
+  assert.equal(cardTitle(grail), "Grail B20 · плечо 3×");
+  assert.match(cardSubtitle(grail), /20 крипто-перпов/);
 });
 
 test("non-portal bot still shows account id under title when title differs", () => {
