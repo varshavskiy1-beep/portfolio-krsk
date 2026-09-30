@@ -171,9 +171,13 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   const de = getPassport("desyatka_earn_paper");
   assert.equal(de.title, "Десятка Earn");
   assert.match(de.parameters.find((r) => r.name === "Начальный капитал").value, /10 000 USD/);
-  assert.doesNotMatch(de.essence.paragraphs.join("\n"), /100 000|100000/);
+  assert.equal(
+    de.parameters.find((r) => r.name === "Рынок").meaning,
+    "акции США, старт 10 000 USD. На биржу ордера не идут.",
+  );
+  assert.doesNotMatch(de.essence.paragraphs.join("\n"), /100 000|100000|\$100/);
   for (const s of passportUiStrings("desyatka_earn_paper")) {
-    assert.doesNotMatch(s, /100 000|100000/, s);
+    assert.doesNotMatch(s, /100 000|100000|\$100 000/, s);
   }
   assert.match(de.parameters.find((r) => r.name === "Комиссия").value, /5 б\.п\./);
   assert.match(de.parameters.find((r) => r.name === "Проскальзывание").value, /10 б\.п\./);

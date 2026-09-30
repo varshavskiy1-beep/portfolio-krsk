@@ -273,8 +273,8 @@ test("mergePortalAccounts adds desyatka earn shell when absent", () => {
   assert.equal(row.seed, "10000");
   assert.equal(hasAccountData(row), false);
   assert.equal(isDesyatkaEarn(row), true);
-  assert.match(cardSubtitle(row), /акции США, старт \$10 000/);
-  assert.doesNotMatch(cardSubtitle(row), /100 000|100000/);
+  assert.equal(cardSubtitle(row), "акции США, старт 10 000 USD. На биржу ордера не идут.");
+  assert.doesNotMatch(cardSubtitle(row), /\$100|100 000|100000|\$10 000/);
   assert.equal(accountIdBadge(row), DESYATKA_EARN_ACCOUNT_ID);
   assert.equal(underTitleLabel(row), null);
   assert.equal(showsFreeCash(row), false);
