@@ -45,11 +45,12 @@ test("displayNote rewrites Young Bounce / Robot 2 account currency to USDT", () 
   });
   assert.match(oac, /10 000 USD/);
   assert.doesNotMatch(oac, /USDT/);
-  const de = displayNote("Стартовый капитал 100 000 USD. На биржу ордера не идут.", {
+  const de = displayNote("Стартовый капитал 10 000 USD. На биржу ордера не идут.", {
     bot_id: "desyatka_earn_paper",
     account_id: "desyatka_earn_paper",
   });
-  assert.match(de, /100 000 USD/);
+  assert.match(de, /10 000 USD/);
+  assert.doesNotMatch(de, /100 000|100000/);
   assert.doesNotMatch(de, /USDT/);
 });
 
