@@ -93,6 +93,7 @@ export function lastEquityValue(account) {
  * Кривая для карточки: ряд в поле `equity`, иначе equity_curve,
  * иначе history.series[bot::account], иначе одна точка из скаляра.
  * error + пустой ряд → [] (не рисуем нулевую линию).
+ * Теневые поля sit / earn_boxx / qqq_x14 / qqq / spy на линию не идут.
  */
 export function resolveEquityPoints(account, history) {
   if (!hasAccountData(account)) return [];

@@ -16,6 +16,7 @@ import {
   hasBoxxCash,
   mergePortalAccounts,
   portalExcluded,
+  showsFreeCash,
   underTitleLabel,
 } from "./strategyMeta.js";
 import { displayNote, fromCapitalLine } from "./uiCopy.js";
@@ -48,10 +49,7 @@ function goHome() {
 function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const [mode, setMode] = useState("money");
   const currency = canonicalCurrency(a);
-  const title =
-    a.bot_id === "oac_paper" || a.account_id === "oac_paper"
-      ? "Ядро внимания"
-      : cardTitle(a);
+  const title = cardTitle(a);
   const subtitle = cardSubtitle(a);
   const idUnderTitle = underTitleLabel(a);
   const hasData = hasAccountData(a);
@@ -91,6 +89,11 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       {hasData && hasBoxxCash(a) ? (
         <div className="updated">
           BOXX (кэш): {fmt(num(a.boxx_usd), currency)} {currency}
+        </div>
+      ) : null}
+      {hasData && showsFreeCash(a) ? (
+        <div className="updated">
+          кэш: {fmt(num(a.cash), currency)} {currency}
         </div>
       ) : null}
 

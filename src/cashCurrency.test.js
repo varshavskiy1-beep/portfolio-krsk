@@ -52,24 +52,30 @@ test("robot 2 paper account maps to USDT", () => {
   assert.equal(canonicalCurrency({ bot_id: "other", account_id: "paper_block2", currency: "RUB" }), "USDT");
 });
 
-test("currency chips: Robot 2 and Young Bounce under USDT, OAC under USD", () => {
+test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятка under USD", () => {
   const accounts = [
     { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB" },
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT" },
     { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2", currency: "USD", equity: "10000" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
+    { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "100000" },
     { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
   ];
   const usd = accounts.filter((a) => canonicalCurrency(a) === "USD");
   const usdt = accounts.filter((a) => canonicalCurrency(a) === "USDT");
+  const rub = accounts.filter((a) => canonicalCurrency(a) === "RUB");
   assert.deepEqual(
     usd.map((a) => a.account_id),
-    ["oac_paper", "paper_us_eq"],
+    ["oac_paper", "desyatka_earn_paper", "paper_us_eq"],
   );
   assert.deepEqual(
     usdt.map((a) => a.account_id),
     ["v6b1", "paper_block2", "young_bounce_combo"],
+  );
+  assert.deepEqual(
+    rub.map((a) => a.account_id),
+    ["forts_adr_static"],
   );
 });
 
@@ -117,6 +123,30 @@ test("oac paper is always USD and never remapped to USDT/RUB", () => {
   );
   assert.equal(
     canonicalCurrency({ bot_id: "oac_paper", account_id: "x", currency: "USDT" }),
+    "USD",
+  );
+});
+
+test("desyatka earn is always USD and never remapped to USDT/RUB", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "desyatka_earn_paper",
+      account_id: "desyatka_earn_paper",
+      currency: "USD",
+    }),
+    "USD",
+  );
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "desyatka_earn_paper",
+      account_id: "desyatka_earn_paper",
+      venue: "US_EQ",
+      currency: "RUB",
+    }),
+    "USD",
+  );
+  assert.equal(
+    canonicalCurrency({ bot_id: "desyatka_earn_paper", account_id: "x", currency: "USDT" }),
     "USD",
   );
 });

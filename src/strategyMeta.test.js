@@ -1,6 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  DESYATKA_EARN_ACCOUNT_ID,
+  DESYATKA_EARN_BOT_ID,
+  DESYATKA_EARN_TITLE,
   OAC_PAPER_ACCOUNT_ID,
   OAC_PAPER_BOT_ID,
   ROBOT2_ACCOUNT_ID,
@@ -16,12 +19,14 @@ import {
   formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
+  isDesyatkaEarn,
   isHiddenPortalAccount,
   isHiddenPortalId,
   isOacPaper,
   mergePortalAccounts,
   portalExcluded,
   showsDefenceBadge,
+  showsFreeCash,
   showsPaperBadge,
   underTitleLabel,
 } from "./strategyMeta.js";
@@ -31,6 +36,7 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
     { id: "three_robots_finam_live", reason: "live Finam" },
     { id: ROBOT2_BOT_ID, reason: "live OKX" },
     { id: "three_robots_okx_spcx_btc_4h", reason: "live OKX" },
+    { id: DESYATKA_EARN_BOT_ID, reason: "live cluster" },
   ];
   const visible = portalExcluded(excluded);
   assert.deepEqual(
@@ -244,6 +250,99 @@ test("cardTitle never shows raw oac_paper or young_bounce ids", () => {
   assert.equal(chipLabel(OAC_PAPER_BOT_ID), "Ядро внимания");
   assert.equal(chipLabel(YOUNG_BOUNCE_BOT_ID), "Young Bounce Combo");
   assert.doesNotMatch(chipLabel("grail_b20_3x"), /Grail B20/);
+});
+
+test("displayTitle maps desyatka earn ids to Десятка Earn", () => {
+  assert.equal(
+    displayTitle({ bot_id: DESYATKA_EARN_BOT_ID, account_id: DESYATKA_EARN_ACCOUNT_ID }),
+    DESYATKA_EARN_TITLE,
+  );
+  assert.equal(cardTitle({ bot_id: DESYATKA_EARN_BOT_ID, account_id: DESYATKA_EARN_ACCOUNT_ID }), DESYATKA_EARN_TITLE);
+  assert.equal(chipLabel(DESYATKA_EARN_BOT_ID), DESYATKA_EARN_TITLE);
+});
+
+test("mergePortalAccounts adds desyatka earn shell when absent", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === DESYATKA_EARN_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, DESYATKA_EARN_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "USD");
+  assert.equal(row.seed, "100000");
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isDesyatkaEarn(row), true);
+  assert.match(cardSubtitle(row), /акции США, старт \$100 000/);
+  assert.equal(accountIdBadge(row), DESYATKA_EARN_ACCOUNT_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsFreeCash(row), false);
+});
+
+test("mergePortalAccounts keeps published desyatka earn account", () => {
+  const published = {
+    bot_id: DESYATKA_EARN_BOT_ID,
+    account_id: DESYATKA_EARN_ACCOUNT_ID,
+    currency: "USD",
+    equity: "100250.0",
+    seed: "100000",
+    cash: "1250.0",
+    positions: [{ symbol: "AAPL", side: "long", qty: "10", avg_px: "190.5" }],
+    as_of: "2026-09-29",
+    next_rebalance: "2026-10-06",
+    updated_utc: "2026-09-30T04:00:00Z",
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === DESYATKA_EARN_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(rows[0].equity, "100250.0");
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.equal(showsFreeCash(rows[0]), true);
+  assert.match(formatUpdatedLine(rows[0]), /сессия 2026-09-29/);
+  assert.match(formatUpdatedLine(rows[0]), /обновлено 2026-09-30T04:00:00Z/);
+  assert.match(formatUpdatedLine(rows[0]), /ребаланс 2026-10-06/);
+});
+
+test("desyatka earn error + empty equity is no data, never zero", () => {
+  assert.equal(
+    hasAccountData({
+      bot_id: DESYATKA_EARN_BOT_ID,
+      account_id: DESYATKA_EARN_ACCOUNT_ID,
+      error: "ledger_missing",
+      equity: [],
+      seed: "100000",
+    }),
+    false,
+  );
+  assert.equal(
+    hasAccountData({
+      bot_id: DESYATKA_EARN_BOT_ID,
+      account_id: DESYATKA_EARN_ACCOUNT_ID,
+      error: "no_equity_yet",
+      equity: null,
+      seed: "100000",
+    }),
+    false,
+  );
+});
+
+test("formatUpdatedLine skips missing next_rebalance", () => {
+  assert.equal(formatUpdatedLine({ updated_utc: "2026-09-30T00:00:00Z" }), "обновлено 2026-09-30T00:00:00Z");
+  assert.doesNotMatch(formatUpdatedLine({ as_of: "2026-09-29" }), /ребаланс/);
+});
+
+test("desyatka helpers: subtitle, cash, badge", () => {
+  const account = {
+    bot_id: DESYATKA_EARN_BOT_ID,
+    account_id: DESYATKA_EARN_ACCOUNT_ID,
+    cash: "0",
+  };
+  assert.match(accountSubtitle(account), /акции США/);
+  assert.equal(showsPaperBadge(account), true);
+  assert.equal(showsFreeCash(account), true);
+  assert.equal(showsFreeCash({ bot_id: OAC_PAPER_BOT_ID, cash: "10" }), false);
+  assert.equal(isDesyatkaEarn(account), true);
 });
 
 test("portal bots: id in badge, not under title", () => {
