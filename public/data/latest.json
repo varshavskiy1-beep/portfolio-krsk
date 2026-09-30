@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-30T15:28:42Z",
+  "generated_at": "2026-09-30T15:46:49Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-30T15:28:34.864515Z",
+      "updated_utc": "2026-09-30T15:46:44.481294Z",
       "positions": []
     },
     {
@@ -55,8 +55,17 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1997968.99499013",
-      "updated_utc": "2026-09-30T15:28:34.867371Z",
-      "positions": []
+      "updated_utc": "2026-09-30T15:46:44.484876Z",
+      "positions": [
+        {
+          "position_id": "p_c5e2cadf6c85",
+          "symbol": "GAZP",
+          "side": "long",
+          "qty": "5111.0",
+          "avg_px": "97.76886",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -64,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1505255.0428704",
-      "updated_utc": "2026-09-30T15:28:34.870518Z",
+      "updated_utc": "2026-09-30T15:46:44.488222Z",
       "positions": [
         {
           "position_id": "p_bc35aadbdf40",
@@ -90,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14720.880008982009",
-      "updated_utc": "2026-09-30T15:28:34.873421Z",
+      "updated_utc": "2026-09-30T15:46:44.491408Z",
       "positions": []
     },
     {
@@ -99,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-09-30T15:28:34.876384Z",
+      "updated_utc": "2026-09-30T15:46:44.495534Z",
       "positions": []
     },
     {
@@ -266,7 +275,7 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-30T15:20:00Z",
+      "updated_utc": "2026-09-30T15:40:01Z",
       "positions": [],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-29",
