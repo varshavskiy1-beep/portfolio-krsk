@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-30T14:03:05Z",
+  "generated_at": "2026-09-30T14:15:11Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-30T14:03:00.066582Z",
+      "updated_utc": "2026-09-30T14:15:07.170805Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1990998.48774778",
-      "updated_utc": "2026-09-30T14:03:00.071553Z",
+      "updated_utc": "2026-09-30T14:15:07.174203Z",
       "positions": [
         {
           "position_id": "p_c1227f503ece",
@@ -80,17 +80,9 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1502808.01465728",
-      "updated_utc": "2026-09-30T14:03:00.075604Z",
+      "equity": "1505255.0428704",
+      "updated_utc": "2026-09-30T14:15:07.178738Z",
       "positions": [
-        {
-          "position_id": "p_ad1baf7e8d9c",
-          "symbol": "GZZ6",
-          "side": "long",
-          "qty": "18.0",
-          "avg_px": "9974.9884",
-          "stop_px": null
-        },
         {
           "position_id": "p_bc35aadbdf40",
           "symbol": "SiZ6",
@@ -107,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14720.880008982009",
-      "updated_utc": "2026-09-30T14:03:00.079639Z",
+      "updated_utc": "2026-09-30T14:15:07.183618Z",
       "positions": []
     },
     {
@@ -116,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-09-30T14:03:00.083791Z",
+      "updated_utc": "2026-09-30T14:15:07.187153Z",
       "positions": []
     },
     {
@@ -283,7 +275,7 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-30T14:00:00Z",
+      "updated_utc": "2026-09-30T14:10:01Z",
       "positions": [],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-29",
