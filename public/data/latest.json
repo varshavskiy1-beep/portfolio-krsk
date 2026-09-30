@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-30T17:44:46Z",
+  "generated_at": "2026-09-30T18:00:53Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-30T17:44:37.778753Z",
+      "updated_utc": "2026-09-30T18:00:52.042286Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1997968.99499013",
-      "updated_utc": "2026-09-30T17:44:37.783028Z",
+      "updated_utc": "2026-09-30T18:00:52.047789Z",
       "positions": [
         {
           "position_id": "p_c5e2cadf6c85",
@@ -73,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1504318.51082784",
-      "updated_utc": "2026-09-30T17:44:37.786400Z",
+      "updated_utc": "2026-09-30T18:00:52.051232Z",
       "positions": [
         {
           "position_id": "p_afca9d273b30",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14720.880008982009",
-      "updated_utc": "2026-09-30T17:44:37.789884Z",
+      "updated_utc": "2026-09-30T18:00:52.054156Z",
       "positions": []
     },
     {
@@ -100,7 +100,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-09-30T17:44:37.792867Z",
+      "updated_utc": "2026-09-30T18:00:52.057157Z",
       "positions": []
     },
     {
@@ -245,7 +245,7 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-30T17:40:00Z",
+      "updated_utc": "2026-09-30T18:00:00Z",
       "positions": [],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-29",
