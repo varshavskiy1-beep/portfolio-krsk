@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-30T05:04:14Z",
+  "generated_at": "2026-09-30T05:12:21Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-30T05:04:11.931115Z",
+      "updated_utc": "2026-09-30T05:12:17.929410Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-30T05:04:11.935663Z",
+      "updated_utc": "2026-09-30T05:12:17.932729Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-30T05:04:11.939009Z",
+      "updated_utc": "2026-09-30T05:12:17.935244Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14693.146578772008",
-      "updated_utc": "2026-09-30T05:04:11.943857Z",
+      "updated_utc": "2026-09-30T05:12:17.939323Z",
       "positions": []
     },
     {
@@ -82,8 +82,17 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15045.325791142994",
-      "updated_utc": "2026-09-30T05:04:11.946933Z",
-      "positions": []
+      "updated_utc": "2026-09-30T05:12:17.943025Z",
+      "positions": [
+        {
+          "position_id": "p_9520bc47e9e4",
+          "symbol": "BTC-USDT-SWAP",
+          "side": "short",
+          "qty": "0.045",
+          "avg_px": "83239.52065",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "forts_adr_adaptive",
@@ -241,6 +250,19 @@
       "note": "Бумага. «Ядро внимания», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-29",
       "defence": true
+    },
+    {
+      "bot_id": "desyatka_earn_paper",
+      "account_id": "desyatka_earn_paper",
+      "currency": "USD",
+      "seed": "10000",
+      "equity": "10000.0",
+      "cash": "10000.0",
+      "updated_utc": "2026-09-30T05:07:39Z",
+      "positions": [],
+      "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
+      "as_of": "2026-09-29",
+      "next_rebalance": "2026-10-06"
     }
   ],
   "manifest": [
@@ -275,6 +297,10 @@
     {
       "bot_id": "oac_paper",
       "logic": "Акции США, бумага, $10 000. Каждый день берёт топ-20 бумаг по объёму опционов OCC. Раз в неделю покупает до 10 имён, которые держались в топе 15 из последних 20 сессий, по 10% на имя. Если JPM или BTC ниже своей EMA100, по 5% на имя. Всё остальное стоит в BOXX. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "desyatka_earn_paper",
+      "logic": "Акции США, бумага, $10 000. Корзина top-10 опционного объёма (UW, запасной OCC). Сезонный ребаланс 1/10; перед своим отчётом выход по Close, возврат T+1 только если имя снова в живой десятке. Решения после close t → Open t+1. На биржу ордера не идут."
     }
   ]
 }
