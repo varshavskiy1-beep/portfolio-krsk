@@ -278,6 +278,43 @@ test("oac paper: error + empty equity yields no chart points", () => {
   assert.equal(lastEquityValue(account), null);
 });
 
+test("desyatka: scalar equity uses main NAV, not shadow sit/qqq/spy", () => {
+  const account = {
+    bot_id: "desyatka_earn_paper",
+    account_id: "desyatka_earn_paper",
+    equity: "100250.0",
+    seed: "100000",
+    sit: "99000",
+    earn_boxx: "101000",
+    qqq_x14: "140000",
+    qqq: "480",
+    spy: "670",
+    updated_utc: "2026-09-30T00:00:00Z",
+    as_of: "2026-09-29",
+  };
+  assert.equal(lastEquityValue(account), 100250);
+  const points = resolveEquityPoints(account, null);
+  assert.equal(points.length, 1);
+  assert.equal(Number(points[0].equity), 100250);
+  const money = buildSeries(points, 100000, "money");
+  assert.ok(money.every((p) => p.value !== 0));
+  assert.equal(money[money.length - 1].value, 100250);
+});
+
+test("desyatka: error + empty equity yields no chart points and no invented seed line", () => {
+  const account = {
+    bot_id: "desyatka_earn_paper",
+    account_id: "desyatka_earn_paper",
+    error: "ledger_missing",
+    equity: [],
+    seed: "100000",
+    sit: "100000",
+  };
+  assert.deepEqual(resolveEquityPoints(account, { series: {} }), []);
+  assert.equal(lastEquityValue(account), null);
+  assert.deepEqual(buildSeries([], 100000, "money"), []);
+});
+
 test("lastEquityValue reads scalar or last series point", () => {
   assert.equal(lastEquityValue({ equity: "10000" }), 10000);
   assert.equal(

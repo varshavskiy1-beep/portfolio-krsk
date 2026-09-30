@@ -30,6 +30,7 @@ const DISPLAYED = [
   "three_robots_okx_nasdaq_1h",
   "young_bounce_combo",
   "oac_paper",
+  "desyatka_earn_paper",
 ];
 
 test("latest.json accounts + shells match expected dashboard strategies", () => {
@@ -153,6 +154,13 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   const yb = getPassport("young_bounce_combo");
   assert.match(yb.parameters.find((r) => r.name === "Фильтр имён").value, /25–90/);
   assert.match(yb.parameters.find((r) => r.name === "Выход").value, /10 дней/);
+
+  const de = getPassport("desyatka_earn_paper");
+  assert.equal(de.title, "Десятка Earn");
+  assert.match(de.parameters.find((r) => r.name === "Начальный капитал").value, /100 000 USD/);
+  assert.match(de.parameters.find((r) => r.name === "Комиссия").value, /5 б\.п\./);
+  assert.match(de.parameters.find((r) => r.name === "Проскальзывание").value, /10 б\.п\./);
+  assert.doesNotMatch(de.essence.paragraphs.join("\n"), /\bseed\b/i);
 });
 
 test("displayed passport UI has no Grail / grail_b20_3x copy", () => {

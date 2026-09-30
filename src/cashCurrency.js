@@ -20,14 +20,16 @@ export const BOT_CURRENCY = {
   three_robots_okx_nasdaq_1h: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
+  desyatka_earn_paper: "USD",
 };
 
-/** Валюта карточки = инструмент: Robot 2 / Young Bounce — USDT; OAC — акции США, USD. */
+/** Валюта карточки = инструмент: Robot 2 / Young Bounce — USDT; OAC и Десятка Earn — акции США, USD. */
 export const FORCE_CURRENCY = {
   three_robots_okx_nasdaq_1h: "USDT",
   paper_block2: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
+  desyatka_earn_paper: "USD",
 };
 
 /** who_pays и прочие счета, если venue в снимке нет. */
@@ -40,6 +42,7 @@ export const ACCOUNT_CURRENCY = {
   paper_block2: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
+  desyatka_earn_paper: "USD",
 };
 
 export function canonicalCurrency(account) {
