@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-30T01:25:59Z",
+  "generated_at": "2026-09-30T01:46:09Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-30T01:25:57.225711Z",
+      "updated_utc": "2026-09-30T01:46:07.830389Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "2000000.0",
-      "updated_utc": "2026-09-30T01:25:57.228454Z",
+      "updated_utc": "2026-09-30T01:46:07.833069Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1500000.0",
-      "updated_utc": "2026-09-30T01:25:57.231538Z",
+      "updated_utc": "2026-09-30T01:46:07.836683Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14697.061891222009",
-      "updated_utc": "2026-09-30T01:25:57.234202Z",
+      "updated_utc": "2026-09-30T01:46:07.841978Z",
       "positions": [
         {
           "position_id": "p_3d120dff2a4a",
@@ -90,17 +90,9 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "15032.584115954993",
-      "updated_utc": "2026-09-30T01:25:57.237361Z",
+      "equity": "15041.034353452993",
+      "updated_utc": "2026-09-30T01:46:07.845345Z",
       "positions": [
-        {
-          "position_id": "p_f6026480da42",
-          "symbol": "ETH-USDT-SWAP",
-          "side": "short",
-          "qty": "1.403",
-          "avg_px": "2677.486513",
-          "stop_px": null
-        },
         {
           "position_id": "p_a4e749c429a1",
           "symbol": "BTC-USDT-SWAP",
