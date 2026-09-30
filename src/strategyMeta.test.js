@@ -270,24 +270,25 @@ test("mergePortalAccounts adds desyatka earn shell when absent", () => {
   assert.equal(row.account_id, DESYATKA_EARN_ACCOUNT_ID);
   assert.equal(row.no_data, true);
   assert.equal(row.currency, "USD");
-  assert.equal(row.seed, "100000");
+  assert.equal(row.seed, "10000");
   assert.equal(hasAccountData(row), false);
   assert.equal(isDesyatkaEarn(row), true);
-  assert.match(cardSubtitle(row), /акции США, старт \$100 000/);
+  assert.match(cardSubtitle(row), /акции США, старт \$10 000/);
+  assert.doesNotMatch(cardSubtitle(row), /100 000|100000/);
   assert.equal(accountIdBadge(row), DESYATKA_EARN_ACCOUNT_ID);
   assert.equal(underTitleLabel(row), null);
   assert.equal(showsFreeCash(row), false);
 });
 
-test("mergePortalAccounts keeps published desyatka earn account", () => {
+test("published desyatka cash book is live, not нет данных", () => {
   const published = {
     bot_id: DESYATKA_EARN_BOT_ID,
     account_id: DESYATKA_EARN_ACCOUNT_ID,
     currency: "USD",
-    equity: "100250.0",
-    seed: "100000",
-    cash: "1250.0",
-    positions: [{ symbol: "AAPL", side: "long", qty: "10", avg_px: "190.5" }],
+    equity: "10000.0",
+    seed: "10000",
+    cash: "10000.0",
+    positions: [],
     as_of: "2026-09-29",
     next_rebalance: "2026-10-06",
     updated_utc: "2026-09-30T04:00:00Z",
@@ -296,7 +297,7 @@ test("mergePortalAccounts keeps published desyatka earn account", () => {
   const rows = merged.filter((a) => a.bot_id === DESYATKA_EARN_BOT_ID);
   assert.equal(rows.length, 1);
   assert.equal(rows[0].no_data, undefined);
-  assert.equal(rows[0].equity, "100250.0");
+  assert.equal(rows[0].equity, "10000.0");
   assert.equal(hasAccountData(rows[0]), true);
   assert.equal(showsFreeCash(rows[0]), true);
   assert.match(formatUpdatedLine(rows[0]), /сессия 2026-09-29/);
@@ -311,7 +312,7 @@ test("desyatka earn error + empty equity is no data, never zero", () => {
       account_id: DESYATKA_EARN_ACCOUNT_ID,
       error: "ledger_missing",
       equity: [],
-      seed: "100000",
+      seed: "10000",
     }),
     false,
   );
@@ -321,7 +322,7 @@ test("desyatka earn error + empty equity is no data, never zero", () => {
       account_id: DESYATKA_EARN_ACCOUNT_ID,
       error: "no_equity_yet",
       equity: null,
-      seed: "100000",
+      seed: "10000",
     }),
     false,
   );

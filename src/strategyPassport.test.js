@@ -16,7 +16,7 @@ import {
   validateDisplayedPassports,
   validatePassport,
 } from "./strategyPassport.js";
-import { PORTAL_SHELLS, isHiddenPortalId } from "./strategyMeta.js";
+import { PORTAL_SHELLS, hasAccountData, isHiddenPortalId } from "./strategyMeta.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
@@ -32,6 +32,19 @@ const DISPLAYED = [
   "oac_paper",
   "desyatka_earn_paper",
 ];
+
+test("desyatka in latest.json is live cash at 10000, not нет данных and not 100000", () => {
+  const row = (latest.accounts || []).find((a) => a.bot_id === "desyatka_earn_paper");
+  assert.ok(row, "desyatka_earn_paper must be in equity_ro latest.json");
+  assert.equal(hasAccountData(row), true);
+  assert.equal(Number(row.seed), 10000);
+  assert.equal(Number(row.equity), 10000);
+  assert.equal(Number(row.cash), 10000);
+  assert.deepEqual(row.positions, []);
+  assert.notEqual(Number(row.equity), 100000);
+  assert.notEqual(Number(row.seed), 100000);
+  assert.equal(row.next_rebalance, "2026-10-06");
+});
 
 test("latest.json accounts + shells match expected dashboard strategies", () => {
   const ids = displayedBotIds(latest.accounts);
@@ -157,7 +170,11 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
 
   const de = getPassport("desyatka_earn_paper");
   assert.equal(de.title, "Десятка Earn");
-  assert.match(de.parameters.find((r) => r.name === "Начальный капитал").value, /100 000 USD/);
+  assert.match(de.parameters.find((r) => r.name === "Начальный капитал").value, /10 000 USD/);
+  assert.doesNotMatch(de.essence.paragraphs.join("\n"), /100 000|100000/);
+  for (const s of passportUiStrings("desyatka_earn_paper")) {
+    assert.doesNotMatch(s, /100 000|100000/, s);
+  }
   assert.match(de.parameters.find((r) => r.name === "Комиссия").value, /5 б\.п\./);
   assert.match(de.parameters.find((r) => r.name === "Проскальзывание").value, /10 б\.п\./);
   assert.doesNotMatch(de.essence.paragraphs.join("\n"), /\bseed\b/i);

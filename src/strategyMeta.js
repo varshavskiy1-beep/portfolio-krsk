@@ -46,7 +46,7 @@ export const ACCOUNT_TITLE = {
 /** Подзаголовок на карточке (только для отдельных paper-ботов). */
 export const ACCOUNT_SUBTITLE = {
   [OAC_PAPER_BOT_ID]: "акции США, старт $10 000. На биржу ордера не идут.",
-  [DESYATKA_EARN_BOT_ID]: "акции США, старт $100 000. На биржу ордера не идут.",
+  [DESYATKA_EARN_BOT_ID]: "акции США, старт $10 000. На биржу ордера не идут.",
 };
 
 /** Устаревшая пометка live OKX в excluded — на портале не показываем как live. */
@@ -76,7 +76,7 @@ export const PORTAL_SHELLS = [
     bot_id: DESYATKA_EARN_BOT_ID,
     account_id: DESYATKA_EARN_ACCOUNT_ID,
     currency: "USD",
-    seed: "100000",
+    seed: "10000",
   },
 ];
 

@@ -59,7 +59,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
     { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2", currency: "USD", equity: "10000" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
-    { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "100000" },
+    { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "10000" },
     { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
   ];
   const usd = accounts.filter((a) => canonicalCurrency(a) === "USD");
