@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-01T09:33:23Z",
+  "generated_at": "2026-10-01T09:45:27Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -300,7 +300,7 @@
       "seed": "1000000",
       "equity": "1000000.0",
       "cash": "1000000.0",
-      "updated_utc": "2026-10-01T04:30:54Z",
+      "updated_utc": "2026-10-01T09:35:10Z",
       "positions": [],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
       "as_of": "2026-09-30",
