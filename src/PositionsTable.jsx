@@ -7,6 +7,7 @@ import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCo
  * oac_paper: Тикер | Кол-во | Стоимость, $ (value_usd, без цены и стороны).
  * desyatka_earn_paper: тикер, сторона, qty строкой, avg_px и/или value_usd если есть.
  * cycle_6040_paper: DIVD|SBLB|LQDT, long, qty строкой, avg_px и/или value_rub если есть.
+ * rf_conservative_comon: SBMX|SBRB|LQDT, long, qty строкой, avg_px и/или value_rub если есть.
  */
 export default function PositionsTable({ positions, compact = false, botId }) {
   if (!positions?.length) {

@@ -19,6 +19,11 @@ export const CYCLE_6040_BOT_ID = "cycle_6040_paper";
 export const CYCLE_6040_ACCOUNT_ID = "cycle_6040_paper";
 export const CYCLE_6040_TITLE = "Цикл 60/40";
 
+/** Paper id: rf_conservative_comon. Только бумага, RUB. Канон в docs: RF_CONSERVATIVE_CANON_COMON_v1. Пока нет в accounts[] — «нет данных». */
+export const RF_CONSERVATIVE_BOT_ID = "rf_conservative_comon";
+export const RF_CONSERVATIVE_ACCOUNT_ID = "rf_conservative_comon";
+export const RF_CONSERVATIVE_TITLE = "РФ Консерватив: облигации в цикле ЦБ + 10% акций";
+
 /** Снятые стратегии: не рисуем карточку, чип, паспорт и OG, даже если id ещё в снимке. */
 export const HIDDEN_PORTAL_IDS = new Set(["grail_b20_3x"]);
 
@@ -40,6 +45,7 @@ export const BOT_TITLE = {
   [OAC_PAPER_BOT_ID]: "Ядро внимания",
   [DESYATKA_EARN_BOT_ID]: DESYATKA_EARN_TITLE,
   [CYCLE_6040_BOT_ID]: CYCLE_6040_TITLE,
+  [RF_CONSERVATIVE_BOT_ID]: RF_CONSERVATIVE_TITLE,
 };
 
 export const ACCOUNT_TITLE = {
@@ -48,6 +54,7 @@ export const ACCOUNT_TITLE = {
   [OAC_PAPER_ACCOUNT_ID]: "Ядро внимания",
   [DESYATKA_EARN_ACCOUNT_ID]: DESYATKA_EARN_TITLE,
   [CYCLE_6040_ACCOUNT_ID]: CYCLE_6040_TITLE,
+  [RF_CONSERVATIVE_ACCOUNT_ID]: RF_CONSERVATIVE_TITLE,
 };
 
 /** Подзаголовок на карточке (только для отдельных paper-ботов). */
@@ -56,6 +63,7 @@ export const ACCOUNT_SUBTITLE = {
   /** Формат как у эквити: «10 000 USD», без знака $ вплотную к цифрам. */
   [DESYATKA_EARN_BOT_ID]: "акции США, старт 10 000 USD. На биржу ордера не идут.",
   [CYCLE_6040_BOT_ID]: "РФ, DIVD/SBLB/LQDT, старт 1 000 000 ₽. На биржу ордера не идут.",
+  [RF_CONSERVATIVE_BOT_ID]: "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.",
 };
 
 /** Устаревшая пометка live OKX в excluded — на портале не показываем как live. */
@@ -63,6 +71,7 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
   ROBOT2_BOT_ID,
   DESYATKA_EARN_BOT_ID,
   CYCLE_6040_BOT_ID,
+  RF_CONSERVATIVE_BOT_ID,
 ]);
 
 /** Карточки, которые должны быть на главной даже до публикации счёта в equity-ro. */
@@ -97,6 +106,12 @@ export const PORTAL_SHELLS = [
     currency: "RUB",
     seed: "1000000",
   },
+  {
+    bot_id: RF_CONSERVATIVE_BOT_ID,
+    account_id: RF_CONSERVATIVE_ACCOUNT_ID,
+    currency: "RUB",
+    seed: "50000",
+  },
 ];
 
 export function accountKey(a) {
@@ -120,6 +135,9 @@ export function displayTitle(account) {
   }
   if (account.bot_id === CYCLE_6040_BOT_ID || account.account_id === CYCLE_6040_ACCOUNT_ID) {
     return CYCLE_6040_TITLE;
+  }
+  if (account.bot_id === RF_CONSERVATIVE_BOT_ID || account.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
+    return RF_CONSERVATIVE_TITLE;
   }
   return (
     ACCOUNT_TITLE[account.account_id] ||
@@ -151,6 +169,11 @@ export function cardTitle(account) {
       ? CYCLE_6040_TITLE
       : title;
   }
+  if (account?.bot_id === RF_CONSERVATIVE_BOT_ID || account?.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
+    return title === RF_CONSERVATIVE_ACCOUNT_ID || title === RF_CONSERVATIVE_BOT_ID
+      ? RF_CONSERVATIVE_TITLE
+      : title;
+  }
   return title;
 }
 
@@ -159,6 +182,7 @@ export function chipLabel(botId) {
   if (botId === YOUNG_BOUNCE_BOT_ID) return "Young Bounce Combo";
   if (botId === DESYATKA_EARN_BOT_ID) return DESYATKA_EARN_TITLE;
   if (botId === CYCLE_6040_BOT_ID) return CYCLE_6040_TITLE;
+  if (botId === RF_CONSERVATIVE_BOT_ID) return RF_CONSERVATIVE_TITLE;
   return BOT_TITLE[botId] || botId;
 }
 
@@ -177,10 +201,13 @@ export function accountSubtitle(account) {
   if (account.bot_id === CYCLE_6040_BOT_ID || account.account_id === CYCLE_6040_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[CYCLE_6040_BOT_ID];
   }
+  if (account.bot_id === RF_CONSERVATIVE_BOT_ID || account.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[RF_CONSERVATIVE_BOT_ID];
+  }
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
 }
 
-/** Подзаголовок карточки (обязателен для OAC, Десятки и Цикла 60/40 даже при пустом фиде). */
+/** Подзаголовок карточки (обязателен для OAC, Десятки, Цикла 60/40 и РФ Консерватив даже при пустом фиде). */
 export function cardSubtitle(account) {
   const subtitle = accountSubtitle(account);
   if (subtitle) return subtitle;
@@ -192,6 +219,9 @@ export function cardSubtitle(account) {
   }
   if (account?.bot_id === CYCLE_6040_BOT_ID || account?.account_id === CYCLE_6040_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[CYCLE_6040_BOT_ID];
+  }
+  if (account?.bot_id === RF_CONSERVATIVE_BOT_ID || account?.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[RF_CONSERVATIVE_BOT_ID];
   }
   return "";
 }
@@ -207,6 +237,9 @@ export function accountIdBadge(account) {
   }
   if (account.bot_id === CYCLE_6040_BOT_ID || account.account_id === CYCLE_6040_ACCOUNT_ID) {
     return CYCLE_6040_ACCOUNT_ID;
+  }
+  if (account.bot_id === RF_CONSERVATIVE_BOT_ID || account.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
+    return RF_CONSERVATIVE_ACCOUNT_ID;
   }
   if (isKnownPortalBot(account.bot_id)) return account.account_id;
   return null;
@@ -254,6 +287,12 @@ export function isDesyatkaEarn(account) {
 
 export function isCycle6040(account) {
   return account?.bot_id === CYCLE_6040_BOT_ID || account?.account_id === CYCLE_6040_ACCOUNT_ID;
+}
+
+export function isRfConservative(account) {
+  return (
+    account?.bot_id === RF_CONSERVATIVE_BOT_ID || account?.account_id === RF_CONSERVATIVE_ACCOUNT_ID
+  );
 }
 
 /** Стоп по model (−6%): бейдж «стоп», только если фид прислал braked=true. */

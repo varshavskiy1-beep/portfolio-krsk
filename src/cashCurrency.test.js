@@ -61,6 +61,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
     { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "10000" },
     { bot_id: "cycle_6040_paper", account_id: "cycle_6040_paper", currency: "USD", equity: "1000000" },
+    { bot_id: "rf_conservative_comon", account_id: "rf_conservative_comon", currency: "USD", equity: "50000" },
     { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
   ];
   const usd = accounts.filter((a) => canonicalCurrency(a) === "USD");
@@ -76,7 +77,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
   );
   assert.deepEqual(
     rub.map((a) => a.account_id),
-    ["forts_adr_static", "cycle_6040_paper"],
+    ["forts_adr_static", "cycle_6040_paper", "rf_conservative_comon"],
   );
 });
 
@@ -172,6 +173,30 @@ test("cycle 60/40 is always RUB and never remapped to USD/USDT", () => {
   );
   assert.equal(
     canonicalCurrency({ bot_id: "cycle_6040_paper", account_id: "x", currency: "USDT" }),
+    "RUB",
+  );
+});
+
+test("rf conservative is always RUB and never remapped to USD/USDT", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "rf_conservative_comon",
+      account_id: "rf_conservative_comon",
+      currency: "USD",
+    }),
+    "RUB",
+  );
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "rf_conservative_comon",
+      account_id: "rf_conservative_comon",
+      venue: "US_EQ",
+      currency: "USDT",
+    }),
+    "RUB",
+  );
+  assert.equal(
+    canonicalCurrency({ bot_id: "rf_conservative_comon", account_id: "x", currency: "USDT" }),
     "RUB",
   );
 });
