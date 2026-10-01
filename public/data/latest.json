@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-01T01:26:37Z",
+  "generated_at": "2026-10-01T01:49:45Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-10-01T01:26:36.676706Z",
+      "updated_utc": "2026-10-01T01:49:42.585129Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1997072.21895568",
-      "updated_utc": "2026-10-01T01:26:36.683307Z",
+      "updated_utc": "2026-10-01T01:49:42.588382Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1505368.6887072",
-      "updated_utc": "2026-10-01T01:26:36.688365Z",
+      "updated_utc": "2026-10-01T01:49:42.591394Z",
       "positions": []
     },
     {
@@ -72,23 +72,15 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14711.123698982008",
-      "updated_utc": "2026-10-01T01:26:36.692759Z",
+      "equity": "14700.406665282007",
+      "updated_utc": "2026-10-01T01:49:42.594584Z",
       "positions": [
         {
-          "position_id": "p_e3da892b46db",
+          "position_id": "p_87bd1d60c30c",
           "symbol": "BTC-USDT",
           "side": "long",
           "qty": "0.043",
-          "avg_px": "83780.82671",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_6b6adad04795",
-          "symbol": "ETH-USDT",
-          "side": "long",
-          "qty": "1.37",
-          "avg_px": "2684.685164",
+          "avg_px": "83667.79281",
           "stop_px": null
         }
       ]
@@ -99,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-01T01:26:36.697043Z",
+      "updated_utc": "2026-10-01T01:49:42.597619Z",
       "positions": []
     },
     {
@@ -278,7 +270,7 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-10-01T01:20:03Z",
+      "updated_utc": "2026-10-01T01:40:05Z",
       "positions": [],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-30",
