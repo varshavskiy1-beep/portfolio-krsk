@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-01T12:57:11Z",
+  "generated_at": "2026-10-01T13:12:19Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -118,7 +118,7 @@
       "seed": "1500000",
       "equity": "1837991.6832610487",
       "cash": "1837991.6832610487",
-      "updated_utc": "2026-09-30T13:10:00Z",
+      "updated_utc": "2026-10-01T13:10:00Z",
       "positions": [],
       "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
     },
@@ -287,7 +287,7 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-10-01T06:14:52Z",
+      "updated_utc": "2026-10-01T13:10:01Z",
       "positions": [],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-30",
