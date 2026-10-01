@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-09-30T23:43:45Z",
+  "generated_at": "2026-10-01T00:04:55Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-09-30T23:43:42.000807Z",
+      "updated_utc": "2026-10-01T00:04:51.725090Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1997072.21895568",
-      "updated_utc": "2026-09-30T23:43:42.005528Z",
+      "updated_utc": "2026-10-01T00:04:51.727783Z",
       "positions": []
     },
     {
@@ -63,26 +63,9 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1504928.3292940801",
-      "updated_utc": "2026-09-30T23:43:42.009782Z",
-      "positions": [
-        {
-          "position_id": "p_aa4fd11f1cc4",
-          "symbol": "GZZ6",
-          "side": "long",
-          "qty": "37.0",
-          "avg_px": "10044.016",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_e9610845bf73",
-          "symbol": "GZZ6",
-          "side": "long",
-          "qty": "37.0",
-          "avg_px": "10040.0",
-          "stop_px": null
-        }
-      ]
+      "equity": "1505368.6887072",
+      "updated_utc": "2026-10-01T00:04:51.730267Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -90,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14711.123698982008",
-      "updated_utc": "2026-09-30T23:43:42.014036Z",
+      "updated_utc": "2026-10-01T00:04:51.732848Z",
       "positions": [
         {
           "position_id": "p_e3da892b46db",
@@ -116,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-09-30T23:43:42.018641Z",
+      "updated_utc": "2026-10-01T00:04:51.735236Z",
       "positions": []
     },
     {
@@ -144,8 +127,8 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5134.150000000000000000000000",
-      "cash": "4591.931000000000000000000000",
-      "updated_utc": "2026-09-29",
+      "cash": "3565.101000000000000000000000",
+      "updated_utc": "2026-09-30",
       "positions": [],
       "pending_limits": [
         {
@@ -153,6 +136,18 @@
           "symbol": "QNTUSDT",
           "limit": "143.94400000",
           "notional": "542.2190000000000000000000"
+        },
+        {
+          "id": "pump-2026-09-30-MOVRUSDT",
+          "symbol": "MOVRUSDT",
+          "limit": "2.06815000",
+          "notional": "513.4150000000000000000000000"
+        },
+        {
+          "id": "pump-2026-09-30-NIGHTUSDT",
+          "symbol": "NIGHTUSDT",
+          "limit": "0.03724000",
+          "notional": "513.4150000000000000000000000"
         }
       ]
     },
@@ -283,7 +278,7 @@
       "seed": "10000",
       "equity": "10000.0",
       "cash": "10000.0",
-      "updated_utc": "2026-09-30T23:40:03Z",
+      "updated_utc": "2026-10-01T00:00:03Z",
       "positions": [],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-30",
