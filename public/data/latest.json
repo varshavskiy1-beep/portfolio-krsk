@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-01T05:33:25Z",
+  "generated_at": "2026-10-01T05:49:23Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25000.0",
-      "updated_utc": "2026-10-01T05:33:23.519150Z",
+      "updated_utc": "2026-10-01T05:49:21.535545Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1997072.21895568",
-      "updated_utc": "2026-10-01T05:33:23.523100Z",
+      "updated_utc": "2026-10-01T05:49:21.541291Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1505368.6887072",
-      "updated_utc": "2026-10-01T05:33:23.526359Z",
+      "updated_utc": "2026-10-01T05:49:21.545028Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14720.211449832008",
-      "updated_utc": "2026-10-01T05:33:23.529693Z",
+      "updated_utc": "2026-10-01T05:49:21.549112Z",
       "positions": [
         {
           "position_id": "p_8ec3d9868984",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-01T05:33:23.533396Z",
+      "updated_utc": "2026-10-01T05:49:21.553285Z",
       "positions": []
     },
     {
@@ -275,6 +275,32 @@
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-30",
       "next_rebalance": "2026-10-06"
+    },
+    {
+      "bot_id": "cycle_6040_paper",
+      "account_id": "cycle_6040_paper",
+      "currency": "RUB",
+      "seed": "1000000",
+      "equity": "1000000.0",
+      "cash": "1000000.0",
+      "updated_utc": "2026-10-01T04:30:54Z",
+      "positions": [],
+      "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
+      "as_of": "2026-09-30",
+      "braked": false,
+      "planned_fill": "2026-10-02"
+    },
+    {
+      "bot_id": "rf_conservative_comon",
+      "account_id": "rf_conservative_comon",
+      "currency": "RUB",
+      "seed": "50000",
+      "equity": "50000.0",
+      "cash": "50000.0",
+      "updated_utc": "2026-10-01T05:04:13Z",
+      "positions": [],
+      "note": "Бумага. «РФ Консерватив» Comon, SBMX/SBRB/LQDT, старт 50000 RUB. На биржу ордера не идут.",
+      "as_of": "2026-10-01"
     }
   ],
   "manifest": [
@@ -313,6 +339,14 @@
     {
       "bot_id": "desyatka_earn_paper",
       "logic": "Акции США, бумага, $10 000. Корзина top-10 опционного объёма (UW, запасной OCC). Сезонный ребаланс 1/10; перед своим отчётом выход по Close, возврат T+1 только если имя снова в живой десятке. Решения после close t → Open t+1. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "cycle_6040_paper",
+      "logic": "РФ, бумага, старт 1 000 000 ₽. Правило cycle_53477: ноги E/B по индексам дивидендных акций и ОФЗ vs денежный; гейт ключевой ставки; vol-target; полоса ребаланса. Книга paper повторяет заявки model целыми паями (DIVD/SBLB/LQDT). Стоп −6% по model. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "rf_conservative_comon",
+      "logic": "РФ, бумага, старт 50 000 ₽. 90% — облигации SBRB в цикле снижения ключевой (иначе LQDT); 10% — акции SBMX по правилу реальной ставки / обвала. Решение по close t → сделка t+1; конец месяца возврат к 90/10. На биржу ордера не идут."
     }
   ]
 }
