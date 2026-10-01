@@ -1,6 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  CYCLE_6040_ACCOUNT_ID,
+  CYCLE_6040_BOT_ID,
+  CYCLE_6040_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -19,12 +22,14 @@ import {
   formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
+  isCycle6040,
   isDesyatkaEarn,
   isHiddenPortalAccount,
   isHiddenPortalId,
   isOacPaper,
   mergePortalAccounts,
   portalExcluded,
+  showsBrakeBadge,
   showsDefenceBadge,
   showsFreeCash,
   showsPaperBadge,
@@ -37,6 +42,7 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
     { id: ROBOT2_BOT_ID, reason: "live OKX" },
     { id: "three_robots_okx_spcx_btc_4h", reason: "live OKX" },
     { id: DESYATKA_EARN_BOT_ID, reason: "live cluster" },
+    { id: CYCLE_6040_BOT_ID, reason: "live cluster" },
   ];
   const visible = portalExcluded(excluded);
   assert.deepEqual(
@@ -353,6 +359,9 @@ test("portal bots: id in badge, not under title", () => {
   const yb = { bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID };
   assert.equal(accountIdBadge(yb), YOUNG_BOUNCE_ACCOUNT_ID);
   assert.equal(underTitleLabel(yb), null);
+  const cyc = { bot_id: CYCLE_6040_BOT_ID, account_id: CYCLE_6040_ACCOUNT_ID };
+  assert.equal(accountIdBadge(cyc), CYCLE_6040_ACCOUNT_ID);
+  assert.equal(underTitleLabel(cyc), null);
 });
 
 test("decommissioned grail_b20_3x is hidden from portal accounts", () => {
@@ -376,4 +385,100 @@ test("non-portal bot still shows account id under title when title differs", () 
     underTitleLabel({ bot_id: "x", account_id: ROBOT2_ACCOUNT_ID }),
     ROBOT2_ACCOUNT_ID,
   );
+});
+
+test("displayTitle maps cycle 60/40 ids to Цикл 60/40", () => {
+  assert.equal(
+    displayTitle({ bot_id: CYCLE_6040_BOT_ID, account_id: CYCLE_6040_ACCOUNT_ID }),
+    CYCLE_6040_TITLE,
+  );
+  assert.equal(cardTitle({ bot_id: CYCLE_6040_BOT_ID, account_id: CYCLE_6040_ACCOUNT_ID }), CYCLE_6040_TITLE);
+  assert.equal(chipLabel(CYCLE_6040_BOT_ID), CYCLE_6040_TITLE);
+  assert.doesNotMatch(cardTitle({ bot_id: CYCLE_6040_BOT_ID, account_id: CYCLE_6040_ACCOUNT_ID }), /cycle_6040/);
+});
+
+test("mergePortalAccounts adds cycle 60/40 shell when absent — нет данных, not invented seed", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === CYCLE_6040_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, CYCLE_6040_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "RUB");
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isCycle6040(row), true);
+  assert.equal(cardSubtitle(row), "РФ, DIVD/SBLB/LQDT, старт 1 000 000 ₽. На биржу ордера не идут.");
+  assert.equal(accountIdBadge(row), CYCLE_6040_ACCOUNT_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsBrakeBadge(row), false);
+  assert.equal(showsPaperBadge(row), true);
+});
+
+test("published cycle 60/40 cash book is live, not нет данных", () => {
+  const published = {
+    bot_id: CYCLE_6040_BOT_ID,
+    account_id: CYCLE_6040_ACCOUNT_ID,
+    currency: "RUB",
+    equity: "1000000",
+    seed: "1000000",
+    cash: "1000000",
+    positions: [],
+    as_of: "2026-10-01",
+    planned_fill: "2026-10-02",
+    braked: false,
+    updated_utc: "2026-10-01T04:00:00Z",
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === CYCLE_6040_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(rows[0].equity, "1000000");
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.match(formatUpdatedLine(rows[0]), /сессия 2026-10-01/);
+  assert.match(formatUpdatedLine(rows[0]), /обновлено 2026-10-01T04:00:00Z/);
+  assert.match(formatUpdatedLine(rows[0]), /план 2026-10-02/);
+  assert.equal(showsBrakeBadge(rows[0]), false);
+});
+
+test("cycle 60/40 error + empty equity is no data, never zero", () => {
+  assert.equal(
+    hasAccountData({
+      bot_id: CYCLE_6040_BOT_ID,
+      account_id: CYCLE_6040_ACCOUNT_ID,
+      error: "ledger_missing",
+      equity: [],
+      seed: "1000000",
+    }),
+    false,
+  );
+  assert.equal(
+    hasAccountData({
+      bot_id: CYCLE_6040_BOT_ID,
+      account_id: CYCLE_6040_ACCOUNT_ID,
+      error: "no_equity_yet",
+      equity: null,
+      seed: "1000000",
+    }),
+    false,
+  );
+});
+
+test("cycle 60/40 helpers: subtitle, planned_fill, braked badge", () => {
+  const account = {
+    bot_id: CYCLE_6040_BOT_ID,
+    account_id: CYCLE_6040_ACCOUNT_ID,
+    as_of: "2026-10-01",
+    updated_utc: "2026-10-01T12:00:00Z",
+    planned_fill: "2026-10-02",
+    braked: true,
+  };
+  assert.match(accountSubtitle(account), /DIVD\/SBLB\/LQDT/);
+  assert.equal(showsPaperBadge(account), true);
+  assert.equal(showsBrakeBadge(account), true);
+  assert.equal(showsBrakeBadge({ braked: false }), false);
+  assert.equal(showsBrakeBadge({}), false);
+  assert.equal(isCycle6040(account), true);
+  assert.match(formatUpdatedLine(account), /план 2026-10-02/);
+  assert.doesNotMatch(formatUpdatedLine({ as_of: "2026-10-01" }), /план/);
 });
