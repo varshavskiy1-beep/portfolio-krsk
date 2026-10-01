@@ -1,6 +1,6 @@
 {
   "schema": "equity_history.v1",
-  "updated_at": "2026-10-01T07:17:10Z",
+  "updated_at": "2026-10-01T07:25:15Z",
   "series": {
     "v6b1::v6b1": {
       "bot_id": "v6b1",
