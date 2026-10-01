@@ -4,6 +4,9 @@ import {
   CYCLE_6040_ACCOUNT_ID,
   CYCLE_6040_BOT_ID,
   CYCLE_6040_TITLE,
+  RF_CONSERVATIVE_ACCOUNT_ID,
+  RF_CONSERVATIVE_BOT_ID,
+  RF_CONSERVATIVE_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -24,6 +27,7 @@ import {
   hasBoxxCash,
   isCycle6040,
   isDesyatkaEarn,
+  isRfConservative,
   isHiddenPortalAccount,
   isHiddenPortalId,
   isOacPaper,
@@ -43,6 +47,7 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
     { id: "three_robots_okx_spcx_btc_4h", reason: "live OKX" },
     { id: DESYATKA_EARN_BOT_ID, reason: "live cluster" },
     { id: CYCLE_6040_BOT_ID, reason: "live cluster" },
+    { id: RF_CONSERVATIVE_BOT_ID, reason: "live cluster" },
   ];
   const visible = portalExcluded(excluded);
   assert.deepEqual(
@@ -362,6 +367,9 @@ test("portal bots: id in badge, not under title", () => {
   const cyc = { bot_id: CYCLE_6040_BOT_ID, account_id: CYCLE_6040_ACCOUNT_ID };
   assert.equal(accountIdBadge(cyc), CYCLE_6040_ACCOUNT_ID);
   assert.equal(underTitleLabel(cyc), null);
+  const rfc = { bot_id: RF_CONSERVATIVE_BOT_ID, account_id: RF_CONSERVATIVE_ACCOUNT_ID };
+  assert.equal(accountIdBadge(rfc), RF_CONSERVATIVE_ACCOUNT_ID);
+  assert.equal(underTitleLabel(rfc), null);
 });
 
 test("decommissioned grail_b20_3x is hidden from portal accounts", () => {
@@ -481,4 +489,103 @@ test("cycle 60/40 helpers: subtitle, planned_fill, braked badge", () => {
   assert.equal(isCycle6040(account), true);
   assert.match(formatUpdatedLine(account), /план 2026-10-02/);
   assert.doesNotMatch(formatUpdatedLine({ as_of: "2026-10-01" }), /план/);
+});
+
+test("displayTitle maps rf conservative ids to full card title", () => {
+  assert.equal(
+    displayTitle({ bot_id: RF_CONSERVATIVE_BOT_ID, account_id: RF_CONSERVATIVE_ACCOUNT_ID }),
+    RF_CONSERVATIVE_TITLE,
+  );
+  assert.equal(
+    cardTitle({ bot_id: RF_CONSERVATIVE_BOT_ID, account_id: RF_CONSERVATIVE_ACCOUNT_ID }),
+    RF_CONSERVATIVE_TITLE,
+  );
+  assert.equal(chipLabel(RF_CONSERVATIVE_BOT_ID), RF_CONSERVATIVE_TITLE);
+  assert.doesNotMatch(
+    cardTitle({ bot_id: RF_CONSERVATIVE_BOT_ID, account_id: RF_CONSERVATIVE_ACCOUNT_ID }),
+    /rf_conservative/,
+  );
+  assert.doesNotMatch(RF_CONSERVATIVE_TITLE, /Цикл 60\/40|DIVD|SBLB|1 000 000/);
+});
+
+test("mergePortalAccounts adds rf conservative shell when absent — нет данных, not invented seed", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === RF_CONSERVATIVE_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, RF_CONSERVATIVE_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "RUB");
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isRfConservative(row), true);
+  assert.equal(isCycle6040(row), false);
+  assert.equal(cardSubtitle(row), "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.");
+  assert.doesNotMatch(cardSubtitle(row), /DIVD|SBLB|1 000 000/);
+  assert.equal(accountIdBadge(row), RF_CONSERVATIVE_ACCOUNT_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsPaperBadge(row), true);
+  assert.notEqual(row.equity, "50000");
+  assert.notEqual(row.equity, 50000);
+  assert.notEqual(row.equity, "0");
+});
+
+test("published rf conservative cash book is live, not нет данных", () => {
+  const published = {
+    bot_id: RF_CONSERVATIVE_BOT_ID,
+    account_id: RF_CONSERVATIVE_ACCOUNT_ID,
+    currency: "RUB",
+    equity: "50000",
+    seed: "50000",
+    cash: "50000",
+    positions: [],
+    as_of: "2026-10-01",
+    updated_utc: "2026-10-01T04:00:00Z",
+    note: "Бумага. «РФ Консерватив» Comon, SBMX/SBRB/LQDT, старт 50000 RUB. На биржу ордера не идут.",
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === RF_CONSERVATIVE_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(rows[0].equity, "50000");
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.match(formatUpdatedLine(rows[0]), /сессия 2026-10-01/);
+  assert.match(formatUpdatedLine(rows[0]), /обновлено 2026-10-01T04:00:00Z/);
+});
+
+test("rf conservative error + empty equity is no data, never zero", () => {
+  assert.equal(
+    hasAccountData({
+      bot_id: RF_CONSERVATIVE_BOT_ID,
+      account_id: RF_CONSERVATIVE_ACCOUNT_ID,
+      error: "ledger_missing",
+      equity: [],
+      seed: "50000",
+    }),
+    false,
+  );
+  assert.equal(
+    hasAccountData({
+      bot_id: RF_CONSERVATIVE_BOT_ID,
+      account_id: RF_CONSERVATIVE_ACCOUNT_ID,
+      error: "no_equity_yet",
+      equity: null,
+      seed: "50000",
+    }),
+    false,
+  );
+});
+
+test("rf conservative helpers: subtitle, paper badge, not cycle 60/40", () => {
+  const account = {
+    bot_id: RF_CONSERVATIVE_BOT_ID,
+    account_id: RF_CONSERVATIVE_ACCOUNT_ID,
+    as_of: "2026-10-01",
+    updated_utc: "2026-10-01T12:00:00Z",
+  };
+  assert.match(accountSubtitle(account), /SBMX\/SBRB\/LQDT/);
+  assert.doesNotMatch(accountSubtitle(account), /DIVD|SBLB/);
+  assert.equal(showsPaperBadge(account), true);
+  assert.equal(isRfConservative(account), true);
+  assert.equal(isCycle6040(account), false);
 });

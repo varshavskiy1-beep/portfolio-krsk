@@ -369,6 +369,40 @@ test("cycle 60/40: absent / no_data yields no chart and no invented 1e6 line", (
   assert.deepEqual(buildSeries([], 1_000_000, "money"), []);
 });
 
+test("rf conservative: main NAV only, never shadow fields", () => {
+  const account = {
+    bot_id: "rf_conservative_comon",
+    account_id: "rf_conservative_comon",
+    equity: "50000",
+    seed: "50000",
+    nav_model: "51200",
+    nav_lqdt: "49800",
+    updated_utc: "2026-10-01T04:00:00Z",
+    as_of: "2026-10-01",
+  };
+  assert.equal(lastEquityValue(account), 50_000);
+  const points = resolveEquityPoints(account, null);
+  assert.equal(points.length, 1);
+  assert.equal(Number(points[0].equity), 50_000);
+  const money = buildSeries(points, 50_000, "money");
+  assert.ok(money.every((p) => p.value !== 51_200));
+  assert.ok(money.every((p) => p.value !== 49_800));
+  assert.equal(money[money.length - 1].value, 50_000);
+});
+
+test("rf conservative: absent / no_data yields no chart and no invented 50000 line", () => {
+  const shell = {
+    bot_id: "rf_conservative_comon",
+    account_id: "rf_conservative_comon",
+    currency: "RUB",
+    seed: "50000",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+  assert.equal(lastEquityValue({ equity: [] }), null);
+  assert.deepEqual(buildSeries([], 50_000, "money"), []);
+});
+
 test("lastEquityValue reads scalar or last series point", () => {
   assert.equal(lastEquityValue({ equity: "10000" }), 10000);
   assert.equal(

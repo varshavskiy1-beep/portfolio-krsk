@@ -32,6 +32,7 @@ const DISPLAYED = [
   "oac_paper",
   "desyatka_earn_paper",
   "cycle_6040_paper",
+  "rf_conservative_comon",
 ];
 
 test("cycle_6040_paper is not yet in latest.json — cabinet uses shell нет данных", () => {
@@ -39,6 +40,13 @@ test("cycle_6040_paper is not yet in latest.json — cabinet uses shell нет �
   assert.equal(row, undefined);
   assert.equal(displayedBotIds(latest.accounts).includes("cycle_6040_paper"), true);
   assert.equal(hasAccountData({ bot_id: "cycle_6040_paper", no_data: true }), false);
+});
+
+test("rf_conservative_comon is not yet in latest.json — cabinet uses shell нет данных", () => {
+  const row = (latest.accounts || []).find((a) => a.bot_id === "rf_conservative_comon");
+  assert.equal(row, undefined);
+  assert.equal(displayedBotIds(latest.accounts).includes("rf_conservative_comon"), true);
+  assert.equal(hasAccountData({ bot_id: "rf_conservative_comon", no_data: true }), false);
 });
 
 test("desyatka in latest.json is live cash at 10000, not нет данных and not 100000", () => {
@@ -202,6 +210,25 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   assert.match(cyc.essence.paragraphs.join("\n"), /cycle_53477/);
   assert.doesNotMatch(cyc.essence.paragraphs.join("\n"), /\bseed\b/i);
   assert.doesNotMatch(cyc.essence.paragraphs.join("\n"), /10 000 USD|10000 USD/);
+
+  const rfc = getPassport("rf_conservative_comon");
+  assert.equal(rfc.title, "РФ Консерватив: облигации в цикле ЦБ + 10% акций");
+  assert.match(rfc.parameters.find((r) => r.name === "Начальный капитал").value, /50 000 RUB/);
+  assert.equal(
+    rfc.parameters.find((r) => r.name === "Рынок").meaning,
+    "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.",
+  );
+  assert.match(rfc.parameters.find((r) => r.name === "Канон (документация)").value, /RF_CONSERVATIVE_CANON_COMON_v1/);
+  assert.match(rfc.parameters.find((r) => r.name === "Инструменты").value, /SBMX, SBRB, LQDT/);
+  assert.doesNotMatch(rfc.parameters.find((r) => r.name === "Инструменты").value, /DIVD|SBLB/);
+  assert.match(rfc.essence.paragraphs.join("\n"), /90% — облигации SBRB/);
+  assert.match(rfc.essence.paragraphs.join("\n"), /ENABLE_EXCHANGE_ORDERS=0/);
+  assert.doesNotMatch(rfc.essence.paragraphs.join("\n"), /\bseed\b/i);
+  assert.doesNotMatch(rfc.essence.paragraphs.join("\n"), /1 000 000|DIVD|SBLB|cycle_53477/);
+  for (const s of passportUiStrings("rf_conservative_comon")) {
+    assert.doesNotMatch(s, /включить ордера/, s);
+    assert.doesNotMatch(s, /счёт Finam|номер счёта Finam|Finam account/i, s);
+  }
 });
 
 test("displayed passport UI has no Grail / grail_b20_3x copy", () => {
