@@ -31,7 +31,15 @@ const DISPLAYED = [
   "young_bounce_combo",
   "oac_paper",
   "desyatka_earn_paper",
+  "cycle_6040_paper",
 ];
+
+test("cycle_6040_paper is not yet in latest.json — cabinet uses shell нет данных", () => {
+  const row = (latest.accounts || []).find((a) => a.bot_id === "cycle_6040_paper");
+  assert.equal(row, undefined);
+  assert.equal(displayedBotIds(latest.accounts).includes("cycle_6040_paper"), true);
+  assert.equal(hasAccountData({ bot_id: "cycle_6040_paper", no_data: true }), false);
+});
 
 test("desyatka in latest.json is live cash at 10000, not нет данных and not 100000", () => {
   const row = (latest.accounts || []).find((a) => a.bot_id === "desyatka_earn_paper");
@@ -182,6 +190,18 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   assert.match(de.parameters.find((r) => r.name === "Комиссия").value, /5 б\.п\./);
   assert.match(de.parameters.find((r) => r.name === "Проскальзывание").value, /10 б\.п\./);
   assert.doesNotMatch(de.essence.paragraphs.join("\n"), /\bseed\b/i);
+
+  const cyc = getPassport("cycle_6040_paper");
+  assert.equal(cyc.title, "Цикл 60/40");
+  assert.match(cyc.parameters.find((r) => r.name === "Начальный капитал").value, /1 000 000 RUB/);
+  assert.equal(
+    cyc.parameters.find((r) => r.name === "Рынок").meaning,
+    "РФ, DIVD/SBLB/LQDT, старт 1 000 000 ₽. На биржу ордера не идут.",
+  );
+  assert.match(cyc.parameters.find((r) => r.name === "Стоп по model").value, /−6%/);
+  assert.match(cyc.essence.paragraphs.join("\n"), /cycle_53477/);
+  assert.doesNotMatch(cyc.essence.paragraphs.join("\n"), /\bseed\b/i);
+  assert.doesNotMatch(cyc.essence.paragraphs.join("\n"), /10 000 USD|10000 USD/);
 });
 
 test("displayed passport UI has no Grail / grail_b20_3x copy", () => {

@@ -2,10 +2,11 @@ import { OAC_PAPER_BOT_ID } from "./strategyMeta.js";
 import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCopy.js";
 
 /**
- * Таблица позиций. mark, pattern и value_usd — только если есть хотя бы у одной строки.
+ * Таблица позиций. mark, pattern, value_usd и value_rub — только если есть хотя бы у одной строки.
  * compact: карточка на главной (без стопа, без текста «позиций нет»).
  * oac_paper: Тикер | Кол-во | Стоимость, $ (value_usd, без цены и стороны).
  * desyatka_earn_paper: тикер, сторона, qty строкой, avg_px и/или value_usd если есть.
+ * cycle_6040_paper: DIVD|SBLB|LQDT, long, qty строкой, avg_px и/или value_rub если есть.
  */
 export default function PositionsTable({ positions, compact = false, botId }) {
   if (!positions?.length) {
@@ -40,6 +41,7 @@ export default function PositionsTable({ positions, compact = false, botId }) {
   const showMark = positions.some((p) => positionHasField(p, "mark"));
   const showPattern = positions.some((p) => positionHasField(p, "pattern"));
   const showValueUsd = positions.some((p) => positionHasField(p, "value_usd"));
+  const showValueRub = positions.some((p) => positionHasField(p, "value_rub"));
   return (
     <div className="table-scroll">
       <table>
@@ -50,6 +52,7 @@ export default function PositionsTable({ positions, compact = false, botId }) {
             <th>Кол-во</th>
             <th>{compact ? "Цена" : "Цена входа"}</th>
             {showValueUsd ? <th>Стоимость, $</th> : null}
+            {showValueRub ? <th>Стоимость, ₽</th> : null}
             {showMark ? <th>Рынок</th> : null}
             {showPattern ? <th>Паттерн</th> : null}
             {compact ? null : <th>Стоп</th>}
@@ -64,6 +67,9 @@ export default function PositionsTable({ positions, compact = false, botId }) {
               <td>{p.avg_px ?? "—"}</td>
               {showValueUsd ? (
                 <td>{formatMoneyRu(Number(p.value_usd), "USD")}</td>
+              ) : null}
+              {showValueRub ? (
+                <td>{formatMoneyRu(Number(p.value_rub), "RUB")}</td>
               ) : null}
               {showMark ? <td>{p.mark ?? "—"}</td> : null}
               {showPattern ? <td>{patternLabel(p.pattern)}</td> : null}

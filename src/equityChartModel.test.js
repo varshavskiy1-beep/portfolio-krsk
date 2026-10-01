@@ -335,6 +335,40 @@ test("desyatka: error + empty equity yields no chart points and no invented seed
   assert.deepEqual(buildSeries([], 10000, "money"), []);
 });
 
+test("cycle 60/40: main NAV only, never nav_model / nav_lqdt", () => {
+  const account = {
+    bot_id: "cycle_6040_paper",
+    account_id: "cycle_6040_paper",
+    equity: "1000000",
+    seed: "1000000",
+    nav_model: "1012500",
+    nav_lqdt: "998000",
+    updated_utc: "2026-10-01T04:00:00Z",
+    as_of: "2026-10-01",
+  };
+  assert.equal(lastEquityValue(account), 1_000_000);
+  const points = resolveEquityPoints(account, null);
+  assert.equal(points.length, 1);
+  assert.equal(Number(points[0].equity), 1_000_000);
+  const money = buildSeries(points, 1_000_000, "money");
+  assert.ok(money.every((p) => p.value !== 1_012_500));
+  assert.ok(money.every((p) => p.value !== 998_000));
+  assert.equal(money[money.length - 1].value, 1_000_000);
+});
+
+test("cycle 60/40: absent / no_data yields no chart and no invented 1e6 line", () => {
+  const shell = {
+    bot_id: "cycle_6040_paper",
+    account_id: "cycle_6040_paper",
+    currency: "RUB",
+    seed: "1000000",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+  assert.equal(lastEquityValue({ equity: [] }), null);
+  assert.deepEqual(buildSeries([], 1_000_000, "money"), []);
+});
+
 test("lastEquityValue reads scalar or last series point", () => {
   assert.equal(lastEquityValue({ equity: "10000" }), 10000);
   assert.equal(
