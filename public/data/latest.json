@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-01T13:30:26Z",
+  "generated_at": "2026-10-01T13:47:37Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -286,9 +286,60 @@
       "currency": "USD",
       "seed": "10000",
       "equity": "10000.0",
-      "cash": "10000.0",
-      "updated_utc": "2026-10-01T13:30:00Z",
-      "positions": [],
+      "cash": "-8.242578340314822",
+      "updated_utc": "2026-10-01T13:40:07Z",
+      "positions": [
+        {
+          "symbol": "AAPL",
+          "side": "long",
+          "qty": "3.02783409105324"
+        },
+        {
+          "symbol": "AMZN",
+          "side": "long",
+          "qty": "3.973161928295239"
+        },
+        {
+          "symbol": "DELL",
+          "side": "long",
+          "qty": "1.8279726761903163"
+        },
+        {
+          "symbol": "GOOGL",
+          "side": "long",
+          "qty": "2.8469028016901925"
+        },
+        {
+          "symbol": "INTC",
+          "side": "long",
+          "qty": "8.431543453742563"
+        },
+        {
+          "symbol": "META",
+          "side": "long",
+          "qty": "1.372018851789672"
+        },
+        {
+          "symbol": "MU",
+          "side": "long",
+          "qty": "0.9478917307369005"
+        },
+        {
+          "symbol": "NVDA",
+          "side": "long",
+          "qty": "4.348771529773418"
+        },
+        {
+          "symbol": "PLTR",
+          "side": "long",
+          "qty": "5.253446082184751"
+        },
+        {
+          "symbol": "TSLA",
+          "side": "long",
+          "qty": "2.80219166178439"
+        }
+      ],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
       "as_of": "2026-09-30",
       "next_rebalance": "2026-10-06"
