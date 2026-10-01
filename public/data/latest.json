@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-01T22:26:26Z",
+  "generated_at": "2026-10-01T22:46:34Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25113.64525899",
-      "updated_utc": "2026-10-01T22:26:22.285933Z",
+      "updated_utc": "2026-10-01T22:46:34.447766Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1996866.25681592",
-      "updated_utc": "2026-10-01T22:26:22.289121Z",
+      "updated_utc": "2026-10-01T22:46:34.450130Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1505090.14394808",
-      "updated_utc": "2026-10-01T22:26:22.292446Z",
+      "updated_utc": "2026-10-01T22:46:34.453218Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14747.67531579401",
-      "updated_utc": "2026-10-01T22:26:22.295522Z",
+      "updated_utc": "2026-10-01T22:46:34.455497Z",
       "positions": [
         {
           "position_id": "p_196c006dc947",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-01T22:26:22.298363Z",
+      "updated_utc": "2026-10-01T22:46:34.457890Z",
       "positions": []
     },
     {
@@ -278,7 +278,7 @@
       "seed": "10000",
       "equity": "9973.9799",
       "cash": "-8.242578340314822",
-      "updated_utc": "2026-10-01T22:20:00Z",
+      "updated_utc": "2026-10-01T22:40:00Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -352,10 +352,10 @@
       "seed": "1000000",
       "equity": "1000000.0",
       "cash": "1000000.0",
-      "updated_utc": "2026-10-01T09:35:10Z",
+      "updated_utc": "2026-10-01T22:30:48Z",
       "positions": [],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-09-30",
+      "as_of": "2026-10-01",
       "braked": false,
       "planned_fill": "2026-10-02"
     },
