@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-02T15:42:02Z",
+  "generated_at": "2026-10-02T16:04:29Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,12 +25,31 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "9035.2113597540",
-      "cash": "9035.2113597540",
+      "equity": "9029.7902399220",
+      "cash": "9029.7902399220",
       "seed": "10000",
-      "updated_utc": "2026-10-02T15:40:47Z",
-      "positions": [],
+      "updated_utc": "2026-10-02T16:02:58Z",
+      "positions": [
+        {
+          "symbol": "GALA-USDT-SWAP",
+          "side": "long",
+          "qty": "349119",
+          "avg_px": "0.002588",
+          "margin": "9035.199720"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
+    },
+    {
+      "bot_id": "grail_b20_3x",
+      "account_id": "grail_b20_3x",
+      "currency": "USD",
+      "equity": null,
+      "cash": null,
+      "seed": null,
+      "updated_utc": null,
+      "positions": [],
+      "error": "ledger_missing"
     },
     {
       "bot_id": "who_pays",
@@ -38,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25113.64525899",
-      "updated_utc": "2026-10-02T15:41:55.253061Z",
+      "updated_utc": "2026-10-02T16:04:26.946993Z",
       "positions": [
         {
           "position_id": "p_30eeb6ac0b2c",
@@ -64,7 +83,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1996622.50188523",
-      "updated_utc": "2026-10-02T15:41:55.257212Z",
+      "updated_utc": "2026-10-02T16:04:26.950340Z",
       "positions": [
         {
           "position_id": "p_c88b811bf9f5",
@@ -82,7 +101,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1498386.209826",
-      "updated_utc": "2026-10-02T15:41:55.262538Z",
+      "updated_utc": "2026-10-02T16:04:26.955960Z",
       "positions": [
         {
           "position_id": "p_cda09ccecaf8",
@@ -108,7 +127,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14661.94074085001",
-      "updated_utc": "2026-10-02T15:41:55.266840Z",
+      "updated_utc": "2026-10-02T16:04:26.959319Z",
       "positions": []
     },
     {
@@ -117,19 +136,18 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-02T15:41:55.270569Z",
+      "updated_utc": "2026-10-02T16:04:26.963162Z",
       "positions": []
     },
     {
       "bot_id": "forts_adr_adaptive",
       "account_id": "forts_adr_adaptive",
       "currency": "RUB",
+      "equity": null,
       "seed": "1500000",
-      "equity": "1837991.6832610487",
-      "cash": "1837991.6832610487",
-      "updated_utc": "2026-10-02T13:10:00Z",
+      "updated_utc": null,
       "positions": [],
-      "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
+      "note": "Отдельного mark-леджера нет, только state.json. seed — конфиг, не переоценка. equity null. Позиции в state не хранятся."
     },
     {
       "bot_id": "forts_adr_static",
@@ -180,9 +198,9 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "9715.68",
+      "equity": "9692.25",
       "cash": "9715.68",
-      "updated_utc": "2026-09-30T19:10:55Z",
+      "updated_utc": "2026-10-02T15:49:02Z",
       "positions": [
         {
           "symbol": "MSTR-USDT-SWAP",
@@ -206,213 +224,17 @@
           "margin": null
         }
       ],
-      "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. На биржу ордера не идут."
-    },
-    {
-      "bot_id": "young_bounce_combo",
-      "account_id": "young_bounce_combo",
-      "currency": "USDT",
-      "seed": "10000",
-      "equity": "10000.0",
-      "cash": "10000.0",
-      "updated_utc": "2026-10-02T00:07:54Z",
-      "positions": [],
-      "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-01"
-    },
-    {
-      "bot_id": "oac_paper",
-      "account_id": "oac_paper",
-      "currency": "USD",
-      "seed": "10000",
-      "equity": "9870.11",
-      "cash": "0.0",
-      "boxx_usd": "4927.45",
-      "updated_utc": "2026-10-02T03:15:13Z",
-      "positions": [
-        {
-          "symbol": "AAPL",
-          "side": "long",
-          "qty": "1.4639038422237916",
-          "value_usd": "483.56"
-        },
-        {
-          "symbol": "AMD",
-          "side": "long",
-          "qty": "0.7998373501184528",
-          "value_usd": "492.48"
-        },
-        {
-          "symbol": "AMZN",
-          "side": "long",
-          "qty": "1.9994798187219858",
-          "value_usd": "496.33"
-        },
-        {
-          "symbol": "GOOGL",
-          "side": "long",
-          "qty": "1.4425841845049652",
-          "value_usd": "487.94"
-        },
-        {
-          "symbol": "INTC",
-          "side": "long",
-          "qty": "4.227006790068072",
-          "value_usd": "507.24"
-        },
-        {
-          "symbol": "META",
-          "side": "long",
-          "qty": "0.6804023165533006",
-          "value_usd": "493.92"
-        },
-        {
-          "symbol": "MU",
-          "side": "long",
-          "qty": "0.458155742457166",
-          "value_usd": "502.78"
-        },
-        {
-          "symbol": "NVDA",
-          "side": "long",
-          "qty": "2.135739173459928",
-          "value_usd": "493.06"
-        },
-        {
-          "symbol": "SPCX",
-          "side": "long",
-          "qty": "3.3630467966514415",
-          "value_usd": "497.97"
-        },
-        {
-          "symbol": "TSLA",
-          "side": "long",
-          "qty": "1.3763718970475736",
-          "value_usd": "487.39"
-        }
-      ],
-      "note": "Бумага. «Ядро внимания», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-01",
-      "defence": true
-    },
-    {
-      "bot_id": "desyatka_earn_paper",
-      "account_id": "desyatka_earn_paper",
-      "currency": "USD",
-      "seed": "10000",
-      "equity": "9973.9799",
-      "cash": "-8.242578340314822",
-      "updated_utc": "2026-10-02T15:40:01Z",
-      "positions": [
-        {
-          "symbol": "AAPL",
-          "side": "long",
-          "qty": "3.02783409105324",
-          "avg_px": "330.32000732421875"
-        },
-        {
-          "symbol": "AMZN",
-          "side": "long",
-          "qty": "3.973161928295239",
-          "avg_px": "248.22999572753906"
-        },
-        {
-          "symbol": "DELL",
-          "side": "long",
-          "qty": "1.8279726761903163",
-          "avg_px": "541.739990234375"
-        },
-        {
-          "symbol": "GOOGL",
-          "side": "long",
-          "qty": "2.8469028016901925",
-          "avg_px": "338.239990234375"
-        },
-        {
-          "symbol": "INTC",
-          "side": "long",
-          "qty": "8.431543453742563",
-          "avg_px": "120.0"
-        },
-        {
-          "symbol": "META",
-          "side": "long",
-          "qty": "1.372018851789672",
-          "avg_px": "725.9299926757812"
-        },
-        {
-          "symbol": "MU",
-          "side": "long",
-          "qty": "0.9478917307369005",
-          "avg_px": "1097.3900146484375"
-        },
-        {
-          "symbol": "NVDA",
-          "side": "long",
-          "qty": "4.348771529773418",
-          "avg_px": "230.86000061035156"
-        },
-        {
-          "symbol": "PLTR",
-          "side": "long",
-          "qty": "5.253446082184751",
-          "avg_px": "190.0399932861328"
-        },
-        {
-          "symbol": "TSLA",
-          "side": "long",
-          "qty": "2.80219166178439",
-          "avg_px": "354.1099853515625"
-        }
-      ],
-      "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-01",
-      "next_rebalance": "2026-10-06"
-    },
-    {
-      "bot_id": "cycle_6040_paper",
-      "account_id": "cycle_6040_paper",
-      "currency": "RUB",
-      "seed": "1000000",
-      "equity": "1000000.0",
-      "cash": "1000000.0",
-      "updated_utc": "2026-10-02T09:31:17Z",
-      "positions": [],
-      "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-01",
-      "braked": false,
-      "planned_fill": "2026-10-02"
-    },
-    {
-      "bot_id": "rf_conservative_comon",
-      "account_id": "rf_conservative_comon",
-      "currency": "RUB",
-      "seed": "50000",
-      "equity": "49975.9962416",
-      "cash": "118.82524159999593",
-      "updated_utc": "2026-10-02T10:21:09Z",
-      "positions": [
-        {
-          "symbol": "SBMX",
-          "side": "long",
-          "qty": "309",
-          "avg_px": "16.289"
-        },
-        {
-          "symbol": "SBRB",
-          "side": "long",
-          "qty": "2366",
-          "avg_px": "18.945"
-        }
-      ],
-      "note": "Бумага. «РФ Консерватив» Comon, SBMX/SBRB/LQDT, старт 50000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-02"
+      "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. Ордера на биржу не идут. equity = mark-to-market на тиках US RTH; cash = реализованный кэш."
     }
   ],
   "manifest": [
     {
       "bot_id": "v6b1",
       "logic": "OKX USDT-SWAP, бумага. Час закрылся — если цена у дневного хая и радар дня включён, лонг на весь свободный кэш. Стоп и тейк на бумаге. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "grail_b20_3x",
+      "logic": "OKX, бумага, плечо 3, одна позиция. Сигнал на закрытии часа, вход со следующего часа. Нет кандидата — кэш. На биржу ордера не идут."
     },
     {
       "bot_id": "who_pays",
@@ -433,26 +255,6 @@
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
       "logic": "OKX USDT-SWAP, бумага, 1h. MSTR/TSLA/SPCX. На биржу ордера не идут."
-    },
-    {
-      "bot_id": "young_bounce_combo",
-      "logic": "Binance spot, бумага, $10 000. Монеты возрастом 25–90 дней: обвал дня или отскок от листингового дна. Выход по трейлингу или через 10 дней. На биржу ордера не идут."
-    },
-    {
-      "bot_id": "oac_paper",
-      "logic": "Акции США, бумага, $10 000. Каждый день берёт топ-20 бумаг по объёму опционов OCC. Раз в неделю покупает до 10 имён, которые держались в топе 15 из последних 20 сессий, по 10% на имя. Если JPM или BTC ниже своей EMA100, по 5% на имя. Всё остальное стоит в BOXX. На биржу ордера не идут."
-    },
-    {
-      "bot_id": "desyatka_earn_paper",
-      "logic": "Акции США, бумага, $10 000. Корзина top-10 опционного объёма (UW, запасной OCC). Сезонный ребаланс 1/10; перед своим отчётом выход по Close, возврат T+1 только если имя снова в живой десятке. Решения после close t → Open t+1. На биржу ордера не идут."
-    },
-    {
-      "bot_id": "cycle_6040_paper",
-      "logic": "РФ, бумага, старт 1 000 000 ₽. Правило cycle_53477: ноги E/B по индексам дивидендных акций и ОФЗ vs денежный; гейт ключевой ставки; vol-target; полоса ребаланса. Книга paper повторяет заявки model целыми паями (DIVD/SBLB/LQDT). Стоп −6% по model. На биржу ордера не идут."
-    },
-    {
-      "bot_id": "rf_conservative_comon",
-      "logic": "РФ, бумага, старт 50 000 ₽. 90% — облигации SBRB в цикле снижения ключевой (иначе LQDT); 10% — акции SBMX по правилу реальной ставки / обвала. Решение по close t → сделка t+1; конец месяца возврат к 90/10. На биржу ордера не идут."
     }
   ]
 }
