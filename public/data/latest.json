@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-02T17:27:02Z",
+  "generated_at": "2026-10-02T17:45:09Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -56,26 +56,9 @@
       "account_id": "paper_us_eq",
       "venue": "US_EQ",
       "currency": "USD",
-      "equity": "25113.64525899",
-      "updated_utc": "2026-10-02T17:27:00.202690Z",
-      "positions": [
-        {
-          "position_id": "p_30eeb6ac0b2c",
-          "symbol": "TSLA",
-          "side": "short",
-          "qty": "17.0",
-          "avg_px": "367.851415",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_aa53de2574d7",
-          "symbol": "TSLA",
-          "side": "short",
-          "qty": "17.0",
-          "avg_px": "367.55",
-          "stop_px": null
-        }
-      ]
+      "equity": "24945.50440378",
+      "updated_utc": "2026-10-02T17:45:06.912277Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -83,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1996622.50188523",
-      "updated_utc": "2026-10-02T17:27:00.206121Z",
+      "updated_utc": "2026-10-02T17:45:06.915300Z",
       "positions": [
         {
           "position_id": "p_c88b811bf9f5",
@@ -101,7 +84,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1498386.209826",
-      "updated_utc": "2026-10-02T17:27:00.209093Z",
+      "updated_utc": "2026-10-02T17:45:06.918005Z",
       "positions": [
         {
           "position_id": "p_cda09ccecaf8",
@@ -127,7 +110,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14661.94074085001",
-      "updated_utc": "2026-10-02T17:27:00.211949Z",
+      "updated_utc": "2026-10-02T17:45:06.920122Z",
       "positions": []
     },
     {
@@ -136,7 +119,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-02T17:27:00.214971Z",
+      "updated_utc": "2026-10-02T17:45:06.922128Z",
       "positions": []
     },
     {
