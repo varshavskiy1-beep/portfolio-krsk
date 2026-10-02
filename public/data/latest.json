@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-02T04:28:35Z",
+  "generated_at": "2026-10-02T04:42:44Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25113.64525899",
-      "updated_utc": "2026-10-02T04:28:31.706214Z",
+      "updated_utc": "2026-10-02T04:42:39.689978Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1996866.25681592",
-      "updated_utc": "2026-10-02T04:28:31.708632Z",
+      "updated_utc": "2026-10-02T04:42:39.694643Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1505090.14394808",
-      "updated_utc": "2026-10-02T04:28:31.711134Z",
+      "updated_utc": "2026-10-02T04:42:39.697928Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14721.311092360009",
-      "updated_utc": "2026-10-02T04:28:31.713707Z",
+      "updated_utc": "2026-10-02T04:42:39.701180Z",
       "positions": [
         {
           "position_id": "p_bf70af4faa1c",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-02T04:28:31.715977Z",
+      "updated_utc": "2026-10-02T04:42:39.704447Z",
       "positions": []
     },
     {
@@ -358,7 +358,7 @@
       "seed": "1000000",
       "equity": "1000000.0",
       "cash": "1000000.0",
-      "updated_utc": "2026-10-01T22:30:48Z",
+      "updated_utc": "2026-10-02T04:30:40Z",
       "positions": [],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
       "as_of": "2026-10-01",
@@ -372,10 +372,10 @@
       "seed": "50000",
       "equity": "50000.0",
       "cash": "50000.0",
-      "updated_utc": "2026-10-01T05:04:13Z",
+      "updated_utc": "2026-10-02T04:30:57Z",
       "positions": [],
       "note": "Бумага. «РФ Консерватив» Comon, SBMX/SBRB/LQDT, старт 50000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-01"
+      "as_of": "2026-10-02"
     }
   ],
   "manifest": [
