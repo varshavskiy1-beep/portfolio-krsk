@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-02T00:15:24Z",
+  "generated_at": "2026-10-02T00:29:31Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25113.64525899",
-      "updated_utc": "2026-10-02T00:15:19.468829Z",
+      "updated_utc": "2026-10-02T00:29:30.423714Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1996866.25681592",
-      "updated_utc": "2026-10-02T00:15:19.471391Z",
+      "updated_utc": "2026-10-02T00:29:30.426197Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1505090.14394808",
-      "updated_utc": "2026-10-02T00:15:19.473954Z",
+      "updated_utc": "2026-10-02T00:29:30.428624Z",
       "positions": []
     },
     {
@@ -72,26 +72,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14747.67531579401",
-      "updated_utc": "2026-10-02T00:15:19.476322Z",
-      "positions": [
-        {
-          "position_id": "p_196c006dc947",
-          "symbol": "ETH-USDT",
-          "side": "short",
-          "qty": "1.363",
-          "avg_px": "2702.568986",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_a35c83032314",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.043",
-          "avg_px": "84792.95448",
-          "stop_px": null
-        }
-      ]
+      "equity": "14721.311092360009",
+      "updated_utc": "2026-10-02T00:29:30.431199Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -99,7 +82,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-02T00:15:19.479051Z",
+      "updated_utc": "2026-10-02T00:29:30.433731Z",
       "positions": []
     },
     {
@@ -127,7 +110,7 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5236.830000000000000000000000",
-      "cash": "4181.196000000000000000000000",
+      "cash": "3133.830000000000000000000000",
       "updated_utc": "2026-10-01",
       "positions": [],
       "pending_limits": [
@@ -142,6 +125,18 @@
           "symbol": "NIGHTUSDT",
           "limit": "0.03724000",
           "notional": "513.4150000000000000000000000"
+        },
+        {
+          "id": "pump-2026-10-01-GTCUSDT",
+          "symbol": "GTCUSDT",
+          "limit": "0.13722750",
+          "notional": "523.6830000000000000000000000"
+        },
+        {
+          "id": "pump-2026-10-01-NOMUSDT",
+          "symbol": "NOMUSDT",
+          "limit": "0.00265145",
+          "notional": "523.6830000000000000000000000"
         }
       ]
     },
@@ -272,7 +267,7 @@
       "seed": "10000",
       "equity": "9973.9799",
       "cash": "-8.242578340314822",
-      "updated_utc": "2026-10-02T00:10:00Z",
+      "updated_utc": "2026-10-02T00:20:00Z",
       "positions": [
         {
           "symbol": "AAPL",
