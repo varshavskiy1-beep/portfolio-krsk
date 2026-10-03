@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-03T00:00:03Z",
+  "generated_at": "2026-10-03T00:12:11Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,17 +25,17 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "9105.6497568920",
-      "cash": "9105.6497568920",
+      "equity": "9230.3907996020",
+      "cash": "9230.3907996020",
       "seed": "10000",
-      "updated_utc": "2026-10-02T23:03:14Z",
+      "updated_utc": "2026-10-03T00:03:09Z",
       "positions": [
         {
           "symbol": "GALA-USDT-SWAP",
           "side": "long",
-          "qty": "348284",
-          "avg_px": "0.002616",
-          "margin": "9111.109440"
+          "qty": "347869",
+          "avg_px": "0.002655",
+          "margin": "9235.921950"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24943.0679438",
-      "updated_utc": "2026-10-03T00:00:02.879856Z",
+      "updated_utc": "2026-10-03T00:12:10.022277Z",
       "positions": []
     },
     {
@@ -66,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1995607.54492071",
-      "updated_utc": "2026-10-03T00:00:02.881891Z",
+      "updated_utc": "2026-10-03T00:12:10.024983Z",
       "positions": []
     },
     {
@@ -75,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1501510.63090344",
-      "updated_utc": "2026-10-03T00:00:02.884432Z",
+      "updated_utc": "2026-10-03T00:12:10.027417Z",
       "positions": []
     },
     {
@@ -84,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14661.94074085001",
-      "updated_utc": "2026-10-03T00:00:02.887390Z",
+      "updated_utc": "2026-10-03T00:12:10.029707Z",
       "positions": [
         {
           "position_id": "p_b918d1c07307",
@@ -110,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-03T00:00:02.889719Z",
+      "updated_utc": "2026-10-03T00:12:10.035015Z",
       "positions": []
     },
     {
@@ -136,9 +136,9 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "5236.830000000000000000000000",
-      "cash": "3133.830000000000000000000000",
-      "updated_utc": "2026-10-01",
+      "equity": "5318.770000000000000000000000",
+      "cash": "4263.136000000000000000000000",
+      "updated_utc": "2026-10-02",
       "positions": [],
       "pending_limits": [
         {
@@ -152,18 +152,6 @@
           "symbol": "NIGHTUSDT",
           "limit": "0.03724000",
           "notional": "513.4150000000000000000000000"
-        },
-        {
-          "id": "pump-2026-10-01-GTCUSDT",
-          "symbol": "GTCUSDT",
-          "limit": "0.13722750",
-          "notional": "523.6830000000000000000000000"
-        },
-        {
-          "id": "pump-2026-10-01-NOMUSDT",
-          "symbol": "NOMUSDT",
-          "limit": "0.00265145",
-          "notional": "523.6830000000000000000000000"
         }
       ]
     },
