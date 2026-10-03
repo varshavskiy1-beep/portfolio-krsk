@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-03T01:34:55Z",
+  "generated_at": "2026-10-03T01:40:57Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24943.0679438",
-      "updated_utc": "2026-10-03T01:34:53.945717Z",
+      "updated_utc": "2026-10-03T01:40:51.815260Z",
       "positions": []
     },
     {
@@ -66,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1995607.54492071",
-      "updated_utc": "2026-10-03T01:34:53.949070Z",
+      "updated_utc": "2026-10-03T01:40:51.821007Z",
       "positions": []
     },
     {
@@ -75,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1501510.63090344",
-      "updated_utc": "2026-10-03T01:34:53.951989Z",
+      "updated_utc": "2026-10-03T01:40:51.823917Z",
       "positions": []
     },
     {
@@ -84,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14662.26530586801",
-      "updated_utc": "2026-10-03T01:34:53.955072Z",
+      "updated_utc": "2026-10-03T01:40:51.827166Z",
       "positions": [
         {
           "position_id": "p_cb6b8fdf4641",
@@ -110,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-03T01:34:53.957862Z",
+      "updated_utc": "2026-10-03T01:40:51.829830Z",
       "positions": []
     },
     {
@@ -137,7 +137,7 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5318.770000000000000000000000",
-      "cash": "4263.136000000000000000000000",
+      "cash": "3731.259000000000000000000000",
       "updated_utc": "2026-10-02",
       "positions": [],
       "pending_limits": [
@@ -152,6 +152,12 @@
           "symbol": "NIGHTUSDT",
           "limit": "0.03724000",
           "notional": "513.4150000000000000000000000"
+        },
+        {
+          "id": "pump-2026-10-02-SANDUSDT",
+          "symbol": "SANDUSDT",
+          "limit": "0.06571150",
+          "notional": "531.8770000000000000000000000"
         }
       ]
     },
