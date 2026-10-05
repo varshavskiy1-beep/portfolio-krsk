@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-05T10:39:48Z",
+  "generated_at": "2026-10-05T11:03:56Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24943.0679438",
-      "updated_utc": "2026-10-05T10:39:42.115285Z",
+      "updated_utc": "2026-10-05T11:03:46.098243Z",
       "positions": []
     },
     {
@@ -65,17 +65,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1995607.54492071",
-      "updated_utc": "2026-10-05T10:39:42.119529Z",
+      "equity": "1989682.4321895898",
+      "updated_utc": "2026-10-05T11:03:46.100769Z",
       "positions": [
-        {
-          "position_id": "p_f36c1e92b314",
-          "symbol": "NVTK",
-          "side": "short",
-          "qty": "469.0",
-          "avg_px": "1060.96925",
-          "stop_px": null
-        },
         {
           "position_id": "p_5904b496b3b5",
           "symbol": "SBER",
@@ -92,7 +84,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1502956.8945432",
-      "updated_utc": "2026-10-05T10:39:42.123167Z",
+      "updated_utc": "2026-10-05T11:03:46.103460Z",
       "positions": [
         {
           "position_id": "p_d262b0fffe50",
@@ -118,7 +110,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14376.454866554011",
-      "updated_utc": "2026-10-05T10:39:42.127604Z",
+      "updated_utc": "2026-10-05T11:03:46.106331Z",
       "positions": [
         {
           "position_id": "p_9d2976b76980",
@@ -144,7 +136,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-05T10:39:42.131604Z",
+      "updated_utc": "2026-10-05T11:03:46.108906Z",
       "positions": []
     },
     {
