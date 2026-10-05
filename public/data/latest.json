@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-05T14:09:17Z",
+  "generated_at": "2026-10-05T14:23:22Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24943.0679438",
-      "updated_utc": "2026-10-05T14:09:06.018074Z",
+      "updated_utc": "2026-10-05T14:23:13.295628Z",
       "positions": []
     },
     {
@@ -66,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1977926.86556313",
-      "updated_utc": "2026-10-05T14:09:06.023735Z",
+      "updated_utc": "2026-10-05T14:23:13.298797Z",
       "positions": [
         {
           "position_id": "p_18a388d4270f",
@@ -91,26 +91,9 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1502956.8945432",
-      "updated_utc": "2026-10-05T14:09:06.027888Z",
-      "positions": [
-        {
-          "position_id": "p_d262b0fffe50",
-          "symbol": "SiZ6",
-          "side": "short",
-          "qty": "4.0",
-          "avg_px": "86742.2892",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_b077a70a71ee",
-          "symbol": "SiZ6",
-          "side": "short",
-          "qty": "4.0",
-          "avg_px": "86775.0",
-          "stop_px": null
-        }
-      ]
+      "equity": "1503243.2452536002",
+      "updated_utc": "2026-10-05T14:23:13.301161Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -118,7 +101,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14385.574534224012",
-      "updated_utc": "2026-10-05T14:09:06.030824Z",
+      "updated_utc": "2026-10-05T14:23:13.303769Z",
       "positions": [
         {
           "position_id": "p_93282d4a0305",
@@ -144,7 +127,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-05T14:09:06.036238Z",
+      "updated_utc": "2026-10-05T14:23:13.306207Z",
       "positions": []
     },
     {
@@ -194,9 +177,9 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "9726.39",
+      "equity": "9657.23",
       "cash": "9726.39",
-      "updated_utc": "2026-10-02T19:10:06Z",
+      "updated_utc": "2026-10-05T14:09:42Z",
       "positions": [
         {
           "symbol": "MSTR-USDT-SWAP",
