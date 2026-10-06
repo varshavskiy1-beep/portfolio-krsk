@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-06T00:00:02Z",
+  "generated_at": "2026-10-06T00:10:07Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -57,7 +57,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24943.0679438",
-      "updated_utc": "2026-10-05T23:59:53.409999Z",
+      "updated_utc": "2026-10-06T00:09:59.174353Z",
       "positions": []
     },
     {
@@ -66,7 +66,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1972485.66777253",
-      "updated_utc": "2026-10-05T23:59:53.413163Z",
+      "updated_utc": "2026-10-06T00:09:59.177047Z",
       "positions": []
     },
     {
@@ -75,7 +75,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1501031.0767680001",
-      "updated_utc": "2026-10-05T23:59:53.416298Z",
+      "updated_utc": "2026-10-06T00:09:59.180177Z",
       "positions": []
     },
     {
@@ -84,7 +84,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14322.159416123011",
-      "updated_utc": "2026-10-05T23:59:53.419370Z",
+      "updated_utc": "2026-10-06T00:09:59.183180Z",
       "positions": [
         {
           "position_id": "p_28d986eee595",
@@ -110,7 +110,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-05T23:59:53.422836Z",
+      "updated_utc": "2026-10-06T00:09:59.186042Z",
       "positions": []
     },
     {
@@ -137,8 +137,8 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5404.610000000000000000000000",
-      "cash": "4348.976000000000000000000000",
-      "updated_utc": "2026-10-04",
+      "cash": "3268.054000000000000000000000",
+      "updated_utc": "2026-10-05",
       "positions": [],
       "pending_limits": [
         {
@@ -152,6 +152,18 @@
           "symbol": "NIGHTUSDT",
           "limit": "0.03724000",
           "notional": "513.4150000000000000000000000"
+        },
+        {
+          "id": "pump-2026-10-05-RLCUSDT",
+          "symbol": "RLCUSDT",
+          "limit": "0.69122000",
+          "notional": "540.4610000000000000000000000"
+        },
+        {
+          "id": "pump-2026-10-05-ORCAUSDT",
+          "symbol": "ORCAUSDT",
+          "limit": "2.29425000",
+          "notional": "540.4610000000000000000000000"
         }
       ]
     },
