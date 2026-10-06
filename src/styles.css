@@ -84,6 +84,7 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
 .row {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: flex-start;
   min-width: 0;
@@ -92,7 +93,8 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
 .row .linkish,
 .row strong {
   min-width: 0;
-  overflow-wrap: anywhere;
+  flex: 1 1 10rem;
+  overflow-wrap: break-word;
 }
 .badge {
   font-size: 0.75rem;
