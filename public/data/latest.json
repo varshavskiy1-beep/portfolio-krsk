@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-06T08:13:10Z",
+  "generated_at": "2026-10-06T08:25:15Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24943.0679438",
-      "updated_utc": "2026-10-06T08:13:05.769805Z",
+      "updated_utc": "2026-10-06T08:25:05.858619Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1971499.6770525302",
-      "updated_utc": "2026-10-06T08:13:05.774594Z",
+      "updated_utc": "2026-10-06T08:25:05.864118Z",
       "positions": [
         {
           "position_id": "p_f4b77b7ebc15",
@@ -80,8 +80,8 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1500217.5207384",
-      "updated_utc": "2026-10-06T08:13:05.779273Z",
+      "equity": "1500087.9089364",
+      "updated_utc": "2026-10-06T08:25:05.866660Z",
       "positions": [
         {
           "position_id": "p_b8e5f7ab408c",
@@ -90,14 +90,6 @@
           "qty": "37.0",
           "avg_px": "9994.0",
           "stop_px": null
-        },
-        {
-          "position_id": "p_1dea991fcf60",
-          "symbol": "SiZ6",
-          "side": "short",
-          "qty": "1.0",
-          "avg_px": "87129.1344",
-          "stop_px": "87187.1"
         }
       ]
     },
@@ -106,17 +98,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14335.197329309012",
-      "updated_utc": "2026-10-06T08:13:05.782510Z",
+      "equity": "14315.813415767012",
+      "updated_utc": "2026-10-06T08:25:05.869510Z",
       "positions": [
-        {
-          "position_id": "p_6af033c5d0f1",
-          "symbol": "ETH-USDT",
-          "side": "short",
-          "qty": "1.324",
-          "avg_px": "2704.128518",
-          "stop_px": null
-        },
         {
           "position_id": "p_9766497ad2ee",
           "symbol": "BTC-USDT",
@@ -133,7 +117,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-06T08:13:05.785342Z",
+      "updated_utc": "2026-10-06T08:25:05.872235Z",
       "positions": []
     },
     {
