@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
+import MayakDetails from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import { cardUpdatedLine } from "./mayakCard.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -11,7 +13,6 @@ import {
   cardSubtitle,
   cardTitle,
   chipLabel,
-  formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
   isHiddenPortalId,
@@ -103,6 +104,7 @@ function AccountBlock({ a, points }) {
         <AccountBadges account={a} currency={currency} />
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
+      <MayakDetails account={a} hasData={hasData} />
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       <div className="equity">
         {!hasData
@@ -116,8 +118,8 @@ function AccountBlock({ a, points }) {
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
-      {hasData && formatUpdatedLine(a) ? (
-        <div className="updated">{formatUpdatedLine(a)}</div>
+      {hasData && cardUpdatedLine(a) ? (
+        <div className="updated">{cardUpdatedLine(a)}</div>
       ) : null}
       {hasData && hasBoxxCash(a) ? (
         <div className="updated">
@@ -171,7 +173,7 @@ function AccountBlock({ a, points }) {
       <h3 className="subhead">Открытые позиции</h3>
       {hasData ? (
         <>
-          <PositionsTable positions={a.positions || []} botId={a.bot_id} />
+          <PositionsTable positions={a.positions || []} botId={a.bot_id} account={a} />
           <LimitsTable limits={a.pending_limits || []} />
         </>
       ) : (

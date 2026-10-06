@@ -403,6 +403,29 @@ test("rf conservative: absent / no_data yields no chart and no invented 50000 li
   assert.deepEqual(buildSeries([], 50_000, "money"), []);
 });
 
+test("mayak: main equity only, seed from feed, no invented line when absent", () => {
+  const account = {
+    bot_id: "mayak_imoex_mom10",
+    account_id: "mayak_imoex_mom10",
+    equity: "88000",
+    seed: "85000",
+    updated_utc: "2026-10-06T16:20:00Z",
+    as_of: "2026-10-06",
+  };
+  assert.equal(lastEquityValue(account), 88_000);
+  const points = resolveEquityPoints(account, null);
+  assert.equal(points.length, 1);
+  assert.equal(Number(points[0].equity), 88_000);
+  const shell = {
+    bot_id: "mayak_imoex_mom10",
+    account_id: "mayak_imoex_mom10",
+    currency: "RUB",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+  assert.deepEqual(buildSeries([], 85_000, "money"), []);
+});
+
 test("lastEquityValue reads scalar or last series point", () => {
   assert.equal(lastEquityValue({ equity: "10000" }), 10000);
   assert.equal(
