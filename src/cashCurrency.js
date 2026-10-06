@@ -23,6 +23,10 @@ export const BOT_CURRENCY = {
   desyatka_earn_paper: "USD",
   cycle_6040_paper: "RUB",
   rf_conservative_comon: "RUB",
+  mayak_imoex_lowvol10: "RUB",
+  mayak_imoex_mom10: "RUB",
+  mayak_imoex_mom10_lev15: "RUB",
+  mayak_imoex_mom10_lev2: "RUB",
 };
 
 /** Валюта карточки = инструмент: Robot 2 / Young Bounce — USDT; OAC и Десятка Earn — USD; Цикл 60/40 и РФ Консерватив — RUB. */
@@ -34,6 +38,10 @@ export const FORCE_CURRENCY = {
   desyatka_earn_paper: "USD",
   cycle_6040_paper: "RUB",
   rf_conservative_comon: "RUB",
+  mayak_imoex_lowvol10: "RUB",
+  mayak_imoex_mom10: "RUB",
+  mayak_imoex_mom10_lev15: "RUB",
+  mayak_imoex_mom10_lev2: "RUB",
 };
 
 /** who_pays и прочие счета, если venue в снимке нет. */
@@ -49,6 +57,10 @@ export const ACCOUNT_CURRENCY = {
   desyatka_earn_paper: "USD",
   cycle_6040_paper: "RUB",
   rf_conservative_comon: "RUB",
+  mayak_imoex_lowvol10: "RUB",
+  mayak_imoex_mom10: "RUB",
+  mayak_imoex_mom10_lev15: "RUB",
+  mayak_imoex_mom10_lev2: "RUB",
 };
 
 export function canonicalCurrency(account) {

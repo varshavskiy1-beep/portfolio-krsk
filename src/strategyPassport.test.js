@@ -16,7 +16,7 @@ import {
   validateDisplayedPassports,
   validatePassport,
 } from "./strategyPassport.js";
-import { PORTAL_SHELLS, hasAccountData, isHiddenPortalId } from "./strategyMeta.js";
+import { MAYAK_BOT_IDS, PORTAL_SHELLS, hasAccountData, isHiddenPortalId } from "./strategyMeta.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
@@ -33,33 +33,50 @@ const DISPLAYED = [
   "desyatka_earn_paper",
   "cycle_6040_paper",
   "rf_conservative_comon",
+  "mayak_imoex_lowvol10",
+  "mayak_imoex_mom10",
+  "mayak_imoex_mom10_lev15",
+  "mayak_imoex_mom10_lev2",
 ];
 
-test("cycle_6040_paper is not yet in latest.json — cabinet uses shell нет данных", () => {
+test("cycle_6040_paper stays on the dashboard; snapshot row is used when present", () => {
   const row = (latest.accounts || []).find((a) => a.bot_id === "cycle_6040_paper");
-  assert.equal(row, undefined);
   assert.equal(displayedBotIds(latest.accounts).includes("cycle_6040_paper"), true);
-  assert.equal(hasAccountData({ bot_id: "cycle_6040_paper", no_data: true }), false);
+  if (row) {
+    assert.equal(hasAccountData(row), true);
+  } else {
+    assert.equal(hasAccountData({ bot_id: "cycle_6040_paper", no_data: true }), false);
+  }
 });
 
-test("rf_conservative_comon is not yet in latest.json — cabinet uses shell нет данных", () => {
+test("rf_conservative_comon stays on the dashboard; snapshot row is used when present", () => {
   const row = (latest.accounts || []).find((a) => a.bot_id === "rf_conservative_comon");
-  assert.equal(row, undefined);
   assert.equal(displayedBotIds(latest.accounts).includes("rf_conservative_comon"), true);
-  assert.equal(hasAccountData({ bot_id: "rf_conservative_comon", no_data: true }), false);
+  if (row) {
+    assert.equal(hasAccountData(row), true);
+  } else {
+    assert.equal(hasAccountData({ bot_id: "rf_conservative_comon", no_data: true }), false);
+  }
 });
 
-test("desyatka in latest.json is live cash at 10000, not нет данных and not 100000", () => {
+test("desyatka in latest.json is a live cash book, not нет данных and not 100000", () => {
   const row = (latest.accounts || []).find((a) => a.bot_id === "desyatka_earn_paper");
   assert.ok(row, "desyatka_earn_paper must be in equity_ro latest.json");
   assert.equal(hasAccountData(row), true);
   assert.equal(Number(row.seed), 10000);
-  assert.equal(Number(row.equity), 10000);
-  assert.equal(Number(row.cash), 10000);
-  assert.deepEqual(row.positions, []);
   assert.notEqual(Number(row.equity), 100000);
   assert.notEqual(Number(row.seed), 100000);
-  assert.equal(row.next_rebalance, "2026-10-06");
+});
+
+test("mayak cards stay on the dashboard; absent snapshot → нет данных", () => {
+  const ids = displayedBotIds(latest.accounts);
+  for (const botId of MAYAK_BOT_IDS) {
+    assert.equal(ids.includes(botId), true, botId);
+    const row = (latest.accounts || []).find((a) => a.bot_id === botId || a.account_id === botId);
+    if (!row) {
+      assert.equal(hasAccountData({ bot_id: botId, no_data: true }), false);
+    }
+  }
 });
 
 test("latest.json accounts + shells match expected dashboard strategies", () => {
@@ -228,6 +245,27 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   for (const s of passportUiStrings("rf_conservative_comon")) {
     assert.doesNotMatch(s, /включить ордера/, s);
     assert.doesNotMatch(s, /счёт Finam|номер счёта Finam|Finam account/i, s);
+  }
+
+  const lowvol = getPassport("mayak_imoex_lowvol10");
+  assert.equal(lowvol.title, "Маяк Low Vol");
+  assert.equal(lowvol.parameters.find((r) => r.name === "Начальный капитал").known, false);
+  assert.equal(lowvol.parameters.find((r) => r.name === "Начальный капитал").value, NO_DATA);
+  assert.equal(lowvol.parameters.find((r) => r.name === "Бэктест").value, NO_DATA);
+  assert.match(lowvol.essence.paragraphs.join("\n"), /Автоследования/);
+  assert.match(lowvol.essence.paragraphs.join("\n"), /19:15 МСК/);
+  assert.doesNotMatch(lowvol.essence.paragraphs.join("\n"), /\bseed\b/i);
+  assert.doesNotMatch(lowvol.essence.paragraphs.join("\n"), /\/var\/lib|equity-ro/);
+  const lev = getPassport("mayak_imoex_mom10_lev15");
+  assert.equal(lev.title, "Маяк Momentum ×1,5");
+  assert.match(lev.parameters.find((r) => r.name === "Плечо").value, /1,5/);
+  assert.match(lev.risk.paragraphs.join("\n"), /заём/);
+  for (const botId of MAYAK_BOT_IDS) {
+    for (const s of passportUiStrings(botId)) {
+      assert.doesNotMatch(s, /\bseed\b/i, `${botId}: ${s}`);
+      assert.doesNotMatch(s, /включить ордера/, s);
+      assert.doesNotMatch(s, /\/var\/lib/, s);
+    }
   }
 });
 

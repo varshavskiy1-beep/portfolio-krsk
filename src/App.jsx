@@ -1,17 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
+import MayakDetails from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import { cardUpdatedLine } from "./mayakCard.js";
 import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
 import {
   cardSubtitle,
   cardTitle,
   chipLabel,
-  formatUpdatedLine,
   hasAccountData,
   hasBoxxCash,
   mergePortalAccounts,
@@ -69,6 +70,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         <AccountBadges account={a} currency={currency} />
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
+      <MayakDetails account={a} hasData={hasData} />
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
@@ -83,8 +85,8 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
-      {hasData && formatUpdatedLine(a) ? (
-        <div className="updated">{formatUpdatedLine(a)}</div>
+      {hasData && cardUpdatedLine(a) ? (
+        <div className="updated">{cardUpdatedLine(a)}</div>
       ) : null}
       {hasData && hasBoxxCash(a) ? (
         <div className="updated">
@@ -118,7 +120,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       <EquityChart points={historyPoints} seed={seed} currency={currency} mode={mode} />
 
-      <PositionsTable positions={positions} compact botId={a.bot_id} />
+      <PositionsTable positions={positions} compact botId={a.bot_id} account={a} />
 
       {limits.length ? (
         <>

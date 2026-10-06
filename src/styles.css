@@ -129,11 +129,27 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
   background: #fdecea;
   color: #b71c1c;
 }
+.badge-lev {
+  background: #e8eaf6;
+  color: #283593;
+}
 .account-subtitle {
   color: var(--muted);
   font-size: 0.88rem;
   margin: 4px 0 6px;
   line-height: 1.35;
+}
+.account-blurb {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+.mayak-line {
+  color: var(--muted);
+}
+.mayak-loan {
+  color: var(--muted);
 }
 .equity {
   font-size: 1.35rem;

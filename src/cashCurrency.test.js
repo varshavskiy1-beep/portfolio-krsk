@@ -62,6 +62,10 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
     { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "10000" },
     { bot_id: "cycle_6040_paper", account_id: "cycle_6040_paper", currency: "USD", equity: "1000000" },
     { bot_id: "rf_conservative_comon", account_id: "rf_conservative_comon", currency: "USD", equity: "50000" },
+    { bot_id: "mayak_imoex_lowvol10", account_id: "mayak_imoex_lowvol10", currency: "USD", equity: "1" },
+    { bot_id: "mayak_imoex_mom10", account_id: "mayak_imoex_mom10", currency: "USDT", equity: "1" },
+    { bot_id: "mayak_imoex_mom10_lev15", account_id: "mayak_imoex_mom10_lev15", currency: "USD", equity: "1" },
+    { bot_id: "mayak_imoex_mom10_lev2", account_id: "mayak_imoex_mom10_lev2", currency: "USDT", equity: "1" },
     { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
   ];
   const usd = accounts.filter((a) => canonicalCurrency(a) === "USD");
@@ -77,7 +81,15 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
   );
   assert.deepEqual(
     rub.map((a) => a.account_id),
-    ["forts_adr_static", "cycle_6040_paper", "rf_conservative_comon"],
+    [
+      "forts_adr_static",
+      "cycle_6040_paper",
+      "rf_conservative_comon",
+      "mayak_imoex_lowvol10",
+      "mayak_imoex_mom10",
+      "mayak_imoex_mom10_lev15",
+      "mayak_imoex_mom10_lev2",
+    ],
   );
 });
 
@@ -175,6 +187,22 @@ test("cycle 60/40 is always RUB and never remapped to USD/USDT", () => {
     canonicalCurrency({ bot_id: "cycle_6040_paper", account_id: "x", currency: "USDT" }),
     "RUB",
   );
+});
+
+test("mayak paper accounts are always RUB and never remapped to USD/USDT", () => {
+  for (const id of [
+    "mayak_imoex_lowvol10",
+    "mayak_imoex_mom10",
+    "mayak_imoex_mom10_lev15",
+    "mayak_imoex_mom10_lev2",
+  ]) {
+    assert.equal(canonicalCurrency({ bot_id: id, account_id: id, currency: "USD" }), "RUB");
+    assert.equal(
+      canonicalCurrency({ bot_id: id, account_id: id, venue: "US_EQ", currency: "USDT" }),
+      "RUB",
+    );
+    assert.equal(canonicalCurrency({ bot_id: id, account_id: "x", currency: "USDT" }), "RUB");
+  }
 });
 
 test("rf conservative is always RUB and never remapped to USD/USDT", () => {

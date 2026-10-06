@@ -24,6 +24,79 @@ export const RF_CONSERVATIVE_BOT_ID = "rf_conservative_comon";
 export const RF_CONSERVATIVE_ACCOUNT_ID = "rf_conservative_comon";
 export const RF_CONSERVATIVE_TITLE = "РФ Консерватив: облигации в цикле ЦБ + 10% акций";
 
+/**
+ * Семейство бумажных счетов «Маяк». Четыре отдельные карточки.
+ * Стартовый капитал не зашит: только поле seed из accounts[] снимка.
+ */
+export const MAYAK_COMMON_LOGIC =
+  "РФ, бумага. Акции из списка Автоследования с P/E ниже рынка, корзина из 10 бумаг раз в месяц, у каждой бумаги трейлинг по EMA100. Если ключевая ставка выше 12% и реальная выше 6 п.п. (режим HARD) или индекс Мосбиржи ниже EMA100 — всё в LQDT. Решение по close D, сделка на open D+1. На биржу ордера не идут.";
+
+export const MAYAK_ACCOUNTS = [
+  {
+    bot_id: "mayak_imoex_lowvol10",
+    account_id: "mayak_imoex_lowvol10",
+    title: "Маяк Low Vol",
+    subtitle: "РФ, акции MOEX и LQDT, без плеча. На биржу ордера не идут.",
+    blurb: "10 самых спокойных бумаг, до 10% на бумагу.",
+    leverageBadge: null,
+    leverageLabel: "без плеча",
+    maxNamePct: "10%",
+    maxGrossPct: "100%",
+  },
+  {
+    bot_id: "mayak_imoex_mom10",
+    account_id: "mayak_imoex_mom10",
+    title: "Маяк Momentum",
+    subtitle: "РФ, акции MOEX и LQDT, без плеча. На биржу ордера не идут.",
+    blurb: "10 самых растущих за 120 дней, до 10% на бумагу.",
+    leverageBadge: null,
+    leverageLabel: "без плеча",
+    maxNamePct: "10%",
+    maxGrossPct: "100%",
+  },
+  {
+    bot_id: "mayak_imoex_mom10_lev15",
+    account_id: "mayak_imoex_mom10_lev15",
+    title: "Маяк Momentum ×1,5",
+    subtitle: "РФ, акции MOEX и LQDT, плечо 1,5. На биржу ордера не идут.",
+    blurb: "до 15% на бумагу, всего до 150%.",
+    leverageBadge: "плечо 1,5",
+    leverageLabel: "плечо 1,5",
+    maxNamePct: "15%",
+    maxGrossPct: "150%",
+  },
+  {
+    bot_id: "mayak_imoex_mom10_lev2",
+    account_id: "mayak_imoex_mom10_lev2",
+    title: "Маяк Momentum ×2",
+    subtitle: "РФ, акции MOEX и LQDT, плечо 2. На биржу ордера не идут.",
+    blurb: "до 20% на бумагу, всего до 200%.",
+    leverageBadge: "плечо 2",
+    leverageLabel: "плечо 2",
+    maxNamePct: "20%",
+    maxGrossPct: "200%",
+  },
+];
+
+export const MAYAK_BOT_IDS = MAYAK_ACCOUNTS.map((s) => s.bot_id);
+
+const MAYAK_BY_ID = new Map();
+for (const spec of MAYAK_ACCOUNTS) {
+  MAYAK_BY_ID.set(spec.bot_id, spec);
+  MAYAK_BY_ID.set(spec.account_id, spec);
+}
+
+/** Спека карточки Маяка по bot_id / account_id (как у cycle_6040_paper / rf_conservative_comon). */
+export function mayakSpec(accountOrId) {
+  if (accountOrId == null || accountOrId === "") return null;
+  if (typeof accountOrId === "string") return MAYAK_BY_ID.get(accountOrId) || null;
+  return MAYAK_BY_ID.get(accountOrId.bot_id) || MAYAK_BY_ID.get(accountOrId.account_id) || null;
+}
+
+export function isMayak(accountOrId) {
+  return Boolean(mayakSpec(accountOrId));
+}
+
 /** Снятые стратегии: не рисуем карточку, чип, паспорт и OG, даже если id ещё в снимке. */
 export const HIDDEN_PORTAL_IDS = new Set(["grail_b20_3x"]);
 
@@ -46,6 +119,7 @@ export const BOT_TITLE = {
   [DESYATKA_EARN_BOT_ID]: DESYATKA_EARN_TITLE,
   [CYCLE_6040_BOT_ID]: CYCLE_6040_TITLE,
   [RF_CONSERVATIVE_BOT_ID]: RF_CONSERVATIVE_TITLE,
+  ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.title])),
 };
 
 export const ACCOUNT_TITLE = {
@@ -55,6 +129,7 @@ export const ACCOUNT_TITLE = {
   [DESYATKA_EARN_ACCOUNT_ID]: DESYATKA_EARN_TITLE,
   [CYCLE_6040_ACCOUNT_ID]: CYCLE_6040_TITLE,
   [RF_CONSERVATIVE_ACCOUNT_ID]: RF_CONSERVATIVE_TITLE,
+  ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.account_id, s.title])),
 };
 
 /** Подзаголовок на карточке (только для отдельных paper-ботов). */
@@ -64,6 +139,7 @@ export const ACCOUNT_SUBTITLE = {
   [DESYATKA_EARN_BOT_ID]: "акции США, старт 10 000 USD. На биржу ордера не идут.",
   [CYCLE_6040_BOT_ID]: "РФ, DIVD/SBLB/LQDT, старт 1 000 000 ₽. На биржу ордера не идут.",
   [RF_CONSERVATIVE_BOT_ID]: "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.",
+  ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.subtitle])),
 };
 
 /** Устаревшая пометка live OKX в excluded — на портале не показываем как live. */
@@ -72,6 +148,7 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
   DESYATKA_EARN_BOT_ID,
   CYCLE_6040_BOT_ID,
   RF_CONSERVATIVE_BOT_ID,
+  ...MAYAK_BOT_IDS,
 ]);
 
 /** Карточки, которые должны быть на главной даже до публикации счёта в equity-ro. */
@@ -112,6 +189,11 @@ export const PORTAL_SHELLS = [
     currency: "RUB",
     seed: "50000",
   },
+  ...MAYAK_ACCOUNTS.map((s) => ({
+    bot_id: s.bot_id,
+    account_id: s.account_id,
+    currency: "RUB",
+  })),
 ];
 
 export function accountKey(a) {
@@ -124,6 +206,8 @@ export function portalExcluded(excluded = []) {
 
 export function displayTitle(account) {
   if (!account) return "";
+  const mayak = mayakSpec(account);
+  if (mayak) return mayak.title;
   if (account.bot_id === OAC_PAPER_BOT_ID || account.account_id === OAC_PAPER_ACCOUNT_ID) {
     return "Ядро внимания";
   }
@@ -150,6 +234,8 @@ export function displayTitle(account) {
 
 /** Заголовок карточки: displayTitle + страховка для portal-ботов. */
 export function cardTitle(account) {
+  const mayak = mayakSpec(account);
+  if (mayak) return mayak.title;
   const title = displayTitle(account);
   if (account?.bot_id === OAC_PAPER_BOT_ID || account?.account_id === OAC_PAPER_ACCOUNT_ID) {
     return title === OAC_PAPER_ACCOUNT_ID || title === OAC_PAPER_BOT_ID ? "Ядро внимания" : title;
@@ -178,6 +264,8 @@ export function cardTitle(account) {
 }
 
 export function chipLabel(botId) {
+  const mayak = mayakSpec(botId);
+  if (mayak) return mayak.title;
   if (botId === OAC_PAPER_BOT_ID) return "Ядро внимания";
   if (botId === YOUNG_BOUNCE_BOT_ID) return "Young Bounce Combo";
   if (botId === DESYATKA_EARN_BOT_ID) return DESYATKA_EARN_TITLE;
@@ -192,6 +280,8 @@ export function showsPaperBadge(account) {
 
 export function accountSubtitle(account) {
   if (!account) return "";
+  const mayak = mayakSpec(account);
+  if (mayak) return mayak.subtitle;
   if (account.bot_id === OAC_PAPER_BOT_ID || account.account_id === OAC_PAPER_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[OAC_PAPER_BOT_ID];
   }
@@ -207,8 +297,10 @@ export function accountSubtitle(account) {
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
 }
 
-/** Подзаголовок карточки (обязателен для OAC, Десятки, Цикла 60/40 и РФ Консерватив даже при пустом фиде). */
+/** Подзаголовок карточки (обязателен для OAC, Десятки, Цикла 60/40, РФ Консерватив и Маяка даже при пустом фиде). */
 export function cardSubtitle(account) {
+  const mayak = mayakSpec(account);
+  if (mayak) return mayak.subtitle;
   const subtitle = accountSubtitle(account);
   if (subtitle) return subtitle;
   if (account?.bot_id === OAC_PAPER_BOT_ID || account?.account_id === OAC_PAPER_ACCOUNT_ID) {
@@ -226,9 +318,20 @@ export function cardSubtitle(account) {
   return "";
 }
 
+/** Пояснение на карточке Маяка (отдельная строка под подзаголовком). */
+export function cardBlurb(account) {
+  return mayakSpec(account)?.blurb || "";
+}
+
+export function leverageBadge(account) {
+  return mayakSpec(account)?.leverageBadge || null;
+}
+
 /** id счёта в бейджах для известных portal-ботов (не под заголовком). */
 export function accountIdBadge(account) {
   if (!account?.account_id) return null;
+  const mayak = mayakSpec(account);
+  if (mayak) return mayak.account_id;
   if (account.bot_id === OAC_PAPER_BOT_ID || account.account_id === OAC_PAPER_ACCOUNT_ID) {
     return OAC_PAPER_ACCOUNT_ID;
   }
@@ -329,13 +432,14 @@ export function mergePortalAccounts(accounts = []) {
   for (const shell of PORTAL_SHELLS) {
     const key = accountKey(shell);
     if (present.has(key)) continue;
-    merged.push({
+    const row = {
       bot_id: shell.bot_id,
       account_id: shell.account_id,
       currency: shell.currency,
-      seed: shell.seed,
       no_data: true,
-    });
+    };
+    if (shell.seed != null && shell.seed !== "") row.seed = shell.seed;
+    merged.push(row);
   }
   return merged;
 }
