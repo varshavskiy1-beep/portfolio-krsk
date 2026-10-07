@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-07T17:59:48Z",
+  "generated_at": "2026-10-07T18:17:56Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,17 +25,17 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "8762.2267890480",
-      "cash": "8762.2267890480",
+      "equity": "8774.1452248080",
+      "cash": "8774.1452248080",
       "seed": "10000",
-      "updated_utc": "2026-10-07T17:02:43Z",
+      "updated_utc": "2026-10-07T18:03:04Z",
       "positions": [
         {
           "symbol": "SAND-USDT-SWAP",
           "side": "long",
-          "qty": "10695",
-          "avg_px": "0.08197",
-          "margin": "8766.69150"
+          "qty": "10683",
+          "avg_px": "0.08218",
+          "margin": "8779.28940"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24991.901240440005",
-      "updated_utc": "2026-10-07T17:59:47.728306Z",
+      "updated_utc": "2026-10-07T18:17:53.531917Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1966266.6823072801",
-      "updated_utc": "2026-10-07T17:59:47.732455Z",
+      "updated_utc": "2026-10-07T18:17:53.534154Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1496295.41081072",
-      "updated_utc": "2026-10-07T17:59:47.735124Z",
+      "updated_utc": "2026-10-07T18:17:53.536563Z",
       "positions": [
         {
           "position_id": "p_6d18cf254858",
@@ -90,7 +90,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14203.323786755012",
-      "updated_utc": "2026-10-07T17:59:47.739028Z",
+      "updated_utc": "2026-10-07T18:17:53.539171Z",
       "positions": [
         {
           "position_id": "p_af29bbba1148",
@@ -108,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15022.445508824994",
-      "updated_utc": "2026-10-07T17:59:47.743110Z",
+      "updated_utc": "2026-10-07T18:17:53.541722Z",
       "positions": []
     },
     {
@@ -153,32 +153,10 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "8813.56",
-      "cash": "9145.76",
-      "updated_utc": "2026-10-07T17:10:41Z",
-      "positions": [
-        {
-          "symbol": "MSTR-USDT-SWAP",
-          "side": "long",
-          "qty": "22.22",
-          "avg_px": "164.59",
-          "margin": null
-        },
-        {
-          "symbol": "TSLA-USDT-SWAP",
-          "side": "long",
-          "qty": "9.59",
-          "avg_px": "381.45",
-          "margin": null
-        },
-        {
-          "symbol": "SPCX-USDT-SWAP",
-          "side": "long",
-          "qty": "10.53",
-          "avg_px": "173.57",
-          "margin": null
-        }
-      ],
+      "equity": "8788.69",
+      "cash": "8788.69",
+      "updated_utc": "2026-10-07T18:10:48Z",
+      "positions": [],
       "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. Ордера на биржу не идут. equity = mark-to-market на тиках US RTH; cash = реализованный кэш."
     },
     {
@@ -284,7 +262,7 @@
       "seed": "10000",
       "equity": "10128.8344",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-07T17:50:02Z",
+      "updated_utc": "2026-10-07T18:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
