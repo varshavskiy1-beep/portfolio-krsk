@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-07T11:14:37Z",
+  "generated_at": "2026-10-07T11:31:47Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24961.288969760004",
-      "updated_utc": "2026-10-07T11:14:30.397645Z",
+      "updated_utc": "2026-10-07T11:31:46.618638Z",
       "positions": []
     },
     {
@@ -54,26 +54,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1970903.2529046005",
-      "updated_utc": "2026-10-07T11:14:30.400204Z",
-      "positions": [
-        {
-          "position_id": "p_0583fbdd3a06",
-          "symbol": "GMKN",
-          "side": "short",
-          "qty": "4127.0",
-          "avg_px": "119.32031",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_da1932e084fb",
-          "symbol": "GMKN",
-          "side": "long",
-          "qty": "4127.0",
-          "avg_px": "119.38",
-          "stop_px": null
-        }
-      ]
+      "equity": "1969430.3260268203",
+      "updated_utc": "2026-10-07T11:31:46.621003Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -81,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1496888.51989064",
-      "updated_utc": "2026-10-07T11:14:30.402564Z",
+      "updated_utc": "2026-10-07T11:31:46.623436Z",
       "positions": [
         {
           "position_id": "p_71f4a1ecff59",
@@ -115,7 +98,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14301.038366719013",
-      "updated_utc": "2026-10-07T11:14:30.404875Z",
+      "updated_utc": "2026-10-07T11:31:46.625569Z",
       "positions": [
         {
           "position_id": "p_ca920998c6c7",
@@ -141,7 +124,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15022.445508824994",
-      "updated_utc": "2026-10-07T11:14:30.407091Z",
+      "updated_utc": "2026-10-07T11:31:46.628239Z",
       "positions": []
     },
     {
