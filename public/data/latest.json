@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-07T06:16:22Z",
+  "generated_at": "2026-10-07T06:30:30Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24961.288969760004",
-      "updated_utc": "2026-10-07T06:16:08.124146Z",
+      "updated_utc": "2026-10-07T06:30:20.197096Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1971972.0255053004",
-      "updated_utc": "2026-10-07T06:16:08.126582Z",
+      "updated_utc": "2026-10-07T06:30:20.201322Z",
       "positions": []
     },
     {
@@ -63,23 +63,23 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1497582.6884422398",
-      "updated_utc": "2026-10-07T06:16:08.130142Z",
+      "equity": "1496882.5522215199",
+      "updated_utc": "2026-10-07T06:30:20.204072Z",
       "positions": [
-        {
-          "position_id": "p_520952b7c3c0",
-          "symbol": "GZZ6",
-          "side": "short",
-          "qty": "37.0",
-          "avg_px": "9928.0272",
-          "stop_px": "9938.929"
-        },
         {
           "position_id": "p_f50ab1738aed",
           "symbol": "GZZ6",
           "side": "long",
           "qty": "37.0",
           "avg_px": "9931.0",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_913cca873659",
+          "symbol": "SRZ6",
+          "side": "short",
+          "qty": "5.0",
+          "avg_px": "29219.3076",
           "stop_px": null
         }
       ]
@@ -90,7 +90,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14305.199880050011",
-      "updated_utc": "2026-10-07T06:16:08.132962Z",
+      "updated_utc": "2026-10-07T06:30:20.206682Z",
       "positions": [
         {
           "position_id": "p_f29186a99591",
@@ -116,7 +116,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "15043.065049702995",
-      "updated_utc": "2026-10-07T06:16:08.137133Z",
+      "updated_utc": "2026-10-07T06:30:20.210782Z",
       "positions": [
         {
           "position_id": "p_da4613560db0",
