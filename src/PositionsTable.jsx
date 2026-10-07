@@ -14,12 +14,12 @@ import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCo
 export default function PositionsTable({ positions, compact = false, botId, account }) {
   const mayak = isMayak(account || { bot_id: botId });
   if (!positions?.length) {
-    if (compact) return null;
-    return (
-      <p className="muted">
-        {mayak ? emptyPositionsHint(account || { bot_id: botId }) : "Открытых позиций сейчас нет."}
-      </p>
-    );
+    if (mayak) {
+      const hint = emptyPositionsHint(account || { bot_id: botId });
+      if (compact && hint !== "в деньгах (LQDT)") return null;
+      return <p className="muted">{hint}</p>;
+    }
+    return compact ? null : <p className="muted">Открытых позиций сейчас нет.</p>;
   }
 
   if (botId === OAC_PAPER_BOT_ID) {

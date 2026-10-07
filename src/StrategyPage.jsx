@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
-import MayakDetails from "./MayakDetails.jsx";
+import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
@@ -17,6 +17,7 @@ import {
   hasBoxxCash,
   isHiddenPortalId,
   isKnownPortalBot,
+  isMayak,
   mergePortalAccounts,
   showsFreeCash,
   underTitleLabel,
@@ -113,7 +114,7 @@ function AccountBlock({ a, points }) {
             ? "нет переоценки"
             : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {hasData && seed != null && delta != null ? (
+      {hasData && seed != null && delta != null && !isMayak(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
@@ -169,6 +170,7 @@ function AccountBlock({ a, points }) {
           height={280}
         />
       </div>
+      <MayakFromStart account={a} hasData={hasData} />
 
       <h3 className="subhead">Открытые позиции</h3>
       {hasData ? (
