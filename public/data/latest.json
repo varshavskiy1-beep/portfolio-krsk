@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-08T06:46:06Z",
+  "generated_at": "2026-10-08T07:05:15Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24991.901240440005",
-      "updated_utc": "2026-10-08T06:46:01.584696Z",
+      "updated_utc": "2026-10-08T07:05:00.206532Z",
       "positions": []
     },
     {
@@ -54,9 +54,18 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1966266.6823072801",
-      "updated_utc": "2026-10-08T06:46:01.587356Z",
-      "positions": []
+      "equity": "1965199.7209463",
+      "updated_utc": "2026-10-08T07:05:00.208757Z",
+      "positions": [
+        {
+          "position_id": "p_f81e289be592",
+          "symbol": "GMKN",
+          "side": "short",
+          "qty": "4197.0",
+          "avg_px": "117.14",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -64,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1494731.24046872",
-      "updated_utc": "2026-10-08T06:46:01.589721Z",
+      "updated_utc": "2026-10-08T07:05:00.211573Z",
       "positions": [
         {
           "position_id": "p_3fa44dcad73e",
@@ -98,8 +107,25 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14163.117175496012",
-      "updated_utc": "2026-10-08T06:46:01.591791Z",
-      "positions": []
+      "updated_utc": "2026-10-08T07:05:00.213895Z",
+      "positions": [
+        {
+          "position_id": "p_1428f53b2a15",
+          "symbol": "BTC-USDT",
+          "side": "long",
+          "qty": "0.042",
+          "avg_px": "82797.13169",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_fa79005ae4a0",
+          "symbol": "ETH-USDT",
+          "side": "long",
+          "qty": "1.379",
+          "avg_px": "2567.67007",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -107,7 +133,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14990.431800108994",
-      "updated_utc": "2026-10-08T06:46:01.594011Z",
+      "updated_utc": "2026-10-08T07:05:00.216019Z",
       "positions": []
     },
     {
