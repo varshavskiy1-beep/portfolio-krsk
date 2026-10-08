@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-08T13:58:23Z",
+  "generated_at": "2026-10-08T19:16:55Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,17 +25,17 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "8451.9995818426",
-      "cash": "8451.9995818426",
+      "equity": "7066.2919621450",
+      "cash": "7066.2919621450",
       "seed": "10000",
-      "updated_utc": "2026-10-08T03:03:09Z",
+      "updated_utc": "2026-10-08T18:03:48Z",
       "positions": [
         {
-          "symbol": "W-USDT-SWAP",
+          "symbol": "STRK-USDT-SWAP",
           "side": "long",
-          "qty": "473759",
-          "avg_px": "0.017851",
-          "margin": "8457.071909"
+          "qty": "121905",
+          "avg_px": "0.058",
+          "margin": "7070.490"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -46,39 +46,32 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24991.901240440005",
-      "updated_utc": "2026-10-08T13:58:17.569898Z",
-      "positions": []
+      "updated_utc": "2026-10-08T19:16:52.418627Z",
+      "positions": [
+        {
+          "position_id": "p_94bbd1895647",
+          "symbol": "QQQ",
+          "side": "long",
+          "qty": "8.0",
+          "avg_px": "749.734917",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1963830.9677947601",
-      "updated_utc": "2026-10-08T13:58:17.572660Z",
+      "equity": "1957373.17893715",
+      "updated_utc": "2026-10-08T19:16:52.421165Z",
       "positions": [
         {
-          "position_id": "p_a2facbd1f3f8",
-          "symbol": "ROSN",
+          "position_id": "p_3921df288def",
+          "symbol": "NVTK",
           "side": "long",
-          "qty": "1419.0",
-          "avg_px": "346.27305",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_5ef6d8c97dee",
-          "symbol": "GAZP",
-          "side": "long",
-          "qty": "5106.0",
-          "avg_px": "96.198075",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_71e08859c0ac",
-          "symbol": "GAZP",
-          "side": "long",
-          "qty": "5106.0",
-          "avg_px": "96.14",
+          "qty": "465.0",
+          "avg_px": "1054.1268",
           "stop_px": null
         }
       ]
@@ -88,44 +81,18 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1489698.5674661598",
-      "updated_utc": "2026-10-08T13:58:17.575536Z",
-      "positions": [
-        {
-          "position_id": "p_281ff0eddaaf",
-          "symbol": "SiZ6",
-          "side": "long",
-          "qty": "4.0",
-          "avg_px": "86512.5912",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_de7122f71c5f",
-          "symbol": "SiZ6",
-          "side": "short",
-          "qty": "4.0",
-          "avg_px": "86480.0",
-          "stop_px": null
-        }
-      ]
+      "equity": "1490378.6225102397",
+      "updated_utc": "2026-10-08T19:16:52.423813Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "14122.452909762012",
-      "updated_utc": "2026-10-08T13:58:17.578825Z",
-      "positions": [
-        {
-          "position_id": "p_1e8ebe717d5e",
-          "symbol": "SOL-USDT",
-          "side": "long",
-          "qty": "31.157",
-          "avg_px": "113.343993",
-          "stop_px": null
-        }
-      ]
+      "equity": "13972.143905208013",
+      "updated_utc": "2026-10-08T19:16:52.426426Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -133,7 +100,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14990.431800108994",
-      "updated_utc": "2026-10-08T13:58:17.581832Z",
+      "updated_utc": "2026-10-08T19:16:52.428876Z",
       "positions": []
     },
     {
@@ -178,10 +145,32 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "8788.69",
+      "equity": "8815.97",
       "cash": "8788.69",
-      "updated_utc": "2026-10-07T19:10:03Z",
-      "positions": [],
+      "updated_utc": "2026-10-08T19:10:07Z",
+      "positions": [
+        {
+          "symbol": "MSTR-USDT-SWAP",
+          "side": "long",
+          "qty": "22.74",
+          "avg_px": "154.56",
+          "margin": null
+        },
+        {
+          "symbol": "TSLA-USDT-SWAP",
+          "side": "short",
+          "qty": "9.30",
+          "avg_px": "377.93",
+          "margin": null
+        },
+        {
+          "symbol": "SPCX-USDT-SWAP",
+          "side": "short",
+          "qty": "10.45",
+          "avg_px": "168.08",
+          "margin": null
+        }
+      ],
       "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. Ордера на биржу не идут. equity = mark-to-market на тиках US RTH; cash = реализованный кэш."
     },
     {
@@ -287,7 +276,7 @@
       "seed": "10000",
       "equity": "10174.2512",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-08T13:50:01Z",
+      "updated_utc": "2026-10-08T19:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -404,9 +393,9 @@
       "canonical_id": "MAYAK_imoex_lowvol10",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "300114.198705748",
-      "cash": "300114.198705748",
-      "as_of": "2026-10-06",
+      "equity": "300214.1225732775",
+      "cash": "300214.1225732775",
+      "as_of": "2026-10-07",
       "positions": [],
       "note": "Бумага. «Маяк Low Vol», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -415,7 +404,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.33",
-      "updated_utc": "2026-10-07T16:27:45Z"
+      "updated_utc": "2026-10-08T16:28:25Z"
     },
     {
       "bot_id": "mayak_imoex_mom10",
@@ -423,9 +412,9 @@
       "canonical_id": "MAYAK_imoex_mom10",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "300114.198705748",
-      "cash": "300114.198705748",
-      "as_of": "2026-10-06",
+      "equity": "300214.1225732775",
+      "cash": "300214.1225732775",
+      "as_of": "2026-10-07",
       "positions": [],
       "note": "Бумага. «Маяк Momentum», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -434,7 +423,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.33",
-      "updated_utc": "2026-10-07T16:27:51Z"
+      "updated_utc": "2026-10-08T16:28:30Z"
     },
     {
       "bot_id": "mayak_imoex_mom10_lev15",
@@ -442,9 +431,9 @@
       "canonical_id": "MAYAK_imoex_mom10_lev15",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "300114.198705748",
-      "cash": "300114.198705748",
-      "as_of": "2026-10-06",
+      "equity": "300214.1225732775",
+      "cash": "300214.1225732775",
+      "as_of": "2026-10-07",
       "positions": [],
       "note": "Бумага. «Маяк Momentum ×1,5», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -453,7 +442,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.33",
-      "updated_utc": "2026-10-07T16:27:57Z"
+      "updated_utc": "2026-10-08T16:28:35Z"
     },
     {
       "bot_id": "mayak_imoex_mom10_lev2",
@@ -461,9 +450,9 @@
       "canonical_id": "MAYAK_imoex_mom10_lev2",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "300114.198705748",
-      "cash": "300114.198705748",
-      "as_of": "2026-10-06",
+      "equity": "300214.1225732775",
+      "cash": "300214.1225732775",
+      "as_of": "2026-10-07",
       "positions": [],
       "note": "Бумага. «Маяк Momentum ×2», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -472,7 +461,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.33",
-      "updated_utc": "2026-10-07T16:28:03Z"
+      "updated_utc": "2026-10-08T16:28:40Z"
     }
   ],
   "manifest": [
