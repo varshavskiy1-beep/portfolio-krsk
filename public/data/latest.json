@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-08T06:15:51Z",
+  "generated_at": "2026-10-08T06:33:00Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24991.901240440005",
-      "updated_utc": "2026-10-08T06:15:50.850606Z",
+      "updated_utc": "2026-10-08T06:32:57.879437Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1966266.6823072801",
-      "updated_utc": "2026-10-08T06:15:50.853766Z",
+      "updated_utc": "2026-10-08T06:32:57.883733Z",
       "positions": []
     },
     {
@@ -63,9 +63,34 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1495582.97310128",
-      "updated_utc": "2026-10-08T06:15:50.856920Z",
-      "positions": []
+      "equity": "1494731.24046872",
+      "updated_utc": "2026-10-08T06:32:57.887618Z",
+      "positions": [
+        {
+          "position_id": "p_3fa44dcad73e",
+          "symbol": "GZZ6",
+          "side": "long",
+          "qty": "37.0",
+          "avg_px": "9993.996",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_d36f84e612f8",
+          "symbol": "SiZ6",
+          "side": "long",
+          "qty": "1.0",
+          "avg_px": "86922.7552",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_1c578e6ee9a5",
+          "symbol": "SiZ6",
+          "side": "long",
+          "qty": "1.0",
+          "avg_px": "86886.0",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -73,7 +98,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "14163.117175496012",
-      "updated_utc": "2026-10-08T06:15:50.859213Z",
+      "updated_utc": "2026-10-08T06:32:57.891254Z",
       "positions": []
     },
     {
@@ -82,7 +107,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14990.431800108994",
-      "updated_utc": "2026-10-08T06:15:50.862290Z",
+      "updated_utc": "2026-10-08T06:32:57.894795Z",
       "positions": []
     },
     {
