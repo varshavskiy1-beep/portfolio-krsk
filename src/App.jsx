@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
-import MayakDetails from "./MayakDetails.jsx";
+import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
@@ -15,6 +15,7 @@ import {
   chipLabel,
   hasAccountData,
   hasBoxxCash,
+  isMayak,
   mergePortalAccounts,
   portalExcluded,
   showsFreeCash,
@@ -80,7 +81,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
             ? "нет переоценки"
             : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {hasData && seed != null ? (
+      {hasData && seed != null && !isMayak(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
@@ -119,6 +120,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         </button>
       </div>
       <EquityChart points={historyPoints} seed={seed} currency={currency} mode={mode} />
+      <MayakFromStart account={a} hasData={hasData} />
 
       <PositionsTable positions={positions} compact botId={a.bot_id} account={a} />
 

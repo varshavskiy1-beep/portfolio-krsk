@@ -1,15 +1,19 @@
 /**
  * Поля карточек семейства «Маяк»: режим, ставки, заём, доля акций, устаревание as_of.
  * Числа из снимка могут прийти строкой. Отсутствие необязательных полей не ошибка.
+ * Эти поля есть только у Маяка — хелперы не трогают чужие карточки.
  */
 
 import { formatMoneyRu } from "./uiCopy.js";
-import { formatUpdatedLine, isMayak } from "./strategyMeta.js";
+import { formatUpdatedLine, isMayak, leverageBadge } from "./strategyMeta.js";
 
 export const MAYAK_STALE_CALENDAR_DAYS = 5;
 
+export const HARD_EXIT_LINE =
+  "Выход из режима — когда ключевая ≤ 12% или реальная ставка ≤ 6 п.п.";
+
 export const REGIME_COPY = {
-  hard: "Жёсткий режим: ключевая выше 12% и реальная ставка выше 6 п.п., всё в LQDT (деньги), акции не покупаем",
+  hard: "Режим жёсткий: все деньги в LQDT, акции не покупаем. Это работа канона, не сбой",
   protect: "Защита: индекс Мосбиржи ниже EMA100, всё в LQDT",
   attack: "Атака: корзина до 10 акций",
 };
@@ -24,6 +28,11 @@ export function parseFeedFlag(v) {
   if (v === true || v === "true" || v === 1 || v === "1") return true;
   if (v === false || v === "false" || v === 0 || v === "0") return false;
   return null;
+}
+
+export function regimeKey(account) {
+  if (!account || account.regime == null || account.regime === "") return "";
+  return String(account.regime).toLowerCase();
 }
 
 /** Число для UI: русская запятая, без лишних нулей. */
@@ -44,6 +53,20 @@ export function formatRateRu(v) {
   return s.replace(".", ",");
 }
 
+/** Деньги и проценты Маяка: всегда два знака и запятая, не точка. */
+export function formatRuFixed(n, digits = 2) {
+  const v = parseFeedNumber(n);
+  if (v == null) return null;
+  try {
+    return new Intl.NumberFormat("ru-RU", {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
+    }).format(v);
+  } catch {
+    return v.toFixed(digits).replace(".", ",");
+  }
+}
+
 export function ratesLine(account) {
   if (!account) return "";
   const kr = account.key_rate_pct == null || account.key_rate_pct === "" ? null : formatRateRu(account.key_rate_pct);
@@ -55,13 +78,24 @@ export function ratesLine(account) {
   return parts.join(", ");
 }
 
-export function regimeLine(account) {
-  if (!account || account.regime == null || account.regime === "") return "";
-  const key = String(account.regime).toLowerCase();
-  const text = REGIME_COPY[key];
-  if (!text) return "";
+export function hardCanonLine(account) {
   const rates = ratesLine(account);
-  return rates ? `${text}. ${rates}` : text;
+  if (rates) {
+    return `Режим жёсткий: ${rates} — все деньги в LQDT, акции не покупаем. Это работа канона, не сбой`;
+  }
+  return REGIME_COPY.hard;
+}
+
+export function regimeLine(account) {
+  const key = regimeKey(account);
+  if (key === "hard") return hardCanonLine(account);
+  if (key === "protect") return REGIME_COPY.protect;
+  if (key === "attack") return REGIME_COPY.attack;
+  return "";
+}
+
+export function hardExitLine(account) {
+  return regimeKey(account) === "hard" ? HARD_EXIT_LINE : "";
 }
 
 export function parseAsOfDay(asOf) {
@@ -126,32 +160,98 @@ export function grossLine(account) {
   return `доля акций ${pct}%`;
 }
 
+/** Плечевые карточки: при borrowing=false и gross=0 плечо не используется. */
+export function unusedLeverageLine(account) {
+  if (!leverageBadge(account)) return "";
+  if (account.borrowing == null || account.borrowing === "") return "";
+  if (account.gross == null || account.gross === "") return "";
+  if (parseFeedFlag(account.borrowing) !== false) return "";
+  if (parseFeedNumber(account.gross) !== 0) return "";
+  return "плечо не задействовано";
+}
+
 export function emptyPositionsHint(account) {
-  const key = account?.regime == null || account.regime === "" ? "" : String(account.regime).toLowerCase();
-  if (key === "hard" || key === "protect") {
-    return "акций нет — всё в LQDT (деньги). Это ожидаемо, не ошибка.";
-  }
+  const key = regimeKey(account);
+  if (key === "hard" || key === "protect") return "в деньгах (LQDT)";
   return "Открытых позиций сейчас нет.";
 }
 
+function lastEquityScalar(account) {
+  if (!account) return null;
+  const eq = account.equity;
+  if (Array.isArray(eq)) {
+    for (let i = eq.length - 1; i >= 0; i--) {
+      const n = parseFeedNumber(eq[i]?.equity ?? eq[i]?.value ?? eq[i]);
+      if (n != null) return n;
+    }
+    return null;
+  }
+  return parseFeedNumber(eq);
+}
+
+/** «+114,20 ₽ (+0,04%) от старта» — доходность от seed фида, не сделки. */
+export function mayakFromStartLine(account) {
+  if (!isMayak(account)) return "";
+  const seed = parseFeedNumber(account.seed);
+  const equity = lastEquityScalar(account);
+  if (seed == null || equity == null) return "";
+  const delta = equity - seed;
+  const pct = seed !== 0 ? (delta / seed) * 100 : null;
+  const money = formatRuFixed(Math.abs(delta), 2);
+  if (money == null) return "";
+  const sign = delta >= 0 ? "+" : "−";
+  const pctAbs = pct == null ? null : formatRuFixed(Math.abs(pct), 2);
+  const pctPart =
+    pctAbs == null ? "" : ` (${pct >= 0 ? "+" : "−"}${pctAbs}%)`;
+  return `${sign}${money} ₽${pctPart} от старта`;
+}
+
+function hideZeroBook(account) {
+  const key = regimeKey(account);
+  return key === "hard" || key === "protect";
+}
+
 export function mayakDetailLines(account) {
-  if (!account) return [];
+  if (!account || !isMayak(account)) return [];
   const lines = [];
   const regime = regimeLine(account);
-  if (regime) lines.push({ kind: "regime", text: regime });
+  if (regime) {
+    lines.push({
+      kind: "regime",
+      tone: regimeKey(account) === "hard" ? "info" : "muted",
+      text: regime,
+    });
+  }
+  const exit = hardExitLine(account);
+  if (exit) lines.push({ kind: "exit", tone: "muted", text: exit });
+  const unusedLev = unusedLeverageLine(account);
+  if (unusedLev) lines.push({ kind: "leverage", tone: "info", text: unusedLev });
+  const hideZero = hideZeroBook(account);
+  const stocksN = parseFeedNumber(account.stocks);
   const stocks = stocksLine(account);
-  if (stocks) lines.push({ kind: "stocks", text: stocks });
+  if (stocks && !(hideZero && stocksN === 0)) {
+    lines.push({ kind: "stocks", tone: "muted", text: stocks });
+  }
   const cash = cashOrLoanLine(account);
-  if (cash) lines.push({ kind: isBorrowingLoan(account) ? "loan" : "cash", text: cash });
+  if (cash) lines.push({ kind: isBorrowingLoan(account) ? "loan" : "cash", tone: "muted", text: cash });
+  const grossN = parseFeedNumber(account.gross);
   const gross = grossLine(account);
-  if (gross) lines.push({ kind: "gross", text: gross });
+  if (gross && !(hideZero && grossN === 0)) {
+    lines.push({ kind: "gross", tone: "muted", text: gross });
+  }
   return lines;
 }
 
 export function cardUpdatedLine(account, now = new Date()) {
-  const line = formatUpdatedLine(account);
-  if (!line || !isMayak(account) || !account.as_of) return line;
-  if (!isAsOfStale(account.as_of, now)) return line;
-  if (line.includes("устарело")) return line;
-  return line.replace(`сессия ${account.as_of}`, `сессия ${account.as_of} · устарело`);
+  if (!isMayak(account)) return formatUpdatedLine(account);
+  const parts = [];
+  if (account.as_of) {
+    let day = `данные на конец торгового дня ${account.as_of}`;
+    if (isAsOfStale(account.as_of, now)) day += " · устарело";
+    parts.push(day);
+  }
+  if (account.updated_utc) parts.push(`обновлено ${account.updated_utc}`);
+  if (account.next_rebalance) parts.push(`ребаланс ${account.next_rebalance}`);
+  if (account.planned_fill) parts.push(`план ${account.planned_fill}`);
+  return parts.join(" · ");
 }
