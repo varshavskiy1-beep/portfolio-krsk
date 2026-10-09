@@ -10,7 +10,13 @@ import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurr
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
-import { chartMoneyLabel, formatIndexEquity, fromStartPctLine } from "./rateCycleCard.js";
+import {
+  chartMoneyLabel,
+  formatIndexEquity,
+  fromStartPctLine,
+  hasRateCyclePaperBook,
+  rateCycleNoteVisible,
+} from "./rateCycleCard.js";
 import {
   cardSubtitle,
   cardTitle,
@@ -58,12 +64,13 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const subtitle = cardSubtitle(a);
   const idUnderTitle = underTitleLabel(a);
   const hasData = hasAccountData(a);
-  const equity = hasData ? lastEquityValue(a) : null;
-  const seed = hasData ? num(a.seed) : null;
+  const showLine = isRfBondsRateCycle(a) ? hasRateCyclePaperBook(a) : hasData;
+  const equity = showLine ? lastEquityValue(a) : null;
+  const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
-  const positions = hasData ? a.positions || [] : [];
-  const limits = hasData ? a.pending_limits || [] : [];
+  const positions = hasData || isRfBondsRateCycle(a) ? a.positions || [] : [];
+  const limits = showLine ? a.pending_limits || [] : [];
 
   return (
     <article className="card">
@@ -79,7 +86,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
-        {!hasData
+        {!showLine
           ? "нет данных"
           : equity == null
             ? "нет переоценки"
@@ -87,23 +94,23 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
               ? formatIndexEquity(a, equity)
               : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {hasData && seed != null && isRfBondsRateCycle(a) ? (
+      {showLine && seed != null && isRfBondsRateCycle(a) && fromStartPctLine(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStartPctLine(a)}</div>
       ) : null}
-      {hasData && seed != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
+      {showLine && seed != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
-      {hasData && cardUpdatedLine(a) ? (
+      {showLine && cardUpdatedLine(a) ? (
         <div className="updated">{cardUpdatedLine(a)}</div>
       ) : null}
-      {hasData && hasBoxxCash(a) ? (
+      {showLine && hasBoxxCash(a) ? (
         <div className="updated">
           BOXX (кэш): {fmt(num(a.boxx_usd), currency)} {currency}
         </div>
       ) : null}
-      {hasData && showsFreeCash(a) ? (
+      {showLine && showsFreeCash(a) ? (
         <div className="updated">
           кэш: {fmt(num(a.cash), currency)} {currency}
         </div>
@@ -160,7 +167,13 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           </div>
         </>
       ) : null}
-      {hasData && a.note ? <p className="note">{displayNote(a.note, a)}</p> : null}
+      {isRfBondsRateCycle(a)
+        ? rateCycleNoteVisible(a.note, a)
+          ? <p className="note">{displayNote(a.note, a)}</p>
+          : null
+        : hasData && a.note
+          ? <p className="note">{displayNote(a.note, a)}</p>
+          : null}
     </article>
   );
 }

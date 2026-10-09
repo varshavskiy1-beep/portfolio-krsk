@@ -1,4 +1,5 @@
-import { hasAccountData } from "./strategyMeta.js";
+import { hasRateCyclePaperBook } from "./rateCycleCard.js";
+import { hasAccountData, isRfBondsRateCycle } from "./strategyMeta.js";
 
 /**
  * Цвет графика = знак PnL от начального капитала (поле JSON `seed`).
@@ -97,6 +98,7 @@ export function lastEquityValue(account) {
  */
 export function resolveEquityPoints(account, history) {
   if (!hasAccountData(account)) return [];
+  if (isRfBondsRateCycle(account) && !hasRateCyclePaperBook(account)) return [];
   if (Array.isArray(account.equity) && account.equity.length) {
     return account.equity;
   }

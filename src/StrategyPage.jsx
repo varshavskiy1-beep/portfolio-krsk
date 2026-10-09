@@ -7,7 +7,13 @@ import RateCycleDetails from "./RateCycleDetails.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
-import { chartMoneyLabel, formatIndexEquity, fromStartPctLine } from "./rateCycleCard.js";
+import {
+  chartMoneyLabel,
+  formatIndexEquity,
+  fromStartPctLine,
+  hasRateCyclePaperBook,
+  rateCycleNoteVisible,
+} from "./rateCycleCard.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -76,8 +82,9 @@ function AccountBlock({ a, points }) {
   const subtitle = cardSubtitle(a);
   const idUnderTitle = underTitleLabel(a);
   const hasData = hasAccountData(a);
-  const equity = hasData ? lastEquityValue(a) : null;
-  const seed = hasData ? num(a.seed) : null;
+  const showLine = isRfBondsRateCycle(a) ? hasRateCyclePaperBook(a) : hasData;
+  const equity = showLine ? lastEquityValue(a) : null;
+  const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
 
@@ -112,7 +119,7 @@ function AccountBlock({ a, points }) {
       <RateCycleDetails account={a} hasData={hasData} />
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       <div className="equity">
-        {!hasData
+        {!showLine
           ? "нет данных"
           : equity == null
             ? "нет переоценки"
@@ -120,23 +127,23 @@ function AccountBlock({ a, points }) {
               ? formatIndexEquity(a, equity)
               : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {hasData && seed != null && isRfBondsRateCycle(a) ? (
+      {showLine && seed != null && isRfBondsRateCycle(a) && fromStartPctLine(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStartPctLine(a)}</div>
       ) : null}
-      {hasData && seed != null && delta != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
+      {showLine && seed != null && delta != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
       ) : null}
-      {hasData && cardUpdatedLine(a) ? (
+      {showLine && cardUpdatedLine(a) ? (
         <div className="updated">{cardUpdatedLine(a)}</div>
       ) : null}
-      {hasData && hasBoxxCash(a) ? (
+      {showLine && hasBoxxCash(a) ? (
         <div className="updated">
           BOXX (кэш): {fmt(num(a.boxx_usd), currency)} {currency}
         </div>
       ) : null}
-      {hasData && showsFreeCash(a) ? (
+      {showLine && showsFreeCash(a) ? (
         <div className="updated">
           кэш: {fmt(num(a.cash), currency)} {currency}
         </div>
@@ -182,7 +189,12 @@ function AccountBlock({ a, points }) {
       <MayakFromStart account={a} hasData={hasData} />
 
       <h3 className="subhead">Открытые позиции</h3>
-      {hasData ? (
+      {isRfBondsRateCycle(a) ? (
+        <>
+          <PositionsTable positions={a.positions || []} botId={a.bot_id} account={a} />
+          {showLine ? <LimitsTable limits={a.pending_limits || []} /> : null}
+        </>
+      ) : hasData ? (
         <>
           <PositionsTable positions={a.positions || []} botId={a.bot_id} account={a} />
           <LimitsTable limits={a.pending_limits || []} />
@@ -190,7 +202,13 @@ function AccountBlock({ a, points }) {
       ) : (
         <p className="muted">нет данных</p>
       )}
-      {hasData && a.note ? <p className="note">{displayNote(a.note, a)}</p> : null}
+      {isRfBondsRateCycle(a)
+        ? rateCycleNoteVisible(a.note, a)
+          ? <p className="note">{displayNote(a.note, a)}</p>
+          : null
+        : hasData && a.note
+          ? <p className="note">{displayNote(a.note, a)}</p>
+          : null}
     </section>
   );
 }

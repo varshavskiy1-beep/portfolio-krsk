@@ -10,8 +10,12 @@ export const RATE_CYCLE_LOGIC_LINE = RF_BONDS_RATE_CYCLE_LOGIC;
 
 export const INDEX_CURRENCY = "индекс";
 
+export const RATE_CYCLE_BOOK_LINE =
+  "История канона считалась по индексам. На счёте будут паи и фьючерс юаня. Цифры счёта появятся, когда книга будет из этих бумаг.";
+
+/** Исторический состав канона — не позиции счёта и без тикеров индексов. */
 export const RATE_CYCLE_COMPOSITION =
-  "Состав: индекс RUCBTR5YNS (дальняя часть) и индекс RUCBITR1Y (ближняя часть). Пока последнее изменение ключевой ставки — снижение и ему не больше 52 недель: 80% дальняя, 20% ближняя, сверху спот CNYRUB_TOM на 20% капитала. Иначе 20/80 и юань 0. Облигации без плеча. Юань не заём.";
+  "Исторический состав канона (не позиции счёта): пока последнее изменение ключевой ставки — снижение и ему не больше 52 недель: 80% дальняя / 20% ближняя и юань 20%. Иначе 20/80 и юань 0. Облигации без плеча. Юань не заём.";
 
 export const RATE_CYCLE_HISTORY_LABEL = "история, не живой счёт";
 
@@ -20,6 +24,51 @@ export const RATE_CYCLE_HISTORY_LINES = [
   "На метке 2026-10-09 решение: 80% дальняя / 20% ближняя и юань 20%, ключевая 14%, возраст последнего изменения 10 (недель).",
   "Неделя — черновик, пока пятница 2026-10-09 не закрыта.",
 ];
+
+export const RATE_CYCLE_HIDDEN_SYMBOLS = ["RUCBTR5YNS", "RUCBITR1Y", "CNYRUB_TOM"];
+
+const CR_FUTURES = /^CR[FGHJKMNQUVXZ]\d{1,2}$/;
+
+export function normalizeSymbol(symbol) {
+  return String(symbol || "").trim().toUpperCase();
+}
+
+export function isRateCycleHiddenIndexSymbol(symbol) {
+  const s = normalizeSymbol(symbol);
+  if (!s) return false;
+  if (RATE_CYCLE_HIDDEN_SYMBOLS.includes(s)) return true;
+  return s.startsWith("CNYRUB");
+}
+
+/** Бумаги книги: паи OBLG/SBRB и фьючерс CR (корень или ближайший контракт). */
+export function isRateCyclePaperSymbol(symbol) {
+  const s = normalizeSymbol(symbol);
+  if (!s || isRateCycleHiddenIndexSymbol(s)) return false;
+  if (s === "OBLG" || s === "SBRB" || s === "CR") return true;
+  return CR_FUTURES.test(s);
+}
+
+export function visibleRateCyclePositions(account) {
+  const raw = Array.isArray(account?.positions) ? account.positions : [];
+  if (!isRfBondsRateCycle(account)) return raw;
+  return raw.filter((p) => isRateCyclePaperSymbol(p?.symbol));
+}
+
+export function hasRateCyclePaperBook(account) {
+  if (!isRfBondsRateCycle(account)) return false;
+  return visibleRateCyclePositions(account).length > 0;
+}
+
+/** Заметка фида: не показывать, если там индексные тикеры или нет книги OBLG/SBRB/CR. */
+export function rateCycleNoteVisible(note, account) {
+  if (!hasRateCyclePaperBook(account)) return false;
+  const text = String(note || "").trim();
+  if (!text) return false;
+  const upper = text.toUpperCase();
+  if (RATE_CYCLE_HIDDEN_SYMBOLS.some((s) => upper.includes(s))) return false;
+  if (upper.includes("CNYRUB")) return false;
+  return true;
+}
 
 const OPTIONAL_WEIGHTS = [
   ["far_pct", "дальняя"],
@@ -78,15 +127,15 @@ function lastEquityScalar(account) {
 }
 
 export function formatIndexEquity(account, equity) {
-  if (!isRfBondsRateCycle(account)) return "";
+  if (!isRfBondsRateCycle(account) || !hasRateCyclePaperBook(account)) return "";
   const n = equity == null ? lastEquityScalar(account) : parseFeedNumber(equity);
   const txt = formatIndexRu(n);
   return txt || "";
 }
 
-/** «+144,19% от старта» — отношение к seed фида, не суммы. */
+/** «+144,19% от старта» — только когда есть книга OBLG/SBRB/CR, не индексный NAV. */
 export function fromStartPctLine(account) {
-  if (!isRfBondsRateCycle(account)) return "";
+  if (!isRfBondsRateCycle(account) || !hasRateCyclePaperBook(account)) return "";
   const seed = parseFeedNumber(account.seed);
   const equity = lastEquityScalar(account);
   if (seed == null || equity == null || seed === 0) return "";
@@ -98,7 +147,7 @@ export function fromStartPctLine(account) {
 }
 
 export function optionalFeedLines(account) {
-  if (!account || !isRfBondsRateCycle(account)) return [];
+  if (!account || !isRfBondsRateCycle(account) || !hasRateCyclePaperBook(account)) return [];
   const lines = [];
   if (account.regime != null && account.regime !== "") {
     lines.push({ kind: "regime", text: `режим ${String(account.regime)}` });

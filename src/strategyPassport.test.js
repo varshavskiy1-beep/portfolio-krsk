@@ -33,11 +33,11 @@ const DISPLAYED = [
   "desyatka_earn_paper",
   "cycle_6040_paper",
   "rf_conservative_comon",
+  "rf_bonds_rate_cycle",
   "mayak_imoex_lowvol10",
   "mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2",
-  "rf_bonds_rate_cycle",
 ];
 
 test("cycle_6040_paper stays on the dashboard; snapshot row is used when present", () => {
@@ -262,15 +262,17 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   assert.equal(rbc.parameters.find((r) => r.name === "Начальное значение").known, false);
   assert.equal(rbc.parameters.find((r) => r.name === "Начальное значение").value, NO_DATA);
   assert.match(rbc.parameters.find((r) => r.name === "Канон (документация)").value, /RF_BONDS_RATE_CYCLE_80_20_v1/);
-  assert.match(rbc.parameters.find((r) => r.name === "Инструменты").value, /RUCBTR5YNS, RUCBITR1Y, CNYRUB_TOM/);
-  assert.doesNotMatch(rbc.parameters.find((r) => r.name === "Инструменты").value, /OBLG|SBRB|\bCR\b/);
+  assert.match(rbc.parameters.find((r) => r.name === "Инструменты").value, /OBLG, SBRB, CR/);
+  assert.doesNotMatch(rbc.parameters.find((r) => r.name === "Инструменты").value, /RUCBTR5YNS|RUCBITR1Y|CNYRUB/);
   assert.match(rbc.essence.paragraphs.join("\n"), /история, не живой счёт/);
   assert.match(rbc.essence.paragraphs.join("\n"), /индекс богатства/);
+  assert.match(rbc.essence.paragraphs.join("\n"), /История канона считалась по индексам/);
   assert.doesNotMatch(rbc.essence.paragraphs.join("\n"), /\bseed\b/i);
   assert.doesNotMatch(rbc.essence.paragraphs.join("\n"), /50 000|1 000 000|SBMX|DIVD|\/var\/lib|sqlite/);
   for (const s of passportUiStrings("rf_bonds_rate_cycle")) {
     assert.doesNotMatch(s, /включить ордера/, s);
     assert.doesNotMatch(s, /\bseed\b/i, s);
+    assert.doesNotMatch(s, /RUCBTR5YNS|RUCBITR1Y|CNYRUB_TOM/, s);
   }
   assert.doesNotMatch(rbc.essence.paragraphs.join("\n"), /₽/);
   assert.doesNotMatch(rbc.parameters.map((p) => `${p.name} ${p.value}`).join("\n"), /₽/);
