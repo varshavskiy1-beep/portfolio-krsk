@@ -403,6 +403,33 @@ test("rf conservative: absent / no_data yields no chart and no invented 50000 li
   assert.deepEqual(buildSeries([], 50_000, "money"), []);
 });
 
+test("rate-cycle 80/20: main NAV only, seed from feed, no invented 1 when absent", () => {
+  const account = {
+    bot_id: "rf_bonds_rate_cycle",
+    account_id: "rf_bonds_rate_cycle",
+    equity: "2.4419",
+    seed: "1",
+    nav_model: "3",
+    updated_utc: "2026-10-09T04:00:00Z",
+  };
+  assert.equal(lastEquityValue(account), 2.4419);
+  const points = resolveEquityPoints(account, null);
+  assert.equal(points.length, 1);
+  assert.equal(Number(points[0].equity), 2.4419);
+  const money = buildSeries(points, 1, "money");
+  assert.ok(money.every((p) => p.value !== 3));
+  assert.equal(money[money.length - 1].value, 2.4419);
+
+  const shell = {
+    bot_id: "rf_bonds_rate_cycle",
+    account_id: "rf_bonds_rate_cycle",
+    currency: "индекс",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+  assert.deepEqual(buildSeries([], 1, "money"), []);
+});
+
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {
   const account = {
     bot_id: "mayak_imoex_mom10",

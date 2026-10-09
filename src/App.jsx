@@ -3,12 +3,14 @@ import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
+import RateCycleDetails from "./RateCycleDetails.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
+import { chartMoneyLabel, formatIndexEquity, fromStartPctLine } from "./rateCycleCard.js";
 import {
   cardSubtitle,
   cardTitle,
@@ -16,6 +18,7 @@ import {
   hasAccountData,
   hasBoxxCash,
   isMayak,
+  isRfBondsRateCycle,
   mergePortalAccounts,
   portalExcluded,
   showsFreeCash,
@@ -72,6 +75,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       <MayakDetails account={a} hasData={hasData} />
+      <RateCycleDetails account={a} hasData={hasData} />
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       {a.venue ? <div className="updated">{a.venue}</div> : null}
       <div className="equity">
@@ -79,9 +83,14 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           ? "нет данных"
           : equity == null
             ? "нет переоценки"
-            : `${fmt(equity, currency)} ${currency}`}
+            : isRfBondsRateCycle(a)
+              ? formatIndexEquity(a, equity)
+              : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {hasData && seed != null && !isMayak(a) ? (
+      {hasData && seed != null && isRfBondsRateCycle(a) ? (
+        <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStartPctLine(a)}</div>
+      ) : null}
+      {hasData && seed != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
@@ -106,7 +115,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           className={`chip tiny ${mode === "money" ? "active" : ""}`}
           onClick={() => setMode("money")}
         >
-          В деньгах
+          {chartMoneyLabel(a)}
         </button>
         <button
           type="button"

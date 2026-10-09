@@ -37,6 +37,7 @@ const DISPLAYED = [
   "mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2",
+  "rf_bonds_rate_cycle",
 ];
 
 test("cycle_6040_paper stays on the dashboard; snapshot row is used when present", () => {
@@ -46,6 +47,15 @@ test("cycle_6040_paper stays on the dashboard; snapshot row is used when present
     assert.equal(hasAccountData(row), true);
   } else {
     assert.equal(hasAccountData({ bot_id: "cycle_6040_paper", no_data: true }), false);
+  }
+});
+
+test("rf_bonds_rate_cycle stays on the dashboard; absent snapshot → нет данных", () => {
+  const ids = displayedBotIds(latest.accounts);
+  assert.equal(ids.includes("rf_bonds_rate_cycle"), true);
+  const row = (latest.accounts || []).find((a) => a.bot_id === "rf_bonds_rate_cycle");
+  if (!row) {
+    assert.equal(hasAccountData({ bot_id: "rf_bonds_rate_cycle", no_data: true }), false);
   }
 });
 
@@ -246,6 +256,24 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
     assert.doesNotMatch(s, /включить ордера/, s);
     assert.doesNotMatch(s, /счёт Finam|номер счёта Finam|Finam account/i, s);
   }
+
+  const rbc = getPassport("rf_bonds_rate_cycle");
+  assert.equal(rbc.title, "Цикл ставки 80/20: дальние облигации и юань");
+  assert.equal(rbc.parameters.find((r) => r.name === "Начальное значение").known, false);
+  assert.equal(rbc.parameters.find((r) => r.name === "Начальное значение").value, NO_DATA);
+  assert.match(rbc.parameters.find((r) => r.name === "Канон (документация)").value, /RF_BONDS_RATE_CYCLE_80_20_v1/);
+  assert.match(rbc.parameters.find((r) => r.name === "Инструменты").value, /RUCBTR5YNS, RUCBITR1Y, CNYRUB_TOM/);
+  assert.doesNotMatch(rbc.parameters.find((r) => r.name === "Инструменты").value, /OBLG|SBRB|\bCR\b/);
+  assert.match(rbc.essence.paragraphs.join("\n"), /история, не живой счёт/);
+  assert.match(rbc.essence.paragraphs.join("\n"), /индекс богатства/);
+  assert.doesNotMatch(rbc.essence.paragraphs.join("\n"), /\bseed\b/i);
+  assert.doesNotMatch(rbc.essence.paragraphs.join("\n"), /50 000|1 000 000|SBMX|DIVD|\/var\/lib|sqlite/);
+  for (const s of passportUiStrings("rf_bonds_rate_cycle")) {
+    assert.doesNotMatch(s, /включить ордера/, s);
+    assert.doesNotMatch(s, /\bseed\b/i, s);
+  }
+  assert.doesNotMatch(rbc.essence.paragraphs.join("\n"), /₽/);
+  assert.doesNotMatch(rbc.parameters.map((p) => `${p.name} ${p.value}`).join("\n"), /₽/);
 
   const lowvol = getPassport("mayak_imoex_lowvol10");
   assert.equal(lowvol.title, "Маяк Low Vol");

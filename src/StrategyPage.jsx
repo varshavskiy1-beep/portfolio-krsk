@@ -3,9 +3,11 @@ import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
+import RateCycleDetails from "./RateCycleDetails.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
+import { chartMoneyLabel, formatIndexEquity, fromStartPctLine } from "./rateCycleCard.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -18,6 +20,7 @@ import {
   isHiddenPortalId,
   isKnownPortalBot,
   isMayak,
+  isRfBondsRateCycle,
   mergePortalAccounts,
   showsFreeCash,
   underTitleLabel,
@@ -106,15 +109,21 @@ function AccountBlock({ a, points }) {
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       <MayakDetails account={a} hasData={hasData} />
+      <RateCycleDetails account={a} hasData={hasData} />
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       <div className="equity">
         {!hasData
           ? "нет данных"
           : equity == null
             ? "нет переоценки"
-            : `${fmt(equity, currency)} ${currency}`}
+            : isRfBondsRateCycle(a)
+              ? formatIndexEquity(a, equity)
+              : `${fmt(equity, currency)} ${currency}`}
       </div>
-      {hasData && seed != null && delta != null && !isMayak(a) ? (
+      {hasData && seed != null && isRfBondsRateCycle(a) ? (
+        <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStartPctLine(a)}</div>
+      ) : null}
+      {hasData && seed != null && delta != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
         </div>
@@ -141,7 +150,7 @@ function AccountBlock({ a, points }) {
             className={`chip tiny ${mode === "money" ? "active" : ""}`}
             onClick={() => setMode("money")}
           >
-            В деньгах
+            {chartMoneyLabel(a)}
           </button>
           <button
             type="button"

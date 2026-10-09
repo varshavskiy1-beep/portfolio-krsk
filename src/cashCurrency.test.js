@@ -62,6 +62,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
     { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "10000" },
     { bot_id: "cycle_6040_paper", account_id: "cycle_6040_paper", currency: "USD", equity: "1000000" },
     { bot_id: "rf_conservative_comon", account_id: "rf_conservative_comon", currency: "USD", equity: "50000" },
+    { bot_id: "rf_bonds_rate_cycle", account_id: "rf_bonds_rate_cycle", currency: "RUB", equity: "1" },
     { bot_id: "mayak_imoex_lowvol10", account_id: "mayak_imoex_lowvol10", currency: "USD", equity: "1" },
     { bot_id: "mayak_imoex_mom10", account_id: "mayak_imoex_mom10", currency: "USDT", equity: "1" },
     { bot_id: "mayak_imoex_mom10_lev15", account_id: "mayak_imoex_mom10_lev15", currency: "USD", equity: "1" },
@@ -203,6 +204,30 @@ test("mayak paper accounts are always RUB and never remapped to USD/USDT", () =>
     );
     assert.equal(canonicalCurrency({ bot_id: id, account_id: "x", currency: "USDT" }), "RUB");
   }
+});
+
+test("rate-cycle 80/20 is always индекс and never remapped to RUB/USD/USDT", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "rf_bonds_rate_cycle",
+      account_id: "rf_bonds_rate_cycle",
+      currency: "RUB",
+    }),
+    "индекс",
+  );
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "rf_bonds_rate_cycle",
+      account_id: "rf_bonds_rate_cycle",
+      venue: "RU_EQ",
+      currency: "RUB",
+    }),
+    "индекс",
+  );
+  assert.equal(
+    canonicalCurrency({ bot_id: "rf_bonds_rate_cycle", account_id: "x", currency: "USD" }),
+    "индекс",
+  );
 });
 
 test("rf conservative is always RUB and never remapped to USD/USDT", () => {

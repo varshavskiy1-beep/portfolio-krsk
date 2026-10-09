@@ -169,6 +169,21 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
   margin: 6px 0 2px;
   line-height: 1.35;
 }
+.rate-cycle-history {
+  margin: 8px 0 6px;
+  padding: 8px 10px;
+  background: #f3f5f8;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+.rate-cycle-history-label {
+  color: var(--ink);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
 .equity {
   font-size: 1.35rem;
   font-weight: 700;
