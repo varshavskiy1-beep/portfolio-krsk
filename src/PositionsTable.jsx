@@ -1,5 +1,6 @@
 import { emptyPositionsHint } from "./mayakCard.js";
-import { isMayak, OAC_PAPER_BOT_ID } from "./strategyMeta.js";
+import { visibleRateCyclePositions } from "./rateCycleCard.js";
+import { isMayak, isRfBondsRateCycle, OAC_PAPER_BOT_ID } from "./strategyMeta.js";
 import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCopy.js";
 
 /**
@@ -10,12 +11,33 @@ import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCo
  * cycle_6040_paper: DIVD|SBLB|LQDT, long, qty строкой, avg_px и/или value_rub если есть.
  * rf_conservative_comon: SBMX|SBRB|LQDT, long, qty строкой, avg_px и/или value_rub если есть.
  * Маяк: тикер, лонг, qty строкой; цен нет — колонку не рисуем; пустой стакан в hard/protect не ошибка.
+ * Цикл ставки 80/20: только OBLG/SBRB/CR; индексы отфильтрованы; пустая таблица нейтральная.
  */
 export default function PositionsTable({ positions, compact = false, botId, account }) {
-  const mayak = isMayak(account || { bot_id: botId });
-  if (!positions?.length) {
+  const acc = account || { bot_id: botId };
+  const mayak = isMayak(acc);
+  const rateCycle = isRfBondsRateCycle(acc);
+  const rows = rateCycle ? visibleRateCyclePositions({ ...acc, positions: positions || acc.positions }) : positions;
+  if (!rows?.length) {
+    if (rateCycle) {
+      return (
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>{compact ? "Позиция" : "Инструмент"}</th>
+                <th>Сторона</th>
+                <th>Кол-во</th>
+                <th>{compact ? "Цена" : "Цена пая / контракта"}</th>
+              </tr>
+            </thead>
+            <tbody />
+          </table>
+        </div>
+      );
+    }
     if (mayak) {
-      const hint = emptyPositionsHint(account || { bot_id: botId });
+      const hint = emptyPositionsHint(acc);
       if (compact && hint !== "в деньгах (LQDT)") return null;
       return <p className="muted">{hint}</p>;
     }
@@ -34,7 +56,7 @@ export default function PositionsTable({ positions, compact = false, botId, acco
             </tr>
           </thead>
           <tbody>
-            {positions.map((p, i) => (
+            {rows.map((p, i) => (
               <tr key={p.position_id || `${p.symbol}-${i}`}>
                 <td>{p.symbol}</td>
                 <td>{p.qty}</td>
@@ -47,12 +69,19 @@ export default function PositionsTable({ positions, compact = false, botId, acco
     );
   }
 
-  const showMark = positions.some((p) => positionHasField(p, "mark"));
-  const showPattern = positions.some((p) => positionHasField(p, "pattern"));
-  const showValueUsd = positions.some((p) => positionHasField(p, "value_usd"));
-  const showValueRub = positions.some((p) => positionHasField(p, "value_rub"));
-  const showAvgPx = mayak ? positions.some((p) => positionHasField(p, "avg_px")) : true;
-  const showStop = compact ? false : mayak ? positions.some((p) => positionHasField(p, "stop_px")) : true;
+  const showMark = rows.some((p) => positionHasField(p, "mark"));
+  const showPattern = rows.some((p) => positionHasField(p, "pattern"));
+  const showValueUsd = rows.some((p) => positionHasField(p, "value_usd"));
+  const showValueRub = rows.some((p) => positionHasField(p, "value_rub"));
+  const showAvgPx = mayak ? rows.some((p) => positionHasField(p, "avg_px")) : true;
+  const showStop = compact ? false : mayak ? rows.some((p) => positionHasField(p, "stop_px")) : true;
+  const priceHead = rateCycle
+    ? compact
+      ? "Цена"
+      : "Цена пая / контракта"
+    : compact
+      ? "Цена"
+      : "Цена входа";
   return (
     <div className="table-scroll">
       <table>
@@ -61,7 +90,7 @@ export default function PositionsTable({ positions, compact = false, botId, acco
             <th>{compact ? "Позиция" : "Инструмент"}</th>
             <th>Сторона</th>
             <th>Кол-во</th>
-            {showAvgPx ? <th>{compact ? "Цена" : "Цена входа"}</th> : null}
+            {showAvgPx ? <th>{priceHead}</th> : null}
             {showValueUsd ? <th>Стоимость, $</th> : null}
             {showValueRub ? <th>Стоимость, ₽</th> : null}
             {showMark ? <th>Рынок</th> : null}
@@ -70,7 +99,7 @@ export default function PositionsTable({ positions, compact = false, botId, acco
           </tr>
         </thead>
         <tbody>
-          {positions.map((p, i) => (
+          {rows.map((p, i) => (
             <tr key={p.position_id || `${p.symbol}-${i}`}>
               <td>{p.symbol}</td>
               <td>{sideLabel(p.side)}</td>
