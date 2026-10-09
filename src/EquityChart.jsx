@@ -8,6 +8,7 @@ import {
   isChartUpVsSeed,
   priceRangeIncludingSeed,
 } from "./equityChartModel.js";
+import { chartPriceDigits } from "./rateCycleCard.js";
 
 const RANGES = [
   { id: "1d", label: "1Д", ms: 1 * 24 * 3600 * 1000 },
@@ -180,7 +181,7 @@ export default function EquityChart({
               type: "custom",
               formatter: (v) =>
                 new Intl.NumberFormat("ru-RU", {
-                  maximumFractionDigits: currency === "RUB" ? 0 : 2,
+                  maximumFractionDigits: chartPriceDigits(currency),
                 }).format(v),
             },
     });

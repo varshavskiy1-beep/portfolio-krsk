@@ -24,6 +24,15 @@ export const RF_CONSERVATIVE_BOT_ID = "rf_conservative_comon";
 export const RF_CONSERVATIVE_ACCOUNT_ID = "rf_conservative_comon";
 export const RF_CONSERVATIVE_TITLE = "РФ Консерватив: облигации в цикле ЦБ + 10% акций";
 
+/** Paper id: rf_bonds_rate_cycle. Индекс богатства, не рубли. Канон: RF_BONDS_RATE_CYCLE_80_20_v1. Пока нет в accounts[] — «нет данных». */
+export const RF_BONDS_RATE_CYCLE_BOT_ID = "rf_bonds_rate_cycle";
+export const RF_BONDS_RATE_CYCLE_ACCOUNT_ID = "rf_bonds_rate_cycle";
+export const RF_BONDS_RATE_CYCLE_TITLE = "Цикл ставки 80/20: дальние облигации и юань";
+export const RF_BONDS_RATE_CYCLE_CANON_ID = "RF_BONDS_RATE_CYCLE_80_20_v1";
+export const RF_BONDS_RATE_CYCLE_CURRENCY = "индекс";
+export const RF_BONDS_RATE_CYCLE_LOGIC =
+  "Бумага. Неделя по пятнице. Решение пятницы работает со следующей недели. Комиссия облигаций 12 б.п. на смену доли, юань 5 б.п. на смену веса. На биржу ордера не идут.";
+
 /**
  * Семейство бумажных счетов «Маяк». Четыре отдельные карточки.
  * Стартовый капитал не зашит: только поле seed из accounts[] снимка.
@@ -119,6 +128,7 @@ export const BOT_TITLE = {
   [DESYATKA_EARN_BOT_ID]: DESYATKA_EARN_TITLE,
   [CYCLE_6040_BOT_ID]: CYCLE_6040_TITLE,
   [RF_CONSERVATIVE_BOT_ID]: RF_CONSERVATIVE_TITLE,
+  [RF_BONDS_RATE_CYCLE_BOT_ID]: RF_BONDS_RATE_CYCLE_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.title])),
 };
 
@@ -129,6 +139,7 @@ export const ACCOUNT_TITLE = {
   [DESYATKA_EARN_ACCOUNT_ID]: DESYATKA_EARN_TITLE,
   [CYCLE_6040_ACCOUNT_ID]: CYCLE_6040_TITLE,
   [RF_CONSERVATIVE_ACCOUNT_ID]: RF_CONSERVATIVE_TITLE,
+  [RF_BONDS_RATE_CYCLE_ACCOUNT_ID]: RF_BONDS_RATE_CYCLE_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.account_id, s.title])),
 };
 
@@ -139,6 +150,7 @@ export const ACCOUNT_SUBTITLE = {
   [DESYATKA_EARN_BOT_ID]: "акции США, старт 10 000 USD. На биржу ордера не идут.",
   [CYCLE_6040_BOT_ID]: "РФ, DIVD/SBLB/LQDT, старт 1 000 000 ₽. На биржу ордера не идут.",
   [RF_CONSERVATIVE_BOT_ID]: "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.",
+  [RF_BONDS_RATE_CYCLE_BOT_ID]: RF_BONDS_RATE_CYCLE_LOGIC,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.subtitle])),
 };
 
@@ -148,6 +160,7 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
   DESYATKA_EARN_BOT_ID,
   CYCLE_6040_BOT_ID,
   RF_CONSERVATIVE_BOT_ID,
+  RF_BONDS_RATE_CYCLE_BOT_ID,
   ...MAYAK_BOT_IDS,
 ]);
 
@@ -189,6 +202,11 @@ export const PORTAL_SHELLS = [
     currency: "RUB",
     seed: "50000",
   },
+  {
+    bot_id: RF_BONDS_RATE_CYCLE_BOT_ID,
+    account_id: RF_BONDS_RATE_CYCLE_ACCOUNT_ID,
+    currency: RF_BONDS_RATE_CYCLE_CURRENCY,
+  },
   ...MAYAK_ACCOUNTS.map((s) => ({
     bot_id: s.bot_id,
     account_id: s.account_id,
@@ -222,6 +240,9 @@ export function displayTitle(account) {
   }
   if (account.bot_id === RF_CONSERVATIVE_BOT_ID || account.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
     return RF_CONSERVATIVE_TITLE;
+  }
+  if (account.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
+    return RF_BONDS_RATE_CYCLE_TITLE;
   }
   return (
     ACCOUNT_TITLE[account.account_id] ||
@@ -260,6 +281,11 @@ export function cardTitle(account) {
       ? RF_CONSERVATIVE_TITLE
       : title;
   }
+  if (account?.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account?.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
+    return title === RF_BONDS_RATE_CYCLE_ACCOUNT_ID || title === RF_BONDS_RATE_CYCLE_BOT_ID
+      ? RF_BONDS_RATE_CYCLE_TITLE
+      : title;
+  }
   return title;
 }
 
@@ -271,6 +297,7 @@ export function chipLabel(botId) {
   if (botId === DESYATKA_EARN_BOT_ID) return DESYATKA_EARN_TITLE;
   if (botId === CYCLE_6040_BOT_ID) return CYCLE_6040_TITLE;
   if (botId === RF_CONSERVATIVE_BOT_ID) return RF_CONSERVATIVE_TITLE;
+  if (botId === RF_BONDS_RATE_CYCLE_BOT_ID) return RF_BONDS_RATE_CYCLE_TITLE;
   return BOT_TITLE[botId] || botId;
 }
 
@@ -294,6 +321,9 @@ export function accountSubtitle(account) {
   if (account.bot_id === RF_CONSERVATIVE_BOT_ID || account.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[RF_CONSERVATIVE_BOT_ID];
   }
+  if (account.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[RF_BONDS_RATE_CYCLE_BOT_ID];
+  }
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
 }
 
@@ -314,6 +344,9 @@ export function cardSubtitle(account) {
   }
   if (account?.bot_id === RF_CONSERVATIVE_BOT_ID || account?.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[RF_CONSERVATIVE_BOT_ID];
+  }
+  if (account?.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account?.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[RF_BONDS_RATE_CYCLE_BOT_ID];
   }
   return "";
 }
@@ -343,6 +376,9 @@ export function accountIdBadge(account) {
   }
   if (account.bot_id === RF_CONSERVATIVE_BOT_ID || account.account_id === RF_CONSERVATIVE_ACCOUNT_ID) {
     return RF_CONSERVATIVE_ACCOUNT_ID;
+  }
+  if (account.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
+    return RF_BONDS_RATE_CYCLE_ACCOUNT_ID;
   }
   if (isKnownPortalBot(account.bot_id)) return account.account_id;
   return null;
@@ -395,6 +431,13 @@ export function isCycle6040(account) {
 export function isRfConservative(account) {
   return (
     account?.bot_id === RF_CONSERVATIVE_BOT_ID || account?.account_id === RF_CONSERVATIVE_ACCOUNT_ID
+  );
+}
+
+export function isRfBondsRateCycle(account) {
+  return (
+    account?.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID ||
+    account?.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID
   );
 }
 

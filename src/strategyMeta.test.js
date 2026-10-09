@@ -7,6 +7,9 @@ import {
   RF_CONSERVATIVE_ACCOUNT_ID,
   RF_CONSERVATIVE_BOT_ID,
   RF_CONSERVATIVE_TITLE,
+  RF_BONDS_RATE_CYCLE_ACCOUNT_ID,
+  RF_BONDS_RATE_CYCLE_BOT_ID,
+  RF_BONDS_RATE_CYCLE_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -27,6 +30,7 @@ import {
   hasBoxxCash,
   isCycle6040,
   isDesyatkaEarn,
+  isRfBondsRateCycle,
   isRfConservative,
   isHiddenPortalAccount,
   isHiddenPortalId,
@@ -48,6 +52,7 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
     { id: DESYATKA_EARN_BOT_ID, reason: "live cluster" },
     { id: CYCLE_6040_BOT_ID, reason: "live cluster" },
     { id: RF_CONSERVATIVE_BOT_ID, reason: "live cluster" },
+    { id: RF_BONDS_RATE_CYCLE_BOT_ID, reason: "live cluster" },
     { id: "mayak_imoex_lowvol10", reason: "live cluster" },
     { id: "mayak_imoex_mom10", reason: "live cluster" },
     { id: "mayak_imoex_mom10_lev15", reason: "live cluster" },
@@ -641,4 +646,56 @@ test("published Mayak object replaces the shell and keeps seed from the feed", (
   assert.equal(hasAccountData(rows[0]), true);
   assert.equal(rows[0].seed, "110000");
   assert.equal(rows[0].equity, "120000");
+});
+
+test("displayTitle maps rate-cycle ids to full card title", () => {
+  assert.equal(
+    displayTitle({ bot_id: RF_BONDS_RATE_CYCLE_BOT_ID, account_id: RF_BONDS_RATE_CYCLE_ACCOUNT_ID }),
+    RF_BONDS_RATE_CYCLE_TITLE,
+  );
+  assert.equal(
+    cardTitle({ bot_id: RF_BONDS_RATE_CYCLE_BOT_ID, account_id: RF_BONDS_RATE_CYCLE_ACCOUNT_ID }),
+    RF_BONDS_RATE_CYCLE_TITLE,
+  );
+  assert.equal(chipLabel(RF_BONDS_RATE_CYCLE_BOT_ID), RF_BONDS_RATE_CYCLE_TITLE);
+  assert.doesNotMatch(RF_BONDS_RATE_CYCLE_TITLE, /РФ Консерватив|Цикл 60\/40|50 000|₽/);
+});
+
+test("mergePortalAccounts adds rate-cycle shell when absent — нет данных, seed not hardcoded", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, RF_BONDS_RATE_CYCLE_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "индекс");
+  assert.equal(row.seed, undefined);
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isRfBondsRateCycle(row), true);
+  assert.equal(isRfConservative(row), false);
+  assert.equal(accountIdBadge(row), RF_BONDS_RATE_CYCLE_ACCOUNT_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsPaperBadge(row), true);
+  assert.notEqual(row.equity, "1");
+  assert.notEqual(row.equity, 1);
+  assert.notEqual(row.equity, "2.4419");
+});
+
+test("published rate-cycle book replaces the shell and keeps seed from the feed", () => {
+  const published = {
+    bot_id: RF_BONDS_RATE_CYCLE_BOT_ID,
+    account_id: RF_BONDS_RATE_CYCLE_ACCOUNT_ID,
+    currency: "RUB",
+    equity: "2.4419",
+    seed: "1",
+    positions: [],
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.equal(rows[0].seed, "1");
+  assert.equal(rows[0].equity, "2.4419");
 });
