@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-09T17:15:00Z",
+  "generated_at": "2026-10-09T17:43:14Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24965.517388060005",
-      "updated_utc": "2026-10-09T17:14:52.287123Z",
+      "updated_utc": "2026-10-09T17:43:12.504344Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1946983.0896971",
-      "updated_utc": "2026-10-09T17:14:52.296268Z",
+      "updated_utc": "2026-10-09T17:43:12.507451Z",
       "positions": [
         {
           "position_id": "p_be7da9f8b3cf",
@@ -73,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1486078.1997485599",
-      "updated_utc": "2026-10-09T17:14:52.298961Z",
+      "updated_utc": "2026-10-09T17:43:12.510233Z",
       "positions": [
         {
           "position_id": "p_ad81b1e5c9f9",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13964.846596397012",
-      "updated_utc": "2026-10-09T17:14:52.308158Z",
+      "updated_utc": "2026-10-09T17:43:12.512672Z",
       "positions": []
     },
     {
@@ -100,7 +100,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-09T17:14:52.314510Z",
+      "updated_utc": "2026-10-09T17:43:12.515938Z",
       "positions": []
     },
     {
@@ -276,7 +276,7 @@
       "seed": "10000",
       "equity": "9879.594",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-09T17:10:01Z",
+      "updated_utc": "2026-10-09T17:40:00Z",
       "positions": [
         {
           "symbol": "AAPL",
