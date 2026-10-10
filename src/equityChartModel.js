@@ -1,4 +1,4 @@
-import { hasRateCyclePaperBook } from "./rateCycleCard.js";
+import { rateCycleHistoryPoints } from "./rateCycleCard.js";
 import { hasAccountData, isRfBondsRateCycle } from "./strategyMeta.js";
 
 /**
@@ -97,8 +97,8 @@ export function lastEquityValue(account) {
  * Теневые поля sit / earn_boxx / qqq_x14 / qqq / spy / nav_model / nav_lqdt на линию не идут.
  */
 export function resolveEquityPoints(account, history) {
+  if (isRfBondsRateCycle(account)) return rateCycleHistoryPoints(account);
   if (!hasAccountData(account)) return [];
-  if (isRfBondsRateCycle(account) && !hasRateCyclePaperBook(account)) return [];
   if (Array.isArray(account.equity) && account.equity.length) {
     return account.equity;
   }

@@ -22,7 +22,10 @@ export function fromCapitalLine({ seed, currency, delta, pct }) {
   const sign = delta >= 0 ? "+" : "";
   const pctPart =
     pct != null && !Number.isNaN(pct)
-      ? ` (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%)`
+      ? ` (${pct >= 0 ? "+" : "−"}${new Intl.NumberFormat("ru-RU", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }).format(Math.abs(pct))}%)`
       : "";
   return `${line}: ${sign}${formatMoneyRu(delta, currency)}${pctPart}`;
 }

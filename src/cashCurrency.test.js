@@ -86,6 +86,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
       "forts_adr_static",
       "cycle_6040_paper",
       "rf_conservative_comon",
+      "rf_bonds_rate_cycle",
       "mayak_imoex_lowvol10",
       "mayak_imoex_mom10",
       "mayak_imoex_mom10_lev15",
@@ -206,27 +207,27 @@ test("mayak paper accounts are always RUB and never remapped to USD/USDT", () =>
   }
 });
 
-test("rate-cycle 80/20 is always индекс and never remapped to RUB/USD/USDT", () => {
+test("rate-cycle 80/20 is always RUB and never remapped to индекс/USD/USDT", () => {
   assert.equal(
     canonicalCurrency({
       bot_id: "rf_bonds_rate_cycle",
       account_id: "rf_bonds_rate_cycle",
-      currency: "RUB",
+      currency: "индекс",
     }),
-    "индекс",
+    "RUB",
   );
   assert.equal(
     canonicalCurrency({
       bot_id: "rf_bonds_rate_cycle",
       account_id: "rf_bonds_rate_cycle",
       venue: "RU_EQ",
-      currency: "RUB",
+      currency: "USD",
     }),
-    "индекс",
+    "RUB",
   );
   assert.equal(
-    canonicalCurrency({ bot_id: "rf_bonds_rate_cycle", account_id: "x", currency: "USD" }),
-    "индекс",
+    canonicalCurrency({ bot_id: "rf_bonds_rate_cycle", account_id: "x", currency: "USDT" }),
+    "RUB",
   );
 });
 

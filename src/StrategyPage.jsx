@@ -10,10 +10,9 @@ import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import {
   chartMoneyLabel,
-  formatIndexEquity,
   fromStartPctLine,
-  hasRateCyclePaperBook,
-  rateCycleNoteVisible,
+  hasRateCycleAccountLine,
+  rateCycleDescription,
 } from "./rateCycleCard.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
@@ -83,7 +82,7 @@ function AccountBlock({ a, points }) {
   const subtitle = cardSubtitle(a);
   const idUnderTitle = underTitleLabel(a);
   const hasData = hasAccountData(a);
-  const showLine = isRfBondsRateCycle(a) ? hasRateCyclePaperBook(a) : hasData;
+  const showLine = isRfBondsRateCycle(a) ? hasRateCycleAccountLine(a) : hasData;
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -117,7 +116,6 @@ function AccountBlock({ a, points }) {
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       <MayakDetails account={a} hasData={hasData} />
-      <RateCycleDetails account={a} hasData={hasData} />
       {idUnderTitle ? <div className="bot-label">{idUnderTitle}</div> : null}
       <div className="equity">
         {!showLine
@@ -125,12 +123,13 @@ function AccountBlock({ a, points }) {
           : equity == null
             ? "нет переоценки"
             : isRfBondsRateCycle(a)
-              ? formatIndexEquity(a, equity)
+              ? `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && isRfBondsRateCycle(a) && fromStartPctLine(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStartPctLine(a)}</div>
       ) : null}
+      <RateCycleDetails account={a} />
       {showLine && seed != null && delta != null && !isMayak(a) && !isRfBondsRateCycle(a) ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}
@@ -209,13 +208,11 @@ function AccountBlock({ a, points }) {
       ) : (
         <p className="muted">нет данных</p>
       )}
-      {isRfBondsRateCycle(a)
-        ? rateCycleNoteVisible(a.note, a)
-          ? <p className="note">{displayNote(a.note, a)}</p>
-          : null
-        : hasData && a.note
-          ? <p className="note">{displayNote(a.note, a)}</p>
-          : null}
+      {isRfBondsRateCycle(a) && showLine ? (
+        <p className="note">{rateCycleDescription(a)}</p>
+      ) : hasData && a.note ? (
+        <p className="note">{displayNote(a.note, a)}</p>
+      ) : null}
     </section>
   );
 }

@@ -16,7 +16,7 @@ test("delta line is Russian and never says seed", () => {
     delta: 337_992,
     pct: 22.53,
   });
-  assert.match(line, /от начального капитала 1\s?500\s?000: \+337\s?992 \(\+22\.53%\)/);
+  assert.match(line, /от начального капитала 1\s?500\s?000: \+337\s?992 \(\+22,53%\)/);
   assert.doesNotMatch(line, /seed/i);
 });
 

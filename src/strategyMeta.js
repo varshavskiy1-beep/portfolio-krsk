@@ -24,14 +24,14 @@ export const RF_CONSERVATIVE_BOT_ID = "rf_conservative_comon";
 export const RF_CONSERVATIVE_ACCOUNT_ID = "rf_conservative_comon";
 export const RF_CONSERVATIVE_TITLE = "РФ Консерватив: облигации в цикле ЦБ + 10% акций";
 
-/** Paper id: rf_bonds_rate_cycle. Индекс богатства, не рубли. Канон: RF_BONDS_RATE_CYCLE_80_20_v1. Пока нет в accounts[] — «нет данных». */
+/** Paper id: rf_bonds_rate_cycle. Бумажный рублёвый счёт. Канон: RF_BONDS_RATE_CYCLE_80_20_v1. Пока нет в accounts[] или equity пустой — «нет данных». */
 export const RF_BONDS_RATE_CYCLE_BOT_ID = "rf_bonds_rate_cycle";
 export const RF_BONDS_RATE_CYCLE_ACCOUNT_ID = "rf_bonds_rate_cycle";
 export const RF_BONDS_RATE_CYCLE_TITLE = "Цикл ставки 80/20: дальние облигации и юань";
 export const RF_BONDS_RATE_CYCLE_CANON_ID = "RF_BONDS_RATE_CYCLE_80_20_v1";
-export const RF_BONDS_RATE_CYCLE_CURRENCY = "индекс";
+export const RF_BONDS_RATE_CYCLE_CURRENCY = "RUB";
 export const RF_BONDS_RATE_CYCLE_LOGIC =
-  "Бумага. Неделя по пятнице. Решение пятницы работает со следующей недели. Комиссия облигаций 12 б.п. на смену доли, юань 5 б.п. на смену веса. На биржу ордера не идут.";
+  "Бумага. Неделя по пятнице. Решение пятницы работает со следующей недели. 80% OBLG и 20% SBRB, сверху фьючерс CR на 20% капитала, пока цикл ставки включён. На биржу ордера не идут.";
 
 /**
  * Семейство бумажных счетов «Маяк». Четыре отдельные карточки.
@@ -150,7 +150,8 @@ export const ACCOUNT_SUBTITLE = {
   [DESYATKA_EARN_BOT_ID]: "акции США, старт 10 000 USD. На биржу ордера не идут.",
   [CYCLE_6040_BOT_ID]: "РФ, DIVD/SBLB/LQDT, старт 1 000 000 ₽. На биржу ордера не идут.",
   [RF_CONSERVATIVE_BOT_ID]: "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.",
-  [RF_BONDS_RATE_CYCLE_BOT_ID]: RF_BONDS_RATE_CYCLE_LOGIC,
+  [RF_BONDS_RATE_CYCLE_BOT_ID]:
+    "РФ, OBLG/SBRB и фьючерс CR. На биржу ордера не идут.",
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.subtitle])),
 };
 
