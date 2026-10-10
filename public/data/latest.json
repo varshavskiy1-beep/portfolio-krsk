@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-10T21:11:27Z",
+  "generated_at": "2026-10-10T21:28:36Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-10T21:11:22.788637Z",
+      "updated_utc": "2026-10-10T21:28:36.053641Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-10T21:11:22.791462Z",
+      "updated_utc": "2026-10-10T21:28:36.055944Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-10T21:11:22.793916Z",
+      "updated_utc": "2026-10-10T21:28:36.058120Z",
       "positions": []
     },
     {
@@ -72,23 +72,23 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13865.39931903501",
-      "updated_utc": "2026-10-10T21:11:22.796398Z",
+      "equity": "13858.194929485011",
+      "updated_utc": "2026-10-10T21:28:36.060517Z",
       "positions": [
-        {
-          "position_id": "p_4f3f69b86d59",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.041",
-          "avg_px": "83031.68302",
-          "stop_px": null
-        },
         {
           "position_id": "p_322c293889a0",
           "symbol": "ETH-USDT",
           "side": "short",
           "qty": "1.377",
           "avg_px": "2515.495125",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_c562c2cb207e",
+          "symbol": "BTC-USDT",
+          "side": "short",
+          "qty": "0.041",
+          "avg_px": "83033.78239",
           "stop_px": null
         }
       ]
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-10T21:11:22.798759Z",
+      "updated_utc": "2026-10-10T21:28:36.062702Z",
       "positions": []
     },
     {
