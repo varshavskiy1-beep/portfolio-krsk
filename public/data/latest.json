@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-10T04:17:37Z",
+  "generated_at": "2026-10-10T04:30:44Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-10T04:17:34.410685Z",
+      "updated_utc": "2026-10-10T04:30:39.555558Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-10T04:17:34.413290Z",
+      "updated_utc": "2026-10-10T04:30:39.557999Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-10T04:17:34.415885Z",
+      "updated_utc": "2026-10-10T04:30:39.561063Z",
       "positions": []
     },
     {
@@ -72,17 +72,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13948.590683767012",
-      "updated_utc": "2026-10-10T04:17:34.418369Z",
+      "equity": "13937.748691707011",
+      "updated_utc": "2026-10-10T04:30:39.563038Z",
       "positions": [
-        {
-          "position_id": "p_1cb9ae0d9daa",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.042",
-          "avg_px": "82592.81472",
-          "stop_px": null
-        },
         {
           "position_id": "p_714e1ab6b8b3",
           "symbol": "ETH-USDT",
@@ -99,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-10T04:17:34.420712Z",
+      "updated_utc": "2026-10-10T04:30:39.565136Z",
       "positions": []
     },
     {
@@ -344,7 +336,7 @@
       "seed": "1000000",
       "equity": "1000403.7456350586",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-10-09T22:31:20Z",
+      "updated_utc": "2026-10-10T04:30:38Z",
       "positions": [
         {
           "symbol": "LQDT",
