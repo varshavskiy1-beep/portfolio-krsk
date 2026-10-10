@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-10T13:00:37Z",
+  "generated_at": "2026-10-10T13:13:45Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-10T13:00:32.365725Z",
+      "updated_utc": "2026-10-10T13:13:44.175967Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-10T13:00:32.369166Z",
+      "updated_utc": "2026-10-10T13:13:44.178631Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-10T13:00:32.372876Z",
+      "updated_utc": "2026-10-10T13:13:44.181002Z",
       "positions": []
     },
     {
@@ -72,26 +72,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13912.749385449011",
-      "updated_utc": "2026-10-10T13:00:32.377137Z",
-      "positions": [
-        {
-          "position_id": "p_e8f3fbb0daef",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.042",
-          "avg_px": "82836.74152",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_4fab84dc1814",
-          "symbol": "ETH-USDT",
-          "side": "short",
-          "qty": "1.393",
-          "avg_px": "2495.541113",
-          "stop_px": null
-        }
-      ]
+      "equity": "13898.218806070012",
+      "updated_utc": "2026-10-10T13:13:44.183353Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -99,7 +82,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-10T13:00:32.379827Z",
+      "updated_utc": "2026-10-10T13:13:44.185909Z",
       "positions": []
     },
     {
@@ -109,7 +92,7 @@
       "seed": "1500000",
       "equity": "1965930.7029642565",
       "cash": "1965930.7029642565",
-      "updated_utc": "2026-10-09T13:10:00Z",
+      "updated_utc": "2026-10-10T13:10:00Z",
       "positions": [],
       "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
     },
