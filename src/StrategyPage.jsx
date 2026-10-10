@@ -5,6 +5,7 @@ import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import RateCycleDetails from "./RateCycleDetails.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
+import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import {
@@ -75,7 +76,7 @@ function LimitsTable({ limits }) {
 }
 
 function AccountBlock({ a, points }) {
-  const [mode, setMode] = useState("money");
+  const [mode, setMode] = useState(initialChartMode);
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
   const title = cardTitle(a);
@@ -155,14 +156,20 @@ function AccountBlock({ a, points }) {
           <button
             type="button"
             className={`chip tiny ${mode === "money" ? "active" : ""}`}
-            onClick={() => setMode("money")}
+            onClick={() => {
+              setMode("money");
+              persistChartMode("money");
+            }}
           >
             {chartMoneyLabel(a)}
           </button>
           <button
             type="button"
             className={`chip tiny ${mode === "pct" ? "active" : ""}`}
-            onClick={() => setMode("pct")}
+            onClick={() => {
+              setMode("pct");
+              persistChartMode("pct");
+            }}
           >
             В %
           </button>

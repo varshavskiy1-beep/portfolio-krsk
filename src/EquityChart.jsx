@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createChart, ColorType, AreaSeries } from "lightweight-charts";
+import { initialChartRange, persistChartRange } from "./chartPrefs.js";
 import {
   buildSeries,
   chartSeriesColors,
   defaultChartRange,
   expandPriceRange,
+  formatChartPctLabel,
   isChartUpVsSeed,
   priceRangeIncludingSeed,
 } from "./equityChartModel.js";
@@ -94,9 +96,13 @@ export default function EquityChart({
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
-  const [userRange, setUserRange] = useState(null);
+  const [userRange, setUserRange] = useState(initialChartRange);
   const series = useMemo(() => buildSeries(points, seed, mode), [points, seed, mode]);
   const range = userRange ?? defaultChartRange(series);
+  const setRange = (id) => {
+    setUserRange(id);
+    persistChartRange(id);
+  };
   const ready = series.length >= 2;
 
   useEffect(() => {
@@ -176,7 +182,7 @@ export default function EquityChart({
     area.applyOptions({
       priceFormat:
         mode === "pct"
-          ? { type: "custom", formatter: (v) => `${v >= 0 ? "+" : ""}${v.toFixed(2)}%` }
+          ? { type: "custom", formatter: formatChartPctLabel }
           : {
               type: "custom",
               formatter: (v) =>
@@ -243,7 +249,7 @@ export default function EquityChart({
             key={r.id}
             type="button"
             className={`chip tiny ${range === r.id ? "active" : ""}`}
-            onClick={() => setUserRange(r.id)}
+            onClick={() => setRange(r.id)}
             disabled={!ready}
           >
             {r.label}
@@ -253,7 +259,7 @@ export default function EquityChart({
           type="button"
           className={`chip tiny ${range === "all" ? "active" : ""}`}
           disabled={!ready}
-          onClick={() => setUserRange("all")}
+          onClick={() => setRange("all")}
         >
           Всё
         </button>

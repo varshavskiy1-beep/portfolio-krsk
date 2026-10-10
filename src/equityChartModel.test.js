@@ -8,6 +8,7 @@ import {
   chartSeriesColors,
   defaultChartRange,
   expandPriceRange,
+  formatChartPctLabel,
   isAlreadySeed,
   isChartUpVsSeed,
   priceRangeIncludingSeed,
@@ -57,19 +58,28 @@ test("forts_adr_adaptive: last equity above seed stays green after prepend", () 
   assert.equal(isChartUpVsSeed(money, seed, "money"), true);
 });
 
+test("percent axis labels use a Russian comma and never say seed", () => {
+  assert.equal(formatChartPctLabel(22.451), "+22,45%");
+  assert.equal(formatChartPctLabel(0), "+0,00%");
+  assert.match(formatChartPctLabel(-5.6), /−5,60%|-5,60%/);
+  assert.doesNotMatch(formatChartPctLabel(13.1), /\./);
+  assert.doesNotMatch(formatChartPctLabel(13.1), /seed/i);
+});
+
 test("short series (adaptive) defaults to «Всё» so seed stays in view", () => {
   const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(defaultChartRange(pct), "all");
 });
 
-test("history longer than 1M defaults to 1m", () => {
+test("history longer than 1M still defaults to «Всё»", () => {
   const points = [
     { t: "2026-07-01T00:00:00Z", equity: 1_600_000 },
     { t: "2026-09-22T00:00:00Z", equity: 1_800_000 },
   ];
   const series = buildSeries(points, seed, "money");
   assert.ok(series.length >= 3, "seed prepended before July");
-  assert.equal(defaultChartRange(series), "1m");
+  assert.equal(defaultChartRange(series), "all");
+  assert.equal(defaultChartRange(buildSeries(points, seed, "pct")), "all");
 });
 
 test("does not prepend when first point is already at seed", () => {
