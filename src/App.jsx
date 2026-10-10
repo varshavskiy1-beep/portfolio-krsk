@@ -7,6 +7,7 @@ import RateCycleDetails from "./RateCycleDetails.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
+import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
@@ -58,7 +59,7 @@ function goHome() {
 }
 
 function AccountCard({ a, historyPoints, onOpenStrategy }) {
-  const [mode, setMode] = useState("money");
+  const [mode, setMode] = useState(initialChartMode);
   const currency = canonicalCurrency(a);
   const title = cardTitle(a);
   const subtitle = cardSubtitle(a);
@@ -120,14 +121,20 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
         <button
           type="button"
           className={`chip tiny ${mode === "money" ? "active" : ""}`}
-          onClick={() => setMode("money")}
+          onClick={() => {
+            setMode("money");
+            persistChartMode("money");
+          }}
         >
           {chartMoneyLabel(a)}
         </button>
         <button
           type="button"
           className={`chip tiny ${mode === "pct" ? "active" : ""}`}
-          onClick={() => setMode("pct")}
+          onClick={() => {
+            setMode("pct");
+            persistChartMode("pct");
+          }}
         >
           В %
         </button>

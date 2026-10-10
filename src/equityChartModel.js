@@ -174,6 +174,23 @@ export function priceRangeIncludingSeed(series, seed, mode) {
   );
 }
 
+/** Подпись оси в режиме «В %»: русская запятая, без слова seed. */
+export function formatChartPctLabel(v) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return "";
+  try {
+    const txt = new Intl.NumberFormat("ru-RU", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(n);
+    return `${n >= 0 ? "+" : ""}${txt}%`;
+  } catch {
+    const abs = Math.abs(n).toFixed(2).replace(".", ",");
+    const sign = n > 0 ? "+" : n < 0 ? "−" : "";
+    return `${sign}${abs}%`;
+  }
+}
+
 export function buildSeries(points, seed, mode) {
   const seedN = parseSeed(seed);
   const dedup = normalizePoints(points);
@@ -187,13 +204,12 @@ export function buildSeries(points, seed, mode) {
 }
 
 /**
- * Короткая история (весь ряд короче 1М) — по умолчанию «Всё», чтобы
- * синтетический seed и все реальные точки были в кадре. Длинный ряд — «1М».
+ * По умолчанию период «Всё»: доходность за всё время видна сразу.
+ * Кнопки 1Д/1Н/1М/1Г остаются. Сохранённый выбор читает chartPrefs.
  */
 export function defaultChartRange(series) {
   if (!series || series.length < 2) return "all";
-  const span = series[series.length - 1].time - series[0].time;
-  return span < RANGE_1M_SEC ? "all" : "1m";
+  return "all";
 }
 
 /**
