@@ -669,7 +669,7 @@ test("mergePortalAccounts adds rate-cycle shell when absent — нет данн�
   assert.ok(row);
   assert.equal(row.account_id, RF_BONDS_RATE_CYCLE_ACCOUNT_ID);
   assert.equal(row.no_data, true);
-  assert.equal(row.currency, "индекс");
+  assert.equal(row.currency, "RUB");
   assert.equal(row.seed, undefined);
   assert.equal(hasAccountData(row), false);
   assert.equal(isRfBondsRateCycle(row), true);
@@ -687,15 +687,15 @@ test("published rate-cycle book replaces the shell and keeps seed from the feed"
     bot_id: RF_BONDS_RATE_CYCLE_BOT_ID,
     account_id: RF_BONDS_RATE_CYCLE_ACCOUNT_ID,
     currency: "RUB",
-    equity: "2.4419",
-    seed: "1",
-    positions: [],
+    equity: "300000.0",
+    seed: "300000",
+    positions: [{ symbol: "OBLG", side: "long", qty: "1136", avg_px: "211.1" }],
   };
   const merged = mergePortalAccounts([published]);
   const rows = merged.filter((a) => a.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID);
   assert.equal(rows.length, 1);
   assert.equal(rows[0].no_data, undefined);
   assert.equal(hasAccountData(rows[0]), true);
-  assert.equal(rows[0].seed, "1");
-  assert.equal(rows[0].equity, "2.4419");
+  assert.equal(rows[0].seed, "300000");
+  assert.equal(rows[0].equity, "300000.0");
 });

@@ -413,46 +413,40 @@ test("rf conservative: absent / no_data yields no chart and no invented 50000 li
   assert.deepEqual(buildSeries([], 50_000, "money"), []);
 });
 
-test("rate-cycle 80/20: index-only book hides NAV; paper book shows main NAV", () => {
-  const indexOnly = {
+test("rate-cycle 80/20: line comes only from account.history, one point stays drawable", () => {
+  const account = {
     bot_id: "rf_bonds_rate_cycle",
     account_id: "rf_bonds_rate_cycle",
-    equity: "2.4419",
-    seed: "1",
-    nav_model: "3",
-    updated_utc: "2026-10-09T04:00:00Z",
-    positions: [
-      { symbol: "RUCBTR5YNS", side: "long", qty: "0.8", avg_px: "186.57" },
-      { symbol: "CNYRUB_TOM", side: "long", qty: "0.2", avg_px: "12.75" },
-    ],
+    currency: "RUB",
+    equity: "300000.0",
+    seed: "300000",
+    history: [{ t: "2026-10-09", equity: "300000.0" }],
+    positions: [{ symbol: "OBLG", side: "long", qty: "1136", avg_px: "211.1" }],
   };
-  assert.equal(lastEquityValue(indexOnly), 2.4419);
-  assert.deepEqual(resolveEquityPoints(indexOnly, null), []);
-  assert.deepEqual(buildSeries([], 1, "money"), []);
-
-  const account = {
-    ...indexOnly,
-    positions: [
-      { symbol: "OBLG", side: "long", qty: "10", avg_px: "100" },
-      { symbol: "SBRB", side: "long", qty: "2", avg_px: "50" },
-      { symbol: "CR", side: "long", qty: "1", avg_px: "12" },
-    ],
-  };
-  const points = resolveEquityPoints(account, null);
+  assert.equal(lastEquityValue(account), 300000);
+  const points = resolveEquityPoints(account, {
+    series: {
+      "rf_bonds_rate_cycle::rf_bonds_rate_cycle": {
+        points: [{ t: "2019-06-28", equity: "2.4419" }],
+      },
+    },
+  });
   assert.equal(points.length, 1);
-  assert.equal(Number(points[0].equity), 2.4419);
-  const money = buildSeries(points, 1, "money");
-  assert.ok(money.every((p) => p.value !== 3));
-  assert.equal(money[money.length - 1].value, 2.4419);
+  assert.equal(Number(points[0].equity), 300000);
+  const pct = buildSeries(points, 300000, "pct");
+  assert.ok(pct.length >= 2);
+  assert.equal(pct[pct.length - 1].value, 0);
+
+  const noHist = { ...account, history: [] };
+  assert.deepEqual(resolveEquityPoints(noHist, null), []);
 
   const shell = {
     bot_id: "rf_bonds_rate_cycle",
     account_id: "rf_bonds_rate_cycle",
-    currency: "индекс",
+    currency: "RUB",
     no_data: true,
   };
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
-  assert.deepEqual(buildSeries([], 1, "money"), []);
 });
 
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {
