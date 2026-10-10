@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-10T08:10:22Z",
+  "generated_at": "2026-10-10T08:30:29Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-10T08:10:15.629046Z",
+      "updated_utc": "2026-10-10T08:30:22.117885Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-10T08:10:15.632373Z",
+      "updated_utc": "2026-10-10T08:30:22.120170Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-10T08:10:15.635540Z",
+      "updated_utc": "2026-10-10T08:30:22.122270Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13937.394486457011",
-      "updated_utc": "2026-10-10T08:10:15.638406Z",
+      "updated_utc": "2026-10-10T08:30:22.124356Z",
       "positions": [
         {
           "position_id": "p_e8717781e832",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-10T08:10:15.642279Z",
+      "updated_utc": "2026-10-10T08:30:22.128582Z",
       "positions": []
     },
     {
@@ -385,15 +385,40 @@
     {
       "bot_id": "rf_bonds_rate_cycle",
       "account_id": "rf_bonds_rate_cycle",
-      "currency": "индекс",
-      "seed": "1",
-      "equity": null,
+      "currency": "RUB",
+      "seed": "300000",
+      "equity": "300000.0",
       "cash": null,
-      "updated_utc": null,
-      "positions": [],
-      "history": [],
-      "note": "Бумага. «Цикл ставки 80/20»: индекс богатства, старт 1, не рублёвый счёт. Дальняя RUCBTR5YNS и ближняя RUCBITR1Y, юань CNYRUB_TOM только пока цикл включён. На биржу ордера не идут. Паи OBLG, SBRB и фьючерс CR в книгу не входят.",
-      "error": "ledger_missing"
+      "updated_utc": "2026-10-10T08:13:19Z",
+      "positions": [
+        {
+          "symbol": "OBLG",
+          "side": "long",
+          "qty": "1136",
+          "avg_px": "211.1"
+        },
+        {
+          "symbol": "SBRB",
+          "side": "long",
+          "qty": "3160",
+          "avg_px": "18.987"
+        },
+        {
+          "symbol": "CRZ6",
+          "side": "long",
+          "qty": "4",
+          "avg_px": "12.914"
+        }
+      ],
+      "history": [
+        {
+          "t": "2026-10-09",
+          "equity": "300000.0"
+        }
+      ],
+      "note": "Бумага. «Цикл ставки 80/20», старт 300000 RUB. Паи OBLG и SBRB и фьючерс CR. На биржу ордера не идут.",
+      "as_of": "2026-10-09",
+      "book": "OBLG_SBRB_CR"
     },
     {
       "bot_id": "mayak_imoex_lowvol10",
@@ -519,7 +544,7 @@
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
-      "logic": "РФ, бумага, индекс богатства со старта 1. Пока ключевая снижается и снижению не больше 52 недель: 80% индекс RUCBTR5YNS и 20% индекс RUCBITR1Y, сверху 20% юаня CNYRUB_TOM. Иначе 20/80 и юань 0. Неделя по пятнице, решение со следующей недели. На биржу ордера не идут. Паи OBLG, SBRB и фьючерс CR не входят."
+      "logic": "РФ, бумага, старт 300 000 ₽. Пока ключевая снижается и снижению не больше 52 недель: 80% пай OBLG и 20% пай SBRB, сверху юань фьючерсом CR на 20% капитала. Иначе 20/80 и юань 0. Неделя по пятнице, решение со следующей недели. На биржу ордера не идут."
     },
     {
       "bot_id": "mayak_imoex_lowvol10",
