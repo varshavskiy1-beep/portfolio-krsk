@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-10T13:13:45Z",
+  "generated_at": "2026-10-10T13:26:52Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-10T13:13:44.175967Z",
+      "updated_utc": "2026-10-10T13:26:47.860072Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-10T13:13:44.178631Z",
+      "updated_utc": "2026-10-10T13:26:47.864441Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-10T13:13:44.181002Z",
+      "updated_utc": "2026-10-10T13:26:47.868669Z",
       "positions": []
     },
     {
@@ -73,8 +73,17 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13898.218806070012",
-      "updated_utc": "2026-10-10T13:13:44.183353Z",
-      "positions": []
+      "updated_utc": "2026-10-10T13:26:47.871182Z",
+      "positions": [
+        {
+          "position_id": "p_bf8e1b5b0256",
+          "symbol": "BTC-USDT",
+          "side": "short",
+          "qty": "0.041",
+          "avg_px": "82787.35634",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -82,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-10T13:13:44.185909Z",
+      "updated_utc": "2026-10-10T13:26:47.873687Z",
       "positions": []
     },
     {
@@ -100,9 +109,9 @@
       "bot_id": "forts_adr_static",
       "account_id": "forts_adr_static",
       "currency": "RUB",
-      "equity": "1501499.9839859367",
+      "equity": "1510500.0090843327",
       "seed": "1500000",
-      "updated_utc": "2026-10-09T13:20:34.345084Z",
+      "updated_utc": "2026-10-10T13:20:17.942742Z",
       "positions": []
     },
     {
