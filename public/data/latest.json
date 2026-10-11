@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-10T23:55:53Z",
+  "generated_at": "2026-10-11T00:19:06Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-10T23:55:52.239126Z",
+      "updated_utc": "2026-10-11T00:19:05.291283Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-10T23:55:52.241408Z",
+      "updated_utc": "2026-10-11T00:19:05.293846Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-10T23:55:52.243642Z",
+      "updated_utc": "2026-10-11T00:19:05.296402Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13862.55149735401",
-      "updated_utc": "2026-10-10T23:55:52.245946Z",
+      "updated_utc": "2026-10-11T00:19:05.298659Z",
       "positions": [
         {
           "position_id": "p_c562c2cb207e",
@@ -81,6 +81,14 @@
           "side": "short",
           "qty": "0.041",
           "avg_px": "83033.78239",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_2da30b61837b",
+          "symbol": "ETH-USDT",
+          "side": "short",
+          "qty": "1.382",
+          "avg_px": "2505.788038",
           "stop_px": null
         }
       ]
@@ -91,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-10T23:55:52.248170Z",
+      "updated_utc": "2026-10-11T00:19:05.302258Z",
       "positions": []
     },
     {
@@ -118,36 +126,11 @@
       "bot_id": "pump_radar",
       "account_id": "pump_radar",
       "currency": "USDT",
-      "equity": "5620.790000000000000000000000",
-      "cash": "3421.138000000000000000000000",
-      "updated_utc": "2026-10-09",
+      "equity": "5838.050000000000000000000000",
+      "cash": "5838.050000000000000000000000",
+      "updated_utc": "2026-10-10",
       "positions": [],
-      "pending_limits": [
-        {
-          "id": "pump-2026-09-30-NIGHTUSDT",
-          "symbol": "NIGHTUSDT",
-          "limit": "0.03724000",
-          "notional": "513.4150000000000000000000000"
-        },
-        {
-          "id": "pump-2026-10-09-KAIAUSDT",
-          "symbol": "KAIAUSDT",
-          "limit": "0.05747500",
-          "notional": "562.0790000000000000000000000"
-        },
-        {
-          "id": "pump-2026-10-09-MAGICUSDT",
-          "symbol": "MAGICUSDT",
-          "limit": "0.11685000",
-          "notional": "562.0790000000000000000000000"
-        },
-        {
-          "id": "pump-2026-10-09-STRKUSDT",
-          "symbol": "STRKUSDT",
-          "limit": "0.06944500",
-          "notional": "562.0790000000000000000000000"
-        }
-      ]
+      "pending_limits": []
     },
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
@@ -165,21 +148,21 @@
       "account_id": "young_bounce_combo",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "9867.78",
+      "equity": "9895.72",
       "cash": "9000.0",
-      "updated_utc": "2026-10-10T00:07:36Z",
+      "updated_utc": "2026-10-11T00:07:07Z",
       "positions": [
         {
           "symbol": "MARSCOINUSDT",
           "side": "long",
           "qty": "9310.98696461825",
           "avg_px": "0.1074",
-          "mark": "0.0932",
+          "mark": "0.0962",
           "pattern": "crash"
         }
       ],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-09"
+      "as_of": "2026-10-10"
     },
     {
       "bot_id": "oac_paper",
