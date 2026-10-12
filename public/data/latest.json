@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-12T12:58:05Z",
+  "generated_at": "2026-10-12T13:34:19Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-12T12:58:00.124000Z",
+      "updated_utc": "2026-10-12T13:34:15.454197Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1927622.0464173001",
-      "updated_utc": "2026-10-12T12:58:00.127372Z",
+      "updated_utc": "2026-10-12T13:34:15.458280Z",
       "positions": [
         {
           "position_id": "p_56ebc5bae059",
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1483198.6096824799",
-      "updated_utc": "2026-10-12T12:58:00.130567Z",
+      "updated_utc": "2026-10-12T13:34:15.461162Z",
       "positions": [
         {
           "position_id": "p_8664dae4e35c",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13667.80475858301",
-      "updated_utc": "2026-10-12T12:58:00.134529Z",
+      "updated_utc": "2026-10-12T13:34:15.466331Z",
       "positions": []
     },
     {
@@ -108,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-12T12:58:00.137672Z",
+      "updated_utc": "2026-10-12T13:34:15.469067Z",
       "positions": []
     },
     {
@@ -116,9 +116,9 @@
       "account_id": "forts_adr_adaptive",
       "currency": "RUB",
       "seed": "1500000",
-      "equity": "1965930.7029642565",
-      "cash": "1965930.7029642565",
-      "updated_utc": "2026-10-11T13:10:00Z",
+      "equity": "1856069.1644809872",
+      "cash": "1856069.1644809872",
+      "updated_utc": "2026-10-12T13:10:58.304230Z",
       "positions": [],
       "note": "equity восстановлен из jsonl fills (seed + Σ qty·entry·pnl_pct). Позиций overnight нет (eod_flat)."
     },
@@ -126,9 +126,9 @@
       "bot_id": "forts_adr_static",
       "account_id": "forts_adr_static",
       "currency": "RUB",
-      "equity": "1510500.0090843327",
+      "equity": "1502000.0090793516",
       "seed": "1500000",
-      "updated_utc": "2026-10-11T13:20:14.556940Z",
+      "updated_utc": "2026-10-12T13:20:16.480640Z",
       "positions": []
     },
     {
@@ -262,7 +262,7 @@
       "seed": "10000",
       "equity": "9908.1936",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-10T02:05:00Z",
+      "updated_utc": "2026-10-12T13:30:01Z",
       "positions": [
         {
           "symbol": "AAPL",
