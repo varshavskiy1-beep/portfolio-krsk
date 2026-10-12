@@ -33,6 +33,7 @@ const DISPLAYED = [
   "desyatka_earn_paper",
   "cycle_6040_paper",
   "rf_conservative_comon",
+  "cny_mom_h360",
   "rf_bonds_rate_cycle",
   "mayak_imoex_lowvol10",
   "mayak_imoex_mom10",
@@ -47,6 +48,19 @@ test("cycle_6040_paper stays on the dashboard; snapshot row is used when present
     assert.equal(hasAccountData(row), true);
   } else {
     assert.equal(hasAccountData({ bot_id: "cycle_6040_paper", no_data: true }), false);
+  }
+});
+
+test("cny_mom_h360 stays on the dashboard; snapshot row is used when present", () => {
+  const ids = displayedBotIds(latest.accounts);
+  assert.equal(ids.includes("cny_mom_h360"), true);
+  const row = (latest.accounts || []).find((a) => a.bot_id === "cny_mom_h360");
+  if (row) {
+    assert.equal(hasAccountData(row), true);
+    assert.equal(row.currency, "RUB");
+    assert.equal(Number(row.seed), 300000);
+  } else {
+    assert.equal(hasAccountData({ bot_id: "cny_mom_h360", no_data: true }), false);
   }
 });
 
@@ -255,6 +269,24 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   for (const s of passportUiStrings("rf_conservative_comon")) {
     assert.doesNotMatch(s, /включить ордера/, s);
     assert.doesNotMatch(s, /счёт Finam|номер счёта Finam|Finam account/i, s);
+  }
+
+  const cny = getPassport("cny_mom_h360");
+  assert.equal(cny.title, "Юань 360");
+  assert.equal(cny.accounts[0].currency, "RUB");
+  assert.equal(cny.parameters.find((r) => r.name === "Начальный капитал").known, false);
+  assert.equal(cny.parameters.find((r) => r.name === "Начальный капитал").value, NO_DATA);
+  assert.match(cny.parameters.find((r) => r.name === "Канон (документация)").value, /CNY_MOM_H360_LEV25/);
+  assert.match(cny.parameters.find((r) => r.name === "Инструменты").value, /LQDT, CR/);
+  assert.doesNotMatch(cny.parameters.find((r) => r.name === "Инструменты").value, /RUCBTR5YNS|RUCBITR1Y|CNYRUB|OBLG|SBRB/);
+  assert.match(cny.essence.paragraphs.join("\n"), /рублёвый счёт/);
+  assert.match(cny.essence.paragraphs.join("\n"), /LQDT/);
+  assert.doesNotMatch(cny.essence.paragraphs.join("\n"), /индекс богатства|RUCBTR5YNS|CNYRUB|Цикл ставки 80\/20/);
+  assert.doesNotMatch(cny.essence.paragraphs.join("\n"), /\bseed\b/i);
+  for (const s of passportUiStrings("cny_mom_h360")) {
+    assert.doesNotMatch(s, /включить ордера/, s);
+    assert.doesNotMatch(s, /\bseed\b/i, s);
+    assert.doesNotMatch(s, /RUCBTR5YNS|RUCBITR1Y|CNYRUB_TOM/, s);
   }
 
   const rbc = getPassport("rf_bonds_rate_cycle");

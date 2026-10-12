@@ -1,6 +1,7 @@
+import { visibleCnyMomPositions } from "./cnyMomCard.js";
 import { emptyPositionsHint } from "./mayakCard.js";
 import { visibleRateCyclePositions } from "./rateCycleCard.js";
-import { isMayak, isRfBondsRateCycle, OAC_PAPER_BOT_ID } from "./strategyMeta.js";
+import { isCnyMomH360, isMayak, isRfBondsRateCycle, OAC_PAPER_BOT_ID } from "./strategyMeta.js";
 import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCopy.js";
 
 /**
@@ -12,14 +13,21 @@ import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCo
  * rf_conservative_comon: SBMX|SBRB|LQDT, long, qty строкой, avg_px и/или value_rub если есть.
  * Маяк: тикер, лонг, qty строкой; цен нет — колонку не рисуем; пустой стакан в hard/protect не ошибка.
  * Цикл ставки 80/20: только OBLG/SBRB/CR; индексы отфильтрованы; пустая таблица нейтральная.
+ * Юань 360: LQDT и CR с qty ≠ 0; индексы отфильтрованы.
  */
 export default function PositionsTable({ positions, compact = false, botId, account }) {
   const acc = account || { bot_id: botId };
   const mayak = isMayak(acc);
   const rateCycle = isRfBondsRateCycle(acc);
-  const rows = rateCycle ? visibleRateCyclePositions({ ...acc, positions: positions || acc.positions }) : positions;
+  const cnyMom = isCnyMomH360(acc);
+  const paperBook = rateCycle || cnyMom;
+  const rows = rateCycle
+    ? visibleRateCyclePositions({ ...acc, positions: positions || acc.positions })
+    : cnyMom
+      ? visibleCnyMomPositions({ ...acc, positions: positions || acc.positions })
+      : positions;
   if (!rows?.length) {
-    if (rateCycle) {
+    if (paperBook) {
       return (
         <div className="table-scroll">
           <table>
@@ -75,7 +83,7 @@ export default function PositionsTable({ positions, compact = false, botId, acco
   const showValueRub = rows.some((p) => positionHasField(p, "value_rub"));
   const showAvgPx = mayak ? rows.some((p) => positionHasField(p, "avg_px")) : true;
   const showStop = compact ? false : mayak ? rows.some((p) => positionHasField(p, "stop_px")) : true;
-  const priceHead = rateCycle
+  const priceHead = paperBook
     ? compact
       ? "Цена"
       : "Цена пая / контракта"
