@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-12T11:04:18Z",
+  "generated_at": "2026-10-12T11:16:24Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-12T11:04:16.264885Z",
+      "updated_utc": "2026-10-12T11:16:19.245844Z",
       "positions": []
     },
     {
@@ -54,23 +54,23 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1940545.1719667602",
-      "updated_utc": "2026-10-12T11:04:16.269123Z",
+      "equity": "1932106.2500967602",
+      "updated_utc": "2026-10-12T11:16:19.249217Z",
       "positions": [
-        {
-          "position_id": "p_4b604564d22d",
-          "symbol": "LKOH",
-          "side": "long",
-          "qty": "80.0",
-          "avg_px": "6043.02",
-          "stop_px": null
-        },
         {
           "position_id": "p_9b44ab7418d1",
           "symbol": "NVTK",
           "side": "long",
           "qty": "451.0",
           "avg_px": "1075.83765",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_56ebc5bae059",
+          "symbol": "GAZP",
+          "side": "long",
+          "qty": "4772.0",
+          "avg_px": "101.27061",
           "stop_px": null
         }
       ]
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1483344.912086",
-      "updated_utc": "2026-10-12T11:04:16.272565Z",
+      "updated_utc": "2026-10-12T11:16:19.251492Z",
       "positions": [
         {
           "position_id": "p_8664dae4e35c",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13613.54313809301",
-      "updated_utc": "2026-10-12T11:04:16.275880Z",
+      "updated_utc": "2026-10-12T11:16:19.253882Z",
       "positions": [
         {
           "position_id": "p_925ae30c4911",
@@ -125,7 +125,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-12T11:04:16.278897Z",
+      "updated_utc": "2026-10-12T11:16:19.256300Z",
       "positions": []
     },
     {
