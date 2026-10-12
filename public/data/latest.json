@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-12T23:03:00Z",
+  "generated_at": "2026-10-12T23:18:09Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,19 +25,11 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "13201.0830251310",
-      "cash": "13201.0830251310",
+      "equity": "9279.8719524510",
+      "cash": "9279.8719524510",
       "seed": "10000",
-      "updated_utc": "2026-10-11T02:02:40Z",
-      "positions": [
-        {
-          "symbol": "STRK-USDT-SWAP",
-          "side": "long",
-          "qty": "112810",
-          "avg_px": "0.11709",
-          "margin": "13208.92290"
-        }
-      ],
+      "updated_utc": "2026-10-12T23:03:05Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -46,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.270984820003",
-      "updated_utc": "2026-10-12T23:02:58.138518Z",
+      "updated_utc": "2026-10-12T23:18:05.052297Z",
       "positions": []
     },
     {
@@ -55,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1930205.4617469104",
-      "updated_utc": "2026-10-12T23:02:58.142439Z",
+      "updated_utc": "2026-10-12T23:18:05.055001Z",
       "positions": []
     },
     {
@@ -64,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1483165.520384",
-      "updated_utc": "2026-10-12T23:02:58.145862Z",
+      "updated_utc": "2026-10-12T23:18:05.057521Z",
       "positions": []
     },
     {
@@ -73,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13647.40821048501",
-      "updated_utc": "2026-10-12T23:02:58.149032Z",
+      "updated_utc": "2026-10-12T23:18:05.059995Z",
       "positions": [
         {
           "position_id": "p_ff29acecee4b",
@@ -99,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-12T23:02:58.153791Z",
+      "updated_utc": "2026-10-12T23:18:05.063723Z",
       "positions": []
     },
     {
@@ -275,7 +267,7 @@
       "seed": "10000",
       "equity": "9791.2975",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-12T23:00:02Z",
+      "updated_utc": "2026-10-12T23:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
