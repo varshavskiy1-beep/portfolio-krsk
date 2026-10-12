@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-12T20:09:25Z",
+  "generated_at": "2026-10-12T20:20:29Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.270984820003",
-      "updated_utc": "2026-10-12T20:09:23.380792Z",
+      "updated_utc": "2026-10-12T20:20:27.168525Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1930205.4617469104",
-      "updated_utc": "2026-10-12T20:09:23.383621Z",
+      "updated_utc": "2026-10-12T20:20:27.171006Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1483165.520384",
-      "updated_utc": "2026-10-12T20:09:23.387355Z",
+      "updated_utc": "2026-10-12T20:20:27.173542Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13662.00509250301",
-      "updated_utc": "2026-10-12T20:09:23.389608Z",
+      "updated_utc": "2026-10-12T20:20:27.177012Z",
       "positions": [
         {
           "position_id": "p_55bd0fb2e2aa",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-12T20:09:23.391890Z",
+      "updated_utc": "2026-10-12T20:20:27.179134Z",
       "positions": []
     },
     {
@@ -265,73 +265,73 @@
       "account_id": "desyatka_earn_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "9908.1936",
+      "equity": "9791.2975",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-12T20:00:00Z",
+      "updated_utc": "2026-10-12T20:20:05Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
           "qty": "2.9828828899429167",
-          "avg_px": "336.6400146484375"
+          "avg_px": "340.9700012207031"
         },
         {
           "symbol": "AMD",
           "side": "long",
           "qty": "1.5843785809333337",
-          "avg_px": "608.0999755859375"
+          "avg_px": "594.239990234375"
         },
         {
           "symbol": "AMZN",
           "side": "long",
           "qty": "3.973161928295239",
-          "avg_px": "262.42999267578125"
+          "avg_px": "259.5299987792969"
         },
         {
           "symbol": "AVGO",
           "side": "long",
           "qty": "2.6988671037736016",
-          "avg_px": "361.5400085449219"
+          "avg_px": "354.7300109863281"
         },
         {
           "symbol": "INTC",
           "side": "long",
           "qty": "8.995845905758726",
-          "avg_px": "104.69999694824219"
+          "avg_px": "101.3499984741211"
         },
         {
           "symbol": "MSFT",
           "side": "long",
           "qty": "1.8935727938529912",
-          "avg_px": "535.0700073242188"
+          "avg_px": "541.1500244140625"
         },
         {
           "symbol": "MU",
           "side": "long",
           "qty": "0.9879623560562981",
-          "avg_px": "1029.0"
+          "avg_px": "989.0399780273438"
         },
         {
           "symbol": "NVDA",
           "side": "long",
           "qty": "4.230352451874968",
-          "avg_px": "229.27999877929688"
+          "avg_px": "226.32000732421875"
         },
         {
           "symbol": "SPCX",
           "side": "long",
           "qty": "5.9802920175931975",
-          "avg_px": "162.57000732421875"
+          "avg_px": "163.4199981689453"
         },
         {
           "symbol": "TSLA",
           "side": "long",
           "qty": "2.65744626378069",
-          "avg_px": "382.70001220703125"
+          "avg_px": "378.0299987792969"
         }
       ],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-09"
+      "as_of": "2026-10-12"
     },
     {
       "bot_id": "cycle_6040_paper",
