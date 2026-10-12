@@ -1,13 +1,19 @@
 /**
  * Режим и период графика: по умолчанию «В %» за всё время.
- * Если пользователь уже выбирал — читаем localStorage и не перетираем.
+ * v2: старые ключи с «деньгами» из прошлых версий не читаем.
+ * Ручной выбор после этой версии пишется в ключ v2 и читается снова.
  */
 
 export const DEFAULT_CHART_MODE = "pct";
 export const DEFAULT_CHART_RANGE = "all";
 
-export const CHART_MODE_KEYS = ["portfolio_krsk.chartMode", "chartMode", "chart-mode"];
-export const CHART_RANGE_KEYS = ["portfolio_krsk.chartRange", "chartRange", "chart-range"];
+/** Актуальные ключи. Старые (без .v2) намеренно не читаем. */
+export const CHART_MODE_KEYS = ["portfolio_krsk.chartMode.v2"];
+export const CHART_RANGE_KEYS = ["portfolio_krsk.chartRange.v2"];
+
+/** Легаси: до дефолта «В %» / «Всё». Не читать, чтобы не перебить дефолт. */
+export const LEGACY_CHART_MODE_KEYS = ["portfolio_krsk.chartMode", "chartMode", "chart-mode"];
+export const LEGACY_CHART_RANGE_KEYS = ["portfolio_krsk.chartRange", "chartRange", "chart-range"];
 
 function storage() {
   try {

@@ -5,6 +5,8 @@ import {
   CHART_RANGE_KEYS,
   DEFAULT_CHART_MODE,
   DEFAULT_CHART_RANGE,
+  LEGACY_CHART_MODE_KEYS,
+  LEGACY_CHART_RANGE_KEYS,
   initialChartMode,
   initialChartRange,
   persistChartMode,
@@ -44,22 +46,28 @@ test("without a stored choice the default is percent for all time", () => {
   assert.equal(initialChartRange(), "all");
 });
 
-test("stored money / 1m choice is kept and not overwritten by the new default", () => {
+test("legacy money / 1m keys from older versions do not override the default", () => {
+  globalThis.localStorage = memoryStorage({
+    "portfolio_krsk.chartMode": "money",
+    "portfolio_krsk.chartRange": "1m",
+    chartMode: "money",
+    "chart-mode": "money",
+    chartRange: "1d",
+    "chart-range": "1y",
+  });
+  assert.equal(initialChartMode(), "pct");
+  assert.equal(initialChartRange(), "all");
+  assert.equal(readStoredChartMode(), null);
+  assert.equal(readStoredChartRange(), null);
+});
+
+test("v2 stored money / 1m choice after a manual click is kept", () => {
   globalThis.localStorage = memoryStorage({
     [CHART_MODE_KEYS[0]]: "money",
     [CHART_RANGE_KEYS[0]]: "1m",
   });
   assert.equal(initialChartMode(), "money");
   assert.equal(initialChartRange(), "1m");
-});
-
-test("legacy chartMode / chart-range keys are honoured", () => {
-  globalThis.localStorage = memoryStorage({
-    chartMode: "money",
-    "chart-range": "1y",
-  });
-  assert.equal(initialChartMode(), "money");
-  assert.equal(initialChartRange(), "1y");
 });
 
 test("invalid stored values fall back to the new default", () => {
@@ -71,9 +79,18 @@ test("invalid stored values fall back to the new default", () => {
   assert.equal(initialChartRange(), "all");
 });
 
-test("persist writes the canonical keys", () => {
-  const ls = memoryStorage();
+test("persist writes the v2 keys and does not revive legacy money", () => {
+  const ls = memoryStorage({
+    "portfolio_krsk.chartMode": "money",
+    chartMode: "money",
+  });
   globalThis.localStorage = ls;
+  persistChartMode("pct");
+  persistChartRange("all");
+  assert.equal(ls.getItem(CHART_MODE_KEYS[0]), "pct");
+  assert.equal(ls.getItem(CHART_RANGE_KEYS[0]), "all");
+  assert.equal(initialChartMode(), "pct");
+  assert.equal(initialChartRange(), "all");
   persistChartMode("money");
   persistChartRange("1w");
   assert.equal(ls.getItem(CHART_MODE_KEYS[0]), "money");
@@ -82,12 +99,21 @@ test("persist writes the canonical keys", () => {
   assert.equal(initialChartRange(), "1w");
 });
 
+test("canonical keys are versioned and legacy aliases stay listed for the ignore test", () => {
+  assert.equal(CHART_MODE_KEYS[0], "portfolio_krsk.chartMode.v2");
+  assert.equal(CHART_RANGE_KEYS[0], "portfolio_krsk.chartRange.v2");
+  assert.ok(LEGACY_CHART_MODE_KEYS.includes("portfolio_krsk.chartMode"));
+  assert.ok(LEGACY_CHART_RANGE_KEYS.includes("portfolio_krsk.chartRange"));
+});
+
 test("chart pref helpers never mention seed in their public strings", () => {
   const blob = [
     DEFAULT_CHART_MODE,
     DEFAULT_CHART_RANGE,
     ...CHART_MODE_KEYS,
     ...CHART_RANGE_KEYS,
+    ...LEGACY_CHART_MODE_KEYS,
+    ...LEGACY_CHART_RANGE_KEYS,
   ].join(" ");
   assert.doesNotMatch(blob, /\bseed\b/i);
 });

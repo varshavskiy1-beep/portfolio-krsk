@@ -207,7 +207,7 @@ export function buildSeries(points, seed, mode) {
 
 /**
  * По умолчанию период «Всё»: доходность за всё время видна сразу.
- * Кнопки 1Д/1Н/1М/1Г остаются. Сохранённый выбор читает chartPrefs.
+ * Кнопки 1Д/1Н/1М/1Г остаются. Ручной выбор после v2 читает chartPrefs.
  */
 export function defaultChartRange(series) {
   if (!series || series.length < 2) return "all";
