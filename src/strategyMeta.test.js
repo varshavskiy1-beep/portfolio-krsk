@@ -10,6 +10,10 @@ import {
   RF_BONDS_RATE_CYCLE_ACCOUNT_ID,
   RF_BONDS_RATE_CYCLE_BOT_ID,
   RF_BONDS_RATE_CYCLE_TITLE,
+  CNY_MOM_H360_ACCOUNT_ID,
+  CNY_MOM_H360_BOT_ID,
+  CNY_MOM_H360_CANON_ID,
+  CNY_MOM_H360_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -30,6 +34,7 @@ import {
   hasBoxxCash,
   isCycle6040,
   isDesyatkaEarn,
+  isCnyMomH360,
   isRfBondsRateCycle,
   isRfConservative,
   isHiddenPortalAccount,
@@ -53,6 +58,7 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
     { id: CYCLE_6040_BOT_ID, reason: "live cluster" },
     { id: RF_CONSERVATIVE_BOT_ID, reason: "live cluster" },
     { id: RF_BONDS_RATE_CYCLE_BOT_ID, reason: "live cluster" },
+    { id: "cny_mom_h360", reason: "live cluster" },
     { id: "mayak_imoex_lowvol10", reason: "live cluster" },
     { id: "mayak_imoex_mom10", reason: "live cluster" },
     { id: "mayak_imoex_mom10_lev15", reason: "live cluster" },
@@ -693,6 +699,55 @@ test("published rate-cycle book replaces the shell and keeps seed from the feed"
   };
   const merged = mergePortalAccounts([published]);
   const rows = merged.filter((a) => a.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.equal(rows[0].seed, "300000");
+  assert.equal(rows[0].equity, "300000.0");
+});
+
+test("displayTitle maps yuan-360 ids to Юань 360", () => {
+  assert.equal(
+    displayTitle({ bot_id: CNY_MOM_H360_BOT_ID, account_id: CNY_MOM_H360_ACCOUNT_ID }),
+    CNY_MOM_H360_TITLE,
+  );
+  assert.equal(
+    cardTitle({ bot_id: CNY_MOM_H360_BOT_ID, account_id: CNY_MOM_H360_ACCOUNT_ID }),
+    CNY_MOM_H360_TITLE,
+  );
+  assert.equal(chipLabel(CNY_MOM_H360_BOT_ID), CNY_MOM_H360_TITLE);
+  assert.doesNotMatch(CNY_MOM_H360_TITLE, /Цикл ставки 80\/20|РФ Консерватив|Цикл 60\/40|₽/);
+});
+
+test("mergePortalAccounts adds yuan-360 shell when absent — нет данных, seed not hardcoded", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === CNY_MOM_H360_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, CNY_MOM_H360_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "RUB");
+  assert.equal(row.seed, undefined);
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isCnyMomH360(row), true);
+  assert.equal(isRfBondsRateCycle(row), false);
+  assert.equal(accountIdBadge(row), CNY_MOM_H360_CANON_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsPaperBadge(row), true);
+});
+
+test("published yuan-360 book replaces the shell and keeps seed from the feed", () => {
+  const published = {
+    bot_id: CNY_MOM_H360_BOT_ID,
+    account_id: CNY_MOM_H360_ACCOUNT_ID,
+    currency: "RUB",
+    equity: "300000.0",
+    seed: "300000",
+    positions: [{ symbol: "LQDT", side: "long", qty: "142429", avg_px: "2.1063" }],
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === CNY_MOM_H360_BOT_ID);
   assert.equal(rows.length, 1);
   assert.equal(rows[0].no_data, undefined);
   assert.equal(hasAccountData(rows[0]), true);

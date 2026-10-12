@@ -33,6 +33,15 @@ export const RF_BONDS_RATE_CYCLE_CURRENCY = "RUB";
 export const RF_BONDS_RATE_CYCLE_LOGIC =
   "Бумага. Неделя по пятнице. Решение пятницы работает со следующей недели. 80% OBLG и 20% SBRB, сверху фьючерс CR на 20% капитала, пока цикл ставки включён. На биржу ордера не идут.";
 
+/** Paper id: cny_mom_h360. Бумажный рублёвый счёт. Канон: CNY_MOM_H360_LEV25. Пока нет в accounts[] или equity пустой — «нет данных». */
+export const CNY_MOM_H360_BOT_ID = "cny_mom_h360";
+export const CNY_MOM_H360_ACCOUNT_ID = "cny_mom_h360";
+export const CNY_MOM_H360_TITLE = "Юань 360";
+export const CNY_MOM_H360_CANON_ID = "CNY_MOM_H360_LEV25";
+export const CNY_MOM_H360_CURRENCY = "RUB";
+export const CNY_MOM_H360_LOGIC =
+  "Бумага, старт 300 000 ₽ в паях LQDT. Раз в час смотрит 360 часовых закрытий фьючерса юаня. Номинал фьючерса 2,5 капитала, когда задан дисконт пая. Пока дисконта нет, фьючерс не открывается. На биржу ордера не идут.";
+
 /**
  * Семейство бумажных счетов «Маяк». Четыре отдельные карточки.
  * Стартовый капитал не зашит: только поле seed из accounts[] снимка.
@@ -129,6 +138,7 @@ export const BOT_TITLE = {
   [CYCLE_6040_BOT_ID]: CYCLE_6040_TITLE,
   [RF_CONSERVATIVE_BOT_ID]: RF_CONSERVATIVE_TITLE,
   [RF_BONDS_RATE_CYCLE_BOT_ID]: RF_BONDS_RATE_CYCLE_TITLE,
+  [CNY_MOM_H360_BOT_ID]: CNY_MOM_H360_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.title])),
 };
 
@@ -140,6 +150,7 @@ export const ACCOUNT_TITLE = {
   [CYCLE_6040_ACCOUNT_ID]: CYCLE_6040_TITLE,
   [RF_CONSERVATIVE_ACCOUNT_ID]: RF_CONSERVATIVE_TITLE,
   [RF_BONDS_RATE_CYCLE_ACCOUNT_ID]: RF_BONDS_RATE_CYCLE_TITLE,
+  [CNY_MOM_H360_ACCOUNT_ID]: CNY_MOM_H360_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.account_id, s.title])),
 };
 
@@ -152,6 +163,7 @@ export const ACCOUNT_SUBTITLE = {
   [RF_CONSERVATIVE_BOT_ID]: "РФ, SBMX/SBRB/LQDT, старт 50 000 ₽. На биржу ордера не идут.",
   [RF_BONDS_RATE_CYCLE_BOT_ID]:
     "РФ, OBLG/SBRB и фьючерс CR. На биржу ордера не идут.",
+  [CNY_MOM_H360_BOT_ID]: "РФ, паи LQDT и фьючерс CR. На биржу ордера не идут.",
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.subtitle])),
 };
 
@@ -162,6 +174,7 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
   CYCLE_6040_BOT_ID,
   RF_CONSERVATIVE_BOT_ID,
   RF_BONDS_RATE_CYCLE_BOT_ID,
+  CNY_MOM_H360_BOT_ID,
   ...MAYAK_BOT_IDS,
 ]);
 
@@ -208,6 +221,11 @@ export const PORTAL_SHELLS = [
     account_id: RF_BONDS_RATE_CYCLE_ACCOUNT_ID,
     currency: RF_BONDS_RATE_CYCLE_CURRENCY,
   },
+  {
+    bot_id: CNY_MOM_H360_BOT_ID,
+    account_id: CNY_MOM_H360_ACCOUNT_ID,
+    currency: CNY_MOM_H360_CURRENCY,
+  },
   ...MAYAK_ACCOUNTS.map((s) => ({
     bot_id: s.bot_id,
     account_id: s.account_id,
@@ -244,6 +262,9 @@ export function displayTitle(account) {
   }
   if (account.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
     return RF_BONDS_RATE_CYCLE_TITLE;
+  }
+  if (account.bot_id === CNY_MOM_H360_BOT_ID || account.account_id === CNY_MOM_H360_ACCOUNT_ID) {
+    return CNY_MOM_H360_TITLE;
   }
   return (
     ACCOUNT_TITLE[account.account_id] ||
@@ -287,6 +308,11 @@ export function cardTitle(account) {
       ? RF_BONDS_RATE_CYCLE_TITLE
       : title;
   }
+  if (account?.bot_id === CNY_MOM_H360_BOT_ID || account?.account_id === CNY_MOM_H360_ACCOUNT_ID) {
+    return title === CNY_MOM_H360_ACCOUNT_ID || title === CNY_MOM_H360_BOT_ID
+      ? CNY_MOM_H360_TITLE
+      : title;
+  }
   return title;
 }
 
@@ -299,6 +325,7 @@ export function chipLabel(botId) {
   if (botId === CYCLE_6040_BOT_ID) return CYCLE_6040_TITLE;
   if (botId === RF_CONSERVATIVE_BOT_ID) return RF_CONSERVATIVE_TITLE;
   if (botId === RF_BONDS_RATE_CYCLE_BOT_ID) return RF_BONDS_RATE_CYCLE_TITLE;
+  if (botId === CNY_MOM_H360_BOT_ID) return CNY_MOM_H360_TITLE;
   return BOT_TITLE[botId] || botId;
 }
 
@@ -325,6 +352,9 @@ export function accountSubtitle(account) {
   if (account.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[RF_BONDS_RATE_CYCLE_BOT_ID];
   }
+  if (account.bot_id === CNY_MOM_H360_BOT_ID || account.account_id === CNY_MOM_H360_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[CNY_MOM_H360_BOT_ID];
+  }
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
 }
 
@@ -348,6 +378,9 @@ export function cardSubtitle(account) {
   }
   if (account?.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account?.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[RF_BONDS_RATE_CYCLE_BOT_ID];
+  }
+  if (account?.bot_id === CNY_MOM_H360_BOT_ID || account?.account_id === CNY_MOM_H360_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[CNY_MOM_H360_BOT_ID];
   }
   return "";
 }
@@ -380,6 +413,9 @@ export function accountIdBadge(account) {
   }
   if (account.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID || account.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID) {
     return RF_BONDS_RATE_CYCLE_ACCOUNT_ID;
+  }
+  if (account.bot_id === CNY_MOM_H360_BOT_ID || account.account_id === CNY_MOM_H360_ACCOUNT_ID) {
+    return CNY_MOM_H360_CANON_ID;
   }
   if (isKnownPortalBot(account.bot_id)) return account.account_id;
   return null;
@@ -440,6 +476,15 @@ export function isRfBondsRateCycle(account) {
     account?.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID ||
     account?.account_id === RF_BONDS_RATE_CYCLE_ACCOUNT_ID
   );
+}
+
+export function isCnyMomH360(account) {
+  return account?.bot_id === CNY_MOM_H360_BOT_ID || account?.account_id === CNY_MOM_H360_ACCOUNT_ID;
+}
+
+/** Цикл 80/20 и Юань 360: линия только из history счёта, суммы в ₽. */
+export function isHistoryOnlyRubPaper(account) {
+  return isRfBondsRateCycle(account) || isCnyMomH360(account);
 }
 
 /** Стоп по model (−6%): бейдж «стоп», только если фид прислал braked=true. */

@@ -449,6 +449,42 @@ test("rate-cycle 80/20: line comes only from account.history, one point stays dr
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
 });
 
+test("yuan 360: line comes only from account.history, one point stays drawable", () => {
+  const account = {
+    bot_id: "cny_mom_h360",
+    account_id: "cny_mom_h360",
+    currency: "RUB",
+    equity: "300000.0",
+    seed: "300000",
+    history: [{ t: "2026-10-12", equity: "300000.0" }],
+    positions: [{ symbol: "LQDT", side: "long", qty: "142429", avg_px: "2.1063" }],
+  };
+  assert.equal(lastEquityValue(account), 300000);
+  const points = resolveEquityPoints(account, {
+    series: {
+      "cny_mom_h360::cny_mom_h360": {
+        points: [{ t: "2025-01-01", equity: "12.75" }],
+      },
+    },
+  });
+  assert.equal(points.length, 1);
+  assert.equal(Number(points[0].equity), 300000);
+  const pct = buildSeries(points, 300000, "pct");
+  assert.ok(pct.length >= 2);
+  assert.equal(pct[pct.length - 1].value, 0);
+
+  const noHist = { ...account, history: [] };
+  assert.deepEqual(resolveEquityPoints(noHist, null), []);
+
+  const shell = {
+    bot_id: "cny_mom_h360",
+    account_id: "cny_mom_h360",
+    currency: "RUB",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+});
+
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {
   const account = {
     bot_id: "mayak_imoex_mom10",
