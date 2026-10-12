@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-12T09:28:34Z",
+  "generated_at": "2026-10-12T09:47:41Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-12T09:28:20.701846Z",
+      "updated_utc": "2026-10-12T09:47:32.656609Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1940545.1719667602",
-      "updated_utc": "2026-10-12T09:28:20.704970Z",
+      "updated_utc": "2026-10-12T09:47:32.659825Z",
       "positions": [
         {
           "position_id": "p_4b604564d22d",
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479197.23271168",
-      "updated_utc": "2026-10-12T09:28:20.708083Z",
+      "updated_utc": "2026-10-12T09:47:32.662723Z",
       "positions": [
         {
           "position_id": "p_726d400b84cb",
@@ -107,7 +107,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13613.54313809301",
-      "updated_utc": "2026-10-12T09:28:20.712189Z",
+      "updated_utc": "2026-10-12T09:47:32.665783Z",
       "positions": [
         {
           "position_id": "p_925ae30c4911",
@@ -133,7 +133,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-12T09:28:20.715440Z",
+      "updated_utc": "2026-10-12T09:47:32.669701Z",
       "positions": []
     },
     {
@@ -360,7 +360,7 @@
       "seed": "1000000",
       "equity": "1001544.9432350587",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-10-12T04:30:42Z",
+      "updated_utc": "2026-10-12T09:30:57Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -370,7 +370,7 @@
         }
       ],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-10",
+      "as_of": "2026-10-11",
       "braked": false
     },
     {
