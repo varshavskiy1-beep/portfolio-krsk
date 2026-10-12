@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-12T11:52:39Z",
+  "generated_at": "2026-10-12T12:07:44Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-12T11:52:32.161995Z",
+      "updated_utc": "2026-10-12T12:07:37.031805Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1932106.2500967602",
-      "updated_utc": "2026-10-12T11:52:32.164229Z",
+      "updated_utc": "2026-10-12T12:07:37.035458Z",
       "positions": [
         {
           "position_id": "p_9b44ab7418d1",
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1483344.912086",
-      "updated_utc": "2026-10-12T11:52:32.166696Z",
+      "updated_utc": "2026-10-12T12:07:37.037974Z",
       "positions": [
         {
           "position_id": "p_8664dae4e35c",
@@ -90,6 +90,14 @@
           "qty": "12.0",
           "avg_px": "29345.2572",
           "stop_px": null
+        },
+        {
+          "position_id": "p_efa1a7526405",
+          "symbol": "SiZ6",
+          "side": "long",
+          "qty": "1.0",
+          "avg_px": "85308.1096",
+          "stop_px": "85234.68"
         }
       ]
     },
@@ -98,17 +106,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13613.54313809301",
-      "updated_utc": "2026-10-12T11:52:32.168676Z",
+      "equity": "13654.50015162301",
+      "updated_utc": "2026-10-12T12:07:37.043085Z",
       "positions": [
-        {
-          "position_id": "p_925ae30c4911",
-          "symbol": "SOL-USDT",
-          "side": "short",
-          "qty": "30.248",
-          "avg_px": "112.56622",
-          "stop_px": null
-        },
         {
           "position_id": "p_a4cd929bccc3",
           "symbol": "BTC-USDT",
@@ -125,7 +125,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-12T11:52:32.170913Z",
+      "updated_utc": "2026-10-12T12:07:37.046211Z",
       "positions": []
     },
     {
@@ -391,6 +391,31 @@
       "as_of": "2026-10-12"
     },
     {
+      "bot_id": "cny_mom_h360",
+      "account_id": "cny_mom_h360",
+      "currency": "RUB",
+      "seed": "300000",
+      "equity": "300000.0",
+      "cash": "1.7972999999765307",
+      "updated_utc": "2026-10-12T11:07:00Z",
+      "positions": [
+        {
+          "symbol": "LQDT",
+          "side": "long",
+          "qty": "142429",
+          "avg_px": "2.1063"
+        }
+      ],
+      "history": [
+        {
+          "t": "2026-10-12",
+          "equity": "300000.0"
+        }
+      ],
+      "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Пока нет дисконта пая, фьючерс не открывается. На биржу ордера не идут.",
+      "as_of": "2026-10-12"
+    },
+    {
       "bot_id": "rf_bonds_rate_cycle",
       "account_id": "rf_bonds_rate_cycle",
       "currency": "RUB",
@@ -549,6 +574,10 @@
     {
       "bot_id": "rf_conservative_comon",
       "logic": "РФ, бумага, старт 50 000 ₽. 90% — облигации SBRB в цикле снижения ключевой (иначе LQDT); 10% — акции SBMX по правилу реальной ставки / обвала. Решение по close t → сделка t+1; конец месяца возврат к 90/10. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "cny_mom_h360",
+      "logic": "Бумага, старт 300 000 ₽ в паях LQDT. Раз в час смотрит 360 часовых закрытий фьючерса юаня. Номинал фьючерса 2,5 капитала, когда задан дисконт пая. Пока дисконта нет, фьючерс не открывается. На биржу ордера не идут."
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
