@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-11T23:45:30Z",
+  "generated_at": "2026-10-12T00:00:35Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.854052180002",
-      "updated_utc": "2026-10-11T23:45:25.703133Z",
+      "updated_utc": "2026-10-12T00:00:34.733028Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1943900.72017035",
-      "updated_utc": "2026-10-11T23:45:25.705960Z",
+      "updated_utc": "2026-10-12T00:00:34.735077Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479428.59971608",
-      "updated_utc": "2026-10-11T23:45:25.708919Z",
+      "updated_utc": "2026-10-12T00:00:34.737979Z",
       "positions": []
     },
     {
@@ -72,17 +72,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13706.76494450501",
-      "updated_utc": "2026-10-11T23:45:25.711765Z",
+      "equity": "13700.76704260301",
+      "updated_utc": "2026-10-12T00:00:34.741289Z",
       "positions": [
-        {
-          "position_id": "p_e59fc4c5c656",
-          "symbol": "SOL-USDT",
-          "side": "short",
-          "qty": "30.758",
-          "avg_px": "111.356583",
-          "stop_px": null
-        },
         {
           "position_id": "p_b83f1c34a25e",
           "symbol": "ETH-USDT",
@@ -99,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-11T23:45:25.714495Z",
+      "updated_utc": "2026-10-12T00:00:34.743402Z",
       "positions": []
     },
     {
@@ -127,10 +119,17 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5838.050000000000000000000000",
-      "cash": "5838.050000000000000000000000",
-      "updated_utc": "2026-10-10",
+      "cash": "5254.245000000000000000000000",
+      "updated_utc": "2026-10-11",
       "positions": [],
-      "pending_limits": []
+      "pending_limits": [
+        {
+          "id": "pump-2026-10-11-BATUSDT",
+          "symbol": "BATUSDT",
+          "limit": "0.15209500",
+          "notional": "583.8050000000000000000000000"
+        }
+      ]
     },
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
