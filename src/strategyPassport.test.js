@@ -39,6 +39,7 @@ const DISPLAYED = [
   "mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2",
+  "eth_okx_moex",
 ];
 
 test("cycle_6040_paper stays on the dashboard; snapshot row is used when present", () => {
@@ -61,6 +62,19 @@ test("cny_mom_h360 stays on the dashboard; snapshot row is used when present", (
     assert.equal(Number(row.seed), 300000);
   } else {
     assert.equal(hasAccountData({ bot_id: "cny_mom_h360", no_data: true }), false);
+  }
+});
+
+test("eth_okx_moex stays on the dashboard; snapshot row is used when present", () => {
+  const ids = displayedBotIds(latest.accounts);
+  assert.equal(ids.includes("eth_okx_moex"), true);
+  const row = (latest.accounts || []).find((a) => a.bot_id === "eth_okx_moex");
+  if (row) {
+    assert.equal(hasAccountData(row), true);
+    assert.equal(row.currency, "RUB");
+    assert.equal(Number(row.seed), 300000);
+  } else {
+    assert.equal(hasAccountData({ bot_id: "eth_okx_moex", no_data: true }), false);
   }
 });
 
@@ -287,6 +301,24 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
     assert.doesNotMatch(s, /включить ордера/, s);
     assert.doesNotMatch(s, /\bseed\b/i, s);
     assert.doesNotMatch(s, /RUCBTR5YNS|RUCBITR1Y|CNYRUB_TOM/, s);
+  }
+
+  const eth = getPassport("eth_okx_moex");
+  assert.equal(eth.title, "ETH по сигналу OKX");
+  assert.equal(eth.accounts[0].currency, "RUB");
+  assert.equal(eth.parameters.find((r) => r.name === "Начальный капитал").known, false);
+  assert.equal(eth.parameters.find((r) => r.name === "Начальный капитал").value, NO_DATA);
+  assert.match(eth.parameters.find((r) => r.name === "Канон (документация)").value, /ETH_OKX_SIGNAL_MOEX_FUT_30D_L05/);
+  assert.match(eth.parameters.find((r) => r.name === "Инструменты").value, /EHV6/);
+  assert.doesNotMatch(eth.parameters.find((r) => r.name === "Инструменты").value, /LQDT|OBLG|SBRB|CNYRUB/);
+  assert.match(eth.essence.paragraphs.join("\n"), /рублёвый счёт/);
+  assert.match(eth.essence.paragraphs.join("\n"), /фьючерс ETH/);
+  assert.doesNotMatch(eth.essence.paragraphs.join("\n"), /индекс богатства|Цикл ставки 80\/20|Юань 360|2,046839/);
+  assert.doesNotMatch(eth.essence.paragraphs.join("\n"), /\bseed\b/i);
+  for (const s of passportUiStrings("eth_okx_moex")) {
+    assert.doesNotMatch(s, /включить ордера/, s);
+    assert.doesNotMatch(s, /\bseed\b/i, s);
+    assert.doesNotMatch(s, /\/var\/lib|sqlite|2,046839/, s);
   }
 
   const rbc = getPassport("rf_bonds_rate_cycle");

@@ -14,6 +14,10 @@ import {
   CNY_MOM_H360_BOT_ID,
   CNY_MOM_H360_CANON_ID,
   CNY_MOM_H360_TITLE,
+  ETH_OKX_MOEX_ACCOUNT_ID,
+  ETH_OKX_MOEX_BOT_ID,
+  ETH_OKX_MOEX_CANON_ID,
+  ETH_OKX_MOEX_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -35,6 +39,7 @@ import {
   isCycle6040,
   isDesyatkaEarn,
   isCnyMomH360,
+  isEthOkxMoex,
   isRfBondsRateCycle,
   isRfConservative,
   isHiddenPortalAccount,
@@ -59,6 +64,7 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
     { id: RF_CONSERVATIVE_BOT_ID, reason: "live cluster" },
     { id: RF_BONDS_RATE_CYCLE_BOT_ID, reason: "live cluster" },
     { id: "cny_mom_h360", reason: "live cluster" },
+    { id: "eth_okx_moex", reason: "live cluster" },
     { id: "mayak_imoex_lowvol10", reason: "live cluster" },
     { id: "mayak_imoex_mom10", reason: "live cluster" },
     { id: "mayak_imoex_mom10_lev15", reason: "live cluster" },
@@ -753,4 +759,54 @@ test("published yuan-360 book replaces the shell and keeps seed from the feed", 
   assert.equal(hasAccountData(rows[0]), true);
   assert.equal(rows[0].seed, "300000");
   assert.equal(rows[0].equity, "300000.0");
+});
+
+test("displayTitle maps eth-okx ids to ETH по сигналу OKX", () => {
+  assert.equal(
+    displayTitle({ bot_id: ETH_OKX_MOEX_BOT_ID, account_id: ETH_OKX_MOEX_ACCOUNT_ID }),
+    ETH_OKX_MOEX_TITLE,
+  );
+  assert.equal(
+    cardTitle({ bot_id: ETH_OKX_MOEX_BOT_ID, account_id: ETH_OKX_MOEX_ACCOUNT_ID }),
+    ETH_OKX_MOEX_TITLE,
+  );
+  assert.equal(chipLabel(ETH_OKX_MOEX_BOT_ID), ETH_OKX_MOEX_TITLE);
+  assert.doesNotMatch(ETH_OKX_MOEX_TITLE, /Цикл ставки 80\/20|Юань 360|РФ Консерватив|Цикл 60\/40|₽/);
+});
+
+test("mergePortalAccounts adds eth-okx shell when absent — нет данных, seed not hardcoded", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === ETH_OKX_MOEX_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, ETH_OKX_MOEX_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "RUB");
+  assert.equal(row.seed, undefined);
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isEthOkxMoex(row), true);
+  assert.equal(isCnyMomH360(row), false);
+  assert.equal(isRfBondsRateCycle(row), false);
+  assert.equal(accountIdBadge(row), ETH_OKX_MOEX_CANON_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsPaperBadge(row), true);
+});
+
+test("published eth-okx book replaces the shell and keeps seed from the feed", () => {
+  const published = {
+    bot_id: ETH_OKX_MOEX_BOT_ID,
+    account_id: ETH_OKX_MOEX_ACCOUNT_ID,
+    currency: "RUB",
+    equity: "299970.19681904",
+    seed: "300000",
+    positions: [{ symbol: "EHV6", side: "short", qty: "70", mark: "2536.7" }],
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === ETH_OKX_MOEX_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.equal(rows[0].seed, "300000");
+  assert.equal(rows[0].equity, "299970.19681904");
 });

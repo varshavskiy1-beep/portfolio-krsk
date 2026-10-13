@@ -1,6 +1,7 @@
 import { cnyMomHistoryPoints } from "./cnyMomCard.js";
+import { ethOkxHistoryPoints } from "./ethOkxCard.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
-import { hasAccountData, isCnyMomH360, isRfBondsRateCycle } from "./strategyMeta.js";
+import { hasAccountData, isCnyMomH360, isEthOkxMoex, isRfBondsRateCycle } from "./strategyMeta.js";
 
 /**
  * Цвет графика = знак PnL от начального капитала (поле JSON `seed`).
@@ -100,6 +101,7 @@ export function lastEquityValue(account) {
 export function resolveEquityPoints(account, history) {
   if (isRfBondsRateCycle(account)) return rateCycleHistoryPoints(account);
   if (isCnyMomH360(account)) return cnyMomHistoryPoints(account);
+  if (isEthOkxMoex(account)) return ethOkxHistoryPoints(account);
   if (!hasAccountData(account)) return [];
   if (Array.isArray(account.equity) && account.equity.length) {
     return account.equity;

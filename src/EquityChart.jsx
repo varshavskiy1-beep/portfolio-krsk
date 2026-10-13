@@ -92,6 +92,7 @@ export default function EquityChart({
   mode,
   height = 280,
   fill = false,
+  priceDigits,
 }) {
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
@@ -187,7 +188,9 @@ export default function EquityChart({
               type: "custom",
               formatter: (v) =>
                 new Intl.NumberFormat("ru-RU", {
-                  maximumFractionDigits: chartPriceDigits(currency),
+                  ...(priceDigits != null
+                    ? { minimumFractionDigits: priceDigits, maximumFractionDigits: priceDigits }
+                    : { maximumFractionDigits: chartPriceDigits(currency) }),
                 }).format(v),
             },
     });
@@ -220,7 +223,7 @@ export default function EquityChart({
         chart.priceScale("right").applyOptions({ autoScale: true });
       } catch (_) {}
     });
-  }, [series, mode, currency, range, ready, seed]);
+  }, [series, mode, currency, range, ready, seed, priceDigits]);
 
   useEffect(() => {
     const chart = chartRef.current;
