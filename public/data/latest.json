@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-13T19:09:37Z",
+  "generated_at": "2026-10-13T19:27:46Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24858.226720860002",
-      "updated_utc": "2026-10-13T19:09:36.086017Z",
+      "updated_utc": "2026-10-13T19:27:39.431896Z",
       "positions": []
     },
     {
@@ -54,18 +54,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1915046.6476413903",
-      "updated_utc": "2026-10-13T19:09:36.089349Z",
-      "positions": [
-        {
-          "position_id": "p_5efc82e03b88",
-          "symbol": "NVTK",
-          "side": "short",
-          "qty": "440.0",
-          "avg_px": "1085.95675",
-          "stop_px": null
-        }
-      ]
+      "equity": "1914619.0557733902",
+      "updated_utc": "2026-10-13T19:27:39.435204Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -73,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479768.2657636",
-      "updated_utc": "2026-10-13T19:09:36.094252Z",
+      "updated_utc": "2026-10-13T19:27:39.438326Z",
       "positions": [
         {
           "position_id": "p_f278d3ae9025",
@@ -91,7 +82,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13578.83876612301",
-      "updated_utc": "2026-10-13T19:09:36.097903Z",
+      "updated_utc": "2026-10-13T19:27:39.441592Z",
       "positions": [
         {
           "position_id": "p_bf5473086e80",
@@ -117,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-13T19:09:36.103083Z",
+      "updated_utc": "2026-10-13T19:27:39.445353Z",
       "positions": []
     },
     {
@@ -155,9 +146,9 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "8740.62",
+      "equity": "8721.90",
       "cash": "8795.00",
-      "updated_utc": "2026-10-13T18:10:08Z",
+      "updated_utc": "2026-10-13T19:09:59Z",
       "positions": [
         {
           "symbol": "MSTR-USDT-SWAP",
@@ -286,7 +277,7 @@
       "seed": "10000",
       "equity": "9791.2975",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-13T19:00:01Z",
+      "updated_utc": "2026-10-13T19:20:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -481,7 +472,7 @@
       "seed": "300000",
       "equity": "300213.6435",
       "cash": "1.7972999999765307",
-      "updated_utc": "2026-10-13T19:02:28Z",
+      "updated_utc": "2026-10-13T19:10:00Z",
       "positions": [
         {
           "symbol": "LQDT",
