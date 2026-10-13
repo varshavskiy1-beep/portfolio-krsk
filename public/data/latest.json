@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-13T08:59:51Z",
+  "generated_at": "2026-10-13T09:16:01Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24913.270984820003",
-      "updated_utc": "2026-10-13T08:59:45.448922Z",
+      "updated_utc": "2026-10-13T09:15:59.178111Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1929015.0292904105",
-      "updated_utc": "2026-10-13T08:59:45.454854Z",
+      "updated_utc": "2026-10-13T09:15:59.182657Z",
       "positions": [
         {
           "position_id": "p_61668d63e78e",
@@ -80,8 +80,8 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1482510.2105655198",
-      "updated_utc": "2026-10-13T08:59:45.462932Z",
+      "equity": "1482039.7997448798",
+      "updated_utc": "2026-10-13T09:15:59.188653Z",
       "positions": [
         {
           "position_id": "p_6c9f34d348ba",
@@ -90,14 +90,6 @@
           "qty": "4.0",
           "avg_px": "85175.916",
           "stop_px": "85270.185"
-        },
-        {
-          "position_id": "p_173289b873c8",
-          "symbol": "SRZ6",
-          "side": "short",
-          "qty": "6.0",
-          "avg_px": "29468.208",
-          "stop_px": "29513.484"
         }
       ]
     },
@@ -107,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13571.38617337301",
-      "updated_utc": "2026-10-13T08:59:45.466939Z",
+      "updated_utc": "2026-10-13T09:15:59.191296Z",
       "positions": []
     },
     {
@@ -116,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-13T08:59:45.478403Z",
+      "updated_utc": "2026-10-13T09:15:59.193767Z",
       "positions": []
     },
     {
@@ -436,7 +428,7 @@
       "seed": "300000",
       "equity": "300213.6435",
       "cash": "1.7972999999765307",
-      "updated_utc": "2026-10-13T08:02:05Z",
+      "updated_utc": "2026-10-13T09:02:04Z",
       "positions": [
         {
           "symbol": "LQDT",
