@@ -33,13 +33,13 @@ const DISPLAYED = [
   "desyatka_earn_paper",
   "cycle_6040_paper",
   "rf_conservative_comon",
+  "eth_okx_moex",
   "cny_mom_h360",
   "rf_bonds_rate_cycle",
   "mayak_imoex_lowvol10",
   "mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2",
-  "eth_okx_moex",
 ];
 
 test("cycle_6040_paper stays on the dashboard; snapshot row is used when present", () => {
