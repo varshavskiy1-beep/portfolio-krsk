@@ -64,6 +64,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
     { bot_id: "rf_conservative_comon", account_id: "rf_conservative_comon", currency: "USD", equity: "50000" },
     { bot_id: "rf_bonds_rate_cycle", account_id: "rf_bonds_rate_cycle", currency: "RUB", equity: "1" },
     { bot_id: "cny_mom_h360", account_id: "cny_mom_h360", currency: "USD", equity: "1" },
+    { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "USD", equity: "1" },
     { bot_id: "mayak_imoex_lowvol10", account_id: "mayak_imoex_lowvol10", currency: "USD", equity: "1" },
     { bot_id: "mayak_imoex_mom10", account_id: "mayak_imoex_mom10", currency: "USDT", equity: "1" },
     { bot_id: "mayak_imoex_mom10_lev15", account_id: "mayak_imoex_mom10_lev15", currency: "USD", equity: "1" },
@@ -89,6 +90,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
       "rf_conservative_comon",
       "rf_bonds_rate_cycle",
       "cny_mom_h360",
+      "eth_okx_moex",
       "mayak_imoex_lowvol10",
       "mayak_imoex_mom10",
       "mayak_imoex_mom10_lev15",
@@ -207,6 +209,26 @@ test("mayak paper accounts are always RUB and never remapped to USD/USDT", () =>
     );
     assert.equal(canonicalCurrency({ bot_id: id, account_id: "x", currency: "USDT" }), "RUB");
   }
+});
+
+test("eth okx moex is always RUB and never remapped to USD/USDT", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "eth_okx_moex",
+      account_id: "eth_okx_moex",
+      currency: "USD",
+    }),
+    "RUB",
+  );
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "eth_okx_moex",
+      account_id: "eth_okx_moex",
+      venue: "US_EQ",
+      currency: "USDT",
+    }),
+    "RUB",
+  );
 });
 
 test("yuan 360 is always RUB and never remapped to USD/USDT", () => {

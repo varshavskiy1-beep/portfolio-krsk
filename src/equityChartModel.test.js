@@ -485,6 +485,47 @@ test("yuan 360: line comes only from account.history, one point stays drawable",
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
 });
 
+test("eth okx moex: line comes only from account.history, same-day last point wins", () => {
+  const account = {
+    bot_id: "eth_okx_moex",
+    account_id: "eth_okx_moex",
+    currency: "RUB",
+    equity: "299970.19681904",
+    seed: "300000",
+    history: [
+      { t: "2026-10-13", equity: "300000" },
+      { t: "2026-10-13T05:45:00Z", equity: "299970.19681904" },
+    ],
+    positions: [{ symbol: "EHV6", side: "short", qty: "70", mark: "2536.7" }],
+  };
+  assert.equal(lastEquityValue(account), 299970.19681904);
+  const points = resolveEquityPoints(account, {
+    series: {
+      "eth_okx_moex::eth_okx_moex": {
+        points: [{ t: "2025-01-01", equity: "2.046839" }],
+      },
+    },
+  });
+  assert.equal(points.length, 1);
+  assert.equal(points[0].t, "2026-10-13");
+  assert.equal(Number(points[0].equity), 299970.19681904);
+  assert.ok(points.every((p) => Number(p.equity) !== 2.046839));
+  const pct = buildSeries(points, 300000, "pct");
+  assert.ok(pct.length >= 2);
+  assert.ok(Math.abs(pct[pct.length - 1].value + 0.009934393653333) < 1e-9);
+
+  const noHist = { ...account, history: [] };
+  assert.deepEqual(resolveEquityPoints(noHist, null), []);
+
+  const shell = {
+    bot_id: "eth_okx_moex",
+    account_id: "eth_okx_moex",
+    currency: "RUB",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+});
+
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {
   const account = {
     bot_id: "mayak_imoex_mom10",

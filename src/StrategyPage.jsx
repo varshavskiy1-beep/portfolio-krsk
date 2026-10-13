@@ -14,6 +14,12 @@ import {
   hasCnyMomAccountLine,
 } from "./cnyMomCard.js";
 import {
+  ethOkxDescription,
+  ethOkxEquityLine,
+  ethOkxFromStartPctLine,
+  hasEthOkxAccountLine,
+} from "./ethOkxCard.js";
+import {
   chartMoneyLabel,
   fromStartPctLine,
   hasRateCycleAccountLine,
@@ -29,6 +35,7 @@ import {
   hasAccountData,
   hasBoxxCash,
   isCnyMomH360,
+  isEthOkxMoex,
   isHiddenPortalId,
   isHistoryOnlyRubPaper,
   isKnownPortalBot,
@@ -94,17 +101,23 @@ function AccountBlock({ a, points }) {
     ? hasRateCycleAccountLine(a)
     : isCnyMomH360(a)
       ? hasCnyMomAccountLine(a)
-      : hasData;
+      : isEthOkxMoex(a)
+        ? hasEthOkxAccountLine(a)
+        : hasData;
   const fromStart = isRfBondsRateCycle(a)
     ? fromStartPctLine(a)
     : isCnyMomH360(a)
       ? cnyMomFromStartPctLine(a)
-      : "";
+      : isEthOkxMoex(a)
+        ? ethOkxFromStartPctLine(a)
+        : "";
   const noteText = isRfBondsRateCycle(a)
     ? rateCycleDescription(a)
     : isCnyMomH360(a)
       ? cnyMomDescription(a)
-      : "";
+      : isEthOkxMoex(a)
+        ? ethOkxDescription(a)
+        : "";
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -145,7 +158,9 @@ function AccountBlock({ a, points }) {
           : equity == null
             ? "нет переоценки"
             : historyCard
-              ? `${fmt(equity, "RUB")} ₽`
+              ? isEthOkxMoex(a)
+                ? ethOkxEquityLine(a)
+                : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && historyCard && fromStart ? (
@@ -212,6 +227,7 @@ function AccountBlock({ a, points }) {
           mode={mode}
           fill={fs}
           height={280}
+          priceDigits={isEthOkxMoex(a) ? 2 : undefined}
         />
       </div>
       <MayakFromStart account={a} hasData={hasData} />

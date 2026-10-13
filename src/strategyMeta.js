@@ -42,6 +42,15 @@ export const CNY_MOM_H360_CURRENCY = "RUB";
 export const CNY_MOM_H360_LOGIC =
   "Бумага, старт 300 000 ₽ в паях LQDT. Раз в час смотрит 360 часовых закрытий фьючерса юаня. Номинал фьючерса 2,5 капитала, когда задан дисконт пая. Пока дисконта нет, фьючерс не открывается. На биржу ордера не идут.";
 
+/** Paper id: eth_okx_moex. Бумажный рублёвый счёт. Канон: ETH_OKX_SIGNAL_MOEX_FUT_30D_L05. Пока нет в accounts[] или equity пустой — «нет данных». */
+export const ETH_OKX_MOEX_BOT_ID = "eth_okx_moex";
+export const ETH_OKX_MOEX_ACCOUNT_ID = "eth_okx_moex";
+export const ETH_OKX_MOEX_TITLE = "ETH по сигналу OKX";
+export const ETH_OKX_MOEX_CANON_ID = "ETH_OKX_SIGNAL_MOEX_FUT_30D_L05";
+export const ETH_OKX_MOEX_CURRENCY = "RUB";
+export const ETH_OKX_MOEX_LOGIC =
+  "Бумага: старт 300 000 ₽. Раз в час смотрит 720 закрытых часов ETH-USDT-SWAP на OKX и держит фьючерс ETH на Мосбирже, номинал — половина рублей. На биржу ордера не идут. На Автоследование не выводится.";
+
 /**
  * Семейство бумажных счетов «Маяк». Четыре отдельные карточки.
  * Стартовый капитал не зашит: только поле seed из accounts[] снимка.
@@ -139,6 +148,7 @@ export const BOT_TITLE = {
   [RF_CONSERVATIVE_BOT_ID]: RF_CONSERVATIVE_TITLE,
   [RF_BONDS_RATE_CYCLE_BOT_ID]: RF_BONDS_RATE_CYCLE_TITLE,
   [CNY_MOM_H360_BOT_ID]: CNY_MOM_H360_TITLE,
+  [ETH_OKX_MOEX_BOT_ID]: ETH_OKX_MOEX_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.title])),
 };
 
@@ -151,6 +161,7 @@ export const ACCOUNT_TITLE = {
   [RF_CONSERVATIVE_ACCOUNT_ID]: RF_CONSERVATIVE_TITLE,
   [RF_BONDS_RATE_CYCLE_ACCOUNT_ID]: RF_BONDS_RATE_CYCLE_TITLE,
   [CNY_MOM_H360_ACCOUNT_ID]: CNY_MOM_H360_TITLE,
+  [ETH_OKX_MOEX_ACCOUNT_ID]: ETH_OKX_MOEX_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.account_id, s.title])),
 };
 
@@ -164,6 +175,7 @@ export const ACCOUNT_SUBTITLE = {
   [RF_BONDS_RATE_CYCLE_BOT_ID]:
     "РФ, OBLG/SBRB и фьючерс CR. На биржу ордера не идут.",
   [CNY_MOM_H360_BOT_ID]: "РФ, паи LQDT и фьючерс CR. На биржу ордера не идут.",
+  [ETH_OKX_MOEX_BOT_ID]: "РФ, фьючерс ETH на Мосбирже. На биржу ордера не идут.",
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.subtitle])),
 };
 
@@ -175,6 +187,7 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
   RF_CONSERVATIVE_BOT_ID,
   RF_BONDS_RATE_CYCLE_BOT_ID,
   CNY_MOM_H360_BOT_ID,
+  ETH_OKX_MOEX_BOT_ID,
   ...MAYAK_BOT_IDS,
 ]);
 
@@ -226,6 +239,11 @@ export const PORTAL_SHELLS = [
     account_id: CNY_MOM_H360_ACCOUNT_ID,
     currency: CNY_MOM_H360_CURRENCY,
   },
+  {
+    bot_id: ETH_OKX_MOEX_BOT_ID,
+    account_id: ETH_OKX_MOEX_ACCOUNT_ID,
+    currency: ETH_OKX_MOEX_CURRENCY,
+  },
   ...MAYAK_ACCOUNTS.map((s) => ({
     bot_id: s.bot_id,
     account_id: s.account_id,
@@ -265,6 +283,9 @@ export function displayTitle(account) {
   }
   if (account.bot_id === CNY_MOM_H360_BOT_ID || account.account_id === CNY_MOM_H360_ACCOUNT_ID) {
     return CNY_MOM_H360_TITLE;
+  }
+  if (account.bot_id === ETH_OKX_MOEX_BOT_ID || account.account_id === ETH_OKX_MOEX_ACCOUNT_ID) {
+    return ETH_OKX_MOEX_TITLE;
   }
   return (
     ACCOUNT_TITLE[account.account_id] ||
@@ -313,6 +334,11 @@ export function cardTitle(account) {
       ? CNY_MOM_H360_TITLE
       : title;
   }
+  if (account?.bot_id === ETH_OKX_MOEX_BOT_ID || account?.account_id === ETH_OKX_MOEX_ACCOUNT_ID) {
+    return title === ETH_OKX_MOEX_ACCOUNT_ID || title === ETH_OKX_MOEX_BOT_ID
+      ? ETH_OKX_MOEX_TITLE
+      : title;
+  }
   return title;
 }
 
@@ -326,6 +352,7 @@ export function chipLabel(botId) {
   if (botId === RF_CONSERVATIVE_BOT_ID) return RF_CONSERVATIVE_TITLE;
   if (botId === RF_BONDS_RATE_CYCLE_BOT_ID) return RF_BONDS_RATE_CYCLE_TITLE;
   if (botId === CNY_MOM_H360_BOT_ID) return CNY_MOM_H360_TITLE;
+  if (botId === ETH_OKX_MOEX_BOT_ID) return ETH_OKX_MOEX_TITLE;
   return BOT_TITLE[botId] || botId;
 }
 
@@ -355,6 +382,9 @@ export function accountSubtitle(account) {
   if (account.bot_id === CNY_MOM_H360_BOT_ID || account.account_id === CNY_MOM_H360_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[CNY_MOM_H360_BOT_ID];
   }
+  if (account.bot_id === ETH_OKX_MOEX_BOT_ID || account.account_id === ETH_OKX_MOEX_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[ETH_OKX_MOEX_BOT_ID];
+  }
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
 }
 
@@ -381,6 +411,9 @@ export function cardSubtitle(account) {
   }
   if (account?.bot_id === CNY_MOM_H360_BOT_ID || account?.account_id === CNY_MOM_H360_ACCOUNT_ID) {
     return ACCOUNT_SUBTITLE[CNY_MOM_H360_BOT_ID];
+  }
+  if (account?.bot_id === ETH_OKX_MOEX_BOT_ID || account?.account_id === ETH_OKX_MOEX_ACCOUNT_ID) {
+    return ACCOUNT_SUBTITLE[ETH_OKX_MOEX_BOT_ID];
   }
   return "";
 }
@@ -416,6 +449,9 @@ export function accountIdBadge(account) {
   }
   if (account.bot_id === CNY_MOM_H360_BOT_ID || account.account_id === CNY_MOM_H360_ACCOUNT_ID) {
     return CNY_MOM_H360_CANON_ID;
+  }
+  if (account.bot_id === ETH_OKX_MOEX_BOT_ID || account.account_id === ETH_OKX_MOEX_ACCOUNT_ID) {
+    return ETH_OKX_MOEX_CANON_ID;
   }
   if (isKnownPortalBot(account.bot_id)) return account.account_id;
   return null;
@@ -482,9 +518,13 @@ export function isCnyMomH360(account) {
   return account?.bot_id === CNY_MOM_H360_BOT_ID || account?.account_id === CNY_MOM_H360_ACCOUNT_ID;
 }
 
-/** Цикл 80/20 и Юань 360: линия только из history счёта, суммы в ₽. */
+export function isEthOkxMoex(account) {
+  return account?.bot_id === ETH_OKX_MOEX_BOT_ID || account?.account_id === ETH_OKX_MOEX_ACCOUNT_ID;
+}
+
+/** Цикл 80/20, Юань 360 и ETH по сигналу OKX: линия только из history счёта, суммы в ₽. */
 export function isHistoryOnlyRubPaper(account) {
-  return isRfBondsRateCycle(account) || isCnyMomH360(account);
+  return isRfBondsRateCycle(account) || isCnyMomH360(account) || isEthOkxMoex(account);
 }
 
 /** Стоп по model (−6%): бейдж «стоп», только если фид прислал braked=true. */

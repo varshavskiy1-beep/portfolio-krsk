@@ -17,6 +17,12 @@ import {
   hasCnyMomAccountLine,
 } from "./cnyMomCard.js";
 import {
+  ethOkxDescription,
+  ethOkxEquityLine,
+  ethOkxFromStartPctLine,
+  hasEthOkxAccountLine,
+} from "./ethOkxCard.js";
+import {
   chartMoneyLabel,
   fromStartPctLine,
   hasRateCycleAccountLine,
@@ -29,6 +35,7 @@ import {
   hasAccountData,
   hasBoxxCash,
   isCnyMomH360,
+  isEthOkxMoex,
   isHistoryOnlyRubPaper,
   isMayak,
   isRfBondsRateCycle,
@@ -76,7 +83,9 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
     ? hasRateCycleAccountLine(a)
     : isCnyMomH360(a)
       ? hasCnyMomAccountLine(a)
-      : hasData;
+      : isEthOkxMoex(a)
+        ? hasEthOkxAccountLine(a)
+        : hasData;
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -86,12 +95,16 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
     ? fromStartPctLine(a)
     : isCnyMomH360(a)
       ? cnyMomFromStartPctLine(a)
-      : "";
+      : isEthOkxMoex(a)
+        ? ethOkxFromStartPctLine(a)
+        : "";
   const noteText = isRfBondsRateCycle(a)
     ? rateCycleDescription(a)
     : isCnyMomH360(a)
       ? cnyMomDescription(a)
-      : "";
+      : isEthOkxMoex(a)
+        ? ethOkxDescription(a)
+        : "";
   const limits = showLine ? a.pending_limits || [] : [];
 
   return (
@@ -112,7 +125,9 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           : equity == null
             ? "нет переоценки"
             : historyCard
-              ? `${fmt(equity, "RUB")} ₽`
+              ? isEthOkxMoex(a)
+                ? ethOkxEquityLine(a)
+                : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && historyCard && fromStart ? (
@@ -163,7 +178,13 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
           Открыть →
         </button>
       </div>
-      <EquityChart points={historyPoints} seed={seed} currency={currency} mode={mode} />
+      <EquityChart
+        points={historyPoints}
+        seed={seed}
+        currency={currency}
+        mode={mode}
+        priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+      />
       <MayakFromStart account={a} hasData={hasData} />
 
       <PositionsTable positions={positions} compact botId={a.bot_id} account={a} />
