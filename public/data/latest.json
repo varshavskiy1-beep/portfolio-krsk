@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-13T23:43:49Z",
+  "generated_at": "2026-10-14T00:00:59Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24858.226720860002",
-      "updated_utc": "2026-10-13T23:43:46.950350Z",
+      "updated_utc": "2026-10-14T00:00:55.309922Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1914619.0557733902",
-      "updated_utc": "2026-10-13T23:43:46.953276Z",
+      "updated_utc": "2026-10-14T00:00:55.312440Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479693.76056584",
-      "updated_utc": "2026-10-13T23:43:46.956145Z",
+      "updated_utc": "2026-10-14T00:00:55.314948Z",
       "positions": [
         {
           "position_id": "p_f76ff1bb1622",
@@ -82,7 +82,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13592.38537705901",
-      "updated_utc": "2026-10-13T23:43:46.958776Z",
+      "updated_utc": "2026-10-14T00:00:55.317505Z",
       "positions": [
         {
           "position_id": "p_98ef5111d288",
@@ -108,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-13T23:43:46.961555Z",
+      "updated_utc": "2026-10-14T00:00:55.319797Z",
       "positions": []
     },
     {
@@ -136,10 +136,17 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5844.590000000000000000000000",
-      "cash": "5844.590000000000000000000000",
-      "updated_utc": "2026-10-12",
+      "cash": "5260.131000000000000000000000",
+      "updated_utc": "2026-10-13",
       "positions": [],
-      "pending_limits": []
+      "pending_limits": [
+        {
+          "id": "pump-2026-10-13-GNSUSDT",
+          "symbol": "GNSUSDT",
+          "limit": "0.68020000",
+          "notional": "584.4590000000000000000000000"
+        }
+      ]
     },
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
@@ -277,7 +284,7 @@
       "seed": "10000",
       "equity": "9756.0608",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-13T23:40:01Z",
+      "updated_utc": "2026-10-14T00:00:02Z",
       "positions": [
         {
           "symbol": "AAPL",
