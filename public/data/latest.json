@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-14T07:15:36Z",
+  "generated_at": "2026-10-14T07:25:41Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24858.226720860002",
-      "updated_utc": "2026-10-14T07:14:52.318829Z",
+      "updated_utc": "2026-10-14T07:25:34.725341Z",
       "positions": []
     },
     {
@@ -55,8 +55,17 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1913180.6264531303",
-      "updated_utc": "2026-10-14T07:14:52.323414Z",
-      "positions": []
+      "updated_utc": "2026-10-14T07:25:34.728151Z",
+      "positions": [
+        {
+          "position_id": "p_93dc5e34a30c",
+          "symbol": "NVTK",
+          "side": "short",
+          "qty": "439.0",
+          "avg_px": "1087.95575",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -64,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479221.91536312",
-      "updated_utc": "2026-10-14T07:14:52.327442Z",
+      "updated_utc": "2026-10-14T07:25:34.731010Z",
       "positions": [
         {
           "position_id": "p_482e36e22449",
@@ -82,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13582.47379541401",
-      "updated_utc": "2026-10-14T07:14:52.331893Z",
+      "updated_utc": "2026-10-14T07:25:34.733731Z",
       "positions": [
         {
           "position_id": "p_a2d7344ae6bf",
@@ -100,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-14T07:14:52.335847Z",
+      "updated_utc": "2026-10-14T07:25:34.738294Z",
       "positions": []
     },
     {
@@ -534,7 +543,7 @@
           "equity": "300216.82152527996"
         }
       ],
-      "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Пока нет дисконта пая, фьючерс не открывается. На биржу ордера не идут.",
+      "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
       "as_of": "2026-10-14"
     },
     {
