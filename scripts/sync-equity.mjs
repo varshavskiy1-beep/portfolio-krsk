@@ -58,8 +58,8 @@ function appendHistory(latest) {
   });
   const gen = latest.generated_at || new Date().toISOString();
   hist.updated_at = gen;
-  // paper_block2 reset_from 2026-10-15T08:57:31Z: drop the broken-reversal book
-  // even if this history.json (or a merge with master) still has old points.
+  // paper_block2 reset_from 2026-10-15T08:57:31Z; v6b1 reset_from 2026-10-15T17:27:12Z.
+  // Drop the old books even if this history.json (or a merge with master) still has them.
   applyHistoryResets(hist);
   for (const a of latest.accounts || []) {
     const k = keyOf(a);

@@ -9,10 +9,20 @@ export const PAPER_BLOCK2_RESET_EQUITY = 10000;
 export const PAPER_BLOCK2_RESET_LINE =
   "Счёт обнулён 15.10 после исправления, история копится.";
 
+export const V6B1_SERIES_KEY = "v6b1::v6b1";
+export const V6B1_RESET_FROM = "2026-10-15T17:27:12Z";
+export const V6B1_RESET_EQUITY = 10000;
+
 export const HISTORY_RESETS = {
   [PAPER_BLOCK2_SERIES_KEY]: {
     resetFrom: PAPER_BLOCK2_RESET_FROM,
     seedPoint: { t: PAPER_BLOCK2_RESET_FROM, equity: PAPER_BLOCK2_RESET_EQUITY },
+    caption: PAPER_BLOCK2_RESET_LINE,
+  },
+  [V6B1_SERIES_KEY]: {
+    resetFrom: V6B1_RESET_FROM,
+    seedPoint: { t: V6B1_RESET_FROM, equity: V6B1_RESET_EQUITY },
+    caption: PAPER_BLOCK2_RESET_LINE,
   },
 };
 
@@ -84,9 +94,11 @@ export function shouldAppendHistoryPoint(key, ts) {
   return !isBeforeReset(ts, spec.resetFrom);
 }
 
-export function robot2ResetLine(account, historyPoints) {
-  if (!account || seriesKey(account) !== PAPER_BLOCK2_SERIES_KEY) return "";
-  const pts = filterResetPoints(PAPER_BLOCK2_SERIES_KEY, historyPoints || []);
+export function historyResetLine(account, historyPoints) {
+  const key = seriesKey(account);
+  const spec = HISTORY_RESETS[key];
+  if (!spec) return "";
+  const pts = filterResetPoints(key, historyPoints || []);
   const days = new Set();
   for (const p of pts) {
     const t = p?.t ?? p?.time;
@@ -94,5 +106,10 @@ export function robot2ResetLine(account, historyPoints) {
     days.add(String(t).slice(0, 10));
   }
   if (days.size > 1) return "";
-  return PAPER_BLOCK2_RESET_LINE;
+  return spec.caption || PAPER_BLOCK2_RESET_LINE;
+}
+
+export function robot2ResetLine(account, historyPoints) {
+  if (!account || seriesKey(account) !== PAPER_BLOCK2_SERIES_KEY) return "";
+  return historyResetLine(account, historyPoints);
 }

@@ -187,6 +187,20 @@ test("unknown bot gets a stub passport, not invented facts", () => {
   assert.deepEqual(errors, []);
 });
 
+test("v6b1 passport uses 1% risk sizing from the feed, not all-cash long", () => {
+  const p = getPassport("v6b1");
+  const blob = [
+    p.essence.paragraphs.join("\n"),
+    p.decisionSteps.join("\n"),
+    p.parameters.find((r) => r.name === "Условие входа").value,
+    p.risk.paragraphs.join("\n"),
+  ].join("\n");
+  assert.match(blob, /лонг примерно на 1% риска/);
+  assert.match(blob, /В час выхода новая нога не открывается/);
+  assert.doesNotMatch(blob, /весь свободный кэш/);
+  assert.doesNotMatch(blob, /PYTH/i);
+});
+
 test("validatePassport rejects invented test blocks and seed in copy", () => {
   const base = getPassport("v6b1");
   const withWf = {

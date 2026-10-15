@@ -556,6 +556,36 @@ test("paper_block2: resolveEquityPoints drops pre-reset history and keeps 10000"
   assert.equal(pct[pct.length - 1].value, 0);
 });
 
+test("v6b1: resolveEquityPoints drops pre-reset history and keeps 10000", () => {
+  const account = {
+    bot_id: "v6b1",
+    account_id: "v6b1",
+    equity: "10000",
+    seed: "10000",
+    currency: "USDT",
+    updated_utc: "2026-10-15T17:27:12Z",
+    positions: [],
+  };
+  const points = resolveEquityPoints(account, {
+    series: {
+      "v6b1::v6b1": {
+        points: [
+          { t: "2026-09-19T03:58:23Z", equity: 9994 },
+          { t: "2026-10-15T15:02:44Z", equity: 8106.48 },
+          { t: "2026-10-15T17:27:12Z", equity: 10000 },
+        ],
+      },
+    },
+  });
+  assert.equal(points.length, 1);
+  assert.equal(points[0].t, "2026-10-15T17:27:12Z");
+  assert.equal(Number(points[0].equity), 10000);
+  assert.ok(points.every((p) => Number(p.equity) !== 8106.48));
+  const pct = buildSeries(points, 10000, "pct");
+  assert.ok(pct.length >= 2);
+  assert.equal(pct[pct.length - 1].value, 0);
+});
+
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {
   const account = {
     bot_id: "mayak_imoex_mom10",
