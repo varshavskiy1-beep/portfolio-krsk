@@ -174,7 +174,7 @@ test("forts_adr_static: six history points stay drawable and include seed on axi
 });
 
 test("paper_block2: one point at seed still draws a horizontal", () => {
-  const points = [{ t: "2026-09-21T14:11:01Z", equity: 10_000 }];
+  const points = [{ t: "2026-10-15T08:57:31Z", equity: 10_000 }];
   const money = buildSeries(points, 10_000, "money");
   assert.equal(money.length, 2);
   assert.equal(money[0].value, 10_000);
@@ -524,6 +524,36 @@ test("eth okx moex: line comes only from account.history, same-day last point wi
     no_data: true,
   };
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+});
+
+test("paper_block2: resolveEquityPoints drops pre-reset history and keeps 10000", () => {
+  const account = {
+    bot_id: "three_robots_okx_nasdaq_1h",
+    account_id: "paper_block2",
+    equity: "10000.00",
+    seed: "10000",
+    currency: "USDT",
+    updated_utc: "2026-10-15T08:57:31Z",
+    positions: [],
+  };
+  const points = resolveEquityPoints(account, {
+    series: {
+      "three_robots_okx_nasdaq_1h::paper_block2": {
+        points: [
+          { t: "2026-09-21T14:11:01Z", equity: 10000 },
+          { t: "2026-10-14T19:09:46Z", equity: 8475.67 },
+          { t: "2026-10-15T08:57:31Z", equity: 10000 },
+        ],
+      },
+    },
+  });
+  assert.equal(points.length, 1);
+  assert.equal(points[0].t, "2026-10-15T08:57:31Z");
+  assert.equal(Number(points[0].equity), 10000);
+  assert.ok(points.every((p) => Number(p.equity) !== 8475.67));
+  const pct = buildSeries(points, 10000, "pct");
+  assert.ok(pct.length >= 2);
+  assert.equal(pct[pct.length - 1].value, 0);
 });
 
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {

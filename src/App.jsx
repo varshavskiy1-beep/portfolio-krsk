@@ -133,7 +133,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       {showLine && seed != null && historyCard && fromStart ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStart}</div>
       ) : null}
-      <RateCycleDetails account={a} />
+      <RateCycleDetails account={a} historyPoints={historyPoints} />
       {showLine && seed != null && !isMayak(a) && !historyCard ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>
           {fromCapitalLine({ seed, currency, delta, pct })}

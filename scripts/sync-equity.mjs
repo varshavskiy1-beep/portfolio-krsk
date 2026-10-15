@@ -11,6 +11,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applyCanonicalCurrencies, canonicalCurrency } from "../src/cashCurrency.js";
+import { applyHistoryResets, shouldAppendHistoryPoint } from "../src/historyReset.js";
 import { generateOgCover } from "./og-cover.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -57,11 +58,15 @@ function appendHistory(latest) {
   });
   const gen = latest.generated_at || new Date().toISOString();
   hist.updated_at = gen;
+  // paper_block2 reset_from 2026-10-15T08:57:31Z: drop the broken-reversal book
+  // even if this history.json (or a merge with master) still has old points.
+  applyHistoryResets(hist);
   for (const a of latest.accounts || []) {
     const k = keyOf(a);
     const eq = a.equity == null || a.equity === "" ? null : Number(a.equity);
     const ts = a.updated_utc || gen;
     const currency = canonicalCurrency(a);
+    if (!shouldAppendHistoryPoint(k, ts)) continue;
     if (!hist.series[k]) {
       hist.series[k] = {
         bot_id: a.bot_id,
@@ -89,6 +94,7 @@ function appendHistory(latest) {
     // keep ~90 days at 1pt/min ≈ 130k — cap at 20k pts/account (~2 weeks @1min)
     if (pts.length > 20000) s.points = pts.slice(-20000);
   }
+  applyHistoryResets(hist);
   fs.writeFileSync(historyPath, JSON.stringify(hist, null, 2));
   return hist;
 }
