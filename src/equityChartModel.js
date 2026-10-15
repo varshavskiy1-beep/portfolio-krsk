@@ -1,5 +1,6 @@
 import { cnyMomHistoryPoints } from "./cnyMomCard.js";
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
+import { filterResetPoints, seriesKey } from "./historyReset.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
 import { hasAccountData, isCnyMomH360, isEthOkxMoex, isRfBondsRateCycle } from "./strategyMeta.js";
 
@@ -103,19 +104,22 @@ export function resolveEquityPoints(account, history) {
   if (isCnyMomH360(account)) return cnyMomHistoryPoints(account);
   if (isEthOkxMoex(account)) return ethOkxHistoryPoints(account);
   if (!hasAccountData(account)) return [];
+  let points = [];
   if (Array.isArray(account.equity) && account.equity.length) {
-    return account.equity;
+    points = account.equity;
+  } else if (Array.isArray(account.equity_curve) && account.equity_curve.length) {
+    points = account.equity_curve;
+  } else {
+    const key = `${account.bot_id}::${account.account_id}`;
+    const hist = history?.series?.[key]?.points || [];
+    if (hist.length) points = hist;
+    else {
+      const v = lastEquityValue(account);
+      const t = account.updated_utc || account.as_of;
+      if (v != null && t) points = [{ t, equity: v }];
+    }
   }
-  if (Array.isArray(account.equity_curve) && account.equity_curve.length) {
-    return account.equity_curve;
-  }
-  const key = `${account.bot_id}::${account.account_id}`;
-  const hist = history?.series?.[key]?.points || [];
-  if (hist.length) return hist;
-  const v = lastEquityValue(account);
-  const t = account.updated_utc || account.as_of;
-  if (v != null && t) return [{ t, equity: v }];
-  return [];
+  return filterResetPoints(seriesKey(account), points);
 }
 
 function prependSeedBaseline(dedup, seedN) {
