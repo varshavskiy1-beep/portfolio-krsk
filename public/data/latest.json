@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-15T17:04:13Z",
+  "generated_at": "2026-10-15T17:15:17Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24671.703597350006",
-      "updated_utc": "2026-10-15T17:04:08.998630Z",
+      "updated_utc": "2026-10-15T17:15:15.175167Z",
       "positions": [
         {
           "position_id": "p_ac9967c9050d",
@@ -64,7 +64,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1897121.9106311405",
-      "updated_utc": "2026-10-15T17:04:09.002715Z",
+      "updated_utc": "2026-10-15T17:15:15.177635Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479112.2533729598",
-      "updated_utc": "2026-10-15T17:04:09.006319Z",
+      "updated_utc": "2026-10-15T17:15:15.180374Z",
       "positions": [
         {
           "position_id": "p_ac43908ad107",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13570.488272650007",
-      "updated_utc": "2026-10-15T17:04:09.011203Z",
+      "updated_utc": "2026-10-15T17:15:15.182948Z",
       "positions": []
     },
     {
@@ -100,7 +100,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-15T17:04:09.015366Z",
+      "updated_utc": "2026-10-15T17:15:15.185171Z",
       "positions": []
     },
     {
@@ -147,7 +147,7 @@
       "seed": "10000",
       "equity": "10090.59",
       "cash": "10090.59",
-      "updated_utc": "2026-10-15T16:09:44Z",
+      "updated_utc": "2026-10-15T17:09:42Z",
       "positions": [],
       "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. Ордера на биржу не идут. equity = mark-to-market на тиках US RTH; cash = реализованный кэш."
     },
@@ -245,7 +245,7 @@
       "seed": "10000",
       "equity": "9480.9354",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-15T17:00:02Z",
+      "updated_utc": "2026-10-15T17:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
