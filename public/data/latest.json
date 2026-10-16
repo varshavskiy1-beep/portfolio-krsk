@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-16T11:02:25Z",
+  "generated_at": "2026-10-16T11:11:31Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24627.854508120006",
-      "updated_utc": "2026-10-16T11:02:24.827506Z",
+      "updated_utc": "2026-10-16T11:11:23.436168Z",
       "positions": []
     },
     {
@@ -54,23 +54,23 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1896056.0031015105",
-      "updated_utc": "2026-10-16T11:02:24.830068Z",
+      "equity": "1899404.8406568705",
+      "updated_utc": "2026-10-16T11:11:23.440653Z",
       "positions": [
-        {
-          "position_id": "p_67eb90973759",
-          "symbol": "GMKN",
-          "side": "long",
-          "qty": "4136.0",
-          "avg_px": "114.69732",
-          "stop_px": null
-        },
         {
           "position_id": "p_b8b7558ac2f8",
           "symbol": "ROSN",
           "side": "short",
           "qty": "1274.0",
           "avg_px": "371.764025",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_31c789043cbe",
+          "symbol": "GMKN",
+          "side": "short",
+          "qty": "4105.0",
+          "avg_px": "115.62216",
           "stop_px": null
         }
       ]
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1478991.00581456",
-      "updated_utc": "2026-10-16T11:02:24.835557Z",
+      "updated_utc": "2026-10-16T11:11:23.442869Z",
       "positions": [
         {
           "position_id": "p_161c891b5ebf",
@@ -107,7 +107,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13494.743317124008",
-      "updated_utc": "2026-10-16T11:02:24.840110Z",
+      "updated_utc": "2026-10-16T11:11:23.444915Z",
       "positions": [
         {
           "position_id": "p_f41b02a027ca",
@@ -125,7 +125,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-16T11:02:24.844336Z",
+      "updated_utc": "2026-10-16T11:11:23.446956Z",
       "positions": []
     },
     {
