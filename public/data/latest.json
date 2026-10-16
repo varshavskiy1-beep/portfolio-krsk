@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-16T13:49:43Z",
+  "generated_at": "2026-10-16T13:57:46Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24622.565404090008",
-      "updated_utc": "2026-10-16T13:49:37.450428Z",
+      "updated_utc": "2026-10-16T13:57:39.934033Z",
       "positions": [
         {
           "position_id": "p_d0bd360ff8ef",
@@ -71,7 +71,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1893132.8764632505",
-      "updated_utc": "2026-10-16T13:49:37.454145Z",
+      "updated_utc": "2026-10-16T13:57:39.937838Z",
       "positions": [
         {
           "position_id": "p_31c789043cbe",
@@ -97,7 +97,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1478019.8356196",
-      "updated_utc": "2026-10-16T13:49:37.456560Z",
+      "updated_utc": "2026-10-16T13:57:39.940307Z",
       "positions": [
         {
           "position_id": "p_3033241a10a3",
@@ -122,18 +122,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13494.743317124008",
-      "updated_utc": "2026-10-16T13:49:37.459105Z",
-      "positions": [
-        {
-          "position_id": "p_f41b02a027ca",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.041",
-          "avg_px": "82066.27273",
-          "stop_px": null
-        }
-      ]
+      "equity": "13489.563362894009",
+      "updated_utc": "2026-10-16T13:57:39.944413Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -141,7 +132,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-16T13:49:37.461730Z",
+      "updated_utc": "2026-10-16T13:57:39.948039Z",
       "positions": []
     },
     {
@@ -301,7 +292,7 @@
       "seed": "10000",
       "equity": "9414.1044",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-16T13:40:06Z",
+      "updated_utc": "2026-10-16T13:50:01Z",
       "positions": [
         {
           "symbol": "AAPL",
