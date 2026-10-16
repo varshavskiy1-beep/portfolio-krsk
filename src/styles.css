@@ -518,3 +518,26 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
     border-right: 0;
   }
 }
+
+.stitch-block { margin-top: 16px; }
+.stitch-empty { margin: 8px 0 4px; }
+.stitch-legend {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.stitch-legend li { display: flex; align-items: center; gap: 6px; }
+.stitch-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+  flex: 0 0 10px;
+}
+.stitch-line-host { height: 220px; }
+.stitch-hist-host { height: 140px; margin-top: 8px; }

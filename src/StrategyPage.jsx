@@ -25,6 +25,7 @@ import {
   hasRateCycleAccountLine,
   rateCycleDescription,
 } from "./rateCycleCard.js";
+import StitchBlock from "./StitchBlock.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -88,7 +89,7 @@ function LimitsTable({ limits }) {
   );
 }
 
-function AccountBlock({ a, points }) {
+function AccountBlock({ a, points, backtests, showStitch }) {
   const [mode, setMode] = useState(initialChartMode);
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
@@ -232,6 +233,8 @@ function AccountBlock({ a, points }) {
       </div>
       <MayakFromStart account={a} hasData={hasData} />
 
+      {showStitch ? <StitchBlock botId={a.bot_id} accountId={a.account_id} backtests={backtests} /> : null}
+
       <h3 className="subhead">Открытые позиции</h3>
       {historyCard ? (
         <>
@@ -255,7 +258,7 @@ function AccountBlock({ a, points }) {
   );
 }
 
-export default function StrategyPage({ botId, data, history, onBack }) {
+export default function StrategyPage({ botId, data, history, backtests, onBack }) {
   const accounts = useMemo(
     () => mergePortalAccounts(data?.accounts || []).filter((a) => a.bot_id === botId),
     [data, botId],
@@ -288,8 +291,14 @@ export default function StrategyPage({ botId, data, history, onBack }) {
 
       <StrategyPassport botId={botId} logic={logic} />
 
-      {accounts.map((a) => (
-        <AccountBlock key={`${a.bot_id}-${a.account_id}`} a={a} points={pointsFor(a)} />
+      {accounts.map((a, i) => (
+        <AccountBlock
+          key={`${a.bot_id}-${a.account_id}`}
+          a={a}
+          points={pointsFor(a)}
+          backtests={backtests}
+          showStitch={i === 0}
+        />
       ))}
     </div>
   );

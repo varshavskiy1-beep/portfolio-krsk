@@ -306,6 +306,7 @@ function Home({ data, history, filter, setFilter }) {
 export default function App() {
   const [data, setData] = useState(null);
   const [history, setHistory] = useState(null);
+  const [backtests, setBacktests] = useState(null);
   const [err, setErr] = useState(null);
   const [filter, setFilter] = useState("all");
   const [route, setRoute] = useState(readRoute);
@@ -320,10 +321,14 @@ export default function App() {
       fetch(`${base}data/history.json`)
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null),
+      fetch(`${base}data/backtests.json`)
+        .then((r) => (r.ok ? r.json() : { series: {} }))
+        .catch(() => ({ series: {} })),
     ])
-      .then(([latest, hist]) => {
+      .then(([latest, hist, stitches]) => {
         setData(normalizeLatest(latest));
         setHistory(normalizeHistory(hist));
+        setBacktests(stitches && typeof stitches === "object" ? stitches : { series: {} });
       })
       .catch((e) => setErr(String(e.message || e)));
   }, []);
@@ -346,6 +351,7 @@ export default function App() {
         botId={route.botId}
         data={data}
         history={history}
+        backtests={backtests}
         onBack={goHome}
       />
     );
