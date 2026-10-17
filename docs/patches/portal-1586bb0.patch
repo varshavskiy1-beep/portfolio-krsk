@@ -1,0 +1,709 @@
+From 1586bb089e732147bb9f3459639e72f51add7a88 Mon Sep 17 00:00:00 2001
+From: Cursor Agent <cursoragent@cursor.com>
+Date: Fri, 16 Oct 2026 17:16:23 +0000
+Subject: [PATCH] feat(portal): monthly stitched equity, EMA100 and
+ year-on-year histogram
+
+The strategy page keeps the paper chart and adds a backtest-plus-paper
+monthly line with the daily EMA100, then a 12-month return histogram and
+a 3-year average. No backtest series is invented: every account stays
+unstiched until a daily curve reaches the paper start.
+---
+ docs/MSG_TESTER_PORTAL_STITCH_20261016.md |  38 ++++
+ package.json                              |   2 +-
+ public/data/backtests.json                |   5 +
+ src/App.jsx                               |   8 +-
+ src/StitchedCharts.jsx                    | 185 +++++++++++++++++++
+ src/StrategyPage.jsx                      |  13 +-
+ src/stitchEquity.js                       | 208 ++++++++++++++++++++++
+ src/stitchEquity.test.js                  |  72 ++++++++
+ src/styles.css                            |  32 ++++
+ 9 files changed, 558 insertions(+), 5 deletions(-)
+ create mode 100644 docs/MSG_TESTER_PORTAL_STITCH_20261016.md
+ create mode 100644 public/data/backtests.json
+ create mode 100644 src/StitchedCharts.jsx
+ create mode 100644 src/stitchEquity.js
+ create mode 100644 src/stitchEquity.test.js
+
+diff --git a/docs/MSG_TESTER_PORTAL_STITCH_20261016.md b/docs/MSG_TESTER_PORTAL_STITCH_20261016.md
+new file mode 100644
+index 0000000..d8457ea
+--- /dev/null
++++ b/docs/MSG_TESTER_PORTAL_STITCH_20261016.md
+@@ -0,0 +1,38 @@
++# Записка тестировщику: дневная эквити для склейки на портале
++
++Скопируй блок ниже целиком → тестировщику.
++
++```text
++Привет.
++Что проверить в двух строках: на странице каждой бумажной стратегии портала нужен дневной бэктест до старта бумаги, чтобы склеить его с бумажным треком без дыры и посчитать EMA100 и прирост год к году со средней за 3 года. Сейчас такого ряда нет ни у одного счёта на сайте.
++Куда положить: docs/reports/artifacts/portal_stitch_20261016/<bot_id>__<account_id>.csv
++Портал: https://portfolio-krsk.vercel.app/  файл public/data/backtests.json ключ «bot_id::account_id»
++Формат CSV, заголовок date,equity. date — день UTC YYYY-MM-DD. equity — уровень капитала в валюте счёта, больше нуля, одна строка на день (если внутри дня несколько точек — последняя). Правила и издержки те же, что у бумажного бота. Последний день ряда — день старта бумаги или не раньше чем за 7 дней до него. Длина: не меньше 48 месяцев концов месяцев, иначе столбик «год к году» и средняя за 36 месяцев не соберутся. Индекс от 1 тоже годится: портал сам продолжит бумагу с последнего уровня бэктеста, скачка на стыке не будет.
++Счета, по которым ряда нет:
++1. v6b1__v6b1 — бумага с 2026-10-15. Список сделок V6b1_pdh_radar_universe.csv с 2023 — не дневная эквити портфеля. Нужен канон: риск 1%, одновременно не больше двух, без входа в бар выхода.
++2. who_pays__paper_us_eq — бумага с 2026-09-19.
++3. who_pays__paper_ru_eq — бумага с 2026-09-19.
++4. who_pays__paper_forts — бумага с 2026-09-19.
++5. who_pays__paper_crypto_spot — бумага с 2026-09-19.
++6. who_pays__paper_crypto_perp — бумага с 2026-09-19.
++7. forts_adr_adaptive__forts_adr_adaptive — бумага с 2026-09-21, живые сделки с 2026-09-22. Чемпион soft1_size_adr, плечо 6, стоп 0,75%, цель 1%.
++8. forts_adr_static__forts_adr_static — бумага с 2026-09-19.
++9. pump_radar__pump_radar — бумага с 2026-09-18.
++10. three_robots_okx_nasdaq_1h__paper_block2 — бумага с 2026-10-15. Кривая 2026-06-12…2026-09-04 короче года и не доходит до 15 октября. Дыра, не склейка.
++11. young_bounce_combo__young_bounce_combo — бумага с 2026-09-23.
++12. oac_paper__oac_paper — бумага с 2026-09-25. Колонка «M1 члены топ-20 (честно)» в equity_occ_window.csv идёт 2024-10-24…2026-09-24. Стык по дате близкий, длины на среднюю за 3 года нет. Подтверди, что это та же книга, что бумажный счёт, и продли дневной ряд назад примерно до 2022-09.
++13. desyatka_earn_paper__desyatka_earn_paper — бумага с 2026-09-30.
++14. cycle_6040_paper__cycle_6040_paper — бумага с 2026-10-01.
++15. rf_conservative_comon__rf_conservative_comon — бумага с 2026-10-01.
++16. mayak_imoex_lowvol10__mayak_imoex_lowvol10 — бумага с 2026-10-06.
++17. mayak_imoex_mom10__mayak_imoex_mom10 — бумага с 2026-10-06.
++18. mayak_imoex_mom10_lev15__mayak_imoex_mom10_lev15 — бумага с 2026-10-06.
++19. mayak_imoex_mom10_lev2__mayak_imoex_mom10_lev2 — бумага с 2026-10-06.
++    У маяка есть месячный mayak_10y_series.csv с 2016 и дневной track_2020_daily.csv с 2020. Это исследовательский трек, не дневная эквити бумажного движка до 2026-10-06. Нужен дневной ряд именно этих четырёх счетов.
++20. rf_bonds_rate_cycle__rf_bonds_rate_cycle — бумага с 2026-10-09.
++21. cny_mom_h360__cny_mom_h360 — бумага с 2026-10-12.
++22. eth_okx_moex__eth_okx_moex — бумага с 2026-10-13.
++Не подставляй чужую кривую и не дорисовывай дыру. Бумажный трек портал возьмёт сам из history.json.
++MIGRATION: no. TRADING: только бумага. ENABLE_EXCHANGE_ORDERS: 0.
++Просьба: прислать CSV по всем 22 счетам.
++```
+diff --git a/package.json b/package.json
+index 71fca76..c808eba 100644
+--- a/package.json
++++ b/package.json
+@@ -8,7 +8,7 @@
+     "og": "node scripts/og-cover.mjs",
+     "build": "node scripts/og-cover.mjs && vite build",
+     "preview": "vite preview",
+-    "test": "node --test src/cashCurrency.test.js src/strategyMeta.test.js src/ogWinner.test.js src/ogSharePage.test.js src/equityChartModel.test.js src/uiCopy.test.js src/strategyPassport.test.js src/portalRoute.test.js src/mayakCard.test.js src/rateCycleCard.test.js src/cnyMomCard.test.js src/ethOkxCard.test.js src/chartPrefs.test.js src/historyReset.test.js"
++    "test": "node --test src/cashCurrency.test.js src/strategyMeta.test.js src/ogWinner.test.js src/ogSharePage.test.js src/equityChartModel.test.js src/uiCopy.test.js src/strategyPassport.test.js src/portalRoute.test.js src/mayakCard.test.js src/rateCycleCard.test.js src/cnyMomCard.test.js src/ethOkxCard.test.js src/chartPrefs.test.js src/historyReset.test.js src/stitchEquity.test.js"
+   },
+   "dependencies": {
+     "lightweight-charts": "^5.0.8",
+diff --git a/public/data/backtests.json b/public/data/backtests.json
+new file mode 100644
+index 0000000..384dc1f
+--- /dev/null
++++ b/public/data/backtests.json
+@@ -0,0 +1,5 @@
++{
++  "schema": "backtest_equity.v1",
++  "updated_at": null,
++  "series": {}
++}
+diff --git a/src/App.jsx b/src/App.jsx
+index 41a6325..a97b8af 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -306,6 +306,7 @@ function Home({ data, history, filter, setFilter }) {
+ export default function App() {
+   const [data, setData] = useState(null);
+   const [history, setHistory] = useState(null);
++  const [backtests, setBacktests] = useState(null);
+   const [err, setErr] = useState(null);
+   const [filter, setFilter] = useState("all");
+   const [route, setRoute] = useState(readRoute);
+@@ -320,10 +321,14 @@ export default function App() {
+       fetch(`${base}data/history.json`)
+         .then((r) => (r.ok ? r.json() : null))
+         .catch(() => null),
++      fetch(`${base}data/backtests.json`)
++        .then((r) => (r.ok ? r.json() : null))
++        .catch(() => null),
+     ])
+-      .then(([latest, hist]) => {
++      .then(([latest, hist, books]) => {
+         setData(normalizeLatest(latest));
+         setHistory(normalizeHistory(hist));
++        setBacktests(books);
+       })
+       .catch((e) => setErr(String(e.message || e)));
+   }, []);
+@@ -346,6 +351,7 @@ export default function App() {
+         botId={route.botId}
+         data={data}
+         history={history}
++        backtests={backtests}
+         onBack={goHome}
+       />
+     );
+diff --git a/src/StitchedCharts.jsx b/src/StitchedCharts.jsx
+new file mode 100644
+index 0000000..5c62028
+--- /dev/null
++++ b/src/StitchedCharts.jsx
+@@ -0,0 +1,185 @@
++import { useEffect, useRef } from "react";
++import { ColorType, HistogramSeries, LineSeries, createChart } from "lightweight-charts";
++import {
++  backtestPointsFor,
++  stitchCaption,
++  stitchEquity,
++} from "./stitchEquity.js";
++
++const UP = "#1f7a4c";
++const DOWN = "#c23b3b";
++const SMA = "#5b4db3";
++const BACKTEST = "#2b4c7e";
++const PAPER = "#d06a00";
++const EMA = "#7a4ea3";
++
++function monthTime(month) {
++  const [y, m] = month.split("-").map(Number);
++  return `${y}-${String(m).padStart(2, "0")}-01`;
++}
++
++function chartBase(el, height) {
++  return createChart(el, {
++    layout: {
++      background: { type: ColorType.Solid, color: "#f3f1ec" },
++      textColor: "#444",
++      fontSize: 12,
++    },
++    grid: {
++      vertLines: { color: "#e4e0d8" },
++      horzLines: { color: "#e4e0d8" },
++    },
++    width: Math.max(Math.floor(el.clientWidth) || 40, 40),
++    height,
++    rightPriceScale: { borderVisible: false },
++    timeScale: { borderColor: "#e5e1d8", rightOffset: 4 },
++    handleScroll: {
++      mouseWheel: true,
++      pressedMouseMove: true,
++      horzTouchDrag: true,
++      vertTouchDrag: false,
++    },
++    handleScale: { mouseWheel: true, pinch: true, axisPressedMouseMove: true },
++  });
++}
++
++function fit(chart, el, height) {
++  if (!chart || !el) return;
++  const w = Math.floor(el.clientWidth);
++  if (w < 40) return;
++  chart.applyOptions({ width: w, height });
++}
++
++function useResize(chartRef, elRef, height) {
++  useEffect(() => {
++    const el = elRef.current;
++    const chart = chartRef.current;
++    if (!el || !chart) return undefined;
++    const ro = new ResizeObserver(() => fit(chart, el, height));
++    ro.observe(el);
++    return () => ro.disconnect();
++  }, [chartRef, elRef, height]);
++}
++
++function EquityMonthChart({ monthly }) {
++  const elRef = useRef(null);
++  const chartRef = useRef(null);
++  useResize(chartRef, elRef, 320);
++
++  useEffect(() => {
++    const el = elRef.current;
++    if (!el) return undefined;
++    const chart = chartBase(el, 320);
++    const stitch = chart.addSeries(LineSeries, { color: BACKTEST, lineWidth: 2, title: "склейка" });
++    const paper = chart.addSeries(LineSeries, { color: PAPER, lineWidth: 2, title: "бумага" });
++    const ema = chart.addSeries(LineSeries, { color: EMA, lineWidth: 2, title: "EMA100" });
++    chartRef.current = chart;
++    stitch.setData(
++      monthly.map((row) => ({ time: monthTime(row.month), value: row.equity })),
++    );
++    paper.setData(
++      monthly
++        .filter((row) => row.segment === "paper")
++        .map((row) => ({ time: monthTime(row.month), value: row.equity })),
++    );
++    ema.setData(
++      monthly
++        .filter((row) => row.ema100 != null)
++        .map((row) => ({ time: monthTime(row.month), value: row.ema100 })),
++    );
++    chart.timeScale().fitContent();
++    fit(chart, el, 320);
++    return () => {
++      chart.remove();
++      chartRef.current = null;
++    };
++  }, [monthly]);
++
++  return <div ref={elRef} className="stitch-chart" />;
++}
++
++function YoyChart({ yoy }) {
++  const elRef = useRef(null);
++  const chartRef = useRef(null);
++  useResize(chartRef, elRef, 260);
++
++  useEffect(() => {
++    const el = elRef.current;
++    if (!el) return undefined;
++    const chart = chartBase(el, 260);
++    const pct = {
++      type: "custom",
++      minMove: 0.01,
++      formatter: (v) =>
++        `${new Intl.NumberFormat("ru-RU", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)}%`,
++    };
++    const bars = chart.addSeries(HistogramSeries, { priceFormat: pct });
++    const line = chart.addSeries(LineSeries, { color: SMA, lineWidth: 2, priceFormat: pct });
++    chartRef.current = chart;
++    bars.setData(
++      yoy.map((row) => ({
++        time: monthTime(row.month),
++        value: row.yoy * 100,
++        color: row.yoy >= 0 ? UP : DOWN,
++      })),
++    );
++    line.setData(
++      yoy
++        .filter((row) => row.sma36 != null)
++        .map((row) => ({ time: monthTime(row.month), value: row.sma36 * 100 })),
++    );
++    chart.timeScale().fitContent();
++    fit(chart, el, 260);
++    return () => {
++      chart.remove();
++      chartRef.current = null;
++    };
++  }, [yoy]);
++
++  return <div ref={elRef} className="stitch-chart stitch-chart-short" />;
++}
++
++export default function StitchedCharts({ account, paperPoints, backtests }) {
++  const backtest = backtestPointsFor(backtests, account);
++  const result = stitchEquity(backtest, paperPoints);
++  if (!result.ok) {
++    return (
++      <section className="stitch-block">
++        <h3 className="subhead">Бэктест и бумага</h3>
++        <p className="note">{stitchCaption(result)}</p>
++      </section>
++    );
++  }
++  const smaReady = result.yoy.some((row) => row.sma36 != null);
++  return (
++    <section className="stitch-block">
++      <h3 className="subhead">Бэктест и бумага, помесячно</h3>
++      <p className="stitch-legend">
++        <span className="swatch swatch-backtest" /> склейка
++        <span className="swatch swatch-paper" /> бумага с {result.paperStart}
++        <span className="swatch swatch-ema" /> EMA100 дневная
++      </p>
++      <p className="note">
++        Синяя линия — дневный бэктест до бумаги и бумажный трек после, без скачка на стыке{" "}
++        {result.joinDay}. Оранжевая линия — тот же бумажный участок поверх. Фиолетовая — EMA100
++        по дневной эквити, на графике значение конца месяца.
++      </p>
++      <EquityMonthChart monthly={result.monthly} />
++      <h3 className="subhead">Год к году</h3>
++      <p className="stitch-legend">
++        <span className="swatch swatch-up" /> прирост за 12 месяцев
++        <span className="swatch swatch-down" /> спад
++        <span className="swatch swatch-sma" /> средняя за 3 года
++      </p>
++      {result.yoy.length ? <YoyChart yoy={result.yoy} /> : null}
++      <p className="note">
++        Столбик — насколько эквити выросла за 12 месяцев. Линия — средняя этих приростов за 36
++        месяцев. Стратегию снова смотреть к подключению, когда зелёный столбик поднимается выше
++        линии.
++        {smaReady
++          ? ""
++          : " Средней за 3 года ещё нет: нужно 36 месячных приростов подряд, это около четырёх лет дневного ряда."}
++      </p>
++    </section>
++  );
++}
+diff --git a/src/StrategyPage.jsx b/src/StrategyPage.jsx
+index 4f0874f..da27125 100644
+--- a/src/StrategyPage.jsx
++++ b/src/StrategyPage.jsx
+@@ -25,6 +25,7 @@ import {
+   hasRateCycleAccountLine,
+   rateCycleDescription,
+ } from "./rateCycleCard.js";
++import StitchedCharts from "./StitchedCharts.jsx";
+ import StrategyNotFound from "./StrategyNotFound.jsx";
+ import StrategyPassport from "./StrategyPassport.jsx";
+ import { getPassport } from "./strategyPassport.js";
+@@ -88,7 +89,7 @@ function LimitsTable({ limits }) {
+   );
+ }
+ 
+-function AccountBlock({ a, points }) {
++function AccountBlock({ a, points, backtests }) {
+   const [mode, setMode] = useState(initialChartMode);
+   const [fs, setFs] = useState(false);
+   const currency = canonicalCurrency(a);
+@@ -230,6 +231,7 @@ function AccountBlock({ a, points }) {
+           priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+         />
+       </div>
++      <StitchedCharts account={a} paperPoints={points} backtests={backtests} />
+       <MayakFromStart account={a} hasData={hasData} />
+ 
+       <h3 className="subhead">Открытые позиции</h3>
+@@ -255,7 +257,7 @@ function AccountBlock({ a, points }) {
+   );
+ }
+ 
+-export default function StrategyPage({ botId, data, history, onBack }) {
++export default function StrategyPage({ botId, data, history, backtests, onBack }) {
+   const accounts = useMemo(
+     () => mergePortalAccounts(data?.accounts || []).filter((a) => a.bot_id === botId),
+     [data, botId],
+@@ -289,7 +291,12 @@ export default function StrategyPage({ botId, data, history, onBack }) {
+       <StrategyPassport botId={botId} logic={logic} />
+ 
+       {accounts.map((a) => (
+-        <AccountBlock key={`${a.bot_id}-${a.account_id}`} a={a} points={pointsFor(a)} />
++        <AccountBlock
++          key={`${a.bot_id}-${a.account_id}`}
++          a={a}
++          points={pointsFor(a)}
++          backtests={backtests}
++        />
+       ))}
+     </div>
+   );
+diff --git a/src/stitchEquity.js b/src/stitchEquity.js
+new file mode 100644
+index 0000000..8921b11
+--- /dev/null
++++ b/src/stitchEquity.js
+@@ -0,0 +1,208 @@
++/**
++ * Склейка дневного бэктеста с бумажным треком и помесячные ряды.
++ * Бумажная кривая кабинета не называется бэктестом.
++ * Скачок на стыке не допускается: бумага продолжается с уровня бэктеста.
++ */
++
++export const GAP_DAYS = 7;
++export const EMA_SPAN = 100;
++export const YOY_MONTHS = 12;
++export const SMA_YEARS = 3;
++export const SMA_MONTHS = SMA_YEARS * 12;
++
++function parseTime(t) {
++  const ms = Date.parse(t);
++  return Number.isNaN(ms) ? null : ms;
++}
++
++export function dayKey(t) {
++  const ms = parseTime(t);
++  if (ms == null) return null;
++  return new Date(ms).toISOString().slice(0, 10);
++}
++
++export function monthKey(day) {
++  return String(day).slice(0, 7);
++}
++
++function daysBetween(a, b) {
++  const ms = Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`);
++  return Math.round(ms / 86400000);
++}
++
++/** Последняя точка каждых суток UTC. Нулевая и пустая эквити не входят. */
++export function collapseDays(points) {
++  const rows = [];
++  for (const p of points || []) {
++    const day = dayKey(p?.t ?? p?.time ?? p?.day);
++    const eq = Number(p?.equity ?? p?.eq);
++    const ms = parseTime(p?.t ?? p?.time ?? `${day}T00:00:00Z`);
++    if (!day || ms == null || !Number.isFinite(eq) || eq <= 0) continue;
++    rows.push({ day, eq, ms });
++  }
++  rows.sort((a, b) => a.ms - b.ms || a.day.localeCompare(b.day));
++  const out = [];
++  for (const row of rows) {
++    if (out.length && out[out.length - 1].day === row.day) out[out.length - 1] = row;
++    else out.push(row);
++  }
++  return out.map(({ day, eq }) => ({ day, eq }));
++}
++
++function monthIndex(key) {
++  const [y, m] = key.split("-").map(Number);
++  if (!y || !m) return null;
++  return y * 12 + (m - 1);
++}
++
++/** EMA по дневной эквити. Первые span−1 дней без значения, дальше классическая EMA. */
++export function emaSeries(values, span = EMA_SPAN) {
++  const out = new Array(values.length).fill(null);
++  if (!Number.isInteger(span) || span < 2 || values.length < span) return out;
++  let sum = 0;
++  for (let i = 0; i < span; i += 1) sum += values[i];
++  let prev = sum / span;
++  out[span - 1] = prev;
++  const k = 2 / (span + 1);
++  for (let i = span; i < values.length; i += 1) {
++    prev = values[i] * k + prev * (1 - k);
++    out[i] = prev;
++  }
++  return out;
++}
++
++export function toMonthly(daily) {
++  const last = new Map();
++  for (const row of daily) last.set(monthKey(row.day), row);
++  return [...last.keys()]
++    .sort()
++    .map((key) => {
++      const row = last.get(key);
++      return {
++        month: key,
++        day: row.day,
++        equity: row.eq,
++        ema100: row.ema100,
++        segment: row.segment,
++      };
++    });
++}
++
++function yoyAndSma(monthly) {
++  const byMonth = new Map(monthly.map((row) => [row.month, row]));
++  const yoy = [];
++  for (const row of monthly) {
++    const idx = monthIndex(row.month);
++    if (idx == null) continue;
++    const prevKey = indexToMonth(idx - YOY_MONTHS);
++    const prev = byMonth.get(prevKey);
++    if (!prev || prev.equity <= 0) continue;
++    yoy.push({
++      month: row.month,
++      day: row.day,
++      yoy: row.equity / prev.equity - 1,
++    });
++  }
++  const sma = new Array(yoy.length).fill(null);
++  for (let i = 0; i < yoy.length; i += 1) {
++    if (i + 1 < SMA_MONTHS) continue;
++    let ok = true;
++    for (let j = i - SMA_MONTHS + 1; j < i; j += 1) {
++      const a = monthIndex(yoy[j].month);
++      const b = monthIndex(yoy[j + 1].month);
++      if (a == null || b == null || b - a !== 1) {
++        ok = false;
++        break;
++      }
++    }
++    if (!ok) continue;
++    let sum = 0;
++    for (let j = i - SMA_MONTHS + 1; j <= i; j += 1) sum += yoy[j].yoy;
++    sma[i] = sum / SMA_MONTHS;
++  }
++  return yoy.map((row, i) => ({ ...row, sma36: sma[i] }));
++}
++
++function indexToMonth(index) {
++  const y = Math.floor(index / 12);
++  const m = (index % 12) + 1;
++  return `${y}-${String(m).padStart(2, "0")}`;
++}
++
++/**
++ * @returns {{ok:true, joinDay:string, daily:object[], monthly:object[], yoy:object[]}
++ *   | {ok:false, reason:string, joinDay?:string, paperStart?:string, backtestEnd?:string}}
++ */
++export function stitchEquity(backtestPoints, paperPoints) {
++  const backtest = collapseDays(backtestPoints);
++  const paper = collapseDays(paperPoints);
++  if (paper.length < 1) return { ok: false, reason: "no_paper" };
++  if (backtest.length < 2) return { ok: false, reason: "no_backtest" };
++  const paperStart = paper[0].day;
++  const paper0 = paper[0].eq;
++  let join = null;
++  for (const row of backtest) {
++    if (row.day <= paperStart) join = row;
++  }
++  if (!join) {
++    return {
++      ok: false,
++      reason: "backtest_after_paper",
++      paperStart,
++      backtestEnd: backtest[backtest.length - 1].day,
++    };
++  }
++  const gap = daysBetween(join.day, paperStart);
++  if (gap > GAP_DAYS) {
++    return {
++      ok: false,
++      reason: "gap",
++      joinDay: join.day,
++      paperStart,
++      backtestEnd: join.day,
++    };
++  }
++  const head = backtest.filter((row) => row.day < paperStart).map((row) => ({
++    day: row.day,
++    eq: row.eq,
++    segment: "backtest",
++  }));
++  const tail = paper.map((row) => ({
++    day: row.day,
++    eq: (join.eq * row.eq) / paper0,
++    segment: "paper",
++  }));
++  const dailyRaw = [...head, ...tail];
++  const emas = emaSeries(dailyRaw.map((row) => row.eq), EMA_SPAN);
++  const daily = dailyRaw.map((row, i) => ({ ...row, ema100: emas[i] }));
++  const monthly = toMonthly(daily);
++  const yoy = yoyAndSma(monthly);
++  return { ok: true, joinDay: join.day, paperStart, daily, monthly, yoy };
++}
++
++export function seriesKey(account) {
++  return `${account?.bot_id}::${account?.account_id}`;
++}
++
++export function backtestPointsFor(backtests, account) {
++  const key = seriesKey(account);
++  const row = backtests?.series?.[key];
++  return Array.isArray(row?.points) ? row.points : [];
++}
++
++export function stitchCaption(result) {
++  if (!result || result.ok) return "";
++  if (result.reason === "no_backtest") {
++    return "Склейки нет: нет дневного бэктеста до старта бумаги.";
++  }
++  if (result.reason === "no_paper") {
++    return "Склейки нет: у бумаги ещё нет точек эквити.";
++  }
++  if (result.reason === "gap") {
++    return `Склейки нет: бэктест кончается ${result.backtestEnd}, бумага начинается ${result.paperStart}. Дыра больше ${GAP_DAYS} дней.`;
++  }
++  if (result.reason === "backtest_after_paper") {
++    return "Склейки нет: бэктест начинается позже бумаги.";
++  }
++  return "Склейки нет.";
++}
+diff --git a/src/stitchEquity.test.js b/src/stitchEquity.test.js
+new file mode 100644
+index 0000000..c135e92
+--- /dev/null
++++ b/src/stitchEquity.test.js
+@@ -0,0 +1,72 @@
++import { test } from "node:test";
++import assert from "node:assert/strict";
++import { collapseDays, emaSeries, stitchEquity } from "./stitchEquity.js";
++
++function daily(start, n, step = 1) {
++  const out = [];
++  const t0 = Date.parse(`${start}T00:00:00Z`);
++  for (let i = 0; i < n; i += 1) {
++    const day = new Date(t0 + i * 86400000).toISOString().slice(0, 10);
++    out.push({ t: day, equity: 100 + i * step });
++  }
++  return out;
++}
++
++test("collapse keeps the last print of a day", () => {
++  const rows = collapseDays([
++    { t: "2024-01-02T10:00:00Z", equity: 10 },
++    { t: "2024-01-02T18:00:00Z", equity: 12 },
++    { t: "2024-01-03T00:00:00Z", equity: 11 },
++  ]);
++  assert.deepEqual(rows, [
++    { day: "2024-01-02", eq: 12 },
++    { day: "2024-01-03", eq: 11 },
++  ]);
++});
++
++test("stitch continues paper from the backtest level without a jump", () => {
++  const backtest = daily("2020-01-01", 800, 0.1);
++  const paper = [
++    { t: "2022-03-11T12:00:00Z", equity: 10000 },
++    { t: "2022-03-12T12:00:00Z", equity: 10100 },
++  ];
++  const st = stitchEquity(backtest, paper);
++  assert.equal(st.ok, true);
++  const paperRows = st.daily.filter((row) => row.segment === "paper");
++  const before = st.daily.filter((row) => row.day < "2022-03-11").at(-1);
++  assert.equal(paperRows[0].day, "2022-03-11");
++  assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-6);
++  assert.ok(Math.abs(paperRows[1].eq / paperRows[0].eq - 1.01) < 1e-9);
++  assert.equal(st.monthly.at(-1).segment, "paper");
++  assert.ok(st.daily[99].ema100 != null);
++  assert.equal(st.daily[98].ema100, null);
++});
++
++test("a hole longer than a week is not a seamless stitch", () => {
++  const backtest = daily("2020-01-01", 40);
++  const paper = [{ t: "2020-03-01T00:00:00Z", equity: 100 }];
++  const st = stitchEquity(backtest, paper);
++  assert.equal(st.ok, false);
++  assert.equal(st.reason, "gap");
++});
++
++test("year on year needs the same month a year earlier, average needs 36 in a row", () => {
++  const backtest = daily("2018-01-01", 1700, 0);
++  for (let i = 0; i < backtest.length; i += 1) backtest[i].equity = 100 * 1.0002 ** i;
++  const paper = [{ t: "2022-08-28T00:00:00Z", equity: 50 }];
++  const st = stitchEquity(backtest, paper);
++  assert.equal(st.ok, true);
++  assert.ok(st.yoy.length > 40);
++  assert.equal(st.yoy[0].sma36, null);
++  const withSma = st.yoy.filter((row) => row.sma36 != null);
++  assert.ok(withSma.length > 0);
++  assert.ok(st.yoy.every((row) => row.yoy > 0));
++});
++
++test("ema span 100 matches a flat series", () => {
++  const values = Array.from({ length: 120 }, () => 5);
++  const ema = emaSeries(values, 100);
++  assert.equal(ema[98], null);
++  assert.equal(ema[99], 5);
++  assert.equal(ema[119], 5);
++});
+diff --git a/src/styles.css b/src/styles.css
+index 9c26bde..81ef466 100644
+--- a/src/styles.css
++++ b/src/styles.css
+@@ -518,3 +518,35 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
+     border-right: 0;
+   }
+ }
++
++.stitch-block { margin-top: 8px; }
++.stitch-chart {
++  width: 100%;
++  height: 320px;
++  border: 1px solid var(--line);
++  border-radius: 8px;
++  overflow: hidden;
++}
++.stitch-chart-short { height: 260px; }
++.stitch-legend {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 10px 14px;
++  align-items: center;
++  color: var(--muted);
++  font-size: 0.88rem;
++  margin: 0 0 8px;
++}
++.swatch {
++  display: inline-block;
++  width: 14px;
++  height: 8px;
++  border-radius: 2px;
++  margin-right: 6px;
++}
++.swatch-backtest { background: #2b4c7e; }
++.swatch-paper { background: #d06a00; }
++.swatch-ema, .swatch-sma { background: #7a4ea3; }
++.swatch-sma { background: #5b4db3; }
++.swatch-up { background: #1f7a4c; }
++.swatch-down { background: #c23b3b; }
+-- 
+2.43.0
+

@@ -1,156 +1,208 @@
 /**
- * Помесячная склейка бэктеста с бумагой.
- * Ряды только из backtests.json; пустые не рисуем и не выдумываем.
+ * Склейка дневного бэктеста с бумажным треком и помесячные ряды.
+ * Бумажная кривая кабинета не называется бэктестом.
+ * Скачок на стыке не допускается: бумага продолжается с уровня бэктеста.
  */
 
-import { toUnix } from "./equityChartModel.js";
+export const GAP_DAYS = 7;
+export const EMA_SPAN = 100;
+export const YOY_MONTHS = 12;
+export const SMA_YEARS = 3;
+export const SMA_MONTHS = SMA_YEARS * 12;
 
-export const STITCH_EMPTY_LINE = "Склейки нет";
-
-export const STITCH_COPY = {
-  title: "Помесячная склейка",
-  empty: STITCH_EMPTY_LINE,
-  stitch: "склейка бэктеста с бумагой",
-  paper: "бумага",
-  ema: "средняя 100 дней",
-  yoy: "прирост за 12 мес",
-  avg36: "средняя за 36 мес",
-};
-
-export const STITCH_COLORS = {
-  stitch: "#2b6cb0",
-  paper: "#e67e22",
-  ema: "#7c3aed",
-  yoyPos: "#1f7a4c",
-  yoyNeg: "#a33",
-  avg36: "#555",
-};
-
-export function stitchCopyValues() {
-  return Object.values(STITCH_COPY);
+function parseTime(t) {
+  const ms = Date.parse(t);
+  return Number.isNaN(ms) ? null : ms;
 }
 
-function packTimeMs(t) {
-  if (t == null || t === "") return null;
-  if (typeof t === "number") {
-    const ms = t > 1e12 ? t : t * 1000;
-    return Number.isFinite(ms) ? ms : null;
+export function dayKey(t) {
+  const ms = parseTime(t);
+  if (ms == null) return null;
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+export function monthKey(day) {
+  return String(day).slice(0, 7);
+}
+
+function daysBetween(a, b) {
+  const ms = Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`);
+  return Math.round(ms / 86400000);
+}
+
+/** Последняя точка каждых суток UTC. Нулевая и пустая эквити не входят. */
+export function collapseDays(points) {
+  const rows = [];
+  for (const p of points || []) {
+    const day = dayKey(p?.t ?? p?.time ?? p?.day);
+    const eq = Number(p?.equity ?? p?.eq);
+    const ms = parseTime(p?.t ?? p?.time ?? `${day}T00:00:00Z`);
+    if (!day || ms == null || !Number.isFinite(eq) || eq <= 0) continue;
+    rows.push({ day, eq, ms });
   }
-  const s = String(t);
-  if (/^\d{4}-\d{2}$/.test(s)) return Date.parse(`${s}-01T00:00:00Z`);
-  const unix = toUnix(s.length === 10 ? `${s}T00:00:00Z` : s);
-  return unix == null ? null : unix * 1000;
-}
-
-function asPoints(raw) {
-  if (!Array.isArray(raw) || !raw.length) return [];
+  rows.sort((a, b) => a.ms - b.ms || a.day.localeCompare(b.day));
   const out = [];
-  for (const p of raw) {
-    if (p == null) continue;
-    const t = p.t ?? p.time;
-    const v = p.value ?? p.equity ?? p.v;
-    const ms = packTimeMs(t);
-    const n = v == null || v === "" ? NaN : Number(v);
-    if (ms == null || !Number.isFinite(n)) continue;
-    out.push({ t: t, time: Math.floor(ms / 1000), value: n });
+  for (const row of rows) {
+    if (out.length && out[out.length - 1].day === row.day) out[out.length - 1] = row;
+    else out.push(row);
   }
-  out.sort((a, b) => a.time - b.time);
-  const dedup = [];
-  for (const row of out) {
-    if (dedup.length && dedup[dedup.length - 1].time === row.time) dedup[dedup.length - 1] = row;
-    else dedup.push(row);
-  }
-  return dedup;
+  return out.map(({ day, eq }) => ({ day, eq }));
 }
 
-export function lookupStitchPack(backtests, botId, accountId) {
-  const series = backtests?.series;
-  if (!series || typeof series !== "object") return null;
-  const keys = [`${botId}::${accountId}`, botId, accountId].filter((k) => k);
-  for (const k of keys) {
-    if (series[k] && typeof series[k] === "object") return series[k];
-  }
-  return null;
+function monthIndex(key) {
+  const [y, m] = key.split("-").map(Number);
+  if (!y || !m) return null;
+  return y * 12 + (m - 1);
 }
 
-function lineFromPack(pack, names) {
-  if (!pack) return [];
-  for (const name of names) {
-    const pts = asPoints(pack[name]);
-    if (pts.length) return pts;
-  }
-  return [];
-}
-
-/** 12-мес прирост только из уже данного месячного ряда; без ряда — пусто. */
-export function yoyFromMonthly(monthly) {
-  const pts = asPoints(monthly);
-  if (pts.length < 13) return [];
-  const out = [];
-  for (const cur of pts) {
-    const want = cur.time - 365 * 24 * 3600;
-    let prev = null;
-    let best = Infinity;
-    for (const p of pts) {
-      const d = Math.abs(p.time - want);
-      if (d < best && d <= 40 * 24 * 3600) {
-        best = d;
-        prev = p;
-      }
-    }
-    if (!prev || !prev.value) continue;
-    out.push({
-      t: cur.t,
-      time: cur.time,
-      value: ((cur.value - prev.value) / prev.value) * 100,
-    });
+/** EMA по дневной эквити. Первые span−1 дней без значения, дальше классическая EMA. */
+export function emaSeries(values, span = EMA_SPAN) {
+  const out = new Array(values.length).fill(null);
+  if (!Number.isInteger(span) || span < 2 || values.length < span) return out;
+  let sum = 0;
+  for (let i = 0; i < span; i += 1) sum += values[i];
+  let prev = sum / span;
+  out[span - 1] = prev;
+  const k = 2 / (span + 1);
+  for (let i = span; i < values.length; i += 1) {
+    prev = values[i] * k + prev * (1 - k);
+    out[i] = prev;
   }
   return out;
 }
 
-export function average36m(growth) {
-  const pts = asPoints(growth);
-  if (pts.length < 36) return null;
-  const last = pts.slice(-36);
-  const sum = last.reduce((s, p) => s + p.value, 0);
-  return sum / last.length;
+export function toMonthly(daily) {
+  const last = new Map();
+  for (const row of daily) last.set(monthKey(row.day), row);
+  return [...last.keys()]
+    .sort()
+    .map((key) => {
+      const row = last.get(key);
+      return {
+        month: key,
+        day: row.day,
+        equity: row.eq,
+        ema100: row.ema100,
+        segment: row.segment,
+      };
+    });
 }
 
-export function resolveStitchModel(pack) {
-  const stitch = lineFromPack(pack, ["stitch", "stitch_monthly", "склейка"]);
-  const paper = lineFromPack(pack, ["paper", "paper_monthly", "бумага"]);
-  const ema = lineFromPack(pack, ["ema100", "ema100_daily", "ema"]);
-  let yoy = lineFromPack(pack, ["growth_12m", "yoy", "прирост_12м"]);
-  if (!yoy.length && stitch.length >= 13) yoy = yoyFromMonthly(stitch);
-  else if (!yoy.length && paper.length >= 13) yoy = yoyFromMonthly(paper);
-  const avgGiven = pack?.avg_36m ?? pack?.avg36;
-  let avg36 = null;
-  if (typeof avgGiven === "number" && Number.isFinite(avgGiven)) avg36 = avgGiven;
-  else if (Array.isArray(avgGiven) && avgGiven.length) {
-    const pts = asPoints(avgGiven);
-    if (pts.length) avg36 = pts[pts.length - 1].value;
+function yoyAndSma(monthly) {
+  const byMonth = new Map(monthly.map((row) => [row.month, row]));
+  const yoy = [];
+  for (const row of monthly) {
+    const idx = monthIndex(row.month);
+    if (idx == null) continue;
+    const prevKey = indexToMonth(idx - YOY_MONTHS);
+    const prev = byMonth.get(prevKey);
+    if (!prev || prev.equity <= 0) continue;
+    yoy.push({
+      month: row.month,
+      day: row.day,
+      yoy: row.equity / prev.equity - 1,
+    });
   }
-  if (avg36 == null) avg36 = average36m(yoy);
-
-  const lines = [];
-  if (stitch.length >= 2) lines.push({ id: "stitch", label: STITCH_COPY.stitch, color: STITCH_COLORS.stitch, points: stitch });
-  if (paper.length >= 2) lines.push({ id: "paper", label: STITCH_COPY.paper, color: STITCH_COLORS.paper, points: paper });
-  if (ema.length >= 2) lines.push({ id: "ema", label: STITCH_COPY.ema, color: STITCH_COLORS.ema, points: ema });
-
-  const hist = yoy.length ? yoy : [];
-  const drawable = lines.length > 0 || hist.length > 0;
-  return {
-    empty: !drawable,
-    message: drawable ? "" : STITCH_EMPTY_LINE,
-    lines,
-    yoy: hist,
-    avg36: hist.length && avg36 != null && Number.isFinite(avg36) ? avg36 : null,
-  };
+  const sma = new Array(yoy.length).fill(null);
+  for (let i = 0; i < yoy.length; i += 1) {
+    if (i + 1 < SMA_MONTHS) continue;
+    let ok = true;
+    for (let j = i - SMA_MONTHS + 1; j < i; j += 1) {
+      const a = monthIndex(yoy[j].month);
+      const b = monthIndex(yoy[j + 1].month);
+      if (a == null || b == null || b - a !== 1) {
+        ok = false;
+        break;
+      }
+    }
+    if (!ok) continue;
+    let sum = 0;
+    for (let j = i - SMA_MONTHS + 1; j <= i; j += 1) sum += yoy[j].yoy;
+    sma[i] = sum / SMA_MONTHS;
+  }
+  return yoy.map((row, i) => ({ ...row, sma36: sma[i] }));
 }
 
-export function stitchView(backtests, botId, accountId) {
-  const pack = lookupStitchPack(backtests, botId, accountId);
-  if (!pack) return { empty: true, message: STITCH_EMPTY_LINE, lines: [], yoy: [], avg36: null };
-  return resolveStitchModel(pack);
+function indexToMonth(index) {
+  const y = Math.floor(index / 12);
+  const m = (index % 12) + 1;
+  return `${y}-${String(m).padStart(2, "0")}`;
 }
 
+/**
+ * @returns {{ok:true, joinDay:string, daily:object[], monthly:object[], yoy:object[]}
+ *   | {ok:false, reason:string, joinDay?:string, paperStart?:string, backtestEnd?:string}}
+ */
+export function stitchEquity(backtestPoints, paperPoints) {
+  const backtest = collapseDays(backtestPoints);
+  const paper = collapseDays(paperPoints);
+  if (paper.length < 1) return { ok: false, reason: "no_paper" };
+  if (backtest.length < 2) return { ok: false, reason: "no_backtest" };
+  const paperStart = paper[0].day;
+  const paper0 = paper[0].eq;
+  let join = null;
+  for (const row of backtest) {
+    if (row.day <= paperStart) join = row;
+  }
+  if (!join) {
+    return {
+      ok: false,
+      reason: "backtest_after_paper",
+      paperStart,
+      backtestEnd: backtest[backtest.length - 1].day,
+    };
+  }
+  const gap = daysBetween(join.day, paperStart);
+  if (gap > GAP_DAYS) {
+    return {
+      ok: false,
+      reason: "gap",
+      joinDay: join.day,
+      paperStart,
+      backtestEnd: join.day,
+    };
+  }
+  const head = backtest.filter((row) => row.day < paperStart).map((row) => ({
+    day: row.day,
+    eq: row.eq,
+    segment: "backtest",
+  }));
+  const tail = paper.map((row) => ({
+    day: row.day,
+    eq: (join.eq * row.eq) / paper0,
+    segment: "paper",
+  }));
+  const dailyRaw = [...head, ...tail];
+  const emas = emaSeries(dailyRaw.map((row) => row.eq), EMA_SPAN);
+  const daily = dailyRaw.map((row, i) => ({ ...row, ema100: emas[i] }));
+  const monthly = toMonthly(daily);
+  const yoy = yoyAndSma(monthly);
+  return { ok: true, joinDay: join.day, paperStart, daily, monthly, yoy };
+}
+
+export function seriesKey(account) {
+  return `${account?.bot_id}::${account?.account_id}`;
+}
+
+export function backtestPointsFor(backtests, account) {
+  const key = seriesKey(account);
+  const row = backtests?.series?.[key];
+  return Array.isArray(row?.points) ? row.points : [];
+}
+
+export function stitchCaption(result) {
+  if (!result || result.ok) return "";
+  if (result.reason === "no_backtest") {
+    return "Склейки нет: нет дневного бэктеста до старта бумаги.";
+  }
+  if (result.reason === "no_paper") {
+    return "Склейки нет: у бумаги ещё нет точек эквити.";
+  }
+  if (result.reason === "gap") {
+    return `Склейки нет: бэктест кончается ${result.backtestEnd}, бумага начинается ${result.paperStart}. Дыра больше ${GAP_DAYS} дней.`;
+  }
+  if (result.reason === "backtest_after_paper") {
+    return "Склейки нет: бэктест начинается позже бумаги.";
+  }
+  return "Склейки нет.";
+}

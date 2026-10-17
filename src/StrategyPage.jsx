@@ -25,7 +25,7 @@ import {
   hasRateCycleAccountLine,
   rateCycleDescription,
 } from "./rateCycleCard.js";
-import StitchBlock from "./StitchBlock.jsx";
+import StitchedCharts from "./StitchedCharts.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -89,7 +89,7 @@ function LimitsTable({ limits }) {
   );
 }
 
-function AccountBlock({ a, points, backtests, showStitch }) {
+function AccountBlock({ a, points, backtests }) {
   const [mode, setMode] = useState(initialChartMode);
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
@@ -231,9 +231,8 @@ function AccountBlock({ a, points, backtests, showStitch }) {
           priceDigits={isEthOkxMoex(a) ? 2 : undefined}
         />
       </div>
+      <StitchedCharts account={a} paperPoints={points} backtests={backtests} />
       <MayakFromStart account={a} hasData={hasData} />
-
-      {showStitch ? <StitchBlock botId={a.bot_id} accountId={a.account_id} backtests={backtests} /> : null}
 
       <h3 className="subhead">Открытые позиции</h3>
       {historyCard ? (
@@ -291,13 +290,12 @@ export default function StrategyPage({ botId, data, history, backtests, onBack }
 
       <StrategyPassport botId={botId} logic={logic} />
 
-      {accounts.map((a, i) => (
+      {accounts.map((a) => (
         <AccountBlock
           key={`${a.bot_id}-${a.account_id}`}
           a={a}
           points={pointsFor(a)}
           backtests={backtests}
-          showStitch={i === 0}
         />
       ))}
     </div>

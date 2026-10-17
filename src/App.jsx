@@ -322,13 +322,13 @@ export default function App() {
         .then((r) => (r.ok ? r.json() : null))
         .catch(() => null),
       fetch(`${base}data/backtests.json`)
-        .then((r) => (r.ok ? r.json() : { series: {} }))
-        .catch(() => ({ series: {} })),
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null),
     ])
-      .then(([latest, hist, stitches]) => {
+      .then(([latest, hist, books]) => {
         setData(normalizeLatest(latest));
         setHistory(normalizeHistory(hist));
-        setBacktests(stitches && typeof stitches === "object" ? stitches : { series: {} });
+        setBacktests(books);
       })
       .catch((e) => setErr(String(e.message || e)));
   }, []);
