@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import { ColorType, HistogramSeries, LineSeries, createChart } from "lightweight-charts";
 import {
+  backtestHonestyLines,
   backtestPointsFor,
+  backtestRowFor,
   stitchCaption,
   stitchEquity,
 } from "./stitchEquity.js";
@@ -139,6 +141,14 @@ function YoyChart({ yoy }) {
   return <div ref={elRef} className="stitch-chart stitch-chart-short" />;
 }
 
+function HonestyNotes({ backtests, account }) {
+  const lines = backtestHonestyLines(backtestRowFor(backtests, account));
+  if (!lines.length) return null;
+  return lines.map((line) => (
+    <p key={line} className="updated stitch-meta">{line}</p>
+  ));
+}
+
 export default function StitchedCharts({ account, paperPoints, backtests }) {
   const backtest = backtestPointsFor(backtests, account);
   const result = stitchEquity(backtest, paperPoints);
@@ -154,6 +164,7 @@ export default function StitchedCharts({ account, paperPoints, backtests }) {
   return (
     <section className="stitch-block">
       <h3 className="subhead">Бэктест и бумага, помесячно</h3>
+      <HonestyNotes backtests={backtests} account={account} />
       <p className="stitch-legend">
         <span className="swatch swatch-backtest" /> склейка
         <span className="swatch swatch-paper" /> бумага с {result.paperStart}

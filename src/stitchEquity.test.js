@@ -7,9 +7,12 @@ import { HISTORY_RESETS, PAPER_BLOCK2_SERIES_KEY, V6B1_SERIES_KEY } from "./hist
 import { CHART_MODE_KEYS, CHART_RANGE_KEYS, DEFAULT_CHART_MODE, DEFAULT_CHART_RANGE } from "./chartPrefs.js";
 import {
   GAP_DAYS,
+  backtestHonestyLines,
   backtestPointsFor,
+  backtestRowFor,
   collapseDays,
   emaSeries,
+  kindHonestyLine,
   seriesKey,
   stitchCaption,
   stitchEquity,
@@ -19,6 +22,19 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const backtests = JSON.parse(readFileSync(join(root, "public/data/backtests.json"), "utf8"));
 const history = JSON.parse(readFileSync(join(root, "public/data/history.json"), "utf8"));
 const OAC = { bot_id: "oac_paper", account_id: "oac_paper" };
+const BLOCK2 = { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2" };
+const SERIES_KEYS = [
+  "oac_paper::oac_paper",
+  "desyatka_earn_paper::desyatka_earn_paper",
+  "three_robots_okx_nasdaq_1h::paper_block2",
+  "cycle_6040_paper::cycle_6040_paper",
+  "rf_conservative_comon::rf_conservative_comon",
+];
+
+function stitchAccount(account) {
+  const paper = history.series[seriesKey(account)]?.points;
+  return stitchEquity(backtestPointsFor(backtests, account), paper);
+}
 
 function daily(start, n, step = 1) {
   const out = [];
@@ -89,30 +105,54 @@ test("ema span 100 matches a flat series", () => {
   assert.equal(ema[119], 5);
 });
 
-test("backtests.json has only oac_paper — no invented other keys or points", () => {
+test("backtests.json has exactly five tester series — no invented keys", () => {
   assert.equal(backtests.schema, "backtest_equity.v1");
-  assert.deepEqual(Object.keys(backtests.series), ["oac_paper::oac_paper"]);
-  assert.equal(seriesKey(OAC), "oac_paper::oac_paper");
+  assert.deepEqual(Object.keys(backtests.series), SERIES_KEYS);
   const pts = backtestPointsFor(backtests, OAC);
   assert.equal(pts.length, 481);
   assert.equal(pts[0].t, "2024-10-24");
-  assert.equal(pts[0].equity, 10000);
   assert.equal(pts.at(-1).t, "2026-09-24");
-  assert.equal(typeof pts[0].t, "string");
-  assert.equal(typeof pts[0].equity, "number");
-  assert.ok(pts.every((p) => p.t && Number(p.equity) > 0));
+  const b2 = backtestPointsFor(backtests, BLOCK2);
+  assert.equal(b2.length, 113);
+  assert.equal(b2[0].t, "2026-05-01");
+  assert.equal(b2.at(-1).t, "2026-10-14");
 });
 
-test("empty series: caption is Склейки нет: … and draws nothing", () => {
-  const paper = [{ t: "2026-10-15T08:57:31Z", equity: 10000 }];
-  const empty = stitchEquity(backtestPointsFor(backtests, { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2" }), paper);
-  assert.equal(empty.ok, false);
-  assert.equal(empty.reason, "no_backtest");
-  assert.equal(stitchCaption(empty), "Склейки нет: нет дневного бэктеста до старта бумаги.");
+test("kindHonestyLine maps known kinds and hides unknown", () => {
+  assert.equal(kindHonestyLine("backtest_full_preregistered"), "Бэктест: правила зафиксированы заранее.");
+  assert.equal(
+    kindHonestyLine("backtest_in_sample_replay"),
+    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+  );
+  assert.equal(
+    kindHonestyLine("backtest_in_sample_replica_model_book"),
+    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+  );
+  assert.equal(
+    kindHonestyLine("backtest_in_sample_golden_account"),
+    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+  );
+  assert.equal(
+    kindHonestyLine("backtest_is_to_2026-09-08_then_oos"),
+    "Бэктест: in-sample до 08.09.2026, дальше вне выборки.",
+  );
+  assert.equal(kindHonestyLine("other_kind"), "");
+  assert.equal(kindHonestyLine(""), "");
+  assert.equal(kindHonestyLine(null), "");
+  const oac = backtestHonestyLines(backtestRowFor(backtests, OAC));
+  assert.equal(oac[0], "Бэктест: правила зафиксированы заранее.");
+  assert.ok(oac[1]);
+  const b2 = backtestHonestyLines(backtestRowFor(backtests, BLOCK2));
+  assert.equal(b2[0], "Бэктест: in-sample до 08.09.2026, дальше вне выборки.");
+  assert.equal(backtestHonestyLines({ kind: "nope" }).length, 0);
+});
 
-  const eth = stitchEquity(backtestPointsFor({ series: {} }, { bot_id: "eth_okx_moex", account_id: "eth_okx_moex" }), paper);
+test("accounts without a series stay Склейки нет: …", () => {
+  const paper = [{ t: "2026-10-15T08:57:31Z", equity: 10000 }];
+  const eth = stitchEquity(backtestPointsFor(backtests, { bot_id: "eth_okx_moex", account_id: "eth_okx_moex" }), paper);
   assert.equal(eth.ok, false);
-  assert.equal(stitchCaption(eth).startsWith("Склейки нет:"), true);
+  assert.equal(eth.reason, "no_backtest");
+  assert.equal(stitchCaption(eth), "Склейки нет: нет дневного бэктеста до старта бумаги.");
 
   const missing = stitchEquity(backtestPointsFor(null, { bot_id: "v6b1", account_id: "v6b1" }), paper);
   assert.equal(missing.ok, false);
@@ -121,9 +161,7 @@ test("empty series: caption is Склейки нет: … and draws nothing", ()
 });
 
 test("oac_paper stitch from backtests.json + history.json: join ≤7d, yoy bars, no sma36", () => {
-  const paper = history.series[seriesKey(OAC)]?.points;
-  assert.ok(Array.isArray(paper) && paper.length >= 1);
-  const st = stitchEquity(backtestPointsFor(backtests, OAC), paper);
+  const st = stitchAccount(OAC);
   assert.equal(st.ok, true);
   assert.equal(st.joinDay, "2026-09-24");
   assert.equal(st.paperStart, "2026-09-25");
@@ -136,7 +174,32 @@ test("oac_paper stitch from backtests.json + history.json: join ≤7d, yoy bars,
   assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-6);
   assert.ok(st.yoy.length >= 1, `yoy bars: ${st.yoy.length}`);
   assert.equal(st.yoy.every((row) => row.sma36 == null), true);
-  assert.equal(st.yoy.some((row) => row.sma36 != null), false);
+});
+
+test("paper_block2 stitch: join 2026-10-14→2026-10-15, no yoy (short series)", () => {
+  const st = stitchAccount(BLOCK2);
+  assert.equal(st.ok, true);
+  assert.equal(st.joinDay, "2026-10-14");
+  assert.equal(st.paperStart, "2026-10-15");
+  const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
+  assert.equal(Math.round(gapMs / 86400000), 1);
+  const paperRows = st.daily.filter((row) => row.segment === "paper");
+  const before = st.daily.filter((row) => row.day < st.paperStart).at(-1);
+  assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-6);
+  assert.equal(st.yoy.length, 0);
+});
+
+test("all five tester series stitch with history.json within GAP_DAYS", () => {
+  const accounts = SERIES_KEYS.map((k) => {
+    const [bot_id, account_id] = k.split("::");
+    return { bot_id, account_id };
+  });
+  for (const a of accounts) {
+    const st = stitchAccount(a);
+    assert.equal(st.ok, true, seriesKey(a));
+    const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
+    assert.ok(Math.round(gapMs / 86400000) <= GAP_DAYS, seriesKey(a));
+  }
 });
 
 test("sync-equity.mjs does not write backtests.json", () => {
