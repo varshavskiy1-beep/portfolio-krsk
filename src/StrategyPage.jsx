@@ -27,6 +27,7 @@ import {
   rateCycleDescription,
 } from "./rateCycleCard.js";
 import StitchedCharts from "./StitchedCharts.jsx";
+import { stitchPaperPoints } from "./stitchEquity.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -90,7 +91,7 @@ function LimitsTable({ limits }) {
   );
 }
 
-function AccountBlock({ a, points, backtests, generatedAt }) {
+function AccountBlock({ a, points, history, backtests, generatedAt }) {
   const [mode, setMode] = useState(initialChartMode);
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
@@ -234,7 +235,7 @@ function AccountBlock({ a, points, backtests, generatedAt }) {
       </div>
       <StitchedCharts
         account={a}
-        paperPoints={points}
+        paperPoints={stitchPaperPoints(a, points, history)}
         backtests={backtests}
         generatedAt={generatedAt}
       />
@@ -315,6 +316,7 @@ export default function StrategyPage({
           key={`${a.bot_id}-${a.account_id}`}
           a={a}
           points={pointsFor(a)}
+          history={history}
           backtests={backtests}
           generatedAt={data.generated_at}
         />

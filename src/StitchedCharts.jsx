@@ -145,7 +145,7 @@ function YoyChart({ yoy }) {
 function HonestyNotes({ backtests, account, generatedAt }) {
   const row = backtestRowFor(backtests, account);
   const lines = [
-    ...backtestHonestyLines(row),
+    ...backtestHonestyLines(row, account),
     backtestSourceLine(row?.source),
     feedSourceLine(generatedAt),
   ].filter(Boolean);

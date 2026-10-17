@@ -5,6 +5,9 @@ import {
   PAPER_BLOCK2_RESET_FROM,
   PAPER_BLOCK2_RESET_LINE,
   PAPER_BLOCK2_SERIES_KEY,
+  RATE_CYCLE_RESET_EQUITY,
+  RATE_CYCLE_RESET_FROM,
+  RATE_CYCLE_SERIES_KEY,
   V6B1_RESET_FROM,
   V6B1_SERIES_KEY,
   applyHistoryResets,
@@ -135,6 +138,42 @@ test("reset caption shows while the new book has one calendar day", () => {
   assert.equal(historyResetLine({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo" }, V6B1_OLD), "");
 });
 
-test("HISTORY_RESETS lists paper_block2 and v6b1", () => {
-  assert.deepEqual(Object.keys(HISTORY_RESETS).sort(), [PAPER_BLOCK2_SERIES_KEY, V6B1_SERIES_KEY].sort());
+test("HISTORY_RESETS lists paper_block2, v6b1 and rate-cycle", () => {
+  assert.deepEqual(
+    Object.keys(HISTORY_RESETS).sort(),
+    [PAPER_BLOCK2_SERIES_KEY, RATE_CYCLE_SERIES_KEY, V6B1_SERIES_KEY].sort(),
+  );
+});
+
+test("rf_bonds_rate_cycle cutoff drops wealth-index 2.44 and keeps the first ruble print", () => {
+  const mixed = [
+    { t: "2026-10-09T09:37:15Z", equity: 2.441925306087005 },
+    { t: RATE_CYCLE_RESET_FROM, equity: RATE_CYCLE_RESET_EQUITY },
+    { t: "2026-10-17T01:01:54Z", equity: 300909.56 },
+  ];
+  const kept = filterResetPoints(RATE_CYCLE_SERIES_KEY, mixed);
+  assert.equal(kept.length, 2);
+  assert.equal(kept[0].t, RATE_CYCLE_RESET_FROM);
+  assert.equal(kept[0].equity, 300000);
+  assert.equal(kept.every((p) => p.equity > 1000), true);
+  assert.equal(isBeforeReset("2026-10-09T09:37:15Z", RATE_CYCLE_RESET_FROM), true);
+  assert.equal(isBeforeReset(RATE_CYCLE_RESET_FROM, RATE_CYCLE_RESET_FROM), false);
+  assert.equal(shouldAppendHistoryPoint(RATE_CYCLE_SERIES_KEY, "2026-10-09T09:37:15Z"), false);
+  assert.equal(shouldAppendHistoryPoint(RATE_CYCLE_SERIES_KEY, RATE_CYCLE_RESET_FROM), true);
+
+  const hist = {
+    series: {
+      [RATE_CYCLE_SERIES_KEY]: {
+        bot_id: "rf_bonds_rate_cycle",
+        account_id: "rf_bonds_rate_cycle",
+        points: mixed,
+      },
+    },
+  };
+  applyHistoryResets(hist);
+  assert.equal(hist.series[RATE_CYCLE_SERIES_KEY].points[0].equity, 300000);
+  assert.equal(
+    hist.series[RATE_CYCLE_SERIES_KEY].points.some((p) => p.equity < 10),
+    false,
+  );
 });

@@ -4,6 +4,8 @@
  * Скачок на стыке не допускается: бумага продолжается с уровня бэктеста.
  */
 
+import { filterResetPoints, seriesKey as resetSeriesKey } from "./historyReset.js";
+
 export const GAP_DAYS = 7;
 export const EMA_SPAN = 100;
 export const YOY_MONTHS = 12;
@@ -184,7 +186,29 @@ export function stitchEquity(backtestPoints, paperPoints) {
 }
 
 export function seriesKey(account) {
-  return `${account?.bot_id}::${account?.account_id}`;
+  return resetSeriesKey(account) || `${account?.bot_id}::${account?.account_id}`;
+}
+
+/**
+ * Для склейки берём накопленный history.json (после reset_from), иначе точки карточки.
+ * Иначе у Юань 360 короткий account.history даёт дыру > 7 дней.
+ */
+export function stitchPaperPoints(account, cardPoints, history) {
+  const key = seriesKey(account);
+  const histPts = history?.series?.[key]?.points;
+  const raw = Array.isArray(histPts) && histPts.length ? histPts : cardPoints || [];
+  return filterResetPoints(key, raw);
+}
+
+export const EXTRA_HONESTY_BY_KEY = {
+  "three_robots_okx_nasdaq_1h::paper_block2":
+    "Издержки не совпадают: в бэктесте 3 б.п. на сделку без funding, бумажная книга не списывает ни комиссию, ни funding.",
+  "eth_okx_moex::eth_okx_moex":
+    "В бэктесте не учтены целые контракты, ГО и дисконт LQDT.",
+};
+
+export function extraHonestyLine(account) {
+  return EXTRA_HONESTY_BY_KEY[seriesKey(account)] || "";
 }
 
 export function backtestRowFor(backtests, account) {
@@ -214,12 +238,14 @@ export function kindHonestyLine(kind) {
   return "";
 }
 
-export function backtestHonestyLines(row) {
+export function backtestHonestyLines(row, account) {
   const lines = [];
   const kind = kindHonestyLine(row?.kind);
   if (kind) lines.push(kind);
   const costs = row?.costs == null ? "" : String(row.costs).trim();
   if (costs) lines.push(costs);
+  const extra = extraHonestyLine(account);
+  if (extra) lines.push(extra);
   return lines;
 }
 

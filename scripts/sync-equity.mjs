@@ -57,7 +57,8 @@ function appendHistory(latest) {
   const hist = loadHistoryFile(historyPath);
   const gen = latest.generated_at || new Date().toISOString();
   hist.updated_at = gen;
-  // paper_block2 reset_from 2026-10-15T08:57:31Z; v6b1 reset_from 2026-10-15T17:27:12Z.
+  // paper_block2 reset_from 2026-10-15T08:57:31Z; v6b1 reset_from 2026-10-15T17:27:12Z;
+  // rf_bonds_rate_cycle reset_from 2026-10-10T08:13:19Z (drop wealth-index 2.44).
   // Drop the old books even if this history.json (or a merge with master) still has them.
   applyHistoryResets(hist);
   for (const a of latest.accounts || []) {

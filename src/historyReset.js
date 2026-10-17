@@ -13,6 +13,13 @@ export const V6B1_SERIES_KEY = "v6b1::v6b1";
 export const V6B1_RESET_FROM = "2026-10-15T17:27:12Z";
 export const V6B1_RESET_EQUITY = 10000;
 
+/** Индекс богатства ~2,44 до перевода книги в рубли. Первая рублёвая точка ≈ 300 000. */
+export const RATE_CYCLE_SERIES_KEY = "rf_bonds_rate_cycle::rf_bonds_rate_cycle";
+export const RATE_CYCLE_RESET_FROM = "2026-10-10T08:13:19Z";
+export const RATE_CYCLE_RESET_EQUITY = 300000;
+export const RATE_CYCLE_RESET_LINE =
+  "Индексная точка до перевода книги в рубли скрыта; дальше учёт в рублях.";
+
 export const HISTORY_RESETS = {
   [PAPER_BLOCK2_SERIES_KEY]: {
     resetFrom: PAPER_BLOCK2_RESET_FROM,
@@ -23,6 +30,11 @@ export const HISTORY_RESETS = {
     resetFrom: V6B1_RESET_FROM,
     seedPoint: { t: V6B1_RESET_FROM, equity: V6B1_RESET_EQUITY },
     caption: PAPER_BLOCK2_RESET_LINE,
+  },
+  [RATE_CYCLE_SERIES_KEY]: {
+    resetFrom: RATE_CYCLE_RESET_FROM,
+    seedPoint: { t: RATE_CYCLE_RESET_FROM, equity: RATE_CYCLE_RESET_EQUITY },
+    caption: RATE_CYCLE_RESET_LINE,
   },
 };
 
