@@ -207,7 +207,23 @@ export const EXTRA_HONESTY_BY_KEY = {
     "В бэктесте не учтены целые контракты, ГО и дисконт LQDT.",
   "v6b1::v6b1":
     "Бэктест пересчитан честно: вход только после закрытия дневной свечи. Бумажный бот входит и по незакрытой свече и торгует только топ-60 монет по объёму, поэтому результаты могут расходиться.",
+  "who_pays::paper_crypto_perp":
+    "Бэктест короткий: 32 дня с 19.08.2026 — раньше у OKX нет публичных данных по фандингу и открытому интересу. Две сделки, обе лонг BTC. Только in-sample, без проверки вне выборки.",
 };
+
+export const WHO_PAYS_NO_TAPE_KEYS = [
+  "who_pays::paper_us_eq",
+  "who_pays::paper_ru_eq",
+  "who_pays::paper_forts",
+  "who_pays::paper_crypto_spot",
+];
+
+export const NO_TAPE_BACKTEST_LINE =
+  "Бэктеста нет: сигналы считаются по ленте сделок и стакану, а публичного архива этих данных нет.";
+
+export function noTapeHonestyLine(account) {
+  return WHO_PAYS_NO_TAPE_KEYS.includes(seriesKey(account)) ? NO_TAPE_BACKTEST_LINE : "";
+}
 
 export function extraHonestyLine(account) {
   return EXTRA_HONESTY_BY_KEY[seriesKey(account)] || "";
@@ -233,6 +249,8 @@ export const SOURCE_RU_BY_KEY = {
     "Источник ряда: пересчёт тестировщика 17.10.2026 по заданию и коду бота (коммит ed93732), часовые свечи Московской биржи без выходных.",
   "v6b1::v6b1":
     "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 95b78e2), дневные свечи OKX с 2020 года. Вход только после закрытия дневной свечи.",
+  "who_pays::paper_crypto_perp":
+    "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 89e21d7), публичные данные OKX с 19.08.2026.",
 };
 
 export const COSTS_RU_BY_KEY = {
@@ -254,6 +272,8 @@ export const COSTS_RU_BY_KEY = {
     "биржа 0,47 + брокер 1 б.п. на сторону, проскальзывание 1 шаг 0,001 ₽; ролл и переворот — 2 стороны; целые контракты; LQDT ~ на весь капитал",
   "v6b1::v6b1":
     "Комиссия 6 б.п. на сторону от номинала; без фандинга и проскальзывания, как в бумажной книге. Риск 1% от свободных денег, не больше двух позиций, номинал не больше 25%.",
+  "who_pays::paper_crypto_perp":
+    "комиссия 5 б.п. + проскальзывание 3 б.п. на сторону, фандинг по фактической ставке OKX",
 };
 
 const CARD_JARGON_RE =
@@ -297,13 +317,13 @@ export function kindHonestyLine(kind) {
     return "Бэктест: правила зафиксированы заранее.";
   }
   if (k === "backtest_is_to_2026-09-08_then_oos") {
-    return "Бэктест: in-sample до 08.09.2026, дальше вне выборки.";
+    return "Бэктест: на тех же данных, где подбирались правила, до 08.09.2026, дальше вне выборки.";
   }
   if (k === "backtest_causal_gate_reimplementation") {
-    return "Бэктест: in-sample до 30.06.2026, дальше вне выборки.";
+    return "Бэктест: на тех же данных, где подбирались правила, до 30.06.2026, дальше вне выборки.";
   }
-  if (k.startsWith("backtest_in_sample_")) {
-    return "Бэктест: только in-sample, параметры подбирались на этом же окне.";
+  if (k === "in_sample" || k === "backtest_in_sample" || k.startsWith("backtest_in_sample_")) {
+    return "Бэктест: только на тех же данных, где подбирались правила.";
   }
   return "";
 }

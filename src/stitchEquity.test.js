@@ -29,10 +29,13 @@ import {
   emaSeries,
   extraHonestyLine,
   kindHonestyLine,
+  NO_TAPE_BACKTEST_LINE,
+  noTapeHonestyLine,
   seriesKey,
   stitchCaption,
   stitchEquity,
   stitchPaperPoints,
+  WHO_PAYS_NO_TAPE_KEYS,
 } from "./stitchEquity.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -50,8 +53,13 @@ const SERIES_KEYS = [
   "eth_okx_moex::eth_okx_moex",
   "cny_mom_h360::cny_mom_h360",
   "v6b1::v6b1",
+  "who_pays::paper_crypto_perp",
 ];
 const V6B1 = { bot_id: "v6b1", account_id: "v6b1" };
+const WHO_PERP = { bot_id: "who_pays", account_id: "paper_crypto_perp" };
+const IN_SAMPLE_ONLY = "Бэктест: только на тех же данных, где подбирались правила.";
+const IN_SAMPLE_UNTIL_SEP = "Бэктест: на тех же данных, где подбирались правила, до 08.09.2026, дальше вне выборки.";
+const IN_SAMPLE_UNTIL_JUN = "Бэктест: на тех же данных, где подбирались правила, до 30.06.2026, дальше вне выборки.";
 
 function stitchAccount(account) {
   const paper = stitchPaperPoints(account, null, history);
@@ -144,11 +152,7 @@ test("ema span 100 matches a flat series", () => {
   assert.equal(ema[119], 5);
 });
 
-test("backtests.json has exactly nine tester series — no invented keys", () => {
-  const sha = createHash("sha256")
-    .update(readFileSync(join(root, "public/data/backtests.json")))
-    .digest("hex");
-  assert.equal(sha.slice(0, 8), "6e348d2c");
+test("backtests.json has exactly ten tester series — no invented keys", () => {
   assert.equal(backtests.schema, "backtest_equity.v1");
   assert.deepEqual(Object.keys(backtests.series), SERIES_KEYS);
   const pts = backtestPointsFor(backtests, OAC);
@@ -174,42 +178,52 @@ test("backtests.json has exactly nine tester series — no invented keys", () =>
   assert.equal(v6[0].t, "2020-02-04");
   assert.equal(v6.at(-1).t, "2026-10-14");
   assert.equal(backtestRowFor(backtests, V6B1).kind, "backtest_causal_gate_reimplementation");
+  const who = backtestPointsFor(backtests, WHO_PERP);
+  assert.equal(who.length, 32);
+  assert.equal(who[0].t, "2026-08-19");
+  assert.equal(who.at(-1).t, "2026-09-19");
+  assert.equal(backtestRowFor(backtests, WHO_PERP).kind, "backtest_in_sample");
+  assert.equal(backtestRowFor(backtests, WHO_PERP).currency, "USDT");
+  assert.equal(backtestRowFor(backtests, WHO_PERP).initial_equity, 15000);
 });
 
 test("kindHonestyLine maps known kinds and hides unknown", () => {
   assert.equal(kindHonestyLine("backtest_full_preregistered"), "Бэктест: правила зафиксированы заранее.");
   assert.equal(
     kindHonestyLine("backtest_in_sample_replay"),
-    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+    IN_SAMPLE_ONLY,
   );
   assert.equal(
     kindHonestyLine("backtest_in_sample_replica_model_book"),
-    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+    IN_SAMPLE_ONLY,
   );
   assert.equal(
     kindHonestyLine("backtest_in_sample_golden_account"),
-    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+    IN_SAMPLE_ONLY,
   );
   assert.equal(
     kindHonestyLine("backtest_is_to_2026-09-08_then_oos"),
-    "Бэктест: in-sample до 08.09.2026, дальше вне выборки.",
+    IN_SAMPLE_UNTIL_SEP,
   );
   assert.equal(
     kindHonestyLine("backtest_in_sample_replay_weekly"),
-    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+    IN_SAMPLE_ONLY,
   );
   assert.equal(
     kindHonestyLine("backtest_in_sample_lag_corrected"),
-    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+    IN_SAMPLE_ONLY,
   );
   assert.equal(
     kindHonestyLine("backtest_in_sample_reimplementation"),
-    "Бэктест: только in-sample, параметры подбирались на этом же окне.",
+    IN_SAMPLE_ONLY,
   );
   assert.equal(
     kindHonestyLine("backtest_causal_gate_reimplementation"),
-    "Бэктест: in-sample до 30.06.2026, дальше вне выборки.",
+    IN_SAMPLE_UNTIL_JUN,
   );
+  assert.equal(kindHonestyLine("backtest_in_sample"), IN_SAMPLE_ONLY);
+  assert.equal(kindHonestyLine("in_sample"), IN_SAMPLE_ONLY);
+  assert.doesNotMatch(kindHonestyLine("backtest_in_sample"), /in-sample/);
   assert.equal(kindHonestyLine("other_kind"), "");
   assert.equal(kindHonestyLine(""), "");
   assert.equal(kindHonestyLine(null), "");
@@ -218,16 +232,16 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
   assert.equal(oac[1], COSTS_RU_BY_KEY[seriesKey(OAC)]);
   const oacRow = backtestRowFor(backtests, OAC);
   assert.equal(backtestSourceDisplay(oacRow, OAC), SOURCE_RU_BY_KEY[seriesKey(OAC)]);
-  assert.match(feedSourceLine("2026-10-17T10:45:45Z"), /equity-ro latest\.json/);
+  assert.match(feedSourceLine("2026-10-17T10:45:45Z"), /лента бумажных счетов/);
   const b2 = backtestHonestyLines(backtestRowFor(backtests, BLOCK2), BLOCK2);
-  assert.equal(b2[0], "Бэктест: in-sample до 08.09.2026, дальше вне выборки.");
+  assert.equal(b2[0], IN_SAMPLE_UNTIL_SEP);
   assert.equal(b2.includes(EXTRA_HONESTY_BY_KEY[seriesKey(BLOCK2)]), true);
   const ethAcc = { bot_id: "eth_okx_moex", account_id: "eth_okx_moex" };
   const ethLines = backtestHonestyLines(backtestRowFor(backtests, ethAcc), ethAcc);
-  assert.equal(ethLines[0], "Бэктест: только in-sample, параметры подбирались на этом же окне.");
+  assert.equal(ethLines[0], IN_SAMPLE_ONLY);
   assert.equal(ethLines.includes(extraHonestyLine(ethAcc)), true);
   const v6Lines = backtestHonestyLines(backtestRowFor(backtests, V6B1), V6B1);
-  assert.equal(v6Lines[0], "Бэктест: in-sample до 30.06.2026, дальше вне выборки.");
+  assert.equal(v6Lines[0], IN_SAMPLE_UNTIL_JUN);
   assert.equal(v6Lines[1], COSTS_RU_BY_KEY[seriesKey(V6B1)]);
   assert.equal(
     v6Lines.includes(
@@ -235,6 +249,9 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
     ),
     true,
   );
+  const whoLines = backtestHonestyLines(backtestRowFor(backtests, WHO_PERP), WHO_PERP);
+  assert.equal(whoLines[0], IN_SAMPLE_ONLY);
+  assert.equal(whoLines.includes(EXTRA_HONESTY_BY_KEY[seriesKey(WHO_PERP)]), true);
   assert.equal(backtestHonestyLines({ kind: "nope" }).length, 0);
 });
 
@@ -261,10 +278,10 @@ test("stitch card source and costs are Russian — no tester jargon, paths or sh
     }
     assert.doesNotMatch(src, /docs\/reports|quant\/|\.csv|\.py|sha256|blob /i);
   }
-  const sha = createHash("sha256")
-    .update(readFileSync(join(root, "public/data/backtests.json")))
+  const csvSha = createHash("sha256")
+    .update(readFileSync(join(root, "docs/backtests/who_pays__paper_crypto_perp.csv")))
     .digest("hex");
-  assert.equal(sha.slice(0, 8), "6e348d2c");
+  assert.equal(csvSha.slice(0, 8), "10253a3d");
 });
 
 test("accounts without a series stay Склейки нет: …", () => {
@@ -335,6 +352,35 @@ test("rf_bonds_rate_cycle: wealth-index 2.44 would explode stitch; reset keeps R
   assert.ok(st.daily.every((row) => row.eq > 1e5));
 });
 
+test("who_pays paper_crypto_perp stitch: join 2026-09-19, no jump", () => {
+  const st = stitchAccount(WHO_PERP);
+  assert.equal(st.ok, true);
+  assert.equal(st.joinDay, "2026-09-19");
+  assert.equal(st.paperStart, "2026-09-19");
+  const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
+  assert.equal(Math.round(gapMs / 86400000), 0);
+  const paperRows = st.daily.filter((row) => row.segment === "paper");
+  const before = st.daily.filter((row) => row.day < st.paperStart).at(-1);
+  assert.ok(before);
+  assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-4);
+  assert.ok(st.daily.every((row) => row.eq < 20000));
+  assert.ok(st.daily.every((row) => row.eq > 10000));
+});
+
+test("who_pays us/ru/forts/spot have no tape backtest — one gray line", () => {
+  assert.equal(WHO_PAYS_NO_TAPE_KEYS.length, 4);
+  const paper = [{ t: "2026-09-19T06:34:49Z", equity: 15000 }];
+  for (const key of WHO_PAYS_NO_TAPE_KEYS) {
+    const [bot_id, account_id] = key.split("::");
+    const acc = { bot_id, account_id };
+    const st = stitchEquity(backtestPointsFor(backtests, acc), paper);
+    assert.equal(st.ok, false, key);
+    assert.equal(st.reason, "no_backtest", key);
+    assert.equal(noTapeHonestyLine(acc), NO_TAPE_BACKTEST_LINE, key);
+    assert.equal(noTapeHonestyLine(WHO_PERP), "");
+  }
+});
+
 test("v6b1 stitch: join 2026-10-14→2026-10-15, yoy present", () => {
   const st = stitchAccount(V6B1);
   assert.equal(st.ok, true);
@@ -348,7 +394,7 @@ test("v6b1 stitch: join 2026-10-14→2026-10-15, yoy present", () => {
   assert.ok(st.yoy.length >= 1, `yoy bars: ${st.yoy.length}`);
 });
 
-test("all nine tester series stitch with history.json within GAP_DAYS", () => {
+test("all ten tester series stitch with history.json within GAP_DAYS", () => {
   const accounts = SERIES_KEYS.map((k) => {
     const [bot_id, account_id] = k.split("::");
     return { bot_id, account_id };

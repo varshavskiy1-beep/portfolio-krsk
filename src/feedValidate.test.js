@@ -82,7 +82,7 @@ test("P07: stale after 40 minutes; refresh interval is 5 minutes", () => {
 
 test("P08: feed and backtest source lines stay honest about primary quotes", () => {
   const feed = feedSourceLine("2026-10-17T10:45:45Z");
-  assert.match(feed, /equity-ro latest\.json/);
+  assert.match(feed, /лента бумажных счетов/);
   assert.match(feed, /2026-10-17T10:45:45Z/);
   assert.match(feed, /не проверялись/);
   const src = backtestSourceLine("repo@abc docs/reports/nav.csv");

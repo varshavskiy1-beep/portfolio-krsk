@@ -12,7 +12,7 @@ export const PCT_NO_POSITIVE_SEED = "Доходность не рассчита�
 export const STALE_LABEL = "снимок просрочен";
 export const REFRESH_MS = 5 * 60 * 1000;
 export const STALE_AFTER_MS = 40 * 60 * 1000;
-export const FEED_SOURCE_NAME = "equity-ro latest.json";
+export const FEED_SOURCE_NAME = "лента бумажных счетов";
 
 export function isNonEmptyString(v) {
   return typeof v === "string" && v.trim() !== "";

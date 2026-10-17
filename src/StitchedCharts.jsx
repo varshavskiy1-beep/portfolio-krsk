@@ -6,6 +6,7 @@ import {
   backtestPointsFor,
   backtestRowFor,
   backtestSourceDisplay,
+  noTapeHonestyLine,
   stitchCaption,
   stitchEquity,
 } from "./stitchEquity.js";
@@ -160,6 +161,16 @@ export default function StitchedCharts({ account, paperPoints, backtests, genera
   const backtest = backtestPointsFor(backtests, account);
   const result = stitchEquity(backtest, paperPoints);
   if (!result.ok) {
+    const noTape = noTapeHonestyLine(account);
+    if (noTape) {
+      return (
+        <section className="stitch-block">
+          <h3 className="subhead">Бэктест и бумага</h3>
+          <p className="updated stitch-meta">{noTape}</p>
+          <p className="note">Склейки нет</p>
+        </section>
+      );
+    }
     return (
       <section className="stitch-block">
         <h3 className="subhead">Бэктест и бумага</h3>
