@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react";
 import { ColorType, HistogramSeries, LineSeries, createChart } from "lightweight-charts";
-import { backtestSourceLine, feedSourceLine } from "./feedValidate.js";
+import { feedSourceLine } from "./feedValidate.js";
 import {
   backtestHonestyLines,
   backtestPointsFor,
   backtestRowFor,
+  backtestSourceDisplay,
   stitchCaption,
   stitchEquity,
 } from "./stitchEquity.js";
@@ -146,7 +147,7 @@ function HonestyNotes({ backtests, account, generatedAt }) {
   const row = backtestRowFor(backtests, account);
   const lines = [
     ...backtestHonestyLines(row, account),
-    backtestSourceLine(row?.source),
+    backtestSourceDisplay(row, account),
     feedSourceLine(generatedAt),
   ].filter(Boolean);
   if (!lines.length) return null;

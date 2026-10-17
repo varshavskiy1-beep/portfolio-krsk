@@ -213,6 +213,71 @@ export function extraHonestyLine(account) {
   return EXTRA_HONESTY_BY_KEY[seriesKey(account)] || "";
 }
 
+/** Карточка: путь, sha и англ. жаргон остаются в MANIFEST, не здесь. */
+export const SOURCE_RU_BY_KEY = {
+  "oac_paper::oac_paper":
+    "Источник ряда: пересчёт тестировщика по правилам, зафиксированным заранее (коммит 0bc436a), дневная стоимость счёта с октября 2024.",
+  "desyatka_earn_paper::desyatka_earn_paper":
+    "Источник ряда: повтор тестировщика по коду бота (коммит 6b6ef27), цены открытия следующего дня, с октября 2024.",
+  "three_robots_okx_nasdaq_1h::paper_block2":
+    "Источник ряда: пересчёт тестировщика 17.10.2026 по замороженным правилам блока 2 (коммит 8967c62), часовые данные OKX и Yahoo.",
+  "cycle_6040_paper::cycle_6040_paper":
+    "Источник ряда: повтор тестировщика по реплике робота (коммит bc8e4c1), дневная стоимость с сентября 2016.",
+  "rf_conservative_comon::rf_conservative_comon":
+    "Источник ряда: эталонный счёт тестировщика на 50 000 ₽ (коммит 67c19d7), паи фондов с сентября 2019.",
+  "rf_bonds_rate_cycle::rf_bonds_rate_cycle":
+    "Источник ряда: повтор тестировщика по коду бота (коммит a752acc), недельные точки с июня 2019.",
+  "eth_okx_moex::eth_okx_moex":
+    "Источник ряда: пересчёт тестировщика со сдвигом знака на один час (коммит 8b2d974), как в бумажном роботе.",
+  "cny_mom_h360::cny_mom_h360":
+    "Источник ряда: пересчёт тестировщика 17.10.2026 по заданию и коду бота (коммит ed93732), часовые свечи Московской биржи без выходных.",
+  "v6b1::v6b1":
+    "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 95b78e2), дневные свечи OKX с 2020 года. Вход только после закрытия дневной свечи.",
+};
+
+export const COSTS_RU_BY_KEY = {
+  "oac_paper::oac_paper":
+    "Комиссия 5 б.п., проскальзывание 10 б.п. у ликвидных бумаг и 25 б.п. у остальных; фонд коротких казначейских 2 б.п.; сделка по открытию следующего дня.",
+  "desyatka_earn_paper::desyatka_earn_paper":
+    "Комиссия 5 б.п. и проскальзывание 10 б.п.; сделка по открытию следующего дня; доли бумаг можно дробные.",
+  "three_robots_okx_nasdaq_1h::paper_block2":
+    "3 б.п. на изменение позиции; фандинг не учтён; исполнение по цене закрытия.",
+  "cycle_6040_paper::cycle_6040_paper":
+    "Издержки фондов 1,3% и 0,9% годовых, комиссия 0,10% на сделку; исполнение на второй сессии дня.",
+  "rf_conservative_comon::rf_conservative_comon":
+    "6 б.п., только целые паи фондов.",
+  "rf_bonds_rate_cycle::rf_bonds_rate_cycle":
+    "12 б.п. на сменяемую долю облигаций, 5 б.п. на смену веса юаня; первая позиция без комиссии",
+  "eth_okx_moex::eth_okx_moex":
+    "2 б.п. на сторону номинала при плече 0,5; переворот и перекладка — 2 стороны; дробные контракты, без LQDT и ГО",
+  "cny_mom_h360::cny_mom_h360":
+    "биржа 0,47 + брокер 1 б.п. на сторону, проскальзывание 1 шаг 0,001 ₽; ролл и переворот — 2 стороны; целые контракты; LQDT ~ на весь капитал",
+  "v6b1::v6b1":
+    "Комиссия 6 б.п. на сторону от номинала; без фандинга и проскальзывания, как в бумажной книге. Риск 1% от свободных денег, не больше двух позиций, номинал не больше 25%.",
+};
+
+const CARD_JARGON_RE =
+  /fee_bps|PaperLedger|\bqty\b|build_radar_setups|sim_pdh_radar|confirm\s*=\s*1|regression kit|cost_bps_research|too_tight_stop|fill close|B_session|net-cost|\bbps\b|docs\/reports|quant\/|\.csv|\.py|\.json|\.md|blob |sha256|cursor\//i;
+
+export function costsHonestyLine(row, account) {
+  const mapped = COSTS_RU_BY_KEY[seriesKey(account)];
+  if (mapped) return mapped;
+  const costs = row?.costs == null ? "" : String(row.costs).trim();
+  return costs;
+}
+
+export function backtestSourceDisplay(row, account) {
+  const mapped = SOURCE_RU_BY_KEY[seriesKey(account)];
+  if (mapped) return mapped;
+  const s = row?.source == null ? "" : String(row.source).trim();
+  if (!s) return "";
+  return `Источник ряда: ${s}. Первичные котировки этим кабинетом не проверялись.`;
+}
+
+export function cardLineHasTesterJargon(text) {
+  return CARD_JARGON_RE.test(String(text || ""));
+}
+
 export function backtestRowFor(backtests, account) {
   const key = seriesKey(account);
   const row = backtests?.series?.[key];
@@ -247,7 +312,7 @@ export function backtestHonestyLines(row, account) {
   const lines = [];
   const kind = kindHonestyLine(row?.kind);
   if (kind) lines.push(kind);
-  const costs = row?.costs == null ? "" : String(row.costs).trim();
+  const costs = costsHonestyLine(row, account);
   if (costs) lines.push(costs);
   const extra = extraHonestyLine(account);
   if (extra) lines.push(extra);

@@ -13,14 +13,19 @@ import {
   filterResetPoints,
 } from "./historyReset.js";
 import { CHART_MODE_KEYS, CHART_RANGE_KEYS, DEFAULT_CHART_MODE, DEFAULT_CHART_RANGE } from "./chartPrefs.js";
-import { backtestSourceLine, feedSourceLine } from "./feedValidate.js";
+import { feedSourceLine } from "./feedValidate.js";
 import {
+  COSTS_RU_BY_KEY,
   EXTRA_HONESTY_BY_KEY,
   GAP_DAYS,
+  SOURCE_RU_BY_KEY,
   backtestHonestyLines,
   backtestPointsFor,
   backtestRowFor,
+  backtestSourceDisplay,
+  cardLineHasTesterJargon,
   collapseDays,
+  costsHonestyLine,
   emaSeries,
   extraHonestyLine,
   kindHonestyLine,
@@ -208,11 +213,11 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
   assert.equal(kindHonestyLine("other_kind"), "");
   assert.equal(kindHonestyLine(""), "");
   assert.equal(kindHonestyLine(null), "");
-  const oac = backtestHonestyLines(backtestRowFor(backtests, OAC));
+  const oac = backtestHonestyLines(backtestRowFor(backtests, OAC), OAC);
   assert.equal(oac[0], "Бэктест: правила зафиксированы заранее.");
-  assert.ok(oac[1]);
+  assert.equal(oac[1], COSTS_RU_BY_KEY[seriesKey(OAC)]);
   const oacRow = backtestRowFor(backtests, OAC);
-  assert.match(backtestSourceLine(oacRow.source), /Источник ряда/);
+  assert.equal(backtestSourceDisplay(oacRow, OAC), SOURCE_RU_BY_KEY[seriesKey(OAC)]);
   assert.match(feedSourceLine("2026-10-17T10:45:45Z"), /equity-ro latest\.json/);
   const b2 = backtestHonestyLines(backtestRowFor(backtests, BLOCK2), BLOCK2);
   assert.equal(b2[0], "Бэктест: in-sample до 08.09.2026, дальше вне выборки.");
@@ -223,6 +228,7 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
   assert.equal(ethLines.includes(extraHonestyLine(ethAcc)), true);
   const v6Lines = backtestHonestyLines(backtestRowFor(backtests, V6B1), V6B1);
   assert.equal(v6Lines[0], "Бэктест: in-sample до 30.06.2026, дальше вне выборки.");
+  assert.equal(v6Lines[1], COSTS_RU_BY_KEY[seriesKey(V6B1)]);
   assert.equal(
     v6Lines.includes(
       "Бэктест пересчитан честно: вход только после закрытия дневной свечи. Бумажный бот входит и по незакрытой свече и торгует только топ-60 монет по объёму, поэтому результаты могут расходиться.",
@@ -230,6 +236,35 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
     true,
   );
   assert.equal(backtestHonestyLines({ kind: "nope" }).length, 0);
+});
+
+test("stitch card source and costs are Russian — no tester jargon, paths or sha", () => {
+  assert.equal(Object.keys(SOURCE_RU_BY_KEY).sort().join("\n"), SERIES_KEYS.slice().sort().join("\n"));
+  assert.equal(Object.keys(COSTS_RU_BY_KEY).sort().join("\n"), SERIES_KEYS.slice().sort().join("\n"));
+  assert.equal(
+    SOURCE_RU_BY_KEY[seriesKey(V6B1)],
+    "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 95b78e2), дневные свечи OKX с 2020 года. Вход только после закрытия дневной свечи.",
+  );
+  assert.doesNotMatch(COSTS_RU_BY_KEY[seriesKey(V6B1)], /fee_bps|PaperLedger|\bqty\b|too_tight_stop/i);
+  for (const key of SERIES_KEYS) {
+    const [bot_id, account_id] = key.split("::");
+    const acc = { bot_id, account_id };
+    const row = backtestRowFor(backtests, acc);
+    const src = backtestSourceDisplay(row, acc);
+    const costs = costsHonestyLine(row, acc);
+    assert.match(src, /^Источник ряда:/, key);
+    assert.equal(src, SOURCE_RU_BY_KEY[key], key);
+    assert.equal(cardLineHasTesterJargon(src), false, src);
+    assert.equal(cardLineHasTesterJargon(costs), false, costs);
+    for (const line of backtestHonestyLines(row, acc)) {
+      assert.equal(cardLineHasTesterJargon(line), false, line);
+    }
+    assert.doesNotMatch(src, /docs\/reports|quant\/|\.csv|\.py|sha256|blob /i);
+  }
+  const sha = createHash("sha256")
+    .update(readFileSync(join(root, "public/data/backtests.json")))
+    .digest("hex");
+  assert.equal(sha.slice(0, 8), "6e348d2c");
 });
 
 test("accounts without a series stay Склейки нет: …", () => {
