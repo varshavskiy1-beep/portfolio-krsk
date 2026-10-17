@@ -202,7 +202,8 @@ function UnifiedStitchedChart({ model, asOfDay, paperStart }) {
       timeScale: {
         visible: true,
         borderColor: "#e5e1d8",
-        rightOffset: 4,
+        rightOffset: 6,
+        ticksVisible: true,
         timeVisible: false,
         secondsVisible: false,
         minimumHeight: 36,

@@ -561,6 +561,8 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   overflow: hidden;
   box-sizing: border-box;
   background: #f3f1ec;
+  /* Inset the host from the rounded clip so time-axis labels stay inside. */
+  padding: 4px 8px 8px;
 }
 .stitch-chart-host {
   width: 100%;
