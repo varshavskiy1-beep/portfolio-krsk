@@ -3,6 +3,7 @@
  * Pull equity-ro latest.json and append points into public/data/history.json.
  * After SCP, remaps cash currency by venue / bot_id (OKX crypto → USDT, FORTS/RU → RUB, US_EQ → USD).
  * --local skips SCP and only remaps the existing public/data snapshot + history series currency.
+ * Does not read or write public/data/backtests.json (stitched daily books are committed separately).
  * Env: EQUITY_HOST (default 193.109.85.48), EQUITY_USER (equity-ro),
  *      EQUITY_KEY (path to private key), EQUITY_REMOTE (/var/lib/equity-ro/latest.json)
  */
