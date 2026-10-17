@@ -9,7 +9,7 @@ import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { initialChartMode, persistChartMode } from "./chartPrefs.js";
-import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import { lastEquityValue, resolveChartBase, resolveEquityPoints } from "./equityChartModel.js";
 import { LOAD_ERROR_RU, LIVE_FOOTER_LABEL, REFRESH_MS, RETRY_LABEL } from "./feedValidate.js";
 import { fetchCabinetSnapshot } from "./loadFeed.js";
 import { cardUpdatedLine } from "./mayakCard.js";
@@ -74,7 +74,7 @@ function goHome() {
   window.location.hash = "";
 }
 
-function AccountCard({ a, historyPoints, onOpenStrategy }) {
+function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
   const [mode, setMode] = useState(initialChartMode);
   const currency = canonicalCurrency(a);
   const title = cardTitle(a);
@@ -93,6 +93,9 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
+  const chartBase = showLine
+    ? resolveChartBase(a, historyPoints, backtests)
+    : { base: null, caption: null };
   const positions = hasData || historyCard ? a.positions || [] : [];
   const fromStart = isRfBondsRateCycle(a)
     ? fromStartPctLine(a)
@@ -183,10 +186,11 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
       </div>
       <EquityChart
         points={historyPoints}
-        seed={seed}
+        seed={chartBase.base}
         currency={currency}
         mode={mode}
         priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+        baseCaption={mode === "pct" ? chartBase.caption : null}
       />
       <MayakFromStart account={a} hasData={hasData} />
 
@@ -228,7 +232,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   );
 }
 
-function Home({ data, history, filter, setFilter, fetchedAt, loadError, onRetry }) {
+function Home({ data, history, backtests, filter, setFilter, fetchedAt, loadError, onRetry }) {
   const accounts = useMemo(() => mergePortalAccounts(data.accounts || []), [data]);
 
   const bots = useMemo(() => {
@@ -296,6 +300,7 @@ function Home({ data, history, filter, setFilter, fetchedAt, loadError, onRetry 
             key={`${a.bot_id}-${a.account_id}`}
             a={a}
             historyPoints={pointsFor(a)}
+            backtests={backtests}
             onOpenStrategy={goStrategy}
           />
         ))}
@@ -409,6 +414,7 @@ export default function App() {
     <Home
       data={data}
       history={history}
+      backtests={backtests}
       filter={filter}
       setFilter={setFilter}
       fetchedAt={fetchedAt}

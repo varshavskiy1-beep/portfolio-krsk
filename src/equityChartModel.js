@@ -1,5 +1,6 @@
 import { cnyMomHistoryPoints } from "./cnyMomCard.js";
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
+import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
 import { hasAccountData, isCnyMomH360, isEthOkxMoex, isRfBondsRateCycle } from "./strategyMeta.js";
@@ -36,6 +37,12 @@ export function toUnix(t) {
 export function parseSeed(seed) {
   const seedN = seed == null || seed === "" ? NaN : Number(seed);
   return Number.isFinite(seedN) ? seedN : null;
+}
+
+/** В ленте нет поля seed (пустое / отсутствует) — не путать с seed=0. */
+export function feedSeedMissing(account) {
+  const s = account?.seed;
+  return s == null || s === "";
 }
 
 /** Точка уже равна начальному капиталу — вторую на этом уровне не клеим. */
@@ -130,6 +137,28 @@ export function pctModeUnavailable(seed, mode) {
   if (mode !== "pct") return false;
   const seedN = parseSeed(seed);
   return !(seedN > 0);
+}
+
+/**
+ * База для «В %»: seed из ленты, если поле есть (включая 0 / не число → P03);
+ * иначе initial_equity ряда бэктеста, если > 0 (без подписи);
+ * иначе первая реальная точка истории, если > 0 (с серой подписью).
+ * Синтетическую точку и сдвиг на день не добавляем.
+ */
+export function resolveChartBase(account, points, backtests) {
+  if (!feedSeedMissing(account)) {
+    const seedN = parseSeed(account.seed);
+    return { base: seedN != null && seedN > 0 ? seedN : null, caption: null };
+  }
+  const initial = parseSeed(backtests?.series?.[seriesKey(account)]?.initial_equity);
+  if (initial != null && initial > 0) {
+    return { base: initial, caption: null };
+  }
+  const first = normalizePoints(points)[0];
+  if (first && first.eq > 0) {
+    return { base: first.eq, caption: PCT_BASE_FROM_FIRST_POINT };
+  }
+  return { base: null, caption: null };
 }
 
 /** Горизонтальная справочная линия начального капитала, без выдуманной даты. */

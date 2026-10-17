@@ -252,6 +252,8 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
   const whoLines = backtestHonestyLines(backtestRowFor(backtests, WHO_PERP), WHO_PERP);
   assert.equal(whoLines[0], IN_SAMPLE_ONLY);
   assert.equal(whoLines.includes(EXTRA_HONESTY_BY_KEY[seriesKey(WHO_PERP)]), true);
+  assert.match(EXTRA_HONESTY_BY_KEY[seriesKey(WHO_PERP)], /Проверки вне выборки не было\./);
+  assert.doesNotMatch(EXTRA_HONESTY_BY_KEY[seriesKey(WHO_PERP)], /Только in-sample/);
   assert.equal(backtestHonestyLines({ kind: "nope" }).length, 0);
 });
 

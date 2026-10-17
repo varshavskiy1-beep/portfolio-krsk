@@ -9,6 +9,8 @@ export const RETRY_LABEL = "Повторить";
 export const ONLY_PAPER_TRADE = "только бумажная торговля";
 export const LIVE_FOOTER_LABEL = "Не на сайте (живые счета)";
 export const PCT_NO_POSITIVE_SEED = "Доходность не рассчитана: нет положительного начального капитала";
+export const PCT_BASE_FROM_FIRST_POINT =
+  "Доходность считается от первой записи счёта: начальный капитал в ленте не указан.";
 export const STALE_LABEL = "снимок просрочен";
 export const REFRESH_MS = 5 * 60 * 1000;
 export const STALE_AFTER_MS = 40 * 60 * 1000;

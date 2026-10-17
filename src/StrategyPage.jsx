@@ -7,7 +7,7 @@ import PositionsTable from "./PositionsTable.jsx";
 import RateCycleDetails from "./RateCycleDetails.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { initialChartMode, persistChartMode } from "./chartPrefs.js";
-import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import { lastEquityValue, resolveChartBase, resolveEquityPoints } from "./equityChartModel.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import {
   cnyMomDescription,
@@ -125,6 +125,7 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
   const pct = delta != null && seed ? (delta / seed) * 100 : null;
+  const chartBase = showLine ? resolveChartBase(a, points, backtests) : { base: null, caption: null };
 
   useEffect(() => {
     if (!fs) return undefined;
@@ -225,12 +226,13 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
         <EquityChart
           key={fs ? "fs" : "norm"}
           points={points}
-          seed={seed}
+          seed={chartBase.base}
           currency={currency}
           mode={mode}
           fill={fs}
           height={280}
           priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+          baseCaption={mode === "pct" ? chartBase.caption : null}
         />
       </div>
       <StitchedCharts

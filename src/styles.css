@@ -208,6 +208,12 @@ header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
 .delta.pos { color: var(--good); }
 .delta.neg { color: var(--bad); }
 .note, .updated { color: var(--muted); font-size: 0.85rem; }
+.chart-base-caption {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 6px 0 0;
+  line-height: 1.35;
+}
 .bot-label { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
 .table-scroll {
   width: 100%;
@@ -434,6 +440,10 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 }
 .chart-panel-fs .tv-chart .chart-toolbar {
   flex: 0 0 auto;
+}
+.chart-panel-fs .chart-base-caption {
+  flex: 0 0 auto;
+  margin: 4px 0 8px;
 }
 .chart-panel-fs .tv-chart-stage {
   flex: 1 1 0;

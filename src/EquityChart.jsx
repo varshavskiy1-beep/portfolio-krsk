@@ -96,6 +96,7 @@ export default function EquityChart({
   height = 280,
   fill = false,
   priceDigits,
+  baseCaption,
 }) {
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
@@ -306,6 +307,7 @@ export default function EquityChart({
         />
         {fill ? <div className="tv-chart-timeband" aria-hidden="true" /> : null}
       </div>
+      {ready && baseCaption ? <p className="chart-base-caption">{baseCaption}</p> : null}
     </div>
   );
 }

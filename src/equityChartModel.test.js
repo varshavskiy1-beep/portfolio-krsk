@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
+import { PCT_BASE_FROM_FIRST_POINT, PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import {
   CHART_NEG,
   CHART_POS,
@@ -8,6 +8,7 @@ import {
   chartSeriesColors,
   defaultChartRange,
   expandPriceRange,
+  feedSeedMissing,
   formatChartPctLabel,
   isAlreadySeed,
   isChartUpVsSeed,
@@ -15,6 +16,7 @@ import {
   normalizePoints,
   pctModeUnavailable,
   priceRangeIncludingSeed,
+  resolveChartBase,
   resolveEquityPoints,
   seedPriceLineSpec,
   toUnix,
@@ -75,6 +77,20 @@ test("P03: Infinity JSON string is dropped; zero seed blocks percent mode", () =
   assert.equal(money[0].value, 0);
   assert.ok(money.every((row) => Number.isFinite(row.value)));
   assert.equal(PCT_NO_POSITIVE_SEED, "Доходность не рассчитана: нет положительного начального капитала");
+  const blockedZero = resolveChartBase(
+    { bot_id: "x", account_id: "x", seed: 0 },
+    [{ t: "2026-10-17", equity: 100 }],
+    { series: { "x::x": { initial_equity: 15000 } } },
+  );
+  assert.equal(blockedZero.base, null);
+  assert.equal(blockedZero.caption, null);
+  assert.equal(pctModeUnavailable(blockedZero.base, "pct"), true);
+  assert.deepEqual(buildSeries([{ t: "2026-10-17", equity: 100 }], blockedZero.base, "pct"), []);
+  const weirdSeed = { bot_id: "x", account_id: "x", seed: "Infinity" };
+  const blockedNaN = resolveChartBase(weirdSeed, [{ t: "2026-10-17", equity: 100 }], null);
+  assert.equal(feedSeedMissing(weirdSeed), false);
+  assert.equal(blockedNaN.base, null);
+  assert.equal(pctModeUnavailable(blockedNaN.base, "pct"), true);
 });
 
 test("forts_adr_adaptive: last equity above seed stays green without a fake start point", () => {
@@ -634,6 +650,51 @@ test("mayak: main equity only, seed from feed, no invented line when absent", ()
   };
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
   assert.deepEqual(buildSeries([], 85_000, "money"), []);
+});
+
+test("missing seed uses first real history print as % base, no synthetic day", () => {
+  const points = [
+    { t: "2026-09-19T06:34:49Z", equity: 25000 },
+    { t: "2026-10-17T15:14:47Z", equity: 24858.53 },
+  ];
+  const account = { bot_id: "who_pays", account_id: "paper_us_eq" };
+  const resolved = resolveChartBase(account, points, { series: {} });
+  assert.equal(feedSeedMissing(account), true);
+  assert.equal(resolved.base, 25000);
+  assert.equal(resolved.caption, PCT_BASE_FROM_FIRST_POINT);
+  const pct = buildSeries(points, resolved.base, "pct");
+  assert.equal(pct.length, 2);
+  assert.equal(pct[0].time, toUnix(points[0].t));
+  assert.notEqual(pct[0].time, toUnix(points[0].t) - 86400);
+  assert.equal(pct[0].value, 0);
+  assert.ok(pct[1].value < 0);
+  const noPrint = resolveChartBase(account, [], null);
+  assert.equal(noPrint.base, null);
+  assert.equal(noPrint.caption, null);
+  assert.equal(pctModeUnavailable(noPrint.base, "pct"), true);
+  const zeroPrint = resolveChartBase(account, [{ t: "2026-09-19", equity: 0 }], null);
+  assert.equal(zeroPrint.base, null);
+  assert.equal(pctModeUnavailable(zeroPrint.base, "pct"), true);
+  assert.deepEqual(buildSeries([{ t: "2026-09-19", equity: 0 }], zeroPrint.base, "pct"), []);
+});
+
+test("missing seed prefers backtest initial_equity over first print, no caption", () => {
+  const points = [
+    { t: "2026-09-19T06:34:49Z", equity: 14900.72 },
+    { t: "2026-10-17T15:14:47Z", equity: 14998.1 },
+  ];
+  const account = { bot_id: "who_pays", account_id: "paper_crypto_perp" };
+  const backtests = { series: { "who_pays::paper_crypto_perp": { initial_equity: 15000 } } };
+  const resolved = resolveChartBase(account, points, backtests);
+  assert.equal(resolved.base, 15000);
+  assert.equal(resolved.caption, null);
+  const pct = buildSeries(points, resolved.base, "pct");
+  assert.equal(pct.length, 2);
+  assert.ok(pct[0].value < 0);
+  assert.ok(pct[0].value > -1);
+  const seeded = resolveChartBase({ ...account, seed: "10000" }, points, backtests);
+  assert.equal(seeded.base, 10000);
+  assert.equal(seeded.caption, null);
 });
 
 test("lastEquityValue reads scalar or last series point", () => {
