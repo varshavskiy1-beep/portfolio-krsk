@@ -184,10 +184,40 @@ export function seriesKey(account) {
   return `${account?.bot_id}::${account?.account_id}`;
 }
 
-export function backtestPointsFor(backtests, account) {
+export function backtestRowFor(backtests, account) {
   const key = seriesKey(account);
   const row = backtests?.series?.[key];
+  return row && typeof row === "object" ? row : null;
+}
+
+export function backtestPointsFor(backtests, account) {
+  const row = backtestRowFor(backtests, account);
   return Array.isArray(row?.points) ? row.points : [];
+}
+
+/** Честная пометка типа бэктеста. Неизвестный kind — пустая строка. */
+export function kindHonestyLine(kind) {
+  if (kind == null || kind === "") return "";
+  const k = String(kind);
+  if (k === "backtest_full_preregistered") {
+    return "Бэктест: правила зафиксированы заранее.";
+  }
+  if (k === "backtest_is_to_2026-09-08_then_oos") {
+    return "Бэктест: in-sample до 08.09.2026, дальше вне выборки.";
+  }
+  if (k.startsWith("backtest_in_sample_")) {
+    return "Бэктест: только in-sample, параметры подбирались на этом же окне.";
+  }
+  return "";
+}
+
+export function backtestHonestyLines(row) {
+  const lines = [];
+  const kind = kindHonestyLine(row?.kind);
+  if (kind) lines.push(kind);
+  const costs = row?.costs == null ? "" : String(row.costs).trim();
+  if (costs) lines.push(costs);
+  return lines;
 }
 
 export function stitchCaption(result) {
