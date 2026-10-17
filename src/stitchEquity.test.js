@@ -6,15 +6,19 @@ import { fileURLToPath } from "node:url";
 import { HISTORY_RESETS, PAPER_BLOCK2_SERIES_KEY, V6B1_SERIES_KEY } from "./historyReset.js";
 import { CHART_MODE_KEYS, CHART_RANGE_KEYS, DEFAULT_CHART_MODE, DEFAULT_CHART_RANGE } from "./chartPrefs.js";
 import {
+  GAP_DAYS,
   backtestPointsFor,
   collapseDays,
   emaSeries,
+  seriesKey,
   stitchCaption,
   stitchEquity,
 } from "./stitchEquity.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const backtests = JSON.parse(readFileSync(join(root, "public/data/backtests.json"), "utf8"));
+const history = JSON.parse(readFileSync(join(root, "public/data/history.json"), "utf8"));
+const OAC = { bot_id: "oac_paper", account_id: "oac_paper" };
 
 function daily(start, n, step = 1) {
   const out = [];
@@ -85,10 +89,18 @@ test("ema span 100 matches a flat series", () => {
   assert.equal(ema[119], 5);
 });
 
-test("backtests.json series is empty — no invented rows", () => {
+test("backtests.json has only oac_paper — no invented other keys or points", () => {
   assert.equal(backtests.schema, "backtest_equity.v1");
-  assert.deepEqual(backtests.series, {});
-  assert.equal(Object.keys(backtests.series).length, 0);
+  assert.deepEqual(Object.keys(backtests.series), ["oac_paper::oac_paper"]);
+  assert.equal(seriesKey(OAC), "oac_paper::oac_paper");
+  const pts = backtestPointsFor(backtests, OAC);
+  assert.equal(pts.length, 481);
+  assert.equal(pts[0].t, "2024-10-24");
+  assert.equal(pts[0].equity, 10000);
+  assert.equal(pts.at(-1).t, "2026-09-24");
+  assert.equal(typeof pts[0].t, "string");
+  assert.equal(typeof pts[0].equity, "number");
+  assert.ok(pts.every((p) => p.t && Number(p.equity) > 0));
 });
 
 test("empty series: caption is Склейки нет: … and draws nothing", () => {
@@ -106,6 +118,34 @@ test("empty series: caption is Склейки нет: … and draws nothing", ()
   assert.equal(missing.ok, false);
   assert.equal(stitchCaption({ ok: false, reason: "no_paper" }), "Склейки нет: у бумаги ещё нет точек эквити.");
   assert.equal(stitchCaption({ ok: false, reason: "backtest_after_paper" }), "Склейки нет: бэктест начинается позже бумаги.");
+});
+
+test("oac_paper stitch from backtests.json + history.json: join ≤7d, yoy bars, no sma36", () => {
+  const paper = history.series[seriesKey(OAC)]?.points;
+  assert.ok(Array.isArray(paper) && paper.length >= 1);
+  const st = stitchEquity(backtestPointsFor(backtests, OAC), paper);
+  assert.equal(st.ok, true);
+  assert.equal(st.joinDay, "2026-09-24");
+  assert.equal(st.paperStart, "2026-09-25");
+  const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
+  const gapDays = Math.round(gapMs / 86400000);
+  assert.ok(gapDays <= GAP_DAYS);
+  const paperRows = st.daily.filter((row) => row.segment === "paper");
+  const before = st.daily.filter((row) => row.day < st.paperStart).at(-1);
+  assert.ok(before);
+  assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-6);
+  assert.ok(st.yoy.length >= 1, `yoy bars: ${st.yoy.length}`);
+  assert.equal(st.yoy.every((row) => row.sma36 == null), true);
+  assert.equal(st.yoy.some((row) => row.sma36 != null), false);
+});
+
+test("sync-equity.mjs does not write backtests.json", () => {
+  const src = readFileSync(join(root, "scripts/sync-equity.mjs"), "utf8");
+  const writes = [...src.matchAll(/writeFileSync\(([^,]+)/g)].map((m) => m[1]);
+  assert.ok(writes.includes("historyPath"));
+  assert.ok(writes.includes("latestPath"));
+  assert.equal(writes.some((w) => /backtest/i.test(w)), false);
+  assert.equal(/writeFileSync\([^)]*backtests/.test(src), false);
 });
 
 test("reset_from and chart v2 defaults are untouched", () => {
