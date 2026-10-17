@@ -205,6 +205,8 @@ export const EXTRA_HONESTY_BY_KEY = {
     "Издержки не совпадают: в бэктесте 3 б.п. на сделку без funding, бумажная книга не списывает ни комиссию, ни funding.",
   "eth_okx_moex::eth_okx_moex":
     "В бэктесте не учтены целые контракты, ГО и дисконт LQDT.",
+  "v6b1::v6b1":
+    "Бэктест пересчитан честно: вход только после закрытия дневной свечи. Бумажный бот входит и по незакрытой свече и торгует только топ-60 монет по объёму, поэтому результаты могут расходиться.",
 };
 
 export function extraHonestyLine(account) {
@@ -231,6 +233,9 @@ export function kindHonestyLine(kind) {
   }
   if (k === "backtest_is_to_2026-09-08_then_oos") {
     return "Бэктест: in-sample до 08.09.2026, дальше вне выборки.";
+  }
+  if (k === "backtest_causal_gate_reimplementation") {
+    return "Бэктест: in-sample до 30.06.2026, дальше вне выборки.";
   }
   if (k.startsWith("backtest_in_sample_")) {
     return "Бэктест: только in-sample, параметры подбирались на этом же окне.";
