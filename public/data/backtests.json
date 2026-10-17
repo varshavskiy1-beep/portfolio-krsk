@@ -1,5 +1,5 @@
 {
-  "schema": "equity_stitch.v1",
+  "schema": "backtest_equity.v1",
   "updated_at": null,
   "series": {}
 }
