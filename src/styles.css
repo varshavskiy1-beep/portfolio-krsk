@@ -47,6 +47,20 @@ header h1 {
   overflow-wrap: anywhere;
 }
 header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
+.meta .stale { color: var(--bad); }
+.load-banner {
+  margin: 8px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff8f0;
+  color: var(--ink);
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 .chip {
   border: 1px solid var(--line);

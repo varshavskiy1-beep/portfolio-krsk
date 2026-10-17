@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { HISTORY_RESETS, PAPER_BLOCK2_SERIES_KEY, V6B1_SERIES_KEY } from "./historyReset.js";
 import { CHART_MODE_KEYS, CHART_RANGE_KEYS, DEFAULT_CHART_MODE, DEFAULT_CHART_RANGE } from "./chartPrefs.js";
+import { backtestSourceLine, feedSourceLine } from "./feedValidate.js";
 import {
   GAP_DAYS,
   backtestHonestyLines,
@@ -45,6 +46,23 @@ function daily(start, n, step = 1) {
   }
   return out;
 }
+
+test("P04: collapseDays keeps zero as -100% and negatives so stitch can reject them", () => {
+  const input = [
+    { t: "2026-10-15", equity: 100 },
+    { t: "2026-10-16", equity: 0 },
+    { t: "2026-10-17", equity: -20 },
+  ];
+  assert.deepEqual(collapseDays(input), [
+    { day: "2026-10-15", eq: 100 },
+    { day: "2026-10-16", eq: 0 },
+    { day: "2026-10-17", eq: -20 },
+  ]);
+  const st = stitchEquity(input, [{ t: "2026-10-16", equity: 50 }]);
+  assert.equal(st.ok, false);
+  assert.equal(st.reason, "negative_equity");
+  assert.equal(stitchCaption(st), "Склейки нет: отрицательная стоимость счёта.");
+});
 
 test("collapse keeps the last print of a day", () => {
   const rows = collapseDays([
@@ -142,6 +160,9 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
   const oac = backtestHonestyLines(backtestRowFor(backtests, OAC));
   assert.equal(oac[0], "Бэктест: правила зафиксированы заранее.");
   assert.ok(oac[1]);
+  const oacRow = backtestRowFor(backtests, OAC);
+  assert.match(backtestSourceLine(oacRow.source), /Источник ряда/);
+  assert.match(feedSourceLine("2026-10-17T10:45:45Z"), /equity-ro latest\.json/);
   const b2 = backtestHonestyLines(backtestRowFor(backtests, BLOCK2));
   assert.equal(b2[0], "Бэктест: in-sample до 08.09.2026, дальше вне выборки.");
   assert.equal(backtestHonestyLines({ kind: "nope" }).length, 0);
@@ -204,11 +225,12 @@ test("all five tester series stitch with history.json within GAP_DAYS", () => {
 
 test("sync-equity.mjs does not write backtests.json", () => {
   const src = readFileSync(join(root, "scripts/sync-equity.mjs"), "utf8");
-  const writes = [...src.matchAll(/writeFileSync\(([^,]+)/g)].map((m) => m[1]);
-  assert.ok(writes.includes("historyPath"));
-  assert.ok(writes.includes("latestPath"));
-  assert.equal(writes.some((w) => /backtest/i.test(w)), false);
+  assert.match(src, /writeJsonAtomic\(historyPath/);
+  assert.match(src, /writeJsonAtomic\(latestPath/);
+  assert.doesNotMatch(src, /writeFileSync\(historyPath/);
+  assert.doesNotMatch(src, /function loadJson\(p, fallback\)/);
   assert.equal(/writeFileSync\([^)]*backtests/.test(src), false);
+  assert.equal(/writeJsonAtomic\([^)]*backtests/.test(src), false);
 });
 
 test("reset_from and chart v2 defaults are untouched", () => {

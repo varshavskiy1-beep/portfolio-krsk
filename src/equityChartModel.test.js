@@ -1,9 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import {
   CHART_NEG,
   CHART_POS,
-  DAY_SEC,
   buildSeries,
   chartSeriesColors,
   defaultChartRange,
@@ -11,9 +11,12 @@ import {
   formatChartPctLabel,
   isAlreadySeed,
   isChartUpVsSeed,
-  priceRangeIncludingSeed,
   lastEquityValue,
+  normalizePoints,
+  pctModeUnavailable,
+  priceRangeIncludingSeed,
   resolveEquityPoints,
+  seedPriceLineSpec,
   toUnix,
 } from "./equityChartModel.js";
 
@@ -32,24 +35,49 @@ const staticPoints = [
   { t: "2026-09-22T13:21:26.826825Z", equity: 1500499.9995284856 },
 ];
 
-test("forts_adr_adaptive: prepends seed baseline so % starts at 0 and money at seed", () => {
+test("forts_adr_adaptive: uses only real points; seed is a reference line, not a fake day", () => {
   const firstReal = toUnix(adaptivePoints[0].t);
   const pct = buildSeries(adaptivePoints, seed, "pct");
-  assert.equal(pct.length, 3);
-  assert.equal(pct[0].time, firstReal - DAY_SEC);
-  assert.equal(pct[0].value, 0);
-  assert.ok(pct[1].value > 29 && pct[1].value < 31);
-  assert.ok(pct[2].value > 22 && pct[2].value < 23);
-  assert.ok(pct[1].value > pct[2].value, "последний отрезок всё ещё вниз");
+  assert.equal(pct.length, 2);
+  assert.equal(pct[0].time, firstReal);
+  assert.ok(pct[0].value > 29 && pct[0].value < 31);
+  assert.ok(pct[1].value > 22 && pct[1].value < 23);
+  assert.ok(pct[0].value > pct[1].value, "последний отрезок всё ещё вниз");
+  assert.deepEqual(seedPriceLineSpec(seed, "pct"), { price: 0, title: "начальный капитал" });
 
   const money = buildSeries(adaptivePoints, seed, "money");
-  assert.equal(money.length, 3);
-  assert.equal(money[0].value, seed);
-  assert.equal(money[1].value, 1950000);
-  assert.ok(money[2].value > 1_830_000 && money[2].value < 1_840_000);
+  assert.equal(money.length, 2);
+  assert.equal(money[0].time, firstReal);
+  assert.equal(money[0].value, 1950000);
+  assert.ok(money[1].value > 1_830_000 && money[1].value < 1_840_000);
+  assert.deepEqual(seedPriceLineSpec(seed, "money"), { price: seed, title: "начальный капитал" });
 });
 
-test("forts_adr_adaptive: last equity above seed stays green after prepend", () => {
+test("P02: a single observation is not padded with a synthetic seed day", () => {
+  const input = [{ t: "2026-10-17T10:00:00Z", equity: 120 }];
+  const result = buildSeries(input, 100, "money");
+  assert.equal(result.length, 1);
+  assert.equal(result[0].time, toUnix(input[0].t));
+  assert.equal(result[0].value, 120);
+  assert.notEqual(result[0].time, toUnix(input[0].t) - 86400);
+  assert.deepEqual(seedPriceLineSpec(100, "money"), { price: 100, title: "начальный капитал" });
+});
+
+test("P03: Infinity JSON string is dropped; zero seed blocks percent mode", () => {
+  const input = JSON.parse('[{"t":"2026-10-17T10:00:00Z","equity":"Infinity"}]');
+  assert.equal(normalizePoints(input).length, 0);
+  assert.equal(pctModeUnavailable(0, "pct"), true);
+  assert.equal(pctModeUnavailable(100, "pct"), false);
+  assert.equal(pctModeUnavailable(0, "money"), false);
+  assert.deepEqual(buildSeries([{ t: "2026-10-17", equity: 0 }], 0, "pct"), []);
+  const money = buildSeries([{ t: "2026-10-17", equity: 0 }], 0, "money");
+  assert.equal(money.length, 1);
+  assert.equal(money[0].value, 0);
+  assert.ok(money.every((row) => Number.isFinite(row.value)));
+  assert.equal(PCT_NO_POSITIVE_SEED, "Доходность не рассчитана: нет положительного начального капитала");
+});
+
+test("forts_adr_adaptive: last equity above seed stays green without a fake start point", () => {
   const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), true);
   assert.equal(chartSeriesColors(true).lineColor, CHART_POS.lineColor);
@@ -66,7 +94,7 @@ test("percent axis labels use a Russian comma and never say seed", () => {
   assert.doesNotMatch(formatChartPctLabel(13.1), /seed/i);
 });
 
-test("short series (adaptive) defaults to «Всё» so seed stays in view", () => {
+test("short series (adaptive) defaults to «Всё» so the seed line stays in view", () => {
   const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(defaultChartRange(pct), "all");
 });
@@ -77,12 +105,13 @@ test("history longer than 1M still defaults to «Всё»", () => {
     { t: "2026-09-22T00:00:00Z", equity: 1_800_000 },
   ];
   const series = buildSeries(points, seed, "money");
-  assert.ok(series.length >= 3, "seed prepended before July");
+  assert.equal(series.length, 2);
+  assert.equal(series[0].time, toUnix(points[0].t));
   assert.equal(defaultChartRange(series), "all");
   assert.equal(defaultChartRange(buildSeries(points, seed, "pct")), "all");
 });
 
-test("does not prepend when first point is already at seed", () => {
+test("first real point at seed is kept as-is, without an extra day", () => {
   const points = [
     { t: "2026-09-01T00:00:00Z", equity: seed },
     { t: "2026-09-22T00:00:00Z", equity: 1_800_000 },
@@ -93,16 +122,17 @@ test("does not prepend when first point is already at seed", () => {
   assert.equal(money[0].time, toUnix(points[0].t));
 });
 
-test("always prepends baseline unless first point is already seed", () => {
+test("does not invent a seed observation when the first print differs from seed", () => {
   assert.equal(isAlreadySeed(9994, 10_000), false);
   const points = [
     { t: "2026-09-19T00:00:00Z", equity: 9994 },
     { t: "2026-09-22T00:00:00Z", equity: 12721 },
   ];
   const money = buildSeries(points, 10_000, "money");
-  assert.equal(money.length, 3);
-  assert.equal(money[0].value, 10_000);
-  assert.equal(money[1].value, 9994);
+  assert.equal(money.length, 2);
+  assert.equal(money[0].value, 9994);
+  assert.equal(money[0].time, toUnix(points[0].t));
+  assert.equal(seedPriceLineSpec(10_000, "money").price, 10_000);
 });
 
 test("Y-axis range includes seed even when visible window is only the peak", () => {
@@ -139,9 +169,9 @@ test("below seed stays red even if the later window slopes up", () => {
     { t: "2026-09-22T00:00:00Z", equity: 1_400_000 },
   ];
   const pct = buildSeries(points, seed, "pct");
-  assert.equal(pct[0].value, 0);
+  assert.ok(pct[0].value < 0);
   assert.ok(pct[pct.length - 1].value < 0);
-  assert.ok(pct[pct.length - 1].value > pct[1].value, "реальные точки идут вверх");
+  assert.ok(pct[pct.length - 1].value > pct[0].value, "реальные точки идут вверх");
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), false);
   assert.equal(isChartUpVsSeed(buildSeries(points, seed, "money"), seed, "money"), false);
   assert.equal(chartSeriesColors(false).lineColor, CHART_NEG.lineColor);
@@ -165,34 +195,31 @@ test("color follows seed, not the last drawdown leg", () => {
 
 test("forts_adr_static: six history points stay drawable and include seed on axis", () => {
   const money = buildSeries(staticPoints, seed, "money");
-  assert.ok(money.length >= 6);
-  assert.equal(money[0].value, seed);
+  assert.equal(money.length, 6);
+  assert.equal(money[0].value, staticPoints[0].equity);
   const range = priceRangeIncludingSeed(money, seed, "money");
   assert.equal(range.minValue, seed);
   assert.ok(range.maxValue >= 1_508_000);
   assert.equal(isChartUpVsSeed(money, seed, "money"), true);
 });
 
-test("paper_block2: one point at seed still draws a horizontal", () => {
+test("paper_block2: one point at seed is a 0% marker, not a two-point fake line", () => {
   const points = [{ t: "2026-10-15T08:57:31Z", equity: 10_000 }];
   const money = buildSeries(points, 10_000, "money");
-  assert.equal(money.length, 2);
+  assert.equal(money.length, 1);
   assert.equal(money[0].value, 10_000);
-  assert.equal(money[1].value, 10_000);
-  assert.equal(money[1].time - money[0].time, DAY_SEC);
   assert.equal(isChartUpVsSeed(money, 10_000, "money"), true);
   const pct = buildSeries(points, 10_000, "pct");
-  assert.equal(pct.length, 2);
+  assert.equal(pct.length, 1);
   assert.equal(pct[0].value, 0);
-  assert.equal(pct[1].value, 0);
 });
 
-test("single point above seed draws seed → fact", () => {
+test("single point above seed keeps the fact; seed is only a price line", () => {
   const points = [{ t: "2026-09-21T00:00:00Z", equity: 12_000 }];
   const money = buildSeries(points, 10_000, "money");
-  assert.equal(money.length, 2);
-  assert.equal(money[0].value, 10_000);
-  assert.equal(money[1].value, 12_000);
+  assert.equal(money.length, 1);
+  assert.equal(money[0].value, 12_000);
+  assert.equal(seedPriceLineSpec(10_000, "money").price, 10_000);
 });
 
 test("flat range around seed is padded so Area has height", () => {
@@ -434,8 +461,8 @@ test("rate-cycle 80/20: line comes only from account.history, one point stays dr
   assert.equal(points.length, 1);
   assert.equal(Number(points[0].equity), 300000);
   const pct = buildSeries(points, 300000, "pct");
-  assert.ok(pct.length >= 2);
-  assert.equal(pct[pct.length - 1].value, 0);
+  assert.equal(pct.length, 1);
+  assert.equal(pct[0].value, 0);
 
   const noHist = { ...account, history: [] };
   assert.deepEqual(resolveEquityPoints(noHist, null), []);
@@ -470,8 +497,8 @@ test("yuan 360: line comes only from account.history, one point stays drawable",
   assert.equal(points.length, 1);
   assert.equal(Number(points[0].equity), 300000);
   const pct = buildSeries(points, 300000, "pct");
-  assert.ok(pct.length >= 2);
-  assert.equal(pct[pct.length - 1].value, 0);
+  assert.equal(pct.length, 1);
+  assert.equal(pct[0].value, 0);
 
   const noHist = { ...account, history: [] };
   assert.deepEqual(resolveEquityPoints(noHist, null), []);
@@ -511,8 +538,8 @@ test("eth okx moex: line comes only from account.history, same-day last point wi
   assert.equal(Number(points[0].equity), 299970.19681904);
   assert.ok(points.every((p) => Number(p.equity) !== 2.046839));
   const pct = buildSeries(points, 300000, "pct");
-  assert.ok(pct.length >= 2);
-  assert.ok(Math.abs(pct[pct.length - 1].value + 0.009934393653333) < 1e-9);
+  assert.equal(pct.length, 1);
+  assert.ok(Math.abs(pct[0].value + 0.009934393653333) < 1e-9);
 
   const noHist = { ...account, history: [] };
   assert.deepEqual(resolveEquityPoints(noHist, null), []);
@@ -552,8 +579,8 @@ test("paper_block2: resolveEquityPoints drops pre-reset history and keeps 10000"
   assert.equal(Number(points[0].equity), 10000);
   assert.ok(points.every((p) => Number(p.equity) !== 8475.67));
   const pct = buildSeries(points, 10000, "pct");
-  assert.ok(pct.length >= 2);
-  assert.equal(pct[pct.length - 1].value, 0);
+  assert.equal(pct.length, 1);
+  assert.equal(pct[0].value, 0);
 });
 
 test("v6b1: resolveEquityPoints drops pre-reset history and keeps 10000", () => {
@@ -582,8 +609,8 @@ test("v6b1: resolveEquityPoints drops pre-reset history and keeps 10000", () => 
   assert.equal(Number(points[0].equity), 10000);
   assert.ok(points.every((p) => Number(p.equity) !== 8106.48));
   const pct = buildSeries(points, 10000, "pct");
-  assert.ok(pct.length >= 2);
-  assert.equal(pct[pct.length - 1].value, 0);
+  assert.equal(pct.length, 1);
+  assert.equal(pct[0].value, 0);
 });
 
 test("mayak: main equity only, seed from feed, no invented line when absent", () => {

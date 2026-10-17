@@ -4,6 +4,8 @@
  * Конвертации и сложения разных валют нет.
  */
 
+import { validateLatest } from "./feedValidate.js";
+
 export const VENUE_CURRENCY = {
   CRYPTO_SPOT: "USDT",
   CRYPTO_PERP: "USDT",
@@ -100,10 +102,11 @@ export function withCanonicalCurrency(account) {
 }
 
 export function normalizeLatest(latest) {
-  if (!latest) return latest;
+  const checked = validateLatest(latest);
+  if (!checked.ok) return null;
   return {
-    ...latest,
-    accounts: (latest.accounts || []).map(withCanonicalCurrency),
+    ...checked.value,
+    accounts: checked.value.accounts.map(withCanonicalCurrency),
   };
 }
 

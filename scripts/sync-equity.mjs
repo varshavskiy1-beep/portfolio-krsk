@@ -13,6 +13,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applyCanonicalCurrencies, canonicalCurrency } from "../src/cashCurrency.js";
 import { applyHistoryResets, shouldAppendHistoryPoint } from "../src/historyReset.js";
+import { capHistoryPoints, loadHistoryFile, writeJsonAtomic } from "../src/historyStore.js";
 import { generateOgCover } from "./og-cover.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -39,11 +40,12 @@ function scpLatest() {
   }
 }
 
-function loadJson(p, fallback) {
+function loadLatest(p) {
   try {
     return JSON.parse(fs.readFileSync(p, "utf8"));
-  } catch {
-    return fallback;
+  } catch (e) {
+    if (e && e.code === "ENOENT") throw new Error("latest.json missing");
+    throw e;
   }
 }
 
@@ -52,11 +54,7 @@ function keyOf(a) {
 }
 
 function appendHistory(latest) {
-  const hist = loadJson(historyPath, {
-    schema: "equity_history.v1",
-    updated_at: null,
-    series: {},
-  });
+  const hist = loadHistoryFile(historyPath);
   const gen = latest.generated_at || new Date().toISOString();
   hist.updated_at = gen;
   // paper_block2 reset_from 2026-10-15T08:57:31Z; v6b1 reset_from 2026-10-15T17:27:12Z.
@@ -92,20 +90,19 @@ function appendHistory(latest) {
       if (!Number.isNaN(t0) && !Number.isNaN(t1) && Math.abs(t1 - t0) < 50_000) continue;
     }
     pts.push({ t: ts, equity: eq });
-    // keep ~90 days at 1pt/min ≈ 130k — cap at 20k pts/account (~2 weeks @1min)
-    if (pts.length > 20000) s.points = pts.slice(-20000);
+    s.points = capHistoryPoints(pts);
   }
   applyHistoryResets(hist);
-  fs.writeFileSync(historyPath, JSON.stringify(hist, null, 2));
+  writeJsonAtomic(historyPath, hist);
   return hist;
 }
 
 const skipScp = process.argv.includes("--local");
 if (!skipScp) scpLatest();
-const latest = loadJson(latestPath, null);
+const latest = loadLatest(latestPath);
 if (!latest) throw new Error(skipScp ? "latest.json missing" : "latest.json missing after scp");
 applyCanonicalCurrencies(latest);
-fs.writeFileSync(latestPath, `${JSON.stringify(latest, null, 2)}\n`);
+writeJsonAtomic(latestPath, latest, { trailingNewline: true });
 const hist = appendHistory(latest);
 const n = Object.values(hist.series).reduce((s, x) => s + x.points.length, 0);
 console.log(`ok latest=${latest.generated_at} series=${Object.keys(hist.series).length} points=${n}`);

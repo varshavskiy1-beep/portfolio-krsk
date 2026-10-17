@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createChart, ColorType, AreaSeries } from "lightweight-charts";
+import { AreaSeries, ColorType, LineStyle, createChart } from "lightweight-charts";
 import { initialChartRange, persistChartRange } from "./chartPrefs.js";
 import {
   buildSeries,
@@ -8,8 +8,11 @@ import {
   expandPriceRange,
   formatChartPctLabel,
   isChartUpVsSeed,
+  pctModeUnavailable,
   priceRangeIncludingSeed,
+  seedPriceLineSpec,
 } from "./equityChartModel.js";
+import { PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import { chartPriceDigits } from "./rateCycleCard.js";
 
 const RANGES = [
@@ -97,14 +100,16 @@ export default function EquityChart({
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
   const seriesRef = useRef(null);
+  const priceLineRef = useRef(null);
   const [userRange, setUserRange] = useState(initialChartRange);
+  const pctBlocked = pctModeUnavailable(seed, mode);
   const series = useMemo(() => buildSeries(points, seed, mode), [points, seed, mode]);
   const range = userRange ?? defaultChartRange(series);
   const setRange = (id) => {
     setUserRange(id);
     persistChartRange(id);
   };
-  const ready = series.length >= 2;
+  const ready = !pctBlocked && series.length >= 1;
 
   useEffect(() => {
     if (!wrapRef.current) return undefined;
@@ -194,6 +199,14 @@ export default function EquityChart({
                 }).format(v),
             },
     });
+    if (priceLineRef.current) {
+      try {
+        area.removePriceLine(priceLineRef.current);
+      } catch {
+        /* series may already be gone */
+      }
+      priceLineRef.current = null;
+    }
     if (!ready) {
       area.setData([]);
       return;
@@ -201,6 +214,7 @@ export default function EquityChart({
     const up = isChartUpVsSeed(series, seed, mode);
     area.applyOptions({
       ...chartSeriesColors(up),
+      pointMarkersVisible: series.length === 1,
       autoscaleInfoProvider: (original) => {
         const res = original();
         const fallback = priceRangeIncludingSeed(series, seed, mode);
@@ -211,6 +225,17 @@ export default function EquityChart({
       },
     });
     area.setData(series);
+    const lineSpec = seedPriceLineSpec(seed, mode);
+    if (lineSpec) {
+      priceLineRef.current = area.createPriceLine({
+        price: lineSpec.price,
+        color: "#6b6560",
+        lineWidth: 1,
+        lineStyle: LineStyle.Dashed,
+        axisLabelVisible: true,
+        title: lineSpec.title,
+      });
+    }
     try {
       chart.priceScale("right").applyOptions({ autoScale: true });
     } catch (_) {}
@@ -268,7 +293,9 @@ export default function EquityChart({
         </button>
         <span className="chart-hint hint-desktop">колёсико — зум · тяни — сдвиг</span>
       </div>
-      {!ready ? (
+      {pctBlocked ? (
+        <div className="empty-chart">{PCT_NO_POSITIVE_SEED}</div>
+      ) : !ready ? (
         <div className="empty-chart">Нет точек истории для графика.</div>
       ) : null}
       <div className="tv-chart-stage">

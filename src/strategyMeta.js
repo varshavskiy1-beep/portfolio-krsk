@@ -555,7 +555,17 @@ export function isKnownPortalBot(botId) {
 
 /** Добавляет shell-карточки для стратегий, которых ещё нет в accounts[]. */
 export function mergePortalAccounts(accounts = []) {
-  const visible = (accounts || []).filter((a) => !isHiddenPortalAccount(a));
+  const visible = (accounts || []).filter(
+    (a) =>
+      a &&
+      typeof a === "object" &&
+      !Array.isArray(a) &&
+      typeof a.bot_id === "string" &&
+      a.bot_id.trim() !== "" &&
+      typeof a.account_id === "string" &&
+      a.account_id.trim() !== "" &&
+      !isHiddenPortalAccount(a),
+  );
   const present = new Set(visible.map(accountKey));
   const merged = [...visible];
   for (const shell of PORTAL_SHELLS) {

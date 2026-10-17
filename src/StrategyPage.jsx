@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
+import FeedStatus from "./FeedStatus.jsx";
 import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import RateCycleDetails from "./RateCycleDetails.jsx";
@@ -89,7 +90,7 @@ function LimitsTable({ limits }) {
   );
 }
 
-function AccountBlock({ a, points, backtests }) {
+function AccountBlock({ a, points, backtests, generatedAt }) {
   const [mode, setMode] = useState(initialChartMode);
   const [fs, setFs] = useState(false);
   const currency = canonicalCurrency(a);
@@ -231,7 +232,12 @@ function AccountBlock({ a, points, backtests }) {
           priceDigits={isEthOkxMoex(a) ? 2 : undefined}
         />
       </div>
-      <StitchedCharts account={a} paperPoints={points} backtests={backtests} />
+      <StitchedCharts
+        account={a}
+        paperPoints={points}
+        backtests={backtests}
+        generatedAt={generatedAt}
+      />
       <MayakFromStart account={a} hasData={hasData} />
 
       <h3 className="subhead">Открытые позиции</h3>
@@ -257,7 +263,16 @@ function AccountBlock({ a, points, backtests }) {
   );
 }
 
-export default function StrategyPage({ botId, data, history, backtests, onBack }) {
+export default function StrategyPage({
+  botId,
+  data,
+  history,
+  backtests,
+  fetchedAt,
+  loadError,
+  onRetry,
+  onBack,
+}) {
   const accounts = useMemo(
     () => mergePortalAccounts(data?.accounts || []).filter((a) => a.bot_id === botId),
     [data, botId],
@@ -285,10 +300,15 @@ export default function StrategyPage({ botId, data, history, backtests, onBack }
         {pageTitle === botId && passport.title !== botId ? (
           <p className="strategy-title">{passport.title}</p>
         ) : null}
-        <div className="meta">снимок {data.generated_at} · только paper</div>
+        <FeedStatus
+          generatedAt={data.generated_at}
+          fetchedAt={fetchedAt}
+          error={loadError}
+          onRetry={onRetry}
+        />
       </header>
 
-      <StrategyPassport botId={botId} logic={logic} />
+      <StrategyPassport botId={botId} logic={logic} generatedAt={data.generated_at} />
 
       {accounts.map((a) => (
         <AccountBlock
@@ -296,6 +316,7 @@ export default function StrategyPage({ botId, data, history, backtests, onBack }
           a={a}
           points={pointsFor(a)}
           backtests={backtests}
+          generatedAt={data.generated_at}
         />
       ))}
     </div>

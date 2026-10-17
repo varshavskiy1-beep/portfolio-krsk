@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  OG_METHOD,
   pickOgWinner,
   resolveSeed,
   scoreAccount,
@@ -29,7 +30,7 @@ test("skips accounts without numeric equity or positive seed", () => {
   assert.equal(scoreAccount(acc({ equity: 100, seed: -1 }), { points: [] }), null);
 });
 
-test("picks max pnl in own units without FX conversion", () => {
+test("picks max percent return, not mixed-currency money", () => {
   const latest = {
     accounts: [
       acc({ bot_id: "rub_big", account_id: "rub_big", currency: "RUB", equity: 1510000, seed: 1500000 }),
@@ -38,9 +39,19 @@ test("picks max pnl in own units without FX conversion", () => {
     ],
   };
   const winner = pickOgWinner(latest, { series: {} });
-  assert.equal(winner.key, "rub_big::rub_big");
-  assert.equal(winner.pnl, 10000);
-  assert.equal(winner.currency, "RUB");
+  assert.equal(winner.key, "usdt_lead::usdt_lead");
+  assert.equal(winner.currency, "USDT");
+  assert.ok(winner.pct > 0.4);
+});
+
+test("P05: 10% USD beats 0.2% RUB even when RUB pnl is larger in nominal units", () => {
+  const accounts = [
+    { bot_id: "usd", account_id: "usd", currency: "USD", seed: 10000, equity: 11000 },
+    { bot_id: "rub", account_id: "rub", currency: "RUB", seed: 1000000, equity: 1002000 },
+  ];
+  const winner = pickOgWinner({ accounts }, { series: {} });
+  assert.equal(winner.currency, "USD");
+  assert.equal(winner.pct, 0.1);
 });
 
 test("current-style data: v6b1 beats smaller USDT and zero RUB", () => {
@@ -95,7 +106,7 @@ test("who_pays without seed uses first history point", () => {
   assert.equal(winner.pnl, 0);
 });
 
-test("same-currency pnl tie uses higher percent", () => {
+test("same-currency percent ranking still prefers the higher return", () => {
   const latest = {
     accounts: [
       acc({ bot_id: "a", account_id: "a", currency: "USDT", equity: 11000, seed: 10000 }),
@@ -119,8 +130,9 @@ test("formats money and description with regular spaces and ASCII digits", () =>
   });
   assert.equal(
     desc,
-    "v6b1: +4 516 USDT (+45,16%) с запуска. Бумажный кабинет, валюты не складываются.",
+    `v6b1: +4 516 USDT (+45,16%) с запуска. ${OG_METHOD}`,
   );
+  assert.match(desc, /процентах/);
   assert.equal(/[\u00a0\u202f\u2007\u2009]/.test(desc), false);
 });
 

@@ -1,14 +1,17 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
+import FeedStatus from "./FeedStatus.jsx";
 import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import RateCycleDetails from "./RateCycleDetails.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPage from "./StrategyPage.jsx";
-import { canonicalCurrency, normalizeHistory, normalizeLatest } from "./cashCurrency.js";
+import { canonicalCurrency } from "./cashCurrency.js";
 import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
+import { LOAD_ERROR_RU, LIVE_FOOTER_LABEL, REFRESH_MS, RETRY_LABEL } from "./feedValidate.js";
+import { fetchCabinetSnapshot } from "./loadFeed.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
 import {
@@ -225,7 +228,7 @@ function AccountCard({ a, historyPoints, onOpenStrategy }) {
   );
 }
 
-function Home({ data, history, filter, setFilter }) {
+function Home({ data, history, filter, setFilter, fetchedAt, loadError, onRetry }) {
   const accounts = useMemo(() => mergePortalAccounts(data.accounts || []), [data]);
 
   const bots = useMemo(() => {
@@ -258,9 +261,12 @@ function Home({ data, history, filter, setFilter }) {
     <div className="wrap">
       <header>
         <h1>portfolio_krsk — бумажные боты</h1>
-        <div className="meta">
-          снимок {data.generated_at} · только paper · валюты не складываются
-        </div>
+        <FeedStatus
+          generatedAt={data.generated_at}
+          fetchedAt={fetchedAt}
+          error={loadError}
+          onRetry={onRetry}
+        />
       </header>
 
       <div className="chips">
@@ -296,7 +302,7 @@ function Home({ data, history, filter, setFilter }) {
       </div>
 
       <footer className="foot">
-        Не на сайте (live): {liveExcluded.map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
+        {LIVE_FOOTER_LABEL}: {liveExcluded.map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
         счетов, не торговые рекомендации. Нажмите карточку — откроется подробная страница стратегии.
       </footer>
     </div>
@@ -307,31 +313,56 @@ export default function App() {
   const [data, setData] = useState(null);
   const [history, setHistory] = useState(null);
   const [backtests, setBacktests] = useState(null);
-  const [err, setErr] = useState(null);
+  const [err, setErr] = useState(false);
+  const [fetchedAt, setFetchedAt] = useState(null);
   const [filter, setFilter] = useState("all");
   const [route, setRoute] = useState(readRoute);
+  const loadRef = useRef(() => {});
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
-    Promise.all([
-      fetch(`${base}data/latest.json`).then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      }),
-      fetch(`${base}data/history.json`)
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null),
-      fetch(`${base}data/backtests.json`)
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null),
-    ])
-      .then(([latest, hist, books]) => {
-        setData(normalizeLatest(latest));
-        setHistory(normalizeHistory(hist));
-        setBacktests(books);
-      })
-      .catch((e) => setErr(String(e.message || e)));
+    let cancelled = false;
+    let ctrl = null;
+    const load = () => {
+      ctrl?.abort();
+      ctrl = new AbortController();
+      const { signal } = ctrl;
+      fetchCabinetSnapshot(base, { signal })
+        .then((snap) => {
+          if (cancelled || signal.aborted) return;
+          if (snap.ok) {
+            setData(snap.latest);
+            setHistory(snap.history);
+            setBacktests(snap.backtests);
+            setFetchedAt(snap.fetchedAt);
+            setErr(false);
+            return;
+          }
+          console.warn("snapshot rejected", snap.reason);
+          setErr(true);
+        })
+        .catch((e) => {
+          if (cancelled || e?.name === "AbortError") return;
+          console.warn("snapshot fetch failed", e);
+          setErr(true);
+        });
+    };
+    loadRef.current = load;
+    load();
+    const id = window.setInterval(load, REFRESH_MS);
+    const onVis = () => {
+      if (document.visibilityState === "visible") load();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      cancelled = true;
+      ctrl?.abort();
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
+
+  const onRetry = () => loadRef.current();
 
   useEffect(() => {
     const onHash = () => setRoute(readRoute());
@@ -342,8 +373,22 @@ export default function App() {
   if (isBlockedStrategyRoute(route)) {
     return <StrategyNotFound onBack={goHome} />;
   }
-  if (err) return <div className="wrap">Не удалось загрузить данные: {err}</div>;
-  if (!data) return <div className="wrap">Загрузка…</div>;
+  if (!data) {
+    return (
+      <div className="wrap">
+        {err ? (
+          <>
+            <p>{LOAD_ERROR_RU}</p>
+            <button type="button" className="chip" onClick={onRetry}>
+              {RETRY_LABEL}
+            </button>
+          </>
+        ) : (
+          "Загрузка…"
+        )}
+      </div>
+    );
+  }
 
   if (route.name === "strategy") {
     return (
@@ -352,10 +397,23 @@ export default function App() {
         data={data}
         history={history}
         backtests={backtests}
+        fetchedAt={fetchedAt}
+        loadError={err}
+        onRetry={onRetry}
         onBack={goHome}
       />
     );
   }
 
-  return <Home data={data} history={history} filter={filter} setFilter={setFilter} />;
+  return (
+    <Home
+      data={data}
+      history={history}
+      filter={filter}
+      setFilter={setFilter}
+      fetchedAt={fetchedAt}
+      loadError={err}
+      onRetry={onRetry}
+    />
+  );
 }

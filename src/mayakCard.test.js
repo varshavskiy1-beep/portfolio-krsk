@@ -164,7 +164,8 @@ test("hard fixture: canon banner from feed rates, empty book is LQDT, not an err
   assert.doesNotMatch(asOf, /устарело/);
   assert.doesNotMatch(asOf, /сессия /);
   const series = buildSeries(resolveEquityPoints(row, null), 300000, "money");
-  assert.ok(series.length >= 2);
+  assert.equal(series.length, 1);
+  assert.ok(Number.isFinite(series[0].value));
 });
 
 function REGIME_COPY_HARD_WITHOUT_RATES() {

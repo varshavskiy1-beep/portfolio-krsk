@@ -30,14 +30,14 @@ function daysBetween(a, b) {
   return Math.round(ms / 86400000);
 }
 
-/** Последняя точка каждых суток UTC. Нулевая и пустая эквити не входят. */
+/** Последняя точка каждых суток UTC. Ноль — это −100%, его не выбрасываем. */
 export function collapseDays(points) {
   const rows = [];
   for (const p of points || []) {
     const day = dayKey(p?.t ?? p?.time ?? p?.day);
     const eq = Number(p?.equity ?? p?.eq);
     const ms = parseTime(p?.t ?? p?.time ?? `${day}T00:00:00Z`);
-    if (!day || ms == null || !Number.isFinite(eq) || eq <= 0) continue;
+    if (!day || ms == null || !Number.isFinite(eq)) continue;
     rows.push({ day, eq, ms });
   }
   rows.sort((a, b) => a.ms - b.ms || a.day.localeCompare(b.day));
@@ -138,6 +138,9 @@ export function stitchEquity(backtestPoints, paperPoints) {
   const paper = collapseDays(paperPoints);
   if (paper.length < 1) return { ok: false, reason: "no_paper" };
   if (backtest.length < 2) return { ok: false, reason: "no_backtest" };
+  if (backtest.some((row) => row.eq < 0) || paper.some((row) => row.eq < 0)) {
+    return { ok: false, reason: "negative_equity" };
+  }
   const paperStart = paper[0].day;
   const paper0 = paper[0].eq;
   let join = null;
@@ -169,7 +172,7 @@ export function stitchEquity(backtestPoints, paperPoints) {
   }));
   const tail = paper.map((row) => ({
     day: row.day,
-    eq: (join.eq * row.eq) / paper0,
+    eq: paper0 > 0 ? (join.eq * row.eq) / paper0 : row.eq,
     segment: "paper",
   }));
   const dailyRaw = [...head, ...tail];
@@ -233,6 +236,9 @@ export function stitchCaption(result) {
   }
   if (result.reason === "backtest_after_paper") {
     return "Склейки нет: бэктест начинается позже бумаги.";
+  }
+  if (result.reason === "negative_equity") {
+    return "Склейки нет: отрицательная стоимость счёта.";
   }
   return "Склейки нет.";
 }

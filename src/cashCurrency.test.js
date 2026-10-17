@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { canonicalCurrency, applyCanonicalCurrencies } from "./cashCurrency.js";
+import { applyCanonicalCurrencies, canonicalCurrency, normalizeLatest } from "./cashCurrency.js";
 
 test("venue wins over bot_id and feed", () => {
   assert.equal(
@@ -301,6 +301,19 @@ test("rf conservative is always RUB and never remapped to USD/USDT", () => {
 
 test("unknown bot keeps feed currency", () => {
   assert.equal(canonicalCurrency({ bot_id: "new_bot", account_id: "x", currency: "EUR" }), "EUR");
+});
+
+test("P01: null account and non-array accounts are rejected at the JSON boundary", () => {
+  assert.equal(normalizeLatest({ accounts: [null] }), null);
+  assert.equal(normalizeLatest({ accounts: {} }), null);
+  assert.equal(normalizeLatest(null), null);
+  const ok = normalizeLatest({
+    generated_at: "2026-10-17T10:00:00Z",
+    accounts: [{ bot_id: "v6b1", account_id: "v6b1", currency: "USD" }],
+  });
+  assert.equal(ok.accounts.length, 1);
+  assert.equal(ok.accounts[0].currency, "USDT");
+  assert.equal(ok.accounts[0].bot_id, "v6b1");
 });
 
 test("applyCanonicalCurrencies rewrites accounts in place", () => {

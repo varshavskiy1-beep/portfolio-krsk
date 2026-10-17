@@ -106,8 +106,8 @@ test("RUB book fixture: 300 000 ₽, LQDT 142429, 0,00% from start", () => {
   assert.equal(points[0].t, "2026-10-12");
   assert.equal(Number(points[0].equity), 300000);
   const series = buildSeries(points, 300000, "pct");
-  assert.ok(series.length >= 2);
-  assert.equal(series[series.length - 1].value, 0);
+  assert.equal(series.length, 1);
+  assert.equal(series[0].value, 0);
 });
 
 test("empty equity is нет данных even if the object exists", () => {

@@ -6,10 +6,9 @@ import { hasAccountData, isCnyMomH360, isEthOkxMoex, isRfBondsRateCycle } from "
 
 /**
  * Цвет графика = знак PnL от начального капитала (поле JSON `seed`).
- * Ряд начинается с equity = начальный капитал: если такой точки нет —
- * клеим синтетическую (день до первой реальной). Одна реальная точка
- * тоже даёт видимую линию (seed → факт или горизонталь).
- * Ось Y обязана включать этот уровень (в % — 0%).
+ * Ряд — только фактические наблюдения; синтетическую точку за сутки до
+ * первой не добавляем. Начальный капитал — горизонтальная справочная линия.
+ * Одна точка рисуется маркером. Ось Y обязана включать уровень seed (в % — 0%).
  */
 
 export const CHART_POS = {
@@ -47,8 +46,12 @@ export function isAlreadySeed(equity, seedN) {
 
 function parsePoint(p) {
   const time = toUnix(p?.t);
-  const eq = p?.equity == null || p.equity === "" ? null : Number(p.equity);
-  if (time == null || eq == null || Number.isNaN(eq)) return null;
+  if (time == null) return null;
+  const raw = p?.equity;
+  if (typeof raw !== "number" && typeof raw !== "string") return null;
+  if (typeof raw === "string" && raw.trim() === "") return null;
+  const eq = Number(raw);
+  if (!Number.isFinite(eq)) return null;
   return { time, eq };
 }
 
@@ -122,24 +125,18 @@ export function resolveEquityPoints(account, history) {
   return filterResetPoints(seriesKey(account), points);
 }
 
-function prependSeedBaseline(dedup, seedN) {
-  if (!Number.isFinite(seedN) || !dedup.length) return dedup;
-  if (isAlreadySeed(dedup[0].eq, seedN)) return dedup;
-  const t0 = dedup[0].time - DAY_SEC;
-  if (t0 >= dedup[0].time) return dedup;
-  return [{ time: t0, eq: seedN }, ...dedup];
+/** В режиме «В %» нужна строго положительная база. */
+export function pctModeUnavailable(seed, mode) {
+  if (mode !== "pct") return false;
+  const seedN = parseSeed(seed);
+  return !(seedN > 0);
 }
 
-/** Одна точка → линия seed→факт или горизонталь, чтобы Area не была пустой. */
-function ensureDrawableSeries(dedup, seedN) {
-  const withSeed = prependSeedBaseline(dedup, seedN);
-  if (withSeed.length >= 2) return withSeed;
-  if (!withSeed.length) return withSeed;
-  const only = withSeed[0];
-  const t0 = only.time - DAY_SEC;
-  const startEq = Number.isFinite(seedN) ? seedN : only.eq;
-  if (t0 >= only.time) return withSeed;
-  return [{ time: t0, eq: startEq }, only];
+/** Горизонтальная справочная линия начального капитала, без выдуманной даты. */
+export function seedPriceLineSpec(seed, mode) {
+  const price = seedAxisValue(seed, mode);
+  if (price == null) return null;
+  return { price, title: "начальный капитал" };
 }
 
 /** Уровень начального капитала на оси: 0% или сумма seed. */
@@ -200,14 +197,13 @@ export function formatChartPctLabel(v) {
 }
 
 export function buildSeries(points, seed, mode) {
+  if (pctModeUnavailable(seed, mode)) return [];
   const seedN = parseSeed(seed);
   const dedup = normalizePoints(points);
   if (!dedup.length) return [];
-  const rows = ensureDrawableSeries(dedup, seedN);
-  const base = mode === "pct" ? (seedN && seedN !== 0 ? seedN : rows[0].eq) : null;
-  return rows.map(({ time, eq }) => ({
+  return dedup.map(({ time, eq }) => ({
     time,
-    value: mode === "pct" ? ((eq - base) / base) * 100 : eq,
+    value: mode === "pct" ? ((eq - seedN) / seedN) * 100 : eq,
   }));
 }
 

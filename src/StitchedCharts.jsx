@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ColorType, HistogramSeries, LineSeries, createChart } from "lightweight-charts";
+import { backtestSourceLine, feedSourceLine } from "./feedValidate.js";
 import {
   backtestHonestyLines,
   backtestPointsFor,
@@ -141,21 +142,27 @@ function YoyChart({ yoy }) {
   return <div ref={elRef} className="stitch-chart stitch-chart-short" />;
 }
 
-function HonestyNotes({ backtests, account }) {
-  const lines = backtestHonestyLines(backtestRowFor(backtests, account));
+function HonestyNotes({ backtests, account, generatedAt }) {
+  const row = backtestRowFor(backtests, account);
+  const lines = [
+    ...backtestHonestyLines(row),
+    backtestSourceLine(row?.source),
+    feedSourceLine(generatedAt),
+  ].filter(Boolean);
   if (!lines.length) return null;
   return lines.map((line) => (
     <p key={line} className="updated stitch-meta">{line}</p>
   ));
 }
 
-export default function StitchedCharts({ account, paperPoints, backtests }) {
+export default function StitchedCharts({ account, paperPoints, backtests, generatedAt }) {
   const backtest = backtestPointsFor(backtests, account);
   const result = stitchEquity(backtest, paperPoints);
   if (!result.ok) {
     return (
       <section className="stitch-block">
         <h3 className="subhead">Бэктест и бумага</h3>
+        <HonestyNotes backtests={backtests} account={account} generatedAt={generatedAt} />
         <p className="note">{stitchCaption(result)}</p>
       </section>
     );
@@ -164,7 +171,7 @@ export default function StitchedCharts({ account, paperPoints, backtests }) {
   return (
     <section className="stitch-block">
       <h3 className="subhead">Бэктест и бумага, помесячно</h3>
-      <HonestyNotes backtests={backtests} account={account} />
+      <HonestyNotes backtests={backtests} account={account} generatedAt={generatedAt} />
       <p className="stitch-legend">
         <span className="swatch swatch-backtest" /> склейка
         <span className="swatch swatch-paper" /> бумага с {result.paperStart}

@@ -131,8 +131,8 @@ test("RUB book fixture: 299 970,20 ₽, short EHV6 70, −0,01% from start", () 
   assert.ok(points.every((p) => Number(p.equity) !== 2.046839));
   assert.ok(points.every((p) => Number(p.equity) !== 2536.7));
   const series = buildSeries(points, 300000, "pct");
-  assert.ok(series.length >= 2);
-  const lastPct = series[series.length - 1].value;
+  assert.equal(series.length, 1);
+  const lastPct = series[0].value;
   assert.ok(Math.abs(lastPct + 0.009934393653333) < 1e-9);
 });
 

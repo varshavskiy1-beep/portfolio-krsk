@@ -1,7 +1,6 @@
 /**
- * Выбор счёта для OG-превью: максимальная прибыль в деньгах (equity − seed).
- * Валюты не конвертируются и не складываются. При равенстве pnl
- * внутри одной валюты побеждает больший процент (pnl/seed).
+ * Выбор счёта для OG-превью: максимальная доходность в процентах (pnl/seed).
+ * Суммы в разных валютах не сравниваются и не складываются.
  */
 
 import { isHiddenPortalAccount } from "./strategyMeta.js";
@@ -62,9 +61,12 @@ export function scoreAccount(account, series, currencyFn) {
   };
 }
 
+export const OG_METHOD =
+  "Лидер обложки выбран по доходности в процентах от начального капитала; суммы в разных валютах не сравниваются.";
+
 /**
- * Среди всех счетов с валидными equity+seed выбирает max(pnl) без FX.
- * Ничья: выше процент, если валюта та же; иначе стабильный порядок по ключу.
+ * Среди всех счетов с валидными equity+seed выбирает max(pct).
+ * Ничья: стабильный порядок по ключу.
  */
 export function pickOgWinner(latest, history, currencyFn) {
   const seriesMap = history?.series || {};
@@ -76,12 +78,9 @@ export function pickOgWinner(latest, history, currencyFn) {
   }
   if (!scored.length) return null;
   scored.sort((a, b) => {
-    if (b.pnl !== a.pnl) return b.pnl - a.pnl;
-    if (a.currency === b.currency) {
-      const ap = a.pct ?? Number.NEGATIVE_INFINITY;
-      const bp = b.pct ?? Number.NEGATIVE_INFINITY;
-      if (bp !== ap) return bp - ap;
-    }
+    const ap = a.pct ?? Number.NEGATIVE_INFINITY;
+    const bp = b.pct ?? Number.NEGATIVE_INFINITY;
+    if (bp !== ap) return bp - ap;
     return a.key.localeCompare(b.key);
   });
   return scored[0];
@@ -153,11 +152,11 @@ export function winnerLabel(row) {
 }
 
 export function ogDescription(row) {
-  if (!row) return "Бумажные торговые боты. Валюты не складываются.";
+  if (!row) return asciiOgText(`Бумажные торговые боты. ${OG_METHOD}`);
   const money = formatSignedMoney(row.pnl, row.currency);
   const pct = formatPct(row.pct);
   return asciiOgText(
-    `${winnerLabel(row)}: ${money} ${row.currency} (${pct}%) с запуска. Бумажный кабинет, валюты не складываются.`,
+    `${winnerLabel(row)}: ${money} ${row.currency} (${pct}%) с запуска. ${OG_METHOD}`,
   );
 }
 

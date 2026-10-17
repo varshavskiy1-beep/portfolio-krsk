@@ -1,3 +1,4 @@
+import { feedSourceLine } from "./feedValidate.js";
 import {
   GLOSSARY,
   NO_DATA,
@@ -110,7 +111,7 @@ function TestingGap({ passport }) {
       {passport.testing.paperEquity ? (
         <p className="passport-p">
           На этой странице ниже есть график бумажной эквити кабинета. Он показывает учёт
-          paper-счёта, а не лабораторный бэктест и не walk-forward. Overlay (сравнение с эталоном)
+          бумажного счёта, а не лабораторный бэктест и не walk-forward. Наложения на эталон
           в репозитории нет — график эталона не рисуем.
         </p>
       ) : (
@@ -126,7 +127,7 @@ function TestingGap({ passport }) {
   );
 }
 
-export default function StrategyPassport({ botId, logic }) {
+export default function StrategyPassport({ botId, logic, generatedAt }) {
   if (isHiddenPortalId(botId)) return null;
   const passport = getPassport(botId, logic);
   if (passport.hidden) return null;
@@ -206,6 +207,8 @@ export default function StrategyPassport({ botId, logic }) {
           <p>{tech}</p>
         </details>
       ) : null}
+
+      <p className="passport-hint">{feedSourceLine(generatedAt)}</p>
 
       <details className="tech-details passport-glossary">
         <summary>Словарь терминов</summary>
