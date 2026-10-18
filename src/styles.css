@@ -545,14 +545,95 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 
 .stitch-block { margin-top: 8px; }
 .stitch-meta { margin: 0 0 6px; font-size: 0.82rem; }
-.stitch-chart {
+.stitch-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin: 0 0 8px;
+}
+.stitch-chart-frame {
   width: 100%;
-  height: 320px;
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
+  box-sizing: border-box;
+  background: #f3f1ec;
+  /* Inset the host from the rounded clip so time-axis labels stay inside. */
+  padding: 4px 8px 8px;
 }
-.stitch-chart-short { height: 260px; }
+.stitch-chart-host {
+  width: 100%;
+  height: 520px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: content-box;
+}
+@media (min-width: 768px) {
+  .stitch-chart-host { height: 600px; }
+}
+.stitch-month-block {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  background: #faf9f6;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.stitch-month-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.stitch-month-title {
+  margin: 0;
+  font-size: 0.95rem;
+}
+.stitch-month-latest,
+.stitch-month-obs,
+.stitch-month-period,
+.stitch-metric-hint,
+.stitch-missing {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+.stitch-month-name {
+  font-size: 1.05rem;
+  font-weight: 650;
+  margin: 4px 0 6px;
+}
+.stitch-month-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px 16px;
+  margin-top: 8px;
+}
+.stitch-metric-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-bottom: 2px;
+}
+.stitch-metric-value {
+  font-weight: 650;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+.stitch-metric-mom {
+  border-left: 3px solid #2b4c7e;
+  padding-left: 8px;
+}
+.stitch-metric-yoy {
+  border-left: 3px solid #1f7a4c;
+  padding-left: 8px;
+}
+.stitch-metric-pct { color: var(--ink); }
 .stitch-legend {
   display: flex;
   flex-wrap: wrap;
@@ -560,7 +641,7 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
   align-items: center;
   color: var(--muted);
   font-size: 0.88rem;
-  margin: 0 0 8px;
+  margin: 0;
 }
 .swatch {
   display: inline-block;
