@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-19T09:19:39Z",
+  "generated_at": "2026-10-19T09:34:46Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24858.536664880008",
-      "updated_utc": "2026-10-19T09:19:33.399489Z",
+      "updated_utc": "2026-10-19T09:34:40.687818Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1888565.1713839704",
-      "updated_utc": "2026-10-19T09:19:33.404955Z",
+      "updated_utc": "2026-10-19T09:34:40.690277Z",
       "positions": [
         {
           "position_id": "p_aa3ba897c020",
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1478744.8049554399",
-      "updated_utc": "2026-10-19T09:19:33.408822Z",
+      "updated_utc": "2026-10-19T09:34:40.692697Z",
       "positions": [
         {
           "position_id": "p_0a22b1cdfd6b",
@@ -107,7 +107,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13296.624747924008",
-      "updated_utc": "2026-10-19T09:19:33.411555Z",
+      "updated_utc": "2026-10-19T09:34:40.695106Z",
       "positions": [
         {
           "position_id": "p_8039794d4494",
@@ -133,7 +133,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-19T09:19:33.414193Z",
+      "updated_utc": "2026-10-19T09:34:40.697391Z",
       "positions": []
     },
     {
@@ -366,7 +366,7 @@
       "seed": "1000000",
       "equity": "1004112.6378350586",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-10-19T04:30:49Z",
+      "updated_utc": "2026-10-19T09:31:35Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -376,7 +376,7 @@
         }
       ],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-17",
+      "as_of": "2026-10-18",
       "braked": false
     },
     {
