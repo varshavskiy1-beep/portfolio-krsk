@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-19T20:25:56Z",
+  "generated_at": "2026-10-19T20:43:03Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24919.022154160008",
-      "updated_utc": "2026-10-19T20:25:49.598290Z",
+      "updated_utc": "2026-10-19T20:42:50.279520Z",
       "positions": [
         {
           "position_id": "p_4d6950503e36",
@@ -71,7 +71,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1898807.1113254703",
-      "updated_utc": "2026-10-19T20:25:49.600729Z",
+      "updated_utc": "2026-10-19T20:42:50.283367Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479475.1875460001",
-      "updated_utc": "2026-10-19T20:25:49.602824Z",
+      "updated_utc": "2026-10-19T20:42:50.286172Z",
       "positions": [
         {
           "position_id": "p_6ca06daf32b3",
@@ -106,7 +106,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13280.930532104008",
-      "updated_utc": "2026-10-19T20:25:49.604942Z",
+      "updated_utc": "2026-10-19T20:42:50.288971Z",
       "positions": [
         {
           "position_id": "p_e8f17b69571d",
@@ -114,6 +114,14 @@
           "side": "short",
           "qty": "0.04",
           "avg_px": "82033.58254",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_067b39a6bf39",
+          "symbol": "ETH-USDT",
+          "side": "long",
+          "qty": "1.382",
+          "avg_px": "2403.010687",
           "stop_px": null
         }
       ]
@@ -124,7 +132,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-19T20:25:49.606971Z",
+      "updated_utc": "2026-10-19T20:42:50.291929Z",
       "positions": []
     },
     {
@@ -284,7 +292,7 @@
       "seed": "10000",
       "equity": "9325.9815",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-19T20:20:06Z",
+      "updated_utc": "2026-10-19T20:40:01Z",
       "positions": [
         {
           "symbol": "AAPL",
