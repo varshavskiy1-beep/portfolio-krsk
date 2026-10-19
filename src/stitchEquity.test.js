@@ -17,6 +17,8 @@ import { feedSourceLine } from "./feedValidate.js";
 import {
   COSTS_RU_BY_KEY,
   EXTRA_HONESTY_BY_KEY,
+  MAYAK_BACKTEST_LINE,
+  MAYAK_KEYS,
   GAP_DAYS,
   SOURCE_RU_BY_KEY,
   backtestHonestyLines,
@@ -54,6 +56,10 @@ const SERIES_KEYS = [
   "cny_mom_h360::cny_mom_h360",
   "v6b1::v6b1",
   "who_pays::paper_crypto_perp",
+  "mayak_imoex_lowvol10::mayak_imoex_lowvol10",
+  "mayak_imoex_mom10::mayak_imoex_mom10",
+  "mayak_imoex_mom10_lev15::mayak_imoex_mom10_lev15",
+  "mayak_imoex_mom10_lev2::mayak_imoex_mom10_lev2",
 ];
 const V6B1 = { bot_id: "v6b1", account_id: "v6b1" };
 const WHO_PERP = { bot_id: "who_pays", account_id: "paper_crypto_perp" };
@@ -152,7 +158,7 @@ test("ema span 100 matches a flat series", () => {
   assert.equal(ema[119], 5);
 });
 
-test("backtests.json has exactly ten tester series — no invented keys", () => {
+test("backtests.json has exactly fourteen tester series — no invented keys", () => {
   assert.equal(backtests.schema, "backtest_equity.v1");
   assert.deepEqual(Object.keys(backtests.series), SERIES_KEYS);
   const pts = backtestPointsFor(backtests, OAC);
@@ -259,7 +265,11 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
 
 test("stitch card source and costs are Russian — no tester jargon, paths or sha", () => {
   assert.equal(Object.keys(SOURCE_RU_BY_KEY).sort().join("\n"), SERIES_KEYS.slice().sort().join("\n"));
-  assert.equal(Object.keys(COSTS_RU_BY_KEY).sort().join("\n"), SERIES_KEYS.slice().sort().join("\n"));
+  // Маяк: издержек в пакете тестировщика нет — строку не выдумываем.
+  assert.equal(
+    Object.keys(COSTS_RU_BY_KEY).sort().join("\n"),
+    SERIES_KEYS.filter((k) => !MAYAK_KEYS.includes(k)).sort().join("\n"),
+  );
   assert.equal(
     SOURCE_RU_BY_KEY[seriesKey(V6B1)],
     "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 95b78e2), дневные свечи OKX с 2020 года. Вход только после закрытия дневной свечи.",
@@ -288,14 +298,6 @@ test("stitch card source and costs are Russian — no tester jargon, paths or sh
 
 test("accounts without a series stay Склейки нет: …", () => {
   const paper = [{ t: "2026-10-15T08:57:31Z", equity: 10000 }];
-  const mayak = stitchEquity(
-    backtestPointsFor(backtests, { bot_id: "mayak_imoex_mom10", account_id: "mayak_imoex_mom10" }),
-    paper,
-  );
-  assert.equal(mayak.ok, false);
-  assert.equal(mayak.reason, "no_backtest");
-  assert.equal(stitchCaption(mayak), "Склейки нет: нет дневного бэктеста до старта бумаги.");
-
   const missing = stitchEquity(backtestPointsFor(null, { bot_id: "v6b1", account_id: "v6b1" }), paper);
   assert.equal(missing.ok, false);
   assert.equal(stitchCaption({ ok: false, reason: "no_paper" }), "Склейки нет: у бумаги ещё нет точек эквити.");
@@ -428,4 +430,31 @@ test("reset_from and chart v2 defaults are untouched", () => {
   assert.equal(DEFAULT_CHART_RANGE, "all");
   assert.equal(CHART_MODE_KEYS[0], "portfolio_krsk.chartMode.v2");
   assert.equal(CHART_RANGE_KEYS[0], "portfolio_krsk.chartRange.v2");
+});
+
+test("mayak ×4: honest LQDT series from 2023-10-02, stitched with the gray line", () => {
+  const paper = [
+    { t: "2026-10-06T05:01:51Z", equity: 300000 },
+    { t: "2026-10-16T16:26:35Z", equity: 301113.437381043 },
+  ];
+  for (const key of MAYAK_KEYS) {
+    const [bot_id, account_id] = key.split("::");
+    const acc = { bot_id, account_id };
+    const pts = backtestPointsFor(backtests, acc);
+    assert.equal(pts.length, 776, key);
+    assert.equal(pts[0].t, "2023-10-02", key);
+    assert.equal(pts.at(-1).t, "2026-10-16", key);
+    const row = backtestRowFor(backtests, acc);
+    assert.equal(row.file_sha256, "dce09bfb7ed8d9657f600f5b6e1fc3455927e57834ff741713ab15151b38cd26");
+    const res = stitchEquity(pts, paper);
+    assert.equal(res.ok, true, key);
+    assert.equal(res.daily[0].day, "2023-10-02", key);
+    const lines = backtestHonestyLines(row, acc);
+    assert.deepEqual(lines, [MAYAK_BACKTEST_LINE], key);
+    assert.doesNotMatch(lines.join(" "), /seed/i);
+  }
+  const csvSha = createHash("sha256")
+    .update(readFileSync(join(root, "docs/backtests/mayak_imoex_mom10__mayak_imoex_mom10.csv")))
+    .digest("hex");
+  assert.equal(csvSha, "dce09bfb7ed8d9657f600f5b6e1fc3455927e57834ff741713ab15151b38cd26");
 });
