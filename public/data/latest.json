@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-19T22:29:59Z",
+  "generated_at": "2026-10-19T22:42:03Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24955.32360296001",
-      "updated_utc": "2026-10-19T22:29:57.619248Z",
+      "updated_utc": "2026-10-19T22:41:58.811168Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1898807.1113254703",
-      "updated_utc": "2026-10-19T22:29:57.621682Z",
+      "updated_utc": "2026-10-19T22:41:58.815435Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479475.1875460001",
-      "updated_utc": "2026-10-19T22:29:57.623997Z",
+      "updated_utc": "2026-10-19T22:41:58.818090Z",
       "positions": [
         {
           "position_id": "p_6ca06daf32b3",
@@ -97,7 +97,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13280.930532104008",
-      "updated_utc": "2026-10-19T22:29:57.626318Z",
+      "updated_utc": "2026-10-19T22:41:58.820630Z",
       "positions": [
         {
           "position_id": "p_e8f17b69571d",
@@ -123,7 +123,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-19T22:29:57.628542Z",
+      "updated_utc": "2026-10-19T22:41:58.823245Z",
       "positions": []
     },
     {
@@ -283,7 +283,7 @@
       "seed": "10000",
       "equity": "9325.9815",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-19T22:20:00Z",
+      "updated_utc": "2026-10-19T22:40:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -354,19 +354,19 @@
       "account_id": "cycle_6040_paper",
       "currency": "RUB",
       "seed": "1000000",
-      "equity": "1004112.6378350586",
+      "equity": "1004445.4871350586",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-10-19T09:31:35Z",
+      "updated_utc": "2026-10-19T22:30:40Z",
       "positions": [
         {
           "symbol": "LQDT",
           "side": "long",
           "qty": "475499.0",
-          "avg_px": "2.1117"
+          "avg_px": "2.1124"
         }
       ],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-18",
+      "as_of": "2026-10-19",
       "braked": false
     },
     {
