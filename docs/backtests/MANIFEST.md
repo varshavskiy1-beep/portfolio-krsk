@@ -20,7 +20,7 @@ Schema `backtest_equity.v1`, `backtests.json` sha256 1d72cc20…2268. Прове
 - **cny_mom_h360:** часы выходных исключены, как в ленте прогрева бота: с ними знак 14.10 расходится с бумагой, без них бумага 13–16.10 повторяется с точностью ~0,2%. Пай LQDT учтён как доход на весь капитал.
 
 ## Нет серии
-mayak ×4, forts_adr ×2, young_bounce_combo, pump_radar — причины в отчёте пакета 2.
+forts_adr ×2, young_bounce_combo, pump_radar — причины в отчёте пакета 2. Маяк ×4 — ряд с 2023-10-02, см. ниже.
 
 ## v6b1::v6b1 — честный пересчёт (2026-10-17)
 - Файл: v6b1__v6b1.csv, sha256 d57d3b6629a5a8e9681e518d547887e006eced78f061d4e6fcce96f21ff47f00, 2020-02-04…2026-10-14, 2445 дн., USDT 10 000 → 14 119,72. Стык с paper (2026-10-15) 1 день, stitchEquity ok.
@@ -46,3 +46,16 @@ mayak ×4, forts_adr ×2, young_bounce_combo, pump_radar — причины в �
 - **paper_ru_eq**, 2 000 000 RUB: та же причина. История ISS «trades» по старым датам — дневные итоги, не принты.
 - **paper_forts**, 1 500 000 RUB: та же причина.
 - **paper_crypto_spot**, 15 000 USDT: S2 на спот не ставится, S3/S4/S5 без стакана и ленты сделок не считаются.
+
+## mayak ×4 (2026-10-19)
+
+CODE_GO с 2023-10-02 по всем четырём счетам, раньше — NO-GO. WORK PR #536, код `0011df9cadced997cbaa5cfcb221080ca63ac952`, `quant/bots/mayak_cheap`, ops от 300 000 ₽; тестировщик подставил историю ставок НКЦ (ISS marketrates, с 2016-05-30) и ISSUESIZE по датам (ISS history totals). Архива LTM с датами публикации за 2016–2023 нет, поэтому до последней корзины 2023-09-29 ряд не честный.
+
+С 2023-10-02 у всех четырёх 776 дней подряд режим HARD, весь счёт в LQDT, поэтому ряд одинаковый: 2023-10-02…2026-10-16, 776 дн., RUB 300 000 → 496 286,72, CAGR 18,00%, MaxDD −0,11%. sha256 у всех четырёх CSV `dce09bfb7ed8d9657f600f5b6e1fc3455927e57834ff741713ab15151b38cd26`. Издержек в пакете нет — на карточке строки об издержках нет. Полный пересчёт 2016–2026 (NOT_FOR_SPLICE) сюда не брали.
+
+| key | файл |
+|---|---|
+| mayak_imoex_lowvol10::mayak_imoex_lowvol10 | mayak_imoex_lowvol10__mayak_imoex_lowvol10.csv |
+| mayak_imoex_mom10::mayak_imoex_mom10 | mayak_imoex_mom10__mayak_imoex_mom10.csv |
+| mayak_imoex_mom10_lev15::mayak_imoex_mom10_lev15 | mayak_imoex_mom10_lev15__mayak_imoex_mom10_lev15.csv |
+| mayak_imoex_mom10_lev2::mayak_imoex_mom10_lev2 | mayak_imoex_mom10_lev2__mayak_imoex_mom10_lev2.csv |

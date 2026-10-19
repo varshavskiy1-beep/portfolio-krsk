@@ -200,6 +200,19 @@ export function stitchPaperPoints(account, cardPoints, history) {
   return filterResetPoints(key, raw);
 }
 
+export const MAYAK_BACKTEST_LINE =
+  "С 2023-10-02 стратегия не держала акций: график показывает доходность денежного фонда LQDT. Раньше 2023-10-02 честного бэктеста нет — нет архива отчётности с датами публикации.";
+
+export const MAYAK_SOURCE_LINE =
+  "Источник ряда: пересчёт тестировщика 19.10.2026 по коду бота (коммит 0011df9), с 02.10.2023 весь счёт в паях LQDT.";
+
+export const MAYAK_KEYS = [
+  "mayak_imoex_lowvol10::mayak_imoex_lowvol10",
+  "mayak_imoex_mom10::mayak_imoex_mom10",
+  "mayak_imoex_mom10_lev15::mayak_imoex_mom10_lev15",
+  "mayak_imoex_mom10_lev2::mayak_imoex_mom10_lev2",
+];
+
 export const EXTRA_HONESTY_BY_KEY = {
   "three_robots_okx_nasdaq_1h::paper_block2":
     "Издержки не совпадают: в бэктесте 3 б.п. на сделку без funding, бумажная книга не списывает ни комиссию, ни funding.",
@@ -209,6 +222,7 @@ export const EXTRA_HONESTY_BY_KEY = {
     "Бэктест пересчитан честно: вход только после закрытия дневной свечи. Бумажный бот входит и по незакрытой свече и торгует только топ-60 монет по объёму, поэтому результаты могут расходиться.",
   "who_pays::paper_crypto_perp":
     "Бэктест короткий: 32 дня с 19.08.2026 — раньше у OKX нет публичных данных по фандингу и открытому интересу. Две сделки, обе лонг BTC. Проверки вне выборки не было.",
+  ...Object.fromEntries(MAYAK_KEYS.map((key) => [key, MAYAK_BACKTEST_LINE])),
 };
 
 export const WHO_PAYS_NO_TAPE_KEYS = [
@@ -251,6 +265,7 @@ export const SOURCE_RU_BY_KEY = {
     "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 95b78e2), дневные свечи OKX с 2020 года. Вход только после закрытия дневной свечи.",
   "who_pays::paper_crypto_perp":
     "Источник ряда: пересчёт тестировщика 17.10.2026 по коду бота (коммит 89e21d7), публичные данные OKX с 19.08.2026.",
+  ...Object.fromEntries(MAYAK_KEYS.map((key) => [key, MAYAK_SOURCE_LINE])),
 };
 
 export const COSTS_RU_BY_KEY = {
