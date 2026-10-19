@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-19T22:42:03Z",
+  "generated_at": "2026-10-19T23:04:13Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24955.32360296001",
-      "updated_utc": "2026-10-19T22:41:58.811168Z",
+      "updated_utc": "2026-10-19T23:04:06.560684Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1898807.1113254703",
-      "updated_utc": "2026-10-19T22:41:58.815435Z",
+      "updated_utc": "2026-10-19T23:04:06.563932Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1479475.1875460001",
-      "updated_utc": "2026-10-19T22:41:58.818090Z",
+      "updated_utc": "2026-10-19T23:04:06.566872Z",
       "positions": [
         {
           "position_id": "p_6ca06daf32b3",
@@ -97,7 +97,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13280.930532104008",
-      "updated_utc": "2026-10-19T22:41:58.820630Z",
+      "updated_utc": "2026-10-19T23:04:06.569506Z",
       "positions": [
         {
           "position_id": "p_e8f17b69571d",
@@ -123,7 +123,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-19T22:41:58.823245Z",
+      "updated_utc": "2026-10-19T23:04:06.572359Z",
       "positions": []
     },
     {
@@ -283,7 +283,7 @@
       "seed": "10000",
       "equity": "9325.9815",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-19T22:40:01Z",
+      "updated_utc": "2026-10-19T23:00:00Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -1076,7 +1076,7 @@
       "seed": "300000",
       "equity": "307918.6385972401",
       "cash": "7848.57609724008",
-      "updated_utc": "2026-10-19T22:02:03Z",
+      "updated_utc": "2026-10-19T23:02:04Z",
       "positions": [
         {
           "symbol": "LQDT",
