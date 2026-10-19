@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-19T07:26:52Z",
+  "generated_at": "2026-10-19T07:46:02Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24858.536664880008",
-      "updated_utc": "2026-10-19T07:26:52.492395Z",
+      "updated_utc": "2026-10-19T07:45:52.242806Z",
       "positions": []
     },
     {
@@ -54,16 +54,24 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1890945.6123865105",
-      "updated_utc": "2026-10-19T07:26:52.495099Z",
+      "equity": "1888565.1713839704",
+      "updated_utc": "2026-10-19T07:45:52.246853Z",
       "positions": [
         {
-          "position_id": "p_7bdcb0382ba0",
-          "symbol": "SBER",
+          "position_id": "p_aa3ba897c020",
+          "symbol": "LKOH",
           "side": "long",
-          "qty": "1646.0",
-          "avg_px": "287.333595",
-          "stop_px": "287.08263"
+          "qty": "78.0",
+          "avg_px": "6050.0235",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_0ff67d6e037b",
+          "symbol": "SBER",
+          "side": "short",
+          "qty": "1637.0",
+          "avg_px": "288.23581",
+          "stop_px": null
         }
       ]
     },
@@ -73,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1478744.8049554399",
-      "updated_utc": "2026-10-19T07:26:52.497598Z",
+      "updated_utc": "2026-10-19T07:45:52.250023Z",
       "positions": [
         {
           "position_id": "p_0a22b1cdfd6b",
@@ -99,7 +107,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13296.624747924008",
-      "updated_utc": "2026-10-19T07:26:52.499975Z",
+      "updated_utc": "2026-10-19T07:45:52.252133Z",
       "positions": [
         {
           "position_id": "p_8039794d4494",
@@ -125,7 +133,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-19T07:26:52.503882Z",
+      "updated_utc": "2026-10-19T07:45:52.254370Z",
       "positions": []
     },
     {
