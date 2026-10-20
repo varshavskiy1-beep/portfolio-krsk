@@ -1,6 +1,7 @@
 /**
  * Карточка «Юань 360»: бумажный рублёвый счёт.
- * Линия — только поле history из снимка. Индексные тикеры в таблицу не идут.
+ * Линия — накопленный history.json (с открытия рублёвой книги) плюс поле history из снимка.
+ * Индексные тикеры в таблицу не идут.
  */
 
 import { RATE_CYCLE_HIDDEN_SYMBOLS, RATE_CYCLE_OPENED_LINE, parseFeedNumber } from "./rateCycleCard.js";
@@ -73,8 +74,50 @@ export function cnyMomHistoryPoints(account) {
   return hist.filter((p) => p && (p.t || p.time) && p.equity != null && p.equity !== "");
 }
 
-export function cnyMomOpenedLine(account) {
+/** Первая рублёвая точка книги в history.json. Всё раньше — не этот счёт, не рисуем. */
+export const CNY_MOM_BOOK_FROM = "2026-10-12T11:07:00Z";
+
+function cnyPointMs(p) {
+  const t = p?.t ?? p?.time;
+  if (t == null || t === "") return null;
+  const s = String(t);
+  const ms = Date.parse(s.length === 10 ? `${s}T00:00:00Z` : s);
+  return Number.isNaN(ms) ? null : ms;
+}
+
+/** Точки history.json для «Юань 360»: только с открытия рублёвой книги. */
+export function cnyMomStoredPoints(account, history) {
+  if (!isCnyMomH360(account) || !hasCnyMomAccountLine(account)) return [];
+  const key = `${account.bot_id}::${account.account_id}`;
+  const pts = history?.series?.[key]?.points;
+  if (!Array.isArray(pts)) return [];
+  const from = Date.parse(CNY_MOM_BOOK_FROM);
+  return pts.filter((p) => {
+    if (!p || p.equity == null || p.equity === "") return false;
+    const ms = cnyPointMs(p);
+    return ms != null && ms >= from;
+  });
+}
+
+/** Сколько разных моментов времени в ряду. */
+function distinctPointCount(points) {
+  const seen = new Set();
+  for (const p of points || []) {
+    const ms = cnyPointMs(p);
+    if (ms != null) seen.add(Math.floor(ms / 1000));
+  }
+  return seen.size;
+}
+
+/**
+ * «Счёт только открыт» — только пока в итоговом ряду карточки меньше двух точек.
+ * Без ряда (старый вызов) смотрим на поле history из снимка.
+ */
+export function cnyMomOpenedLine(account, chartPoints) {
   if (!hasCnyMomAccountLine(account)) return "";
+  if (Array.isArray(chartPoints)) {
+    return distinctPointCount(chartPoints) < 2 ? CNY_MOM_OPENED_LINE : "";
+  }
   return cnyMomHistoryPoints(account).length === 1 ? CNY_MOM_OPENED_LINE : "";
 }
 
