@@ -158,3 +158,34 @@ test("rate-cycle 80/20 stays a separate RUB card", () => {
   assert.equal(cnyMomFromStartPctLine(rbc), "");
   assert.equal(cardTitle(rbc), RF_BONDS_RATE_CYCLE_TITLE);
 });
+
+test("Юань 360: линия = history.json + поле history снимка, без «только открыт»", () => {
+  const row = {
+    ...RUB_BOOK,
+    equity: "313593.43",
+    history: [{ t: "2026-10-20", equity: "313593.43" }],
+  };
+  const stored = [
+    { t: "2026-10-11T10:00:00Z", equity: 12.9 },
+    { t: "2026-10-12T11:07:00Z", equity: 300000 },
+    { t: "2026-10-19T09:02:00Z", equity: 305000 },
+    { t: "2026-10-20T08:02:04Z", equity: 311423.43 },
+    { t: "2026-10-20T09:02:08Z", equity: 313593.43 },
+  ];
+  const history = { series: { "cny_mom_h360::cny_mom_h360": { points: stored } } };
+  const points = resolveEquityPoints(row, history);
+  assert.deepEqual(
+    points.map((p) => p.t),
+    ["2026-10-12T11:07:00Z", "2026-10-19T09:02:00Z", "2026-10-20T08:02:04Z", "2026-10-20T09:02:08Z"],
+  );
+  assert.equal(buildSeries(points, 300000, "money").length, 4);
+  assert.equal(cnyMomOpenedLine(row, points), "");
+  // Новый день в снимке, которого ещё нет в history.json, дописывается в конец.
+  const next = resolveEquityPoints({ ...row, history: [{ t: "2026-10-21", equity: "314000" }] }, history);
+  assert.equal(next.length, 5);
+  assert.equal(next[4].t, "2026-10-21");
+  // Пустой history.json — одна точка из снимка и подпись «только открыт».
+  const alone = resolveEquityPoints(row, { series: {} });
+  assert.equal(alone.length, 1);
+  assert.equal(cnyMomOpenedLine(row, alone), "Счёт только открыт, история копится.");
+});

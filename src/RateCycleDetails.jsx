@@ -9,7 +9,7 @@ export default function RateCycleDetails({ account, historyPoints }) {
   const opened = isRfBondsRateCycle(account)
     ? rateCycleOpenedLine(account)
     : isCnyMomH360(account)
-      ? cnyMomOpenedLine(account)
+      ? cnyMomOpenedLine(account, historyPoints)
       : isEthOkxMoex(account)
         ? ethOkxOpenedLine(account)
         : historyResetLine(account, historyPoints);

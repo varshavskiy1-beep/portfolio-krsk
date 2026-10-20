@@ -1,4 +1,4 @@
-import { cnyMomHistoryPoints } from "./cnyMomCard.js";
+import { cnyMomHistoryPoints, cnyMomStoredPoints } from "./cnyMomCard.js";
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
 import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
@@ -111,7 +111,9 @@ export function lastEquityValue(account) {
  */
 export function resolveEquityPoints(account, history) {
   if (isRfBondsRateCycle(account)) return rateCycleHistoryPoints(account);
-  if (isCnyMomH360(account)) return cnyMomHistoryPoints(account);
+  if (isCnyMomH360(account)) {
+    return mergeStoredAndFeedHistory(cnyMomStoredPoints(account, history), cnyMomHistoryPoints(account));
+  }
   if (isEthOkxMoex(account)) return ethOkxHistoryPoints(account);
   if (!hasAccountData(account)) return [];
   let points = [];
@@ -130,6 +132,45 @@ export function resolveEquityPoints(account, history) {
     }
   }
   return filterResetPoints(seriesKey(account), points);
+}
+
+function pointMs(p) {
+  const t = p?.t ?? p?.time;
+  if (t == null || t === "") return null;
+  const s = String(t);
+  const ms = Date.parse(s.length === 10 ? `${s}T00:00:00Z` : s);
+  return Number.isNaN(ms) ? null : ms;
+}
+
+function isDateOnly(p) {
+  const t = p?.t ?? p?.time;
+  return typeof t === "string" && t.length === 10;
+}
+
+/**
+ * Накопленный ряд history.json + точки поля history из снимка.
+ * Совпадающее время — одна точка (берём точку снимка). Точка снимка с одной датой
+ * без часа не клеится, если в history.json уже есть точки за этот день или позже:
+ * иначе дневная метка встала бы на полночь с вечерним значением.
+ * Результат отсортирован по времени. Новых значений не придумываем.
+ */
+export function mergeStoredAndFeedHistory(stored, feed) {
+  const byMs = new Map();
+  let lastStoredMs = null;
+  for (const p of stored || []) {
+    const ms = pointMs(p);
+    if (ms == null) continue;
+    byMs.set(ms, p);
+    if (lastStoredMs == null || ms > lastStoredMs) lastStoredMs = ms;
+  }
+  const lastStoredDay = lastStoredMs == null ? null : new Date(lastStoredMs).toISOString().slice(0, 10);
+  for (const p of feed || []) {
+    const ms = pointMs(p);
+    if (ms == null) continue;
+    if (isDateOnly(p) && lastStoredDay != null && String(p.t ?? p.time) <= lastStoredDay) continue;
+    byMs.set(ms, p);
+  }
+  return [...byMs.entries()].sort((a, b) => a[0] - b[0]).map(([, p]) => p);
 }
 
 /** В режиме «В %» нужна строго положительная база. */
