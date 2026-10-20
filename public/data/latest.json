@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-20T11:13:04Z",
+  "generated_at": "2026-10-20T11:34:13Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24955.32360296001",
-      "updated_utc": "2026-10-20T11:12:59.848745Z",
+      "updated_utc": "2026-10-20T11:34:08.360086Z",
       "positions": []
     },
     {
@@ -61,26 +61,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1897098.7891329702",
-      "updated_utc": "2026-10-20T11:12:59.851773Z",
-      "positions": [
-        {
-          "position_id": "p_3cdd1f402772",
-          "symbol": "LKOH",
-          "side": "short",
-          "qty": "77.0",
-          "avg_px": "6107.44475",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_d4a57fdcae5f",
-          "symbol": "SBER",
-          "side": "short",
-          "qty": "1621.0",
-          "avg_px": "292.39373",
-          "stop_px": null
-        }
-      ]
+      "equity": "1893828.05718799",
+      "updated_utc": "2026-10-20T11:34:08.362851Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -88,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1475476.98851816",
-      "updated_utc": "2026-10-20T11:12:59.854500Z",
+      "updated_utc": "2026-10-20T11:34:08.365594Z",
       "positions": [
         {
           "position_id": "p_412d7a8cd5c2",
@@ -106,7 +89,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13270.54410948801",
-      "updated_utc": "2026-10-20T11:12:59.857440Z",
+      "updated_utc": "2026-10-20T11:34:08.368438Z",
       "positions": [
         {
           "position_id": "p_6cb888ec2d8b",
@@ -124,7 +107,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-20T11:12:59.860452Z",
+      "updated_utc": "2026-10-20T11:34:08.373414Z",
       "positions": []
     },
     {
