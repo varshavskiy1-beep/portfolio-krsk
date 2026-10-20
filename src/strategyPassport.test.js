@@ -384,3 +384,14 @@ test("displayed passport UI has no Grail / grail_b20_3x copy", () => {
     assert.doesNotMatch(text, /\bGrail\b/, botId);
   }
 });
+
+test("forts_adr_*: no old English note words anywhere in site code", () => {
+  for (const f of ["strategyPassport.js", "stitchEquity.js", "uiCopy.js", "App.jsx", "StrategyPage.jsx", "StitchedCharts.jsx"]) {
+    const src = readFileSync(join(root, "src", f), "utf8");
+    assert.ok(!/eod_flat|overnight|jsonl|\bfills\b|pnl_pct/i.test(src), f);
+  }
+  for (const id of ["forts_adr_adaptive", "forts_adr_static"]) {
+    const a = latest.accounts.find((x) => x.bot_id === id);
+    assert.equal(a.note, "Капитал посчитан по журналу сделок. Позиции на ночь не переносятся.");
+  }
+});

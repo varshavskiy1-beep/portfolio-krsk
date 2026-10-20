@@ -82,5 +82,7 @@ test("P09: sync-equity no longer falls back from broken JSON to an empty history
   assert.doesNotMatch(src, /function loadJson\(p, fallback\)/);
   assert.match(src, /loadHistoryFile\(historyPath\)/);
   assert.match(src, /writeJsonAtomic\(historyPath/);
-  assert.match(src, /capHistoryPoints/);
+  const merge = fs.readFileSync(path.join(here, "historyMerge.js"), "utf8");
+  assert.match(src, /mergeLatestIntoHistory/);
+  assert.match(merge, /capHistoryPoints/);
 });

@@ -290,3 +290,13 @@ test("17 inputs are not mutated and month keys do not depend on local TZ", () =>
   assert.equal(YOY_PANE_EMPTY, "Недостаточно данных для изменения за 12 месяцев");
   assert.equal(LAST_AVAILABLE_MONTH, "Последний доступный месяц");
 });
+
+test("stitched chart «В %»: base is first stitched day, gaps stay gaps", async () => {
+  const { stitchPctBase, toPctSeriesData } = await import("./stitchedChartModel.js");
+  assert.equal(stitchPctBase({ daily: [{ eq: 200 }, { eq: 300 }] }), 200);
+  assert.equal(stitchPctBase({ daily: [{ eq: 0 }] }), null);
+  assert.equal(stitchPctBase({}), null);
+  const out = toPctSeriesData([{ time: 1, value: 200 }, { time: 2 }, { time: 3, value: 250 }], 200);
+  assert.deepEqual(out, [{ time: 1, value: 0 }, { time: 2 }, { time: 3, value: 25 }]);
+  assert.deepEqual(toPctSeriesData([{ time: 1, value: 5 }], null), [{ time: 1, value: 5 }]);
+});

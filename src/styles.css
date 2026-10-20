@@ -656,3 +656,4 @@ th, td { text-align: left; padding: 4px 0; border-bottom: 1px solid var(--line);
 .swatch-sma { background: #5b4db3; }
 .swatch-up { background: #1f7a4c; }
 .swatch-down { background: #c23b3b; }
+.stitch-toolbar .chart-toolbar { margin: 0; }

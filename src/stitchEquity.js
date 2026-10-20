@@ -4,6 +4,7 @@
  * Скачок на стыке не допускается: бумага продолжается с уровня бэктеста.
  */
 
+import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { filterResetPoints, seriesKey as resetSeriesKey } from "./historyReset.js";
 
 export const GAP_DAYS = 7;
@@ -190,11 +191,17 @@ export function seriesKey(account) {
 }
 
 /**
- * Для склейки берём накопленный history.json (после reset_from), иначе точки карточки.
+ * Для склейки: если в ленте есть equity_curve — берём её (это ряд сервера,
+ * старый history.json для этого ключа устарел). Иначе накопленный history.json
+ * (после reset_from), иначе точки карточки.
  * Иначе у Юань 360 короткий account.history даёт дыру > 7 дней.
  */
 export function stitchPaperPoints(account, cardPoints, history) {
   const key = seriesKey(account);
+  if (hasEquityCurve(account)) {
+    const curve = equityCurvePoints(account);
+    if (curve.length) return filterResetPoints(key, curve);
+  }
   const histPts = history?.series?.[key]?.points;
   const raw = Array.isArray(histPts) && histPts.length ? histPts : cardPoints || [];
   return filterResetPoints(key, raw);
