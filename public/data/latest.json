@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-20T12:12:29Z",
+  "generated_at": "2026-10-20T12:30:37Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24955.32360296001",
-      "updated_utc": "2026-10-20T12:12:26.204981Z",
+      "updated_utc": "2026-10-20T12:30:30.664775Z",
       "positions": []
     },
     {
@@ -62,26 +62,26 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1892591.82421572",
-      "updated_utc": "2026-10-20T12:12:26.208162Z",
-      "positions": []
+      "updated_utc": "2026-10-20T12:30:30.667954Z",
+      "positions": [
+        {
+          "position_id": "p_ad8d06bb2161",
+          "symbol": "ROSN",
+          "side": "short",
+          "qty": "1214.0",
+          "avg_px": "389.555125",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1475476.98851816",
-      "updated_utc": "2026-10-20T12:12:26.210668Z",
-      "positions": [
-        {
-          "position_id": "p_412d7a8cd5c2",
-          "symbol": "SiZ6",
-          "side": "long",
-          "qty": "1.0",
-          "avg_px": "83753.488",
-          "stop_px": null
-        }
-      ]
+      "equity": "1475025.7350900802",
+      "updated_utc": "2026-10-20T12:30:30.670317Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -89,7 +89,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13270.54410948801",
-      "updated_utc": "2026-10-20T12:12:26.213227Z",
+      "updated_utc": "2026-10-20T12:30:30.673938Z",
       "positions": [
         {
           "position_id": "p_6cb888ec2d8b",
@@ -107,7 +107,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-20T12:12:26.215602Z",
+      "updated_utc": "2026-10-20T12:30:30.676675Z",
       "positions": []
     },
     {
