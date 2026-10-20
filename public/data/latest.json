@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-20T18:58:25Z",
+  "generated_at": "2026-10-20T19:15:37Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25059.94774677001",
-      "updated_utc": "2026-10-20T18:58:24.155877Z",
+      "updated_utc": "2026-10-20T19:15:29.435966Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1889892.2757138899",
-      "updated_utc": "2026-10-20T18:58:24.159461Z",
+      "updated_utc": "2026-10-20T19:15:29.438188Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1471847.9021048003",
-      "updated_utc": "2026-10-20T18:58:24.162506Z",
+      "updated_utc": "2026-10-20T19:15:29.440308Z",
       "positions": [
         {
           "position_id": "p_3e0a21c3c409",
@@ -89,7 +89,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13264.93979346801",
-      "updated_utc": "2026-10-20T18:58:24.166305Z",
+      "updated_utc": "2026-10-20T19:15:29.443275Z",
       "positions": []
     },
     {
@@ -98,7 +98,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-20T18:58:24.169449Z",
+      "updated_utc": "2026-10-20T19:15:29.445672Z",
       "positions": []
     },
     {
@@ -405,17 +405,10 @@
       "account_id": "paper_block2",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "10198.96",
-      "cash": "10198.96",
-      "updated_utc": "2026-10-20T18:11:12Z",
+      "equity": "10252.05",
+      "cash": "10233.52",
+      "updated_utc": "2026-10-20T19:10:11Z",
       "positions": [
-        {
-          "symbol": "MSTR-USDT-SWAP",
-          "side": "short",
-          "qty": "28.19",
-          "avg_px": "144.71",
-          "margin": null
-        },
         {
           "symbol": "TSLA-USDT-SWAP",
           "side": "long",
@@ -424,10 +417,17 @@
           "margin": null
         },
         {
-          "symbol": "SPCX-USDT-SWAP",
+          "symbol": "MSTR-USDT-SWAP",
           "side": "long",
-          "qty": "13.76",
-          "avg_px": "148.23",
+          "qty": "28.62",
+          "avg_px": "143.24",
+          "margin": null
+        },
+        {
+          "symbol": "SPCX-USDT-SWAP",
+          "side": "short",
+          "qty": "13.87",
+          "avg_px": "147.73",
           "margin": null
         }
       ],
@@ -527,7 +527,7 @@
       "seed": "10000",
       "equity": "9325.9815",
       "cash": "-8.678343180074876",
-      "updated_utc": "2026-10-20T18:50:00Z",
+      "updated_utc": "2026-10-20T19:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -643,21 +643,21 @@
       "account_id": "eth_okx_moex",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "305288.89592792594",
-      "cash": "1.2315279259120189",
-      "updated_utc": "2026-10-20T18:02:11Z",
+      "equity": "305402.762627926",
+      "cash": "1.3264279259346097",
+      "updated_utc": "2026-10-20T19:02:04Z",
       "positions": [
         {
           "symbol": "EHV6",
           "side": "short",
           "qty": "75",
-          "avg_px": "2459.8"
+          "avg_px": "2458.2"
         },
         {
           "symbol": "LQDT",
           "side": "long",
-          "qty": "144467",
-          "avg_px": "2.1132"
+          "qty": "144514",
+          "avg_px": "2.1133"
         }
       ],
       "history": [
@@ -1388,6 +1388,10 @@
         {
           "t": "2026-10-20",
           "equity": "305288.89592792594"
+        },
+        {
+          "t": "2026-10-20",
+          "equity": "305402.762627926"
         }
       ],
       "note": "Бумага. «ETH по сигналу OKX, фьючерс Мосбиржи», старт 300000 RUB. Дисконт пая не задан, паёв LQDT ноль, рубли на счёте. На час 08:00 знак стал плюсом: бумажный шорт перевернулся в лонг. На биржу ордера не идут.",
@@ -1400,7 +1404,7 @@
       "seed": "300000",
       "equity": "315012.58519124",
       "cash": "14828.886691240019",
-      "updated_utc": "2026-10-20T18:02:19Z",
+      "updated_utc": "2026-10-20T19:10:00Z",
       "positions": [
         {
           "symbol": "LQDT",
