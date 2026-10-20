@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
  * Pull equity-ro latest.json and append points into public/data/history.json.
+ * An account with a non-empty equity_curve replaces its history series entirely
+ * with that curve (equity → number); other accounts stay append-only.
  * After SCP, remaps cash currency by venue / bot_id (OKX crypto → USDT, FORTS/RU → RUB, US_EQ → USD).
  * --local skips SCP and only remaps the existing public/data snapshot + history series currency.
  * Does not read or write public/data/backtests.json (stitched daily books are committed separately).
@@ -11,9 +13,9 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { applyCanonicalCurrencies, canonicalCurrency } from "../src/cashCurrency.js";
-import { applyHistoryResets, shouldAppendHistoryPoint } from "../src/historyReset.js";
-import { capHistoryPoints, loadHistoryFile, writeJsonAtomic } from "../src/historyStore.js";
+import { applyCanonicalCurrencies } from "../src/cashCurrency.js";
+import { mergeLatestIntoHistory } from "../src/historyMerge.js";
+import { loadHistoryFile, writeJsonAtomic } from "../src/historyStore.js";
 import { generateOgCover } from "./og-cover.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -49,51 +51,8 @@ function loadLatest(p) {
   }
 }
 
-function keyOf(a) {
-  return `${a.bot_id}::${a.account_id}`;
-}
-
 function appendHistory(latest) {
-  const hist = loadHistoryFile(historyPath);
-  const gen = latest.generated_at || new Date().toISOString();
-  hist.updated_at = gen;
-  // paper_block2 reset_from 2026-10-15T08:57:31Z; v6b1 reset_from 2026-10-15T17:27:12Z;
-  // rf_bonds_rate_cycle reset_from 2026-10-10T08:13:19Z (drop wealth-index 2.44).
-  // Drop the old books even if this history.json (or a merge with master) still has them.
-  applyHistoryResets(hist);
-  for (const a of latest.accounts || []) {
-    const k = keyOf(a);
-    const eq = a.equity == null || a.equity === "" ? null : Number(a.equity);
-    const ts = a.updated_utc || gen;
-    const currency = canonicalCurrency(a);
-    if (!shouldAppendHistoryPoint(k, ts)) continue;
-    if (!hist.series[k]) {
-      hist.series[k] = {
-        bot_id: a.bot_id,
-        account_id: a.account_id,
-        currency,
-        seed: a.seed == null || a.seed === "" ? null : Number(a.seed),
-        points: [],
-      };
-    }
-    const s = hist.series[k];
-    if (a.seed != null && a.seed !== "") s.seed = Number(a.seed);
-    s.currency = currency;
-    if (eq == null || Number.isNaN(eq)) continue;
-    const pts = s.points;
-    const last = pts[pts.length - 1];
-    // skip duplicate identical consecutive points (same minute + same equity)
-    if (last && last.t === ts && Math.abs(last.equity - eq) < 1e-9) continue;
-    // if last point same second window within 50s and same equity — skip
-    if (last && Math.abs(last.equity - eq) < 1e-9) {
-      const t0 = Date.parse(last.t);
-      const t1 = Date.parse(ts);
-      if (!Number.isNaN(t0) && !Number.isNaN(t1) && Math.abs(t1 - t0) < 50_000) continue;
-    }
-    pts.push({ t: ts, equity: eq });
-    s.points = capHistoryPoints(pts);
-  }
-  applyHistoryResets(hist);
+  const hist = mergeLatestIntoHistory(loadHistoryFile(historyPath), latest);
   writeJsonAtomic(historyPath, hist);
   return hist;
 }

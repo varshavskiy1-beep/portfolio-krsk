@@ -474,3 +474,26 @@ export function modelFailMessage(reason) {
   if (reason === "invalid_row") return "Не удалось построить помесячный график: некорректная строка ряда.";
   return "Не удалось построить помесячный график: некорректные входные данные.";
 }
+
+/**
+ * База для режима «В %» склейки: первая дневная точка склеенного ряда
+ * (начало бэктеста). Не положительная — режим «В %» недоступен (null).
+ * @param {{daily?: {eq:number}[]}} result — ответ stitchEquity
+ */
+export function stitchPctBase(result) {
+  const first = result?.daily?.[0]?.eq;
+  return Number.isFinite(first) && first > 0 ? first : null;
+}
+
+/**
+ * Перевод точек верхней панели в % от базы. Пустые точки (дыры) остаются пустыми.
+ * @param {{time:any, value?:number}[]} data
+ * @param {number|null} base
+ */
+export function toPctSeriesData(data, base) {
+  if (!(Number.isFinite(base) && base > 0)) return data || [];
+  return (data || []).map((p) => {
+    if (p.value == null || !Number.isFinite(p.value)) return { time: p.time };
+    return { ...p, value: (p.value / base - 1) * 100 };
+  });
+}

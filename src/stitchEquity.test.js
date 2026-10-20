@@ -458,3 +458,43 @@ test("mayak ×4: honest LQDT series from 2023-10-02, stitched with the gray line
     .digest("hex");
   assert.equal(csvSha, "dce09bfb7ed8d9657f600f5b6e1fc3455927e57834ff741713ab15151b38cd26");
 });
+
+test("stitchPaperPoints: equity_curve wins over stale history.json (forts_adr_*)", () => {
+  const stale = {
+    series: {
+      "forts_adr_adaptive::forts_adr_adaptive": {
+        points: [
+          { t: "2026-09-21T13:10:00Z", equity: 1950000 },
+          { t: "2026-09-22T13:10:33Z", equity: 1837991.68 },
+        ],
+      },
+    },
+  };
+  const acc = {
+    bot_id: "forts_adr_adaptive",
+    account_id: "forts_adr_adaptive",
+    equity_curve: [
+      { t: "2026-09-18T16:39:08Z", equity: "1500000.0" },
+      { t: "2026-09-21T13:10:00Z", equity: "1500000.0" },
+      { t: "2026-09-22T13:10:33Z", equity: "1387991.68" },
+    ],
+  };
+  const pts = stitchPaperPoints(acc, null, stale);
+  assert.equal(pts.length, 3);
+  assert.deepEqual(pts[0], { t: "2026-09-18T16:39:08Z", equity: 1500000 });
+  assert.ok(!pts.some((p) => p.equity === 1950000));
+  // without equity_curve history.json is still used
+  const noCurve = stitchPaperPoints({ bot_id: "forts_adr_adaptive", account_id: "forts_adr_adaptive" }, null, stale);
+  assert.equal(noCurve[0].equity, 1950000);
+});
+
+test("stitchPaperPoints on live feed: static starts 1 500 000 at 19.09 03:56, next 1 508 999,99", () => {
+  const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
+  const acc = latest.accounts.find((a) => a.bot_id === "forts_adr_static");
+  const pts = stitchPaperPoints(acc, null, history);
+  assert.equal(pts.length, 32);
+  assert.equal(pts[0].t.slice(0, 16), "2026-09-19T03:56");
+  assert.equal(pts[0].equity, 1500000);
+  assert.ok(Math.abs(pts[1].equity - 1508999.9999124017) < 1e-6);
+  assert.ok(!pts.slice(1, 4).some((p) => p.equity === 1500000));
+});

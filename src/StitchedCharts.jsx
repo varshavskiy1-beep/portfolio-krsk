@@ -8,6 +8,7 @@ import {
   createChart,
   createTextWatermark,
 } from "lightweight-charts";
+import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { feedSourceLine } from "./feedValidate.js";
 import {
   CHANGE_TRACK_LABEL,
@@ -33,6 +34,7 @@ import {
   periodCaption,
   selectChartMonth,
   smaSeriesData,
+  toPctSeriesData,
   yoyHistogramData,
 } from "./stitchedChartModel.js";
 import {
@@ -44,6 +46,7 @@ import {
   stitchCaption,
   stitchEquity,
 } from "./stitchEquity.js";
+import { stitchPctBase } from "./stitchedChartModel.js";
 
 const UP = "#1f7a4c";
 const DOWN = "#c23b3b";
@@ -59,6 +62,21 @@ function pctAxis() {
     formatter: (v) =>
       `${new Intl.NumberFormat("ru-RU", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)}%`,
   };
+}
+
+function signedPctAxis() {
+  return {
+    type: "custom",
+    minMove: 0.01,
+    formatter: (v) => {
+      const txt = new Intl.NumberFormat("ru-RU", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v);
+      return `${v > 0 ? "+" : ""}${txt}%`;
+    },
+  };
+}
+
+function moneyAxis() {
+  return { type: "price", precision: 2, minMove: 0.01 };
 }
 
 function hostHeightForWidth(width) {
@@ -146,7 +164,7 @@ function SelectedMonthBlock({ row, asOfDay, hovering }) {
   );
 }
 
-function UnifiedStitchedChart({ model, asOfDay, paperStart }) {
+function UnifiedStitchedChart({ model, asOfDay, paperStart, pctBase }) {
   const frameRef = useRef(null);
   const hostRef = useRef(null);
   const chartRef = useRef(null);
@@ -156,6 +174,8 @@ function UnifiedStitchedChart({ model, asOfDay, paperStart }) {
   const hoverRef = useRef(null);
   const yoyMarkRef = useRef(null);
   const [hoverMonth, setHoverMonth] = useState(null);
+  const [mode, setMode] = useState(() => (pctBase ? initialChartMode() : "money"));
+  const pct = mode === "pct" && pctBase != null;
   const last = lastObservedRow(model);
   const [pinnedMonth, setPinnedMonth] = useState(last?.month ?? null);
   modelRef.current = model;
@@ -302,9 +322,12 @@ function UnifiedStitchedChart({ model, asOfDay, paperStart }) {
     if (!chart || !series || !model?.ok) return;
     const range = fittedRef.current ? chart.timeScale().getVisibleLogicalRange() : null;
     series.stitch.applyOptions({ pointMarkersVisible: observedCount < 2 });
-    series.stitch.setData(lineSeriesData(model.rows, "equity"));
-    series.paper.setData(paperSeriesData(model.rows));
-    series.ema.setData(lineSeriesData(model.rows, "ema100"));
+    const top = (data) => (pct ? toPctSeriesData(data, pctBase) : data);
+    const fmt = pct ? signedPctAxis() : moneyAxis();
+    for (const s of [series.stitch, series.paper, series.ema]) s.applyOptions({ priceFormat: fmt });
+    series.stitch.setData(top(lineSeriesData(model.rows, "equity")));
+    series.paper.setData(top(paperSeriesData(model.rows)));
+    series.ema.setData(top(lineSeriesData(model.rows, "ema100")));
     series.yoy.setData(yoyHistogramData(model.rows, UP, DOWN));
     series.sma.setData(smaSeriesData(model.rows));
 
@@ -328,7 +351,7 @@ function UnifiedStitchedChart({ model, asOfDay, paperStart }) {
       chart.timeScale().setVisibleLogicalRange(range);
     }
     resizeChart(chart, hostRef.current);
-  }, [model, observedCount, hasYoy]);
+  }, [model, observedCount, hasYoy, pct, pctBase]);
 
   const hovering = hoverMonth != null;
   const shown = hovering ? model.byMonth.get(hoverMonth) : model.byMonth.get(pinnedMonth) || last;
@@ -344,13 +367,37 @@ function UnifiedStitchedChart({ model, asOfDay, paperStart }) {
           <span className="swatch swatch-down" /> спад
           <span className="swatch swatch-sma" /> SMA36
         </p>
-        <button
-          type="button"
-          className="chip tiny"
-          onClick={() => chartRef.current?.timeScale().fitContent()}
-        >
-          Вся история
-        </button>
+        <div className="chart-toolbar">
+          <button
+            type="button"
+            className={`chip tiny ${!pct ? "active" : ""}`}
+            onClick={() => {
+              setMode("money");
+              persistChartMode("money");
+            }}
+          >
+            В деньгах
+          </button>
+          {pctBase != null ? (
+            <button
+              type="button"
+              className={`chip tiny ${pct ? "active" : ""}`}
+              onClick={() => {
+                setMode("pct");
+                persistChartMode("pct");
+              }}
+            >
+              В %
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className="chip tiny"
+            onClick={() => chartRef.current?.timeScale().fitContent()}
+          >
+            Вся история
+          </button>
+        </div>
       </div>
       <SelectedMonthBlock row={shown} asOfDay={asOfDay} hovering={hovering} />
       <div ref={frameRef} className="stitch-chart-frame">
@@ -419,6 +466,7 @@ export default function StitchedCharts({ account, paperPoints, backtests, genera
           model={model}
           asOfDay={asOfDay}
           paperStart={result.paperStart}
+          pctBase={stitchPctBase(result)}
         />
       ) : (
         <p className="note">{modelFailMessage(model.reason)}</p>
