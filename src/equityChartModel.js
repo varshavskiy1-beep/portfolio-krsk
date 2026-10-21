@@ -27,6 +27,21 @@ export const CHART_NEG = {
 };
 
 export const DAY_SEC = 24 * 3600;
+
+/**
+ * Минимальный шаг между точками на оси времени, px.
+ * В lightweight-charts по умолчанию 0,5 px: ряд из ~2800 точек (замер раз в 15 мин
+ * за месяц) не помещается в карточку, и «Всё» показывает только последние дни.
+ * С таким шагом в окно шириной 200 px влезает до 200 000 точек.
+ */
+export const TIME_SCALE_MIN_BAR_SPACING = 0.001;
+
+/** Влезает ли весь ряд в ширину графика при заданном минимальном шаге. */
+export function seriesFitsWidth(pointCount, widthPx, minBarSpacing = TIME_SCALE_MIN_BAR_SPACING) {
+  if (!(pointCount > 1)) return true;
+  if (!(widthPx > 0)) return false;
+  return (pointCount - 1) * minBarSpacing <= widthPx;
+}
 export const RANGE_1M_SEC = 30 * DAY_SEC;
 
 export function toUnix(t) {

@@ -11,6 +11,7 @@ import {
   pctModeUnavailable,
   priceRangeIncludingSeed,
   seedPriceLineSpec,
+  TIME_SCALE_MIN_BAR_SPACING,
 } from "./equityChartModel.js";
 import { PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import { chartPriceDigits } from "./rateCycleCard.js";
@@ -137,6 +138,9 @@ export default function EquityChart({
         timeVisible: true,
         secondsVisible: false,
         rightOffset: 6,
+        // «Всё» = весь ряд. При 0,5 px (по умолчанию) длинный ряд не влезал,
+        // и слева обрезались первые недели — старт уходил не с 0%.
+        minBarSpacing: TIME_SCALE_MIN_BAR_SPACING,
         fixLeftEdge: false,
         fixRightEdge: false,
         tickMarkMaxCharacterLength: 12,

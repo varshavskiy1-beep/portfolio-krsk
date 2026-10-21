@@ -711,3 +711,21 @@ test("lastEquityValue reads scalar or last series point", () => {
   assert.equal(lastEquityValue({ equity: [] }), null);
   assert.equal(lastEquityValue(null), null);
 });
+
+test("«Всё»: длинный ряд без seed начинается с 0% и помещается в карточку", async () => {
+  const { TIME_SCALE_MIN_BAR_SPACING, seriesFitsWidth } = await import("./equityChartModel.js");
+  const start = Date.parse("2026-09-19T06:34:49Z");
+  const points = [];
+  for (let i = 0; i < 2823; i++) {
+    points.push({ t: new Date(start + i * 15 * 60 * 1000).toISOString(), equity: 2000000 - i * 39 });
+  }
+  const account = { bot_id: "who_pays", account_id: "paper_ru_eq", equity: "1889892" };
+  const { base, caption } = resolveChartBase(account, points, { series: {} });
+  assert.equal(base, 2000000);
+  assert.equal(caption, PCT_BASE_FROM_FIRST_POINT);
+  const series = buildSeries(points, base, "pct");
+  assert.equal(series[0].value, 0);
+  assert.ok(TIME_SCALE_MIN_BAR_SPACING < 0.5);
+  assert.equal(seriesFitsWidth(series.length, 200), true);
+  assert.equal(seriesFitsWidth(series.length, 200, 0.5), false);
+});

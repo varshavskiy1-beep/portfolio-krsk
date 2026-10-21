@@ -97,7 +97,8 @@ test("merge on current latest.json: forts series equal equity_curve, other keys 
   const byKey = Object.fromEntries(latest.accounts.map((a) => [`${a.bot_id}::${a.account_id}`, a]));
   for (const key of [ADAPTIVE, STATIC]) {
     assert.deepEqual(after.series[key].points, equityCurvePoints(byKey[key]));
-    assert.equal(after.series[key].points.length, 32);
+    // живая лента: каждый день добавляет точку, старые не пропадают
+    assert.ok(after.series[key].points.length >= 32);
     // the committed history.json already equals the feed curve
     assert.deepEqual(before.series[key].points, after.series[key].points);
   }
