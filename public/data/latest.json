@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-21T21:45:15Z",
+  "generated_at": "2026-10-21T22:03:24Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,10 +25,10 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "9923.76094494",
-      "cash": "9923.76094494",
+      "equity": "9926.09924998",
+      "cash": "9926.09924998",
       "seed": "10000",
-      "updated_utc": "2026-10-21T21:03:19Z",
+      "updated_utc": "2026-10-21T22:03:03Z",
       "positions": [
         {
           "symbol": "IOST-USDT-SWAP",
@@ -38,11 +38,11 @@
           "margin": "310.4225000"
         },
         {
-          "symbol": "PARTI-USDT-SWAP",
+          "symbol": "IRYS-USDT-SWAP",
           "side": "long",
-          "qty": "2768",
-          "avg_px": "0.03316",
-          "margin": "917.86880"
+          "qty": "123",
+          "avg_px": "0.02086",
+          "margin": "256.57800"
         }
       ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25060.57972986001",
-      "updated_utc": "2026-10-21T21:45:09.906730Z",
+      "updated_utc": "2026-10-21T22:03:21.572393Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1891554.8262879697",
-      "updated_utc": "2026-10-21T21:45:09.909596Z",
+      "updated_utc": "2026-10-21T22:03:21.575720Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1469872.0240013604",
-      "updated_utc": "2026-10-21T21:45:09.912439Z",
+      "updated_utc": "2026-10-21T22:03:21.578018Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13089.684007183008",
-      "updated_utc": "2026-10-21T21:45:09.915126Z",
+      "updated_utc": "2026-10-21T22:03:21.580574Z",
       "positions": [
         {
           "position_id": "p_279299a65061",
@@ -98,7 +98,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-21T21:45:09.917673Z",
+      "updated_utc": "2026-10-21T22:03:21.582970Z",
       "positions": []
     },
     {
@@ -513,7 +513,7 @@
       "seed": "10000",
       "equity": "9478.6982",
       "cash": "982.9462060189413",
-      "updated_utc": "2026-10-21T21:40:02Z",
+      "updated_utc": "2026-10-21T22:00:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -623,20 +623,20 @@
       "account_id": "eth_okx_moex",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "302629.09586882795",
-      "cash": "2.023168827934402",
-      "updated_utc": "2026-10-21T21:02:12Z",
+      "equity": "302665.40168882796",
+      "cash": "0.27518882792889343",
+      "updated_utc": "2026-10-21T22:02:05Z",
       "positions": [
         {
           "symbol": "EHV6",
           "side": "short",
           "qty": "73",
-          "avg_px": "2504.7"
+          "avg_px": "2504.1"
         },
         {
           "symbol": "LQDT",
           "side": "long",
-          "qty": "143147",
+          "qty": "143165",
           "avg_px": "2.1141"
         }
       ],
@@ -1476,6 +1476,10 @@
         {
           "t": "2026-10-21",
           "equity": "302629.09586882795"
+        },
+        {
+          "t": "2026-10-21",
+          "equity": "302665.40168882796"
         }
       ],
       "note": "Бумага. «ETH по сигналу OKX, фьючерс Мосбиржи», старт 300000 RUB. Дисконт пая не задан, паёв LQDT ноль, рубли на счёте. На час 08:00 знак стал плюсом: бумажный шорт перевернулся в лонг. На биржу ордера не идут.",
@@ -1488,7 +1492,7 @@
       "seed": "300000",
       "equity": "323581.6978552401",
       "cash": "23298.567855240075",
-      "updated_utc": "2026-10-21T21:02:15Z",
+      "updated_utc": "2026-10-21T22:02:04Z",
       "positions": [
         {
           "symbol": "LQDT",
