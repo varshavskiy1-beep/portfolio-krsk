@@ -1,10 +1,12 @@
 /**
  * Слияние снимка ленты в history.json (без файлов и сети — для sync-equity и тестов).
  * Счёт с непустым equity_curve: ряд ключа заменяется этой кривой целиком
- * (капитал — число). Остальные счета только дописываются.
+ * (капитал — число). ETH по сигналу OKX — так же, если history пришёл с часами.
+ * Остальные счета только дописываются.
  */
 import { canonicalCurrency } from "./cashCurrency.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
+import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { applyHistoryResets, filterResetPoints, shouldAppendHistoryPoint } from "./historyReset.js";
 import { capHistoryPoints } from "./historyStore.js";
 
@@ -21,8 +23,10 @@ export function mergeLatestIntoHistory(hist, latest) {
   applyHistoryResets(hist);
   for (const a of latest.accounts || []) {
     const k = keyOf(a);
-    if (hasEquityCurve(a)) {
-      const curve = equityCurvePoints(a);
+    // ETH по сигналу OKX: ряд с часами (equity_curve или history с UTC) заменяет ключ так же.
+    const timedEth = ethOkxTimedSeries(a);
+    if (hasEquityCurve(a) || timedEth.length) {
+      const curve = timedEth.length ? timedEth : equityCurvePoints(a);
       if (curve.length) {
         const prev = hist.series[k] || {};
         hist.series[k] = {

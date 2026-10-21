@@ -4,6 +4,7 @@
  * Номинал фьючерса к equity не прибавляем. cash — тот же залог, не свободные деньги.
  */
 
+import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { parseFeedNumber, RATE_CYCLE_OPENED_LINE } from "./rateCycleCard.js";
 import { isEmptyEquityField, isEthOkxMoex } from "./strategyMeta.js";
 import { displayNote, formatMoneyRu, positionHasField } from "./uiCopy.js";
@@ -87,8 +88,56 @@ export function collapseHistoryByDay(points) {
     .map(([, p]) => p);
 }
 
+/** Метка с часом (длиннее даты YYYY-MM-DD и разбирается как время), а не одна дата. */
+export function hasTimeOfDay(point) {
+  const raw = point?.t ?? point?.time;
+  if (typeof raw !== "string") return false;
+  const s = raw.trim();
+  if (s.length <= 10 || !/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}/.test(s)) return false;
+  return !Number.isNaN(Date.parse(s));
+}
+
+/**
+ * History снимка, если у всех точек есть час: капитал — число, одна точка на метку
+ * (последняя), по времени. Хоть одна точка только с датой — [] (старый дневной вид,
+ * дневные и часовые точки не смешиваем).
+ */
+export function timedHistoryPoints(history) {
+  const rows = (Array.isArray(history) ? history : []).filter(
+    (p) => p && (p.t || p.time) && p.equity != null && p.equity !== "",
+  );
+  if (!rows.length || !rows.every(hasTimeOfDay)) return [];
+  const byMs = new Map();
+  for (const p of rows) {
+    const t = String(p.t ?? p.time).trim();
+    const raw = p.equity;
+    if (raw == null || (typeof raw === "string" && raw.trim() === "")) continue;
+    const equity = Number(raw);
+    if (!Number.isFinite(equity)) continue;
+    byMs.set(Date.parse(t), { t, equity });
+  }
+  return [...byMs.entries()].sort((a, b) => a[0] - b[0]).map(([, p]) => p);
+}
+
+/**
+ * Полный ряд ETH с часами: непустой equity_curve, иначе history, где у всех точек есть час.
+ * Пусто — в ленте только даты (или ничего). Дневные точки сюда не попадают:
+ * если появились часовые данные, используется только новый ряд.
+ */
+export function ethOkxTimedSeries(account) {
+  if (!isEthOkxMoex(account)) return [];
+  if (hasEquityCurve(account)) {
+    const curve = equityCurvePoints(account);
+    if (curve.length) return curve;
+  }
+  return timedHistoryPoints(account?.history);
+}
+
 export function ethOkxHistoryPoints(account) {
   if (!isEthOkxMoex(account) || !hasEthOkxAccountLine(account)) return [];
+  const timed = ethOkxTimedSeries(account);
+  if (timed.length) return timed;
+  // В ленте только даты: последняя точка дня, как раньше.
   const hist = Array.isArray(account.history) ? account.history : [];
   const raw = hist.filter((p) => p && (p.t || p.time) && p.equity != null && p.equity !== "");
   return collapseHistoryByDay(raw);
