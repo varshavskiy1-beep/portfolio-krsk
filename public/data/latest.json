@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-21T13:18:11Z",
+  "generated_at": "2026-10-21T13:31:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25059.94774677001",
-      "updated_utc": "2026-10-21T13:18:06.735343Z",
+      "updated_utc": "2026-10-21T13:30:34.603664Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1888294.37927594",
-      "updated_utc": "2026-10-21T13:18:06.739717Z",
+      "updated_utc": "2026-10-21T13:30:34.607959Z",
       "positions": [
         {
           "position_id": "p_8efb8e100b81",
@@ -80,7 +80,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1470118.8471178403",
-      "updated_utc": "2026-10-21T13:18:06.743510Z",
+      "updated_utc": "2026-10-21T13:30:34.611436Z",
       "positions": [
         {
           "position_id": "p_bb122727bd0e",
@@ -97,17 +97,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13178.62849325001",
-      "updated_utc": "2026-10-21T13:18:06.748653Z",
+      "equity": "13158.064471933008",
+      "updated_utc": "2026-10-21T13:30:34.614161Z",
       "positions": [
-        {
-          "position_id": "p_63405b908635",
-          "symbol": "SOL-USDT",
-          "side": "short",
-          "qty": "30.893",
-          "avg_px": "106.86793",
-          "stop_px": null
-        },
         {
           "position_id": "p_07a955663d70",
           "symbol": "BTC-USDT",
@@ -124,7 +116,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-21T13:18:06.752048Z",
+      "updated_utc": "2026-10-21T13:30:34.616996Z",
       "positions": []
     },
     {
@@ -282,7 +274,7 @@
       "currency": "RUB",
       "equity": "1514690.720399787",
       "seed": "1500000",
-      "updated_utc": "2026-10-20T13:20:35.566805Z",
+      "updated_utc": "2026-10-21T13:20:26.121043Z",
       "positions": [],
       "note": "Капитал посчитан по журналу сделок. Позиции на ночь не переносятся.",
       "equity_curve": [
@@ -416,6 +408,10 @@
         },
         {
           "t": "2026-10-20T13:20:35.566805Z",
+          "equity": "1514690.720399787"
+        },
+        {
+          "t": "2026-10-21T13:20:26.121043Z",
           "equity": "1514690.720399787"
         }
       ]
@@ -557,7 +553,7 @@
       "seed": "10000",
       "equity": "9305.5761",
       "cash": "982.9462060189413",
-      "updated_utc": "2026-10-21T13:10:01Z",
+      "updated_utc": "2026-10-21T13:30:00Z",
       "positions": [
         {
           "symbol": "AAPL",
