@@ -5,6 +5,7 @@
  */
 
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
+import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { filterResetPoints, seriesKey as resetSeriesKey } from "./historyReset.js";
 
 export const GAP_DAYS = 7;
@@ -191,13 +192,16 @@ export function seriesKey(account) {
 }
 
 /**
- * Для склейки: если в ленте есть equity_curve — берём её (это ряд сервера,
+ * Для склейки: ETH с часами — только новый ряд (equity_curve или history с UTC).
+ * Если в ленте есть equity_curve — берём её (это ряд сервера,
  * старый history.json для этого ключа устарел). Иначе накопленный history.json
  * (после reset_from), иначе точки карточки.
  * Иначе у Юань 360 короткий account.history даёт дыру > 7 дней.
  */
 export function stitchPaperPoints(account, cardPoints, history) {
   const key = seriesKey(account);
+  const timedEth = ethOkxTimedSeries(account);
+  if (timedEth.length) return filterResetPoints(key, timedEth);
   if (hasEquityCurve(account)) {
     const curve = equityCurvePoints(account);
     if (curve.length) return filterResetPoints(key, curve);
