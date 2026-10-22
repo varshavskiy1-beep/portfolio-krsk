@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-22T14:47:58Z",
+  "generated_at": "2026-10-22T15:04:07Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25060.57972986001",
-      "updated_utc": "2026-10-22T14:47:45.923521Z",
+      "updated_utc": "2026-10-22T15:03:54.680565Z",
       "positions": [
         {
           "position_id": "p_ac8c07076ca7",
@@ -72,7 +72,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1894404.7626716697",
-      "updated_utc": "2026-10-22T14:47:45.926882Z",
+      "updated_utc": "2026-10-22T15:03:54.688752Z",
       "positions": [
         {
           "position_id": "p_c290115c7211",
@@ -98,7 +98,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1467880.1106840805",
-      "updated_utc": "2026-10-22T14:47:45.934095Z",
+      "updated_utc": "2026-10-22T15:03:54.696338Z",
       "positions": []
     },
     {
@@ -106,18 +106,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "13036.666421127009",
-      "updated_utc": "2026-10-22T14:47:45.938489Z",
-      "positions": [
-        {
-          "position_id": "p_e9172f4b5b4e",
-          "symbol": "SOL-USDT",
-          "side": "long",
-          "qty": "31.198",
-          "avg_px": "104.601371",
-          "stop_px": null
-        }
-      ]
+      "equity": "13026.99610125301",
+      "updated_utc": "2026-10-22T15:03:54.699591Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -125,7 +116,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14997.746380691995",
-      "updated_utc": "2026-10-22T14:47:45.943678Z",
+      "updated_utc": "2026-10-22T15:03:54.702841Z",
       "positions": [
         {
           "position_id": "p_5fd0495cd51d",
@@ -564,7 +555,7 @@
       "seed": "10000",
       "equity": "9478.6982",
       "cash": "982.9462060189413",
-      "updated_utc": "2026-10-22T14:40:01Z",
+      "updated_utc": "2026-10-22T15:00:02Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -674,20 +665,20 @@
       "account_id": "eth_okx_moex",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "308649.5080538279",
-      "cash": "1.0020538279128104",
-      "updated_utc": "2026-10-22T14:02:09Z",
+      "equity": "307920.630813828",
+      "cash": "1.7653138279360974",
+      "updated_utc": "2026-10-22T15:02:06Z",
       "positions": [
         {
           "symbol": "EHV6",
           "side": "short",
           "qty": "78",
-          "avg_px": "2408.8"
+          "avg_px": "2420.2"
         },
         {
           "symbol": "LQDT",
           "side": "long",
-          "qty": "145940",
+          "qty": "145595",
           "avg_px": "2.1149"
         }
       ],
@@ -1595,6 +1586,10 @@
         {
           "t": "2026-10-22",
           "equity": "308649.5080538279"
+        },
+        {
+          "t": "2026-10-22",
+          "equity": "307920.630813828"
         }
       ],
       "note": "Бумага. «ETH по сигналу OKX, фьючерс Мосбиржи», старт 300000 RUB. Дисконт пая не задан, паёв LQDT ноль, рубли на счёте. На час 08:00 знак стал плюсом: бумажный шорт перевернулся в лонг. На биржу ордера не идут.",
@@ -1605,9 +1600,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "327514.4709542401",
-      "cash": "27103.500454240144",
-      "updated_utc": "2026-10-22T14:02:07Z",
+      "equity": "327646.47095424007",
+      "cash": "27235.50045424007",
+      "updated_utc": "2026-10-22T15:02:05Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -1624,7 +1619,7 @@
       "history": [
         {
           "t": "2026-10-22",
-          "equity": "327514.4709542401"
+          "equity": "327646.47095424007"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
