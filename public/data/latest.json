@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-22T17:03:58Z",
+  "generated_at": "2026-10-22T17:22:05Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25060.57972986001",
-      "updated_utc": "2026-10-22T17:03:51.214477Z",
+      "updated_utc": "2026-10-22T17:21:00.801430Z",
       "positions": [
         {
           "position_id": "p_ac8c07076ca7",
@@ -72,7 +72,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1894628.1348977897",
-      "updated_utc": "2026-10-22T17:03:51.217695Z",
+      "updated_utc": "2026-10-22T17:21:00.805276Z",
       "positions": []
     },
     {
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1467743.8018810404",
-      "updated_utc": "2026-10-22T17:03:51.220896Z",
+      "updated_utc": "2026-10-22T17:21:00.808644Z",
       "positions": [
         {
           "position_id": "p_0e955acaf21c",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13026.99610125301",
-      "updated_utc": "2026-10-22T17:03:51.223790Z",
+      "updated_utc": "2026-10-22T17:21:00.811956Z",
       "positions": []
     },
     {
@@ -107,18 +107,9 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "14997.386869011994",
-      "updated_utc": "2026-10-22T17:03:51.226836Z",
-      "positions": [
-        {
-          "position_id": "p_5fd0495cd51d",
-          "symbol": "BTC-USDT-SWAP",
-          "side": "long",
-          "qty": "0.044",
-          "avg_px": "84073.01434",
-          "stop_px": null
-        }
-      ]
+      "equity": "14871.182193031995",
+      "updated_utc": "2026-10-22T17:21:00.814969Z",
+      "positions": []
     },
     {
       "bot_id": "forts_adr_adaptive",
@@ -449,7 +440,7 @@
       "seed": "10000",
       "equity": "10348.94",
       "cash": "10348.94",
-      "updated_utc": "2026-10-22T16:10:02Z",
+      "updated_utc": "2026-10-22T17:10:03Z",
       "positions": [],
       "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. Ордера на биржу не идут. equity = mark-to-market на тиках US RTH; cash = реализованный кэш."
     },
@@ -547,7 +538,7 @@
       "seed": "10000",
       "equity": "9478.6982",
       "cash": "982.9462060189413",
-      "updated_utc": "2026-10-22T17:00:01Z",
+      "updated_utc": "2026-10-22T17:20:00Z",
       "positions": [
         {
           "symbol": "AAPL",
