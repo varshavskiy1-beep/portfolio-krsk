@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-21T23:46:14Z",
+  "generated_at": "2026-10-22T00:01:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25060.57972986001",
-      "updated_utc": "2026-10-21T23:46:12.155481Z",
+      "updated_utc": "2026-10-22T00:01:16.038229Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1891554.8262879697",
-      "updated_utc": "2026-10-21T23:46:12.158321Z",
+      "updated_utc": "2026-10-22T00:01:16.041175Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1469872.0240013604",
-      "updated_utc": "2026-10-21T23:46:12.161478Z",
+      "updated_utc": "2026-10-22T00:01:16.043240Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13089.684007183008",
-      "updated_utc": "2026-10-21T23:46:12.164606Z",
+      "updated_utc": "2026-10-22T00:01:16.044910Z",
       "positions": [
         {
           "position_id": "p_279299a65061",
@@ -98,8 +98,17 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14998.107994691994",
-      "updated_utc": "2026-10-21T23:46:12.167464Z",
-      "positions": []
+      "updated_utc": "2026-10-22T00:01:16.046940Z",
+      "positions": [
+        {
+          "position_id": "p_5fd0495cd51d",
+          "symbol": "BTC-USDT-SWAP",
+          "side": "long",
+          "qty": "0.044",
+          "avg_px": "84073.01434",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "forts_adr_adaptive",
@@ -403,10 +412,17 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5678.920000000000000000000000",
-      "cash": "5678.920000000000000000000000",
-      "updated_utc": "2026-10-20",
+      "cash": "5111.028000000000000000000000",
+      "updated_utc": "2026-10-21",
       "positions": [],
-      "pending_limits": []
+      "pending_limits": [
+        {
+          "id": "pump-2026-10-21-ALTUSDT",
+          "symbol": "ALTUSDT",
+          "limit": "0.01236900",
+          "notional": "567.8920000000000000000000000"
+        }
+      ]
     },
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
@@ -513,7 +529,7 @@
       "seed": "10000",
       "equity": "9478.6982",
       "cash": "982.9462060189413",
-      "updated_utc": "2026-10-21T23:40:02Z",
+      "updated_utc": "2026-10-22T00:00:01Z",
       "positions": [
         {
           "symbol": "AAPL",
