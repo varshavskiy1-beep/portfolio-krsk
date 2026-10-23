@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-23T04:25:05Z",
+  "generated_at": "2026-10-23T04:43:14Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24957.59059496001",
-      "updated_utc": "2026-10-23T04:24:56.635790Z",
+      "updated_utc": "2026-10-23T04:43:08.859018Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1894628.1348977897",
-      "updated_utc": "2026-10-23T04:24:56.640283Z",
+      "updated_utc": "2026-10-23T04:43:08.861247Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465677.2290196004",
-      "updated_utc": "2026-10-23T04:24:56.642937Z",
+      "updated_utc": "2026-10-23T04:43:08.864102Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "13028.470104373007",
-      "updated_utc": "2026-10-23T04:24:56.645506Z",
+      "updated_utc": "2026-10-23T04:43:08.866190Z",
       "positions": [
         {
           "position_id": "p_734bd9fab04f",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-23T04:24:56.648584Z",
+      "updated_utc": "2026-10-23T04:43:08.868209Z",
       "positions": []
     },
     {
@@ -611,7 +611,7 @@
       "seed": "1000000",
       "equity": "1005634.2346350587",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-10-22T22:30:43Z",
+      "updated_utc": "2026-10-23T04:30:41Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -629,25 +629,25 @@
       "account_id": "rf_conservative_comon",
       "currency": "RUB",
       "seed": "50000",
-      "equity": "50917.0382416",
+      "equity": "50974.192241599994",
       "cash": "118.82524159999593",
-      "updated_utc": "2026-10-22T04:31:31Z",
+      "updated_utc": "2026-10-23T04:30:45Z",
       "positions": [
         {
           "symbol": "SBMX",
           "side": "long",
           "qty": "309",
-          "avg_px": "17.581"
+          "avg_px": "17.475"
         },
         {
           "symbol": "SBRB",
           "side": "long",
           "qty": "2366",
-          "avg_px": "19.174"
+          "avg_px": "19.212"
         }
       ],
       "note": "Бумага. «РФ Консерватив» Comon, SBMX/SBRB/LQDT, старт 50000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-22"
+      "as_of": "2026-10-23"
     },
     {
       "bot_id": "eth_okx_moex",
