@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-24T00:59:32Z",
+  "generated_at": "2026-10-24T01:16:43Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,19 +25,11 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10362.39874220",
-      "cash": "10362.39874220",
+      "equity": "10365.15888020",
+      "cash": "10365.15888020",
       "seed": "10000",
-      "updated_utc": "2026-10-24T00:03:13Z",
-      "positions": [
-        {
-          "symbol": "IRYS-USDT-SWAP",
-          "side": "long",
-          "qty": "18",
-          "avg_px": "0.07607",
-          "margin": "136.92600"
-        }
-      ],
+      "updated_utc": "2026-10-24T01:02:59Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -46,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25042.81773038001",
-      "updated_utc": "2026-10-24T00:59:28.367355Z",
+      "updated_utc": "2026-10-24T01:16:40.319547Z",
       "positions": []
     },
     {
@@ -55,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1876723.9660357796",
-      "updated_utc": "2026-10-24T00:59:28.369594Z",
+      "updated_utc": "2026-10-24T01:16:40.322031Z",
       "positions": []
     },
     {
@@ -64,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465771.3630376006",
-      "updated_utc": "2026-10-24T00:59:28.371822Z",
+      "updated_utc": "2026-10-24T01:16:40.324084Z",
       "positions": []
     },
     {
@@ -73,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12969.053277430006",
-      "updated_utc": "2026-10-24T00:59:28.373881Z",
+      "updated_utc": "2026-10-24T01:16:40.326070Z",
       "positions": [
         {
           "position_id": "p_26be6f8275fa",
@@ -91,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-24T00:59:28.375995Z",
+      "updated_utc": "2026-10-24T01:16:40.328140Z",
       "positions": []
     },
     {
@@ -544,7 +536,7 @@
       "seed": "10000",
       "equity": "9105.823",
       "cash": "74.66244772026528",
-      "updated_utc": "2026-10-24T00:50:01Z",
+      "updated_utc": "2026-10-24T01:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -1749,27 +1741,27 @@
       "account_id": "rf_bonds_rate_cycle",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "300909.56",
+      "equity": "300932.048",
       "cash": null,
-      "updated_utc": "2026-10-17T01:01:54Z",
+      "updated_utc": "2026-10-24T01:01:34Z",
       "positions": [
         {
           "symbol": "OBLG",
           "side": "long",
-          "qty": "1133",
-          "avg_px": "212.38"
+          "qty": "1126",
+          "avg_px": "213.7"
         },
         {
           "symbol": "SBRB",
           "side": "long",
-          "qty": "3144",
-          "avg_px": "19.14"
+          "qty": "3134",
+          "avg_px": "19.202"
         },
         {
           "symbol": "CRZ6",
           "side": "long",
           "qty": "4",
-          "avg_px": "12.657"
+          "avg_px": "12.24"
         }
       ],
       "history": [
@@ -1780,10 +1772,14 @@
         {
           "t": "2026-10-16",
           "equity": "300909.56"
+        },
+        {
+          "t": "2026-10-23",
+          "equity": "300932.048"
         }
       ],
       "note": "Бумага. «Цикл ставки 80/20», старт 300000 RUB. Паи OBLG и SBRB и фьючерс CR. На биржу ордера не идут.",
-      "as_of": "2026-10-16",
+      "as_of": "2026-10-23",
       "book": "OBLG_SBRB_CR"
     },
     {
