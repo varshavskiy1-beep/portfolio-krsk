@@ -2,8 +2,12 @@
 
 Кабинет бумажных торговых ботов (paper only). Данные — `public/data/latest.json` (`equity_ro.v1`).
 
-Публичный сайт: https://portfolio-krsk.vercel.app — production только через Vercel с ветки `master`. Ветка `gh-pages` и workflow GitHub Pages больше не используются (Vercel Preview для `gh-pages` отключён в `vercel.json`).
+Публичный UI: https://portfolio-krsk.vercel.app (ветка `master`, только код и снимок-запас `public/data/*`).
 
-OG-превью для Telegram: `public/og-cover.jpg` (1200×630, JPEG q≈85; PNG остаётся как запасной файл). Счёт с максимальной прибылью в деньгах: equity − seed, без FX. Теги `og:*` лежат в сыром `index.html` и в статической `public/share.html` (копируется в `dist/share.html`). Краулеры читают мета и картинку; живой браузер сразу уходит на кабинет `/`. `og:url` указывает на портал `https://portfolio-krsk.vercel.app/`. `og:image` — абсолютный `https://portfolio-krsk.vercel.app/og-cover.jpg` с коротким `?v=YYYYMMDDHHMM` (без ISO и `%3A`). `robots.txt` разрешает всех краулеров. После деплоя кэш Telegram можно сбросить через https://t.me/webpagebot; надёжная проверка — переслать `https://portfolio-krsk.vercel.app/share.html` в Saved Messages (ответ webpagebot часто без карточки даже после успешного обновления).
+**Живые графики** без пересборки Vercel: `latest.json` и `history.json` браузер грузит с GitHub Pages — https://varshavskiy1-beep.github.io/portfolio-krsk/ (`EQUITY_LIVE_DATA_BASE` / `VITE_EQUITY_LIVE_DATA_BASE`). При сбое Pages остаётся fallback на `/data/*` из последнего code-deploy. `backtests.json` только с Vercel (обновляется при деплое кода).
 
-Если карточка всё ещё не появляется, в проекте Vercel стоит выключить **Attack Challenge Protection** (Settings → Security): краулер Telegram не проходит JS-checkpoint.
+Рутина sync (`scripts/sync-equity.mjs --publish` или отдельно `node scripts/publish-equity-data.mjs`) пушит **только** `data/latest.json`, `data/history.json`, `og-cover.*`, `share.html` в ветку `gh-pages`. В `master` sync данные и OG не коммитит.
+
+OG-превью для Telegram: обложка на Pages (`og-cover.jpg`, 1200×630). В `index.html` на Vercel `og:image` указывает на Pages; текстовые `og:*` в сыром `index.html` и в `public/share.html` (на gh-pages). `og:url` — портал `https://portfolio-krsk.vercel.app/`. Preview-деплой с `gh-pages` на Vercel отключён в `vercel.json`.
+
+Если карточка не появляется, в Vercel выключите **Attack Challenge Protection** (Settings → Security): краулер Telegram не проходит JS-checkpoint.

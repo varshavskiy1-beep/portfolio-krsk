@@ -3,6 +3,7 @@
  * Суммы в разных валютах не сравниваются и не складываются.
  */
 
+import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "./equityLiveData.js";
 import { isHiddenPortalAccount } from "./strategyMeta.js";
 
 
@@ -131,9 +132,14 @@ export function ogCacheBust(iso) {
  * Absolute JPEG URL. Never use ISO timestamps (colons become %3A and
  * some crawlers drop the card). Short ?v=YYYYMMDDHHMM is optional cache-bust.
  */
+function ogImageOrigin() {
+  return normalizeDataBase(EQUITY_LIVE_DATA_BASE).replace(/\/$/, "");
+}
+
 export function ogImageHref(generatedAt, { cacheBust = true } = {}) {
-  if (!cacheBust) return `${OG_SITE}/og-cover.jpg`;
-  return `${OG_SITE}/og-cover.jpg?v=${ogCacheBust(generatedAt)}`;
+  const origin = ogImageOrigin();
+  if (!cacheBust) return `${origin}/og-cover.jpg`;
+  return `${origin}/og-cover.jpg?v=${ogCacheBust(generatedAt)}`;
 }
 
 export function formatSignedMoney(n, currency) {

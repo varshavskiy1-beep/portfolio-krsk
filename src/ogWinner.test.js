@@ -143,8 +143,14 @@ test("og cache-bust is YYYYMMDDHHMM UTC without colons", () => {
 
 test("og:image prefers JPEG path without encoded ISO timestamps", () => {
   const href = ogImageHref("2026-09-20T08:45:43Z");
-  assert.equal(href, "https://portfolio-krsk.vercel.app/og-cover.jpg?v=202609200845");
+  assert.equal(
+    href,
+    "https://varshavskiy1-beep.github.io/portfolio-krsk/og-cover.jpg?v=202609200845",
+  );
   assert.equal(href.includes("%3A"), false);
   assert.equal(href.includes("T08"), false);
-  assert.equal(ogImageHref("2026-09-20T08:45:43Z", { cacheBust: false }), "https://portfolio-krsk.vercel.app/og-cover.jpg");
+  assert.equal(
+    ogImageHref("2026-09-20T08:45:43Z", { cacheBust: false }),
+    "https://varshavskiy1-beep.github.io/portfolio-krsk/og-cover.jpg",
+  );
 });

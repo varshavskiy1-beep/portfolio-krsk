@@ -3,6 +3,7 @@
  * Битый кадр целиком отклоняется; вызывающий держит последнюю исправную версию.
  */
 import { normalizeHistory, normalizeLatest } from "./cashCurrency.js";
+import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "./equityLiveData.js";
 import { assembleSnapshot } from "./feedValidate.js";
 
 export async function readJson(url, { signal, optional = false } = {}) {
@@ -25,12 +26,24 @@ export async function readJson(url, { signal, optional = false } = {}) {
   }
 }
 
-export async function fetchCabinetSnapshot(base, { signal } = {}) {
-  const prefix = base || "/";
+function equityCacheBust() {
+  return `?t=${Math.floor(Date.now() / 60_000)}`;
+}
+
+async function readEquityJson(liveBase, fallbackBase, relPath, { signal, optional = false } = {}) {
+  const liveUrl = `${normalizeDataBase(liveBase)}${relPath}${equityCacheBust()}`;
+  const live = await readJson(liveUrl, { signal, optional: false });
+  if (live.ok) return live;
+  const fallbackUrl = `${normalizeDataBase(fallbackBase)}${relPath}`;
+  return readJson(fallbackUrl, { signal, optional });
+}
+
+export async function fetchCabinetSnapshot(base, { signal, liveBase = EQUITY_LIVE_DATA_BASE } = {}) {
+  const fallbackBase = base || "/";
   const [latest, history, backtests] = await Promise.all([
-    readJson(`${prefix}data/latest.json`, { signal }),
-    readJson(`${prefix}data/history.json`, { signal, optional: true }),
-    readJson(`${prefix}data/backtests.json`, { signal, optional: true }),
+    readEquityJson(liveBase, fallbackBase, "data/latest.json", { signal }),
+    readEquityJson(liveBase, fallbackBase, "data/history.json", { signal, optional: true }),
+    readJson(`${normalizeDataBase(fallbackBase)}data/backtests.json`, { signal, optional: true }),
   ]);
   if (!latest.ok) return { ok: false, reason: latest.reason };
   if (!history.ok) return { ok: false, reason: history.reason };
