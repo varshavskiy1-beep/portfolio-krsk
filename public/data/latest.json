@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-24T00:04:06Z",
+  "generated_at": "2026-10-24T00:19:14Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25042.81773038001",
-      "updated_utc": "2026-10-24T00:04:00.929315Z",
+      "updated_utc": "2026-10-24T00:19:13.349003Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1876723.9660357796",
-      "updated_utc": "2026-10-24T00:04:00.932157Z",
+      "updated_utc": "2026-10-24T00:19:13.351482Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465771.3630376006",
-      "updated_utc": "2026-10-24T00:04:00.935628Z",
+      "updated_utc": "2026-10-24T00:19:13.353717Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12969.053277430006",
-      "updated_utc": "2026-10-24T00:04:00.939987Z",
+      "updated_utc": "2026-10-24T00:19:13.356218Z",
       "positions": [
         {
           "position_id": "p_26be6f8275fa",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-24T00:04:00.943383Z",
+      "updated_utc": "2026-10-24T00:19:13.358550Z",
       "positions": []
     },
     {
@@ -457,10 +457,10 @@
       "seed": "10000",
       "equity": "9738.22",
       "cash": "9738.22",
-      "updated_utc": "2026-10-23T00:07:58Z",
+      "updated_utc": "2026-10-24T00:07:37Z",
       "positions": [],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-22"
+      "as_of": "2026-10-23"
     },
     {
       "bot_id": "oac_paper",
@@ -544,7 +544,7 @@
       "seed": "10000",
       "equity": "9105.823",
       "cash": "74.66244772026528",
-      "updated_utc": "2026-10-24T00:00:01Z",
+      "updated_utc": "2026-10-24T00:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
