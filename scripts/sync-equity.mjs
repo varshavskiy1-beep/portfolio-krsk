@@ -5,7 +5,9 @@
  * with that curve (equity → number); other accounts stay append-only.
  * After SCP, remaps cash currency by venue / bot_id (OKX crypto → USDT, FORTS/RU → RUB, US_EQ → USD).
  * --local skips SCP and only remaps the existing public/data snapshot + history series currency.
+ * --publish runs scripts/publish-equity-data.mjs (push data/og/share to gh-pages only).
  * Does not read or write public/data/backtests.json (stitched daily books are committed separately).
+ * Does not commit to master; routine sync should use --publish for GitHub Pages.
  * Env: EQUITY_HOST (default 193.109.85.48), EQUITY_USER (equity-ro),
  *      EQUITY_KEY (path to private key), EQUITY_REMOTE (/var/lib/equity-ro/latest.json)
  */
@@ -67,3 +69,9 @@ const hist = appendHistory(latest);
 const n = Object.values(hist.series).reduce((s, x) => s + x.points.length, 0);
 console.log(`ok latest=${latest.generated_at} series=${Object.keys(hist.series).length} points=${n}`);
 generateOgCover({ latest, history: hist, root });
+
+if (process.argv.includes("--publish")) {
+  const publishScript = path.join(__dirname, "publish-equity-data.mjs");
+  const pub = spawnSync("node", [publishScript], { stdio: "inherit" });
+  if (pub.status !== 0) process.exit(pub.status ?? 1);
+}

@@ -17,13 +17,22 @@ test("share page keeps og/twitter tags and redirects browsers to the portal", ()
   assert.equal(html.includes("id=\"root\""), false);
   assert.match(html, /<meta property="og:url" content="https:\/\/portfolio-krsk\.vercel\.app\/" \/>/);
   assert.equal(html.includes("https://portfolio-krsk.vercel.app/share.html"), false);
-  assert.match(html, /<meta property="og:image" content="https:\/\/portfolio-krsk\.vercel\.app\/og-cover\.jpg\?v=202609200845" \/>/);
+  assert.match(
+    html,
+    /<meta property="og:image" content="https:\/\/varshavskiy1-beep\.github\.io\/portfolio-krsk\/og-cover\.jpg\?v=202609200845" \/>/,
+  );
   assert.match(html, /<meta property="og:image:type" content="image\/jpeg" \/>/);
   assert.match(html, /<meta name="twitter:card" content="summary_large_image" \/>/);
-  assert.match(html, /<meta name="twitter:image" content="https:\/\/portfolio-krsk\.vercel\.app\/og-cover\.jpg\?v=202609200845" \/>/);
+  assert.match(
+    html,
+    /<meta name="twitter:image" content="https:\/\/varshavskiy1-beep\.github\.io\/portfolio-krsk\/og-cover\.jpg\?v=202609200845" \/>/,
+  );
   assert.match(html, /<meta http-equiv="refresh" content="0; url=\/" \/>/);
   assert.match(html, /<script>location\.replace\("\/"\)<\/script>/);
-  assert.match(html, /<img src="https:\/\/portfolio-krsk\.vercel\.app\/og-cover\.jpg\?v=202609200845"/);
+  assert.match(
+    html,
+    /<img src="https:\/\/varshavskiy1-beep\.github\.io\/portfolio-krsk\/og-cover\.jpg\?v=202609200845"/,
+  );
   assert.match(html, /<noscript>[\s\S]*<a href="\/">Открыть кабинет portfolio_krsk<\/a>/);
   assert.equal(html.includes(ogTitle(row)), true);
   assert.equal(html.includes(ogDescription(row)), true);
