@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-24T14:48:12Z",
+  "generated_at": "2026-10-24T14:59:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25042.81773038001",
-      "updated_utc": "2026-10-24T14:48:07.475197Z",
+      "updated_utc": "2026-10-24T14:59:15.810712Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1876723.9660357796",
-      "updated_utc": "2026-10-24T14:48:07.478020Z",
+      "updated_utc": "2026-10-24T14:59:15.814227Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465771.3630376006",
-      "updated_utc": "2026-10-24T14:48:07.480566Z",
+      "updated_utc": "2026-10-24T14:59:15.816405Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12838.861442311007",
-      "updated_utc": "2026-10-24T14:48:07.483118Z",
+      "updated_utc": "2026-10-24T14:59:15.819926Z",
       "positions": [
         {
           "position_id": "p_ab165a39c235",
@@ -83,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-24T14:48:07.485750Z",
+      "updated_utc": "2026-10-24T14:59:15.823130Z",
       "positions": []
     },
     {
