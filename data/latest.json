@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-25T00:44:42Z",
+  "generated_at": "2026-10-25T00:59:50Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25042.81773038001",
-      "updated_utc": "2026-10-25T00:44:41.140510Z",
+      "updated_utc": "2026-10-25T00:59:49.188473Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1876723.9660357796",
-      "updated_utc": "2026-10-25T00:44:41.143088Z",
+      "updated_utc": "2026-10-25T00:59:49.191120Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465771.3630376006",
-      "updated_utc": "2026-10-25T00:44:41.145724Z",
+      "updated_utc": "2026-10-25T00:59:49.193507Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12743.310547321005",
-      "updated_utc": "2026-10-25T00:44:41.148302Z",
+      "updated_utc": "2026-10-25T00:59:49.196002Z",
       "positions": [
         {
           "position_id": "p_100bc68f4cdc",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-25T00:44:41.150700Z",
+      "updated_utc": "2026-10-25T00:59:49.198294Z",
       "positions": []
     },
     {
@@ -420,10 +420,17 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5565.340000000000000000000000",
-      "cash": "5565.340000000000000000000000",
+      "cash": "5008.806000000000000000000000",
       "updated_utc": "2026-10-24",
       "positions": [],
-      "pending_limits": []
+      "pending_limits": [
+        {
+          "id": "pump-2026-10-24-BMTUSDT",
+          "symbol": "BMTUSDT",
+          "limit": "0.03596700",
+          "notional": "556.5340000000000000000000000"
+        }
+      ]
     },
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
