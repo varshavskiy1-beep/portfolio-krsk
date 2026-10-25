@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-25T05:02:02Z",
+  "generated_at": "2026-10-25T05:12:06Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,11 +25,26 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10312.366969640",
-      "cash": "10312.366969640",
+      "equity": "10311.118023920",
+      "cash": "10311.118023920",
       "seed": "10000",
-      "updated_utc": "2026-10-24T23:03:12Z",
-      "positions": [],
+      "updated_utc": "2026-10-25T05:03:09Z",
+      "positions": [
+        {
+          "symbol": "APR-USDT-SWAP",
+          "side": "long",
+          "qty": "902",
+          "avg_px": "0.04559",
+          "margin": "411.22180"
+        },
+        {
+          "symbol": "IOST-USDT-SWAP",
+          "side": "long",
+          "qty": "2046",
+          "avg_px": "0.0008164",
+          "margin": "1670.3544000"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -38,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25042.81773038001",
-      "updated_utc": "2026-10-25T05:01:59.095246Z",
+      "updated_utc": "2026-10-25T05:12:01.870156Z",
       "positions": []
     },
     {
@@ -47,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1876723.9660357796",
-      "updated_utc": "2026-10-25T05:01:59.097760Z",
+      "updated_utc": "2026-10-25T05:12:01.873350Z",
       "positions": []
     },
     {
@@ -56,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465771.3630376006",
-      "updated_utc": "2026-10-25T05:01:59.100272Z",
+      "updated_utc": "2026-10-25T05:12:01.878600Z",
       "positions": []
     },
     {
@@ -65,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12763.071021817006",
-      "updated_utc": "2026-10-25T05:01:59.102655Z",
+      "updated_utc": "2026-10-25T05:12:01.881348Z",
       "positions": [
         {
           "position_id": "p_bb4cb4692d95",
@@ -91,7 +106,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-25T05:01:59.104844Z",
+      "updated_utc": "2026-10-25T05:12:01.884295Z",
       "positions": []
     },
     {
