@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-25T09:15:00Z",
+  "generated_at": "2026-10-25T09:31:11Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "25042.81773038001",
-      "updated_utc": "2026-10-25T09:14:57.338894Z",
+      "updated_utc": "2026-10-25T09:31:03.587622Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1876723.9660357796",
-      "updated_utc": "2026-10-25T09:14:57.343961Z",
+      "updated_utc": "2026-10-25T09:31:03.590404Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1465771.3630376006",
-      "updated_utc": "2026-10-25T09:14:57.346457Z",
+      "updated_utc": "2026-10-25T09:31:03.593282Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12712.492113407005",
-      "updated_utc": "2026-10-25T09:14:57.349430Z",
+      "updated_utc": "2026-10-25T09:31:03.595974Z",
       "positions": [
         {
           "position_id": "p_d724a5fcfdb9",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-25T09:14:57.351488Z",
+      "updated_utc": "2026-10-25T09:31:03.599179Z",
       "positions": []
     },
     {
@@ -640,7 +640,7 @@
       "seed": "1000000",
       "equity": "1006775.4322350587",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-10-25T04:30:38Z",
+      "updated_utc": "2026-10-25T09:31:01Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -650,7 +650,7 @@
         }
       ],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-10-23",
+      "as_of": "2026-10-24",
       "braked": false
     },
     {
@@ -1744,7 +1744,7 @@
       "seed": "300000",
       "equity": "335539.3734402401",
       "cash": "34787.494940240045",
-      "updated_utc": "2026-10-25T08:21:03Z",
+      "updated_utc": "2026-10-25T09:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
