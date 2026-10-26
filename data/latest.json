@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-26T20:55:26Z",
+  "generated_at": "2026-10-26T21:13:35Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24961.288501900013",
-      "updated_utc": "2026-10-26T20:55:24.222460Z",
+      "updated_utc": "2026-10-26T21:13:33.942091Z",
       "positions": [
         {
           "position_id": "p_8f2f4d4ddd5a",
@@ -64,7 +64,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1874432.7662438196",
-      "updated_utc": "2026-10-26T20:55:24.225553Z",
+      "updated_utc": "2026-10-26T21:13:33.949032Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1461942.2281092806",
-      "updated_utc": "2026-10-26T20:55:24.228634Z",
+      "updated_utc": "2026-10-26T21:13:33.951751Z",
       "positions": [
         {
           "position_id": "p_bb3202c15102",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12715.373113293004",
-      "updated_utc": "2026-10-26T20:55:24.231719Z",
+      "updated_utc": "2026-10-26T21:13:33.954391Z",
       "positions": [
         {
           "position_id": "p_18877ce7d0f1",
@@ -109,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-26T20:55:24.234909Z",
+      "updated_utc": "2026-10-26T21:13:33.956985Z",
       "positions": []
     },
     {
@@ -586,7 +586,7 @@
       "seed": "10000",
       "equity": "9279.6211",
       "cash": "74.66244772026528",
-      "updated_utc": "2026-10-26T20:50:00Z",
+      "updated_utc": "2026-10-26T21:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -704,7 +704,7 @@
       "seed": "300000",
       "equity": "315135.5794540699",
       "cash": "0.42525406992444914",
-      "updated_utc": "2026-10-26T20:02:10Z",
+      "updated_utc": "2026-10-26T21:02:04Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -1997,6 +1997,10 @@
         {
           "t": "2026-10-26",
           "equity": "315120.70125406986"
+        },
+        {
+          "t": "2026-10-26",
+          "equity": "315135.5794540699"
         },
         {
           "t": "2026-10-26",
