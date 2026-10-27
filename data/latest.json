@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-27T01:45:52Z",
+  "generated_at": "2026-10-27T02:03:03Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,19 +25,11 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10009.052584640",
-      "cash": "10009.052584640",
+      "equity": "10164.949455840",
+      "cash": "10164.949455840",
       "seed": "10000",
-      "updated_utc": "2026-10-26T16:02:43Z",
-      "positions": [
-        {
-          "symbol": "DOOD-USDT-SWAP",
-          "side": "long",
-          "qty": "212",
-          "avg_px": "0.001992",
-          "margin": "422.304000"
-        }
-      ],
+      "updated_utc": "2026-10-27T02:02:53Z",
+      "positions": [],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -46,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24960.16200295001",
-      "updated_utc": "2026-10-27T01:45:46.624952Z",
+      "updated_utc": "2026-10-27T02:02:57.814223Z",
       "positions": []
     },
     {
@@ -55,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1874432.7662438196",
-      "updated_utc": "2026-10-27T01:45:46.627384Z",
+      "updated_utc": "2026-10-27T02:02:57.817594Z",
       "positions": []
     },
     {
@@ -64,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1461773.6457272007",
-      "updated_utc": "2026-10-27T01:45:46.629633Z",
+      "updated_utc": "2026-10-27T02:02:57.820710Z",
       "positions": []
     },
     {
@@ -73,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12693.685369833005",
-      "updated_utc": "2026-10-27T01:45:46.632003Z",
+      "updated_utc": "2026-10-27T02:02:57.823616Z",
       "positions": [
         {
           "position_id": "p_55243edd5539",
@@ -91,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-27T01:45:46.634337Z",
+      "updated_utc": "2026-10-27T02:02:57.826453Z",
       "positions": []
     },
     {
@@ -568,7 +560,7 @@
       "seed": "10000",
       "equity": "9279.6211",
       "cash": "74.66244772026528",
-      "updated_utc": "2026-10-27T01:40:01Z",
+      "updated_utc": "2026-10-27T01:50:00Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -686,7 +678,7 @@
       "seed": "300000",
       "equity": "315135.5794540699",
       "cash": "0.42525406992444914",
-      "updated_utc": "2026-10-27T01:02:05Z",
+      "updated_utc": "2026-10-27T02:02:04Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -2014,6 +2006,10 @@
         },
         {
           "t": "2026-10-26",
+          "equity": "315135.5794540699"
+        },
+        {
+          "t": "2026-10-27",
           "equity": "315135.5794540699"
         },
         {
