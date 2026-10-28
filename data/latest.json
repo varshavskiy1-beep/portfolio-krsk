@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-28T05:32:23Z",
+  "generated_at": "2026-10-28T05:48:14Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24905.05863513001",
-      "updated_utc": "2026-10-28T05:32:21.220546Z",
+      "updated_utc": "2026-10-28T05:48:12.913050Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1885256.1730791996",
-      "updated_utc": "2026-10-28T05:32:21.223554Z",
+      "updated_utc": "2026-10-28T05:48:12.917493Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1451576.0484629604",
-      "updated_utc": "2026-10-28T05:32:21.226109Z",
+      "updated_utc": "2026-10-28T05:48:12.919836Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12660.384827811005",
-      "updated_utc": "2026-10-28T05:32:21.228550Z",
+      "updated_utc": "2026-10-28T05:48:12.922787Z",
       "positions": [
         {
           "position_id": "p_cb7279c37635",
@@ -106,7 +106,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-28T05:32:21.231039Z",
+      "updated_utc": "2026-10-28T05:48:12.925367Z",
       "positions": []
     },
     {
@@ -470,39 +470,6 @@
           "notional": "551.0920000000000000000000000"
         }
       ]
-    },
-    {
-      "bot_id": "three_robots_okx_nasdaq_1h",
-      "account_id": "paper_block2",
-      "currency": "USDT",
-      "seed": "10000",
-      "equity": "10649.83",
-      "cash": "10641.62",
-      "updated_utc": "2026-10-27T19:10:31Z",
-      "positions": [
-        {
-          "symbol": "MSTR-USDT-SWAP",
-          "side": "long",
-          "qty": "30.40",
-          "avg_px": "140.12",
-          "margin": null
-        },
-        {
-          "symbol": "TSLA-USDT-SWAP",
-          "side": "long",
-          "qty": "10.45",
-          "avg_px": "407.38",
-          "margin": null
-        },
-        {
-          "symbol": "SPCX-USDT-SWAP",
-          "side": "short",
-          "qty": "14.18",
-          "avg_px": "150.15",
-          "margin": null
-        }
-      ],
-      "note": "Бумага. Робот 2 MSTR/TSLA/SPCX 1h. Ордера на биржу не идут. equity = mark-to-market на тиках US RTH; cash = реализованный кэш."
     },
     {
       "bot_id": "young_bounce_combo",
