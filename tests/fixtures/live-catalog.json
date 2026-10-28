@@ -1,0 +1,16 @@
+[
+  {
+    "botId": "demo_live_bot",
+    "accountId": "pub_acct_alpha",
+    "title": "Демо-робот LIVE",
+    "accountLabel": "счёт Альфа",
+    "currency": "USDT"
+  },
+  {
+    "botId": "v6b1",
+    "accountId": "v6b1",
+    "title": "Демо совпадающий id",
+    "accountLabel": "публичный v6b1",
+    "currency": "USDT"
+  }
+]

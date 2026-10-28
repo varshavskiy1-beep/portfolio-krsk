@@ -1,0 +1,18 @@
+{
+  "schema_version": "portfolio_live.v1",
+  "mode": "live",
+  "snapshot_id": "live-snap-001",
+  "generated_at": "2026-10-28T04:00:00Z",
+  "accounts": [
+    {
+      "bot_id": "demo_live_bot",
+      "account_id": "pub_acct_alpha",
+      "title": "Демо-робот LIVE",
+      "currency": "USDT",
+      "venue": "тест",
+      "updated_utc": "2026-10-28T03:55:00Z",
+      "equity": 12500.5,
+      "valuation_basis": "broker_mark_to_market"
+    }
+  ]
+}
