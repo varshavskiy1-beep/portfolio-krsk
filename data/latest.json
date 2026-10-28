@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-28T15:46:33Z",
+  "generated_at": "2026-10-28T15:55:36Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24873.25515972001",
-      "updated_utc": "2026-10-28T15:46:31.975037Z",
+      "updated_utc": "2026-10-28T15:55:25.895195Z",
       "positions": [
         {
           "position_id": "p_934e69ecc446",
@@ -71,7 +71,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1878232.0098941298",
-      "updated_utc": "2026-10-28T15:46:31.979250Z",
+      "updated_utc": "2026-10-28T15:55:25.898209Z",
       "positions": [
         {
           "position_id": "p_6729d916c82a",
@@ -89,7 +89,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1451570.8359555204",
-      "updated_utc": "2026-10-28T15:46:31.982510Z",
+      "updated_utc": "2026-10-28T15:55:25.901555Z",
       "positions": [
         {
           "position_id": "p_b3b062ce7636",
@@ -115,8 +115,17 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12627.463699414006",
-      "updated_utc": "2026-10-28T15:46:31.985155Z",
-      "positions": []
+      "updated_utc": "2026-10-28T15:55:25.905946Z",
+      "positions": [
+        {
+          "position_id": "p_75ce35a205cb",
+          "symbol": "BTC-USDT",
+          "side": "short",
+          "qty": "0.039",
+          "avg_px": "80487.34655",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -124,7 +133,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-28T15:46:31.987603Z",
+      "updated_utc": "2026-10-28T15:55:25.909524Z",
       "positions": []
     },
     {
@@ -591,7 +600,7 @@
       "seed": "10000",
       "equity": "9493.5157",
       "cash": "1079.26534454166",
-      "updated_utc": "2026-10-28T15:40:01Z",
+      "updated_utc": "2026-10-28T15:50:01Z",
       "positions": [
         {
           "symbol": "AAPL",
