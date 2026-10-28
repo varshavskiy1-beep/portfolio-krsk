@@ -16,7 +16,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { applyCanonicalCurrencies } from "../src/cashCurrency.js";
-import { mergeLatestIntoHistory } from "../src/historyMerge.js";
+import { dropHiddenFeedRows, mergeLatestIntoHistory } from "../src/historyMerge.js";
 import { loadHistoryFile, writeJsonAtomic } from "../src/historyStore.js";
 import { generateOgCover } from "./og-cover.mjs";
 
@@ -64,6 +64,7 @@ if (!skipScp) scpLatest();
 const latest = loadLatest(latestPath);
 if (!latest) throw new Error(skipScp ? "latest.json missing" : "latest.json missing after scp");
 applyCanonicalCurrencies(latest);
+dropHiddenFeedRows(latest);
 writeJsonAtomic(latestPath, latest, { trailingNewline: true });
 const hist = appendHistory(latest);
 const n = Object.values(hist.series).reduce((s, x) => s + x.points.length, 0);

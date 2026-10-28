@@ -27,18 +27,18 @@ test("displayNote replaces seed in feed comments", () => {
   assert.doesNotMatch(shown, /seed/i);
 });
 
-test("displayNote rewrites Young Bounce / Robot 2 account currency to USDT", () => {
+test("displayNote rewrites Young Bounce account currency to USDT", () => {
   const yb = displayNote(
     "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo" },
   );
   assert.match(yb, /10000 USDT/);
   assert.doesNotMatch(yb, /\bUSD\b/);
-  const robot2 = rewriteAccountCurrencyCopy("банк $10 000 USD", {
-    bot_id: "three_robots_okx_nasdaq_1h",
-    account_id: "paper_block2",
+  const ybCopy = rewriteAccountCurrencyCopy("банк $10 000 USD", {
+    bot_id: "young_bounce_combo",
+    account_id: "young_bounce_combo",
   });
-  assert.equal(robot2, "банк 10 000 USDT");
+  assert.equal(ybCopy, "банк 10 000 USDT");
   const oac = displayNote("Стартовый капитал 10 000 USD", {
     bot_id: "oac_paper",
     account_id: "oac_paper",

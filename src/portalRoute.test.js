@@ -15,6 +15,16 @@ test("hash #/s/grail_b20_3x is a blocked strategy route", () => {
   assert.equal(isHiddenPortalId(route.botId), true);
 });
 
+test("hash #/s/three_robots_okx_nasdaq_1h is a blocked strategy route", () => {
+  const route = parsePortalHash("#/s/three_robots_okx_nasdaq_1h");
+  assert.equal(route.name, "strategy");
+  assert.equal(route.botId, "three_robots_okx_nasdaq_1h");
+  assert.equal(isBlockedStrategyRoute(route), true);
+  assert.equal(isHiddenPortalId("three_robots_okx_nasdaq_1h"), true);
+  assert.equal(isHiddenPortalId("paper_block2"), true);
+  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/paper_block2")), true);
+});
+
 test("hidden id is recognized after decode, case and trailing junk", () => {
   assert.equal(isHiddenPortalId("GRAIL_B20_3X"), true);
   assert.equal(isHiddenPortalId("grail_b20_3x/"), true);

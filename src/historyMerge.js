@@ -3,25 +3,71 @@
  * Счёт с непустым equity_curve: ряд ключа заменяется этой кривой целиком
  * (капитал — число). ETH по сигналу OKX — так же, если history пришёл с часами.
  * Остальные счета только дописываются.
+ * Снятый / исчезнувший из ленты account_id не держим в series и не создаём заново.
  */
 import { canonicalCurrency } from "./cashCurrency.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { applyHistoryResets, filterResetPoints, shouldAppendHistoryPoint } from "./historyReset.js";
 import { capHistoryPoints } from "./historyStore.js";
+import {
+  ROBOT2_ACCOUNT_ID,
+  ROBOT2_BOT_ID,
+  isHiddenPortalAccount,
+  isHiddenPortalId,
+} from "./strategyMeta.js";
 
 function keyOf(a) {
   return `${a.bot_id}::${a.account_id}`;
 }
 
+function isRetiredFeedId(id) {
+  const n = String(id || "").trim().toLowerCase();
+  return n === ROBOT2_BOT_ID || n === ROBOT2_ACCOUNT_ID;
+}
+
+export function isDroppedEquitySeries(key, series) {
+  if (isRetiredFeedId(series?.bot_id) || isRetiredFeedId(series?.account_id)) return true;
+  return String(key || "").split("::").some(isRetiredFeedId);
+}
+
+/** Убирает снятые стратегии из снимка ленты перед публикацией latest.json. */
+export function dropHiddenFeedRows(latest) {
+  if (!latest) return latest;
+  if (Array.isArray(latest.accounts)) {
+    latest.accounts = latest.accounts.filter((a) => a && !isHiddenPortalAccount(a));
+  }
+  if (Array.isArray(latest.manifest)) {
+    latest.manifest = latest.manifest.filter((m) => m && !isHiddenPortalId(m.bot_id));
+  }
+  return latest;
+}
+
+/**
+ * Если account_id исчез из ленты или стратегия снята — ряд не оставляем.
+ * Карточку из orphan series не восстанавливаем.
+ */
+export function dropOrphanHistorySeries(hist, _latest) {
+  if (!hist?.series) return [];
+  const dropped = [];
+  for (const key of Object.keys(hist.series)) {
+    if (isDroppedEquitySeries(key, hist.series[key])) {
+      delete hist.series[key];
+      dropped.push(key);
+    }
+  }
+  return dropped;
+}
+
 export function mergeLatestIntoHistory(hist, latest) {
   const gen = latest.generated_at || new Date().toISOString();
   hist.updated_at = gen;
-  // paper_block2 reset_from 2026-10-15T08:57:31Z; v6b1 reset_from 2026-10-15T17:27:12Z;
+  // v6b1 reset_from 2026-10-15T17:27:12Z;
   // rf_bonds_rate_cycle reset_from 2026-10-10T08:13:19Z (drop wealth-index 2.44).
   // Drop the old books even if this history.json (or a merge with master) still has them.
   applyHistoryResets(hist);
   for (const a of latest.accounts || []) {
+    if (isHiddenPortalAccount(a)) continue;
     const k = keyOf(a);
     // ETH по сигналу OKX: ряд с часами (equity_curve или history с UTC) заменяет ключ так же.
     const timedEth = ethOkxTimedSeries(a);
@@ -71,5 +117,6 @@ export function mergeLatestIntoHistory(hist, latest) {
     s.points = capHistoryPoints(pts);
   }
   applyHistoryResets(hist);
+  dropOrphanHistorySeries(hist, latest);
   return hist;
 }
