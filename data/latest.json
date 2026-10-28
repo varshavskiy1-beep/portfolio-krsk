@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-27T23:59:43Z",
+  "generated_at": "2026-10-28T00:19:51Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24905.05863513001",
-      "updated_utc": "2026-10-27T23:59:40.819022Z",
+      "updated_utc": "2026-10-28T00:19:50.181296Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1885256.1730791996",
-      "updated_utc": "2026-10-27T23:59:40.821952Z",
+      "updated_utc": "2026-10-28T00:19:50.185698Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1451576.0484629604",
-      "updated_utc": "2026-10-27T23:59:40.824655Z",
+      "updated_utc": "2026-10-28T00:19:50.188846Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12706.980154671004",
-      "updated_utc": "2026-10-27T23:59:40.827113Z",
+      "updated_utc": "2026-10-28T00:19:50.192022Z",
       "positions": [
         {
           "position_id": "p_4496a7dd78d4",
@@ -106,7 +106,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-27T23:59:40.831043Z",
+      "updated_utc": "2026-10-28T00:19:50.195315Z",
       "positions": []
     },
     {
@@ -459,10 +459,17 @@
       "account_id": "pump_radar",
       "currency": "USDT",
       "equity": "5510.920000000000000000000000",
-      "cash": "5510.920000000000000000000000",
-      "updated_utc": "2026-10-26",
+      "cash": "4959.828000000000000000000000",
+      "updated_utc": "2026-10-27",
       "positions": [],
-      "pending_limits": []
+      "pending_limits": [
+        {
+          "id": "pump-2026-10-27-HAEDALUSDT",
+          "symbol": "HAEDALUSDT",
+          "limit": "0.02828150",
+          "notional": "551.0920000000000000000000000"
+        }
+      ]
     },
     {
       "bot_id": "three_robots_okx_nasdaq_1h",
@@ -504,10 +511,10 @@
       "seed": "10000",
       "equity": "9738.22",
       "cash": "9738.22",
-      "updated_utc": "2026-10-27T00:07:08Z",
+      "updated_utc": "2026-10-28T00:07:12Z",
       "positions": [],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-26"
+      "as_of": "2026-10-27"
     },
     {
       "bot_id": "oac_paper",
@@ -591,7 +598,7 @@
       "seed": "10000",
       "equity": "9493.5157",
       "cash": "1079.26534454166",
-      "updated_utc": "2026-10-27T23:50:02Z",
+      "updated_utc": "2026-10-28T00:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
