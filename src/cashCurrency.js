@@ -19,7 +19,6 @@ export const BOT_CURRENCY = {
   pump_radar: "USDT",
   forts_adr_adaptive: "RUB",
   forts_adr_static: "RUB",
-  three_robots_okx_nasdaq_1h: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
   desyatka_earn_paper: "USD",
@@ -34,10 +33,8 @@ export const BOT_CURRENCY = {
   mayak_imoex_mom10_lev2: "RUB",
 };
 
-/** Валюта карточки = инструмент: Robot 2 / Young Bounce — USDT; OAC и Десятка Earn — USD; Цикл 60/40 и РФ Консерватив — RUB. */
+/** Валюта карточки = инструмент: Young Bounce — USDT; OAC и Десятка Earn — USD; Цикл 60/40 и РФ Консерватив — RUB. */
 export const FORCE_CURRENCY = {
-  three_robots_okx_nasdaq_1h: "USDT",
-  paper_block2: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
   desyatka_earn_paper: "USD",
@@ -59,7 +56,6 @@ export const ACCOUNT_CURRENCY = {
   paper_forts: "RUB",
   paper_crypto_spot: "USDT",
   paper_crypto_perp: "USDT",
-  paper_block2: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
   desyatka_earn_paper: "USD",

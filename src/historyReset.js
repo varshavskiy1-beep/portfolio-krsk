@@ -4,14 +4,12 @@
  */
 
 export const PAPER_BLOCK2_SERIES_KEY = "three_robots_okx_nasdaq_1h::paper_block2";
-export const PAPER_BLOCK2_RESET_FROM = "2026-10-15T08:57:31Z";
-export const PAPER_BLOCK2_RESET_EQUITY = 10000;
-export const PAPER_BLOCK2_RESET_LINE =
-  "Счёт обнулён 15.10 после исправления, история копится.";
 
 export const V6B1_SERIES_KEY = "v6b1::v6b1";
 export const V6B1_RESET_FROM = "2026-10-15T17:27:12Z";
 export const V6B1_RESET_EQUITY = 10000;
+export const V6B1_RESET_LINE =
+  "Счёт обнулён 15.10 после исправления, история копится.";
 
 /** Индекс богатства ~2,44 до перевода книги в рубли. Первая рублёвая точка ≈ 300 000. */
 export const RATE_CYCLE_SERIES_KEY = "rf_bonds_rate_cycle::rf_bonds_rate_cycle";
@@ -21,15 +19,10 @@ export const RATE_CYCLE_RESET_LINE =
   "Индексная точка до перевода книги в рубли скрыта; дальше учёт в рублях.";
 
 export const HISTORY_RESETS = {
-  [PAPER_BLOCK2_SERIES_KEY]: {
-    resetFrom: PAPER_BLOCK2_RESET_FROM,
-    seedPoint: { t: PAPER_BLOCK2_RESET_FROM, equity: PAPER_BLOCK2_RESET_EQUITY },
-    caption: PAPER_BLOCK2_RESET_LINE,
-  },
   [V6B1_SERIES_KEY]: {
     resetFrom: V6B1_RESET_FROM,
     seedPoint: { t: V6B1_RESET_FROM, equity: V6B1_RESET_EQUITY },
-    caption: PAPER_BLOCK2_RESET_LINE,
+    caption: V6B1_RESET_LINE,
   },
   [RATE_CYCLE_SERIES_KEY]: {
     resetFrom: RATE_CYCLE_RESET_FROM,
@@ -118,10 +111,9 @@ export function historyResetLine(account, historyPoints) {
     days.add(String(t).slice(0, 10));
   }
   if (days.size > 1) return "";
-  return spec.caption || PAPER_BLOCK2_RESET_LINE;
+  return spec.caption || V6B1_RESET_LINE;
 }
 
-export function robot2ResetLine(account, historyPoints) {
-  if (!account || seriesKey(account) !== PAPER_BLOCK2_SERIES_KEY) return "";
-  return historyResetLine(account, historyPoints);
+export function robot2ResetLine() {
+  return "";
 }

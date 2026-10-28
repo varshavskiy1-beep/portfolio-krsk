@@ -4,7 +4,12 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
-import { mergeLatestIntoHistory } from "./historyMerge.js";
+import {
+  dropHiddenFeedRows,
+  dropOrphanHistorySeries,
+  isDroppedEquitySeries,
+  mergeLatestIntoHistory,
+} from "./historyMerge.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
@@ -112,7 +117,104 @@ test("merge on current latest.json: forts series equal equity_curve, other keys 
   assert.ok(Math.abs(s[1].equity - 1508999.9999124017) < 1e-6);
   for (const [key, ser] of Object.entries(before.series)) {
     if (key === ADAPTIVE || key === STATIC) continue;
+    if (isDroppedEquitySeries(key, ser)) {
+      assert.equal(after.series[key], undefined, key);
+      continue;
+    }
     const prev = ser.points || [];
     assert.deepEqual(after.series[key].points.slice(0, prev.length), prev, key);
   }
+  assert.equal(after.series["three_robots_okx_nasdaq_1h::paper_block2"], undefined);
+});
+
+test("merge drops retired paper_block2 even if leftover feed still has the account", () => {
+  const key = "three_robots_okx_nasdaq_1h::paper_block2";
+  const hist = {
+    series: {
+      [key]: {
+        bot_id: "three_robots_okx_nasdaq_1h",
+        account_id: "paper_block2",
+        points: [
+          { t: "2026-10-15T08:57:31Z", equity: 10000 },
+          { t: "2026-10-23T19:09:44Z", equity: 10306.11 },
+        ],
+      },
+      "v6b1::v6b1": {
+        bot_id: "v6b1",
+        account_id: "v6b1",
+        points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }],
+      },
+    },
+  };
+  mergeLatestIntoHistory(hist, {
+    generated_at: "2026-10-28T00:00:00Z",
+    accounts: [
+      { bot_id: "v6b1", account_id: "v6b1", equity: "10100", updated_utc: "2026-10-28T00:00:00Z" },
+      {
+        bot_id: "three_robots_okx_nasdaq_1h",
+        account_id: "paper_block2",
+        equity: "10306.11",
+        updated_utc: "2026-10-28T00:00:00Z",
+      },
+    ],
+  });
+  assert.equal(hist.series[key], undefined);
+  assert.equal(hist.series["v6b1::v6b1"].points.at(-1).equity, 10100);
+});
+
+test("orphan series is dropped when account_id left the feed; other books stay", () => {
+  const key = "three_robots_okx_nasdaq_1h::paper_block2";
+  const hist = {
+    series: {
+      [key]: {
+        bot_id: "three_robots_okx_nasdaq_1h",
+        account_id: "paper_block2",
+        points: [{ t: "2026-10-15T08:57:31Z", equity: 10000 }],
+      },
+      "grail_b20_3x::grail_b20_3x": {
+        bot_id: "grail_b20_3x",
+        account_id: "grail_b20_3x",
+        points: [{ t: "2026-09-01T00:00:00Z", equity: 20000 }],
+      },
+      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+    },
+  };
+  const dropped = dropOrphanHistorySeries(hist, {
+    accounts: [{ bot_id: "v6b1", account_id: "v6b1", equity: "10000" }],
+  });
+  assert.deepEqual(dropped, [key]);
+  assert.equal(hist.series[key], undefined);
+  assert.ok(hist.series["grail_b20_3x::grail_b20_3x"]);
+  assert.ok(hist.series["v6b1::v6b1"]);
+});
+
+test("dropHiddenFeedRows strips paper_block2 from accounts and manifest, keeps robot 3 live mark", () => {
+  const latest = {
+    accounts: [
+      { bot_id: "v6b1", account_id: "v6b1", equity: "10000" },
+      { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2", equity: "10306" },
+    ],
+    manifest: [
+      { bot_id: "v6b1", logic: "ok" },
+      { bot_id: "three_robots_okx_nasdaq_1h", logic: "retired" },
+    ],
+    excluded: [
+      { id: "three_robots_finam_live", reason: "live Finam" },
+      { id: "three_robots_okx_nasdaq_1h", reason: "live OKX" },
+      { id: "three_robots_okx_spcx_btc_4h", reason: "live OKX" },
+    ],
+  };
+  dropHiddenFeedRows(latest);
+  assert.deepEqual(
+    latest.accounts.map((a) => a.account_id),
+    ["v6b1"],
+  );
+  assert.deepEqual(
+    latest.manifest.map((m) => m.bot_id),
+    ["v6b1"],
+  );
+  assert.deepEqual(
+    latest.excluded.map((e) => e.id),
+    ["three_robots_finam_live", "three_robots_okx_nasdaq_1h", "three_robots_okx_spcx_btc_4h"],
+  );
 });

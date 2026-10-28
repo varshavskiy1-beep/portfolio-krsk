@@ -27,7 +27,6 @@ const DISPLAYED = [
   "forts_adr_adaptive",
   "forts_adr_static",
   "pump_radar",
-  "three_robots_okx_nasdaq_1h",
   "young_bounce_combo",
   "oac_paper",
   "desyatka_earn_paper",
@@ -240,6 +239,23 @@ test("decommissioned grail_b20_3x has no authored passport and is not displayed"
   assert.doesNotMatch(stub.title, /Grail B20/);
 });
 
+test("retired paper_block2 / robot 2 has no passport, card or dashboard id", () => {
+  assert.equal(hasAuthoredPassport("three_robots_okx_nasdaq_1h"), false);
+  assert.equal(authoredPassportIds().includes("three_robots_okx_nasdaq_1h"), false);
+  assert.equal(displayedBotIds(latest.accounts).includes("three_robots_okx_nasdaq_1h"), false);
+  assert.equal(isHiddenPortalId("three_robots_okx_nasdaq_1h"), true);
+  assert.equal(isHiddenPortalId("paper_block2"), true);
+  const stub = getPassport("three_robots_okx_nasdaq_1h");
+  assert.equal(stub.authored, false);
+  assert.equal(stub.hidden, true);
+  assert.doesNotMatch(stub.title, /Робот 2/);
+  assert.doesNotMatch(stub.title, /MSTR\/TSLA\/SPCX/);
+  for (const s of passportUiStrings("three_robots_okx_nasdaq_1h")) {
+    assert.doesNotMatch(s, /paper_block2/);
+    assert.doesNotMatch(s, /Робот 2/);
+  }
+});
+
 test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   const oac = getPassport("oac_paper");
   assert.match(oac.parameters.find((r) => r.name === "Размер позиции (базовый)").value, /10%/);
@@ -382,6 +398,9 @@ test("displayed passport UI has no Grail / grail_b20_3x copy", () => {
     assert.doesNotMatch(text, /grail_b20_3x/i, botId);
     assert.doesNotMatch(text, /Grail B20/, botId);
     assert.doesNotMatch(text, /\bGrail\b/, botId);
+    assert.doesNotMatch(text, /paper_block2/, botId);
+    assert.doesNotMatch(text, /three_robots_okx_nasdaq_1h/, botId);
+    assert.doesNotMatch(text, /Робот 2/, botId);
   }
 });
 

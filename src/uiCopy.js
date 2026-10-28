@@ -32,8 +32,6 @@ export function fromCapitalLine({ seed, currency, delta, pct }) {
 
 /** Счета, где фид ещё пишет USD, а карточка должна показывать USDT. */
 const USDT_ACCOUNT_COPY_IDS = new Set([
-  "three_robots_okx_nasdaq_1h",
-  "paper_block2",
   "young_bounce_combo",
 ]);
 
@@ -43,7 +41,7 @@ function isUsdtAccountCopy(account) {
   return USDT_ACCOUNT_COPY_IDS.has(account.bot_id) || USDT_ACCOUNT_COPY_IDS.has(account.account_id);
 }
 
-/** В текстах фида про валюту счёта: Robot 2 / Young Bounce → USDT; OAC не трогаем. */
+/** В текстах фида про валюту счёта: Young Bounce → USDT; OAC не трогаем. */
 export function rewriteAccountCurrencyCopy(text, account) {
   if (text == null || text === "") return "";
   const raw = String(text);

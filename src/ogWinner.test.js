@@ -92,6 +92,25 @@ test("decommissioned grail_b20_3x is skipped even with larger paper pnl", () => 
   assert.doesNotMatch(winner.key, /grail/i);
 });
 
+test("retired paper_block2 is skipped even with larger paper pnl", () => {
+  const latest = {
+    accounts: [
+      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 11359.56, seed: 10000 }),
+      acc({
+        bot_id: "three_robots_okx_nasdaq_1h",
+        account_id: "paper_block2",
+        currency: "USDT",
+        equity: 24440.08,
+        seed: 10000,
+      }),
+    ],
+  };
+  const winner = pickOgWinner(latest, { series: {} });
+  assert.equal(winner.key, "v6b1::v6b1");
+  assert.doesNotMatch(winner.key, /paper_block2/);
+  assert.doesNotMatch(winner.key, /three_robots_okx_nasdaq_1h/);
+});
+
 test("who_pays without seed uses first history point", () => {
   const latest = {
     accounts: [acc({ bot_id: "who_pays", account_id: "paper_us_eq", currency: "USD", equity: 25000, seed: null })],

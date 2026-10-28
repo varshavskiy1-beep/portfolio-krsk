@@ -125,7 +125,11 @@ export function isMayak(accountOrId) {
 }
 
 /** Снятые стратегии: не рисуем карточку, чип, паспорт и OG, даже если id ещё в снимке. */
-export const HIDDEN_PORTAL_IDS = new Set(["grail_b20_3x"]);
+export const HIDDEN_PORTAL_IDS = new Set([
+  "grail_b20_3x",
+  ROBOT2_BOT_ID,
+  ROBOT2_ACCOUNT_ID,
+]);
 
 /** Нормализация bot_id из hash/фида: trim, decode, без query и хвостового /. */
 export function normalizePortalId(id) {
@@ -140,7 +144,6 @@ export function normalizePortalId(id) {
 }
 
 export const BOT_TITLE = {
-  [ROBOT2_BOT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_BOT_ID]: "Young Bounce Combo",
   [OAC_PAPER_BOT_ID]: "Ядро внимания",
   [DESYATKA_EARN_BOT_ID]: DESYATKA_EARN_TITLE,
@@ -153,7 +156,6 @@ export const BOT_TITLE = {
 };
 
 export const ACCOUNT_TITLE = {
-  [ROBOT2_ACCOUNT_ID]: "Робот 2 · MSTR/TSLA/SPCX",
   [YOUNG_BOUNCE_ACCOUNT_ID]: "Young Bounce Combo",
   [OAC_PAPER_ACCOUNT_ID]: "Ядро внимания",
   [DESYATKA_EARN_ACCOUNT_ID]: DESYATKA_EARN_TITLE,
@@ -193,12 +195,6 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
 
 /** Карточки, которые должны быть на главной даже до публикации счёта в equity-ro. */
 export const PORTAL_SHELLS = [
-  {
-    bot_id: ROBOT2_BOT_ID,
-    account_id: ROBOT2_ACCOUNT_ID,
-    currency: "USDT",
-    seed: "10000",
-  },
   {
     bot_id: YOUNG_BOUNCE_BOT_ID,
     account_id: YOUNG_BOUNCE_ACCOUNT_ID,
@@ -256,7 +252,7 @@ export function accountKey(a) {
 }
 
 export function portalExcluded(excluded = []) {
-  return excluded.filter((e) => !PAPER_NOT_LIVE_EXCLUDED.has(e.id));
+  return excluded.filter((e) => !PAPER_NOT_LIVE_EXCLUDED.has(e.id) && !isHiddenPortalId(e.id));
 }
 
 export function displayTitle(account) {

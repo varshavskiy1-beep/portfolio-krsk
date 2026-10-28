@@ -39,24 +39,10 @@ test("bot_id maps crypto and FORTS when venue is missing", () => {
   );
 });
 
-test("robot 2 paper account maps to USDT", () => {
-  assert.equal(
-    canonicalCurrency({
-      bot_id: "three_robots_okx_nasdaq_1h",
-      account_id: "paper_block2",
-      currency: "USD",
-    }),
-    "USDT",
-  );
-  assert.equal(canonicalCurrency({ bot_id: "three_robots_okx_nasdaq_1h", account_id: "x", currency: "RUB" }), "USDT");
-  assert.equal(canonicalCurrency({ bot_id: "other", account_id: "paper_block2", currency: "RUB" }), "USDT");
-});
-
-test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятка under USD", () => {
+test("currency chips: Young Bounce under USDT, OAC and Десятка under USD", () => {
   const accounts = [
     { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB" },
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT" },
-    { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2", currency: "USD", equity: "10000" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
     { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "10000" },
@@ -80,7 +66,7 @@ test("currency chips: Robot 2 and Young Bounce under USDT, OAC and Десятк�
   );
   assert.deepEqual(
     usdt.map((a) => a.account_id),
-    ["v6b1", "paper_block2", "young_bounce_combo"],
+    ["v6b1", "young_bounce_combo"],
   );
   assert.deepEqual(
     rub.map((a) => a.account_id),

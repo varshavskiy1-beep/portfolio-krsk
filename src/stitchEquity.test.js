@@ -6,7 +6,6 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   HISTORY_RESETS,
-  PAPER_BLOCK2_SERIES_KEY,
   RATE_CYCLE_RESET_FROM,
   RATE_CYCLE_SERIES_KEY,
   V6B1_SERIES_KEY,
@@ -44,11 +43,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const backtests = JSON.parse(readFileSync(join(root, "public/data/backtests.json"), "utf8"));
 const history = JSON.parse(readFileSync(join(root, "public/data/history.json"), "utf8"));
 const OAC = { bot_id: "oac_paper", account_id: "oac_paper" };
-const BLOCK2 = { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2" };
+const RETIRED_BACKTEST_KEYS = ["three_robots_okx_nasdaq_1h::paper_block2"];
 const SERIES_KEYS = [
   "oac_paper::oac_paper",
   "desyatka_earn_paper::desyatka_earn_paper",
-  "three_robots_okx_nasdaq_1h::paper_block2",
   "cycle_6040_paper::cycle_6040_paper",
   "rf_conservative_comon::rf_conservative_comon",
   "rf_bonds_rate_cycle::rf_bonds_rate_cycle",
@@ -158,17 +156,16 @@ test("ema span 100 matches a flat series", () => {
   assert.equal(ema[119], 5);
 });
 
-test("backtests.json has exactly fourteen tester series — no invented keys", () => {
+test("backtests.json has the live tester series — no invented keys", () => {
   assert.equal(backtests.schema, "backtest_equity.v1");
-  assert.deepEqual(Object.keys(backtests.series), SERIES_KEYS);
+  assert.deepEqual(
+    Object.keys(backtests.series).sort(),
+    [...SERIES_KEYS, ...RETIRED_BACKTEST_KEYS].sort(),
+  );
   const pts = backtestPointsFor(backtests, OAC);
   assert.equal(pts.length, 481);
   assert.equal(pts[0].t, "2024-10-24");
   assert.equal(pts.at(-1).t, "2026-09-24");
-  const b2 = backtestPointsFor(backtests, BLOCK2);
-  assert.equal(b2.length, 113);
-  assert.equal(b2[0].t, "2026-05-01");
-  assert.equal(b2.at(-1).t, "2026-10-14");
   const rate = backtestPointsFor(backtests, { bot_id: "rf_bonds_rate_cycle", account_id: "rf_bonds_rate_cycle" });
   assert.equal(rate.length, 378);
   assert.equal(rate[0].t, "2019-06-21");
@@ -239,9 +236,6 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
   const oacRow = backtestRowFor(backtests, OAC);
   assert.equal(backtestSourceDisplay(oacRow, OAC), SOURCE_RU_BY_KEY[seriesKey(OAC)]);
   assert.match(feedSourceLine("2026-10-17T10:45:45Z"), /лента бумажных счетов/);
-  const b2 = backtestHonestyLines(backtestRowFor(backtests, BLOCK2), BLOCK2);
-  assert.equal(b2[0], IN_SAMPLE_UNTIL_SEP);
-  assert.equal(b2.includes(EXTRA_HONESTY_BY_KEY[seriesKey(BLOCK2)]), true);
   const ethAcc = { bot_id: "eth_okx_moex", account_id: "eth_okx_moex" };
   const ethLines = backtestHonestyLines(backtestRowFor(backtests, ethAcc), ethAcc);
   assert.equal(ethLines[0], IN_SAMPLE_ONLY);
@@ -318,19 +312,6 @@ test("oac_paper stitch from backtests.json + history.json: join ≤7d, yoy bars,
   assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-6);
   assert.ok(st.yoy.length >= 1, `yoy bars: ${st.yoy.length}`);
   assert.equal(st.yoy.every((row) => row.sma36 == null), true);
-});
-
-test("paper_block2 stitch: join 2026-10-14→2026-10-15, no yoy (short series)", () => {
-  const st = stitchAccount(BLOCK2);
-  assert.equal(st.ok, true);
-  assert.equal(st.joinDay, "2026-10-14");
-  assert.equal(st.paperStart, "2026-10-15");
-  const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
-  assert.equal(Math.round(gapMs / 86400000), 1);
-  const paperRows = st.daily.filter((row) => row.segment === "paper");
-  const before = st.daily.filter((row) => row.day < st.paperStart).at(-1);
-  assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-6);
-  assert.equal(st.yoy.length, 0);
 });
 
 test("rf_bonds_rate_cycle: wealth-index 2.44 would explode stitch; reset keeps RUB scale", () => {
@@ -424,7 +405,7 @@ test("sync-equity.mjs does not write backtests.json", () => {
 test("reset_from and chart v2 defaults are untouched", () => {
   assert.deepEqual(
     Object.keys(HISTORY_RESETS).sort(),
-    [PAPER_BLOCK2_SERIES_KEY, RATE_CYCLE_SERIES_KEY, V6B1_SERIES_KEY].sort(),
+    [RATE_CYCLE_SERIES_KEY, V6B1_SERIES_KEY].sort(),
   );
   assert.equal(DEFAULT_CHART_MODE, "pct");
   assert.equal(DEFAULT_CHART_RANGE, "all");

@@ -54,7 +54,7 @@ import {
   underTitleLabel,
 } from "./strategyMeta.js";
 
-test("portalExcluded drops outdated live OKX mark for robot 2", () => {
+test("portalExcluded drops outdated live OKX mark and retired robot 2", () => {
   const excluded = [
     { id: "three_robots_finam_live", reason: "live Finam" },
     { id: ROBOT2_BOT_ID, reason: "live OKX" },
@@ -77,40 +77,36 @@ test("portalExcluded drops outdated live OKX mark for robot 2", () => {
   );
 });
 
-test("mergePortalAccounts adds robot 2 shell when absent", () => {
+test("Finam robot 1 and SPCX/BTC robot 3 stay unhidden", () => {
+  assert.equal(isHiddenPortalId("three_robots_finam_live"), false);
+  assert.equal(isHiddenPortalId("three_robots_okx_spcx_btc_4h"), false);
+});
+
+test("retired robot 2 is not a portal shell and does not come back from the feed", () => {
   const merged = mergePortalAccounts([
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    {
+      bot_id: ROBOT2_BOT_ID,
+      account_id: ROBOT2_ACCOUNT_ID,
+      currency: "USDT",
+      equity: "10306.11",
+      seed: "10000",
+    },
   ]);
-  const robot2 = merged.find((a) => a.bot_id === ROBOT2_BOT_ID);
-  assert.ok(robot2);
-  assert.equal(robot2.account_id, ROBOT2_ACCOUNT_ID);
-  assert.equal(robot2.no_data, true);
-  assert.equal(robot2.currency, "USDT");
+  assert.equal(merged.some((a) => a.bot_id === ROBOT2_BOT_ID), false);
+  assert.equal(merged.some((a) => a.account_id === ROBOT2_ACCOUNT_ID), false);
+  assert.ok(merged.some((a) => a.bot_id === "v6b1"));
+  assert.equal(isHiddenPortalId(ROBOT2_BOT_ID), true);
+  assert.equal(isHiddenPortalId(ROBOT2_ACCOUNT_ID), true);
+  assert.equal(
+    isHiddenPortalAccount({ bot_id: ROBOT2_BOT_ID, account_id: ROBOT2_ACCOUNT_ID }),
+    true,
+  );
 });
 
-test("mergePortalAccounts keeps published paper account", () => {
-  const published = {
-    bot_id: ROBOT2_BOT_ID,
-    account_id: ROBOT2_ACCOUNT_ID,
-    currency: "USD",
-    equity: "10000",
-    seed: "10000",
-    positions: [],
-  };
-  const merged = mergePortalAccounts([published]);
-  assert.equal(merged.filter((a) => a.bot_id === ROBOT2_BOT_ID).length, 1);
-  assert.equal(merged[0].no_data, undefined);
-  assert.equal(merged[0].equity, "10000");
-});
-
-test("displayTitle maps robot 2 ids to human title", () => {
-  assert.equal(displayTitle({ bot_id: ROBOT2_BOT_ID, account_id: ROBOT2_ACCOUNT_ID }), "Робот 2 · MSTR/TSLA/SPCX");
-});
-
-test("paper badge is on every account card, not only robot 2", () => {
+test("paper badge is on every account card", () => {
   assert.equal(showsPaperBadge({ bot_id: "forts_adr_adaptive", account_id: "forts_adr_adaptive" }), true);
   assert.equal(showsPaperBadge({ bot_id: "forts_adr_static", account_id: "forts_adr_static" }), true);
-  assert.equal(showsPaperBadge({ bot_id: ROBOT2_BOT_ID, account_id: ROBOT2_ACCOUNT_ID }), true);
   assert.equal(showsPaperBadge({ bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID }), true);
   assert.equal(showsPaperBadge(null), false);
 });
@@ -413,10 +409,7 @@ test("decommissioned grail_b20_3x is hidden from portal accounts", () => {
 
 test("non-portal bot still shows account id under title when title differs", () => {
   assert.equal(underTitleLabel({ bot_id: "v6b1", account_id: "v6b1" }), null);
-  assert.equal(
-    underTitleLabel({ bot_id: "x", account_id: ROBOT2_ACCOUNT_ID }),
-    ROBOT2_ACCOUNT_ID,
-  );
+  assert.equal(underTitleLabel({ bot_id: "who_pays", account_id: "paper_us_eq" }), "who_pays");
 });
 
 test("displayTitle maps cycle 60/40 ids to Цикл 60/40", () => {
