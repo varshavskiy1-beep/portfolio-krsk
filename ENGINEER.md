@@ -38,7 +38,7 @@ portfolio-krsk — публичная витрина торговых робот
 
 - 2026-10-17: самопроверка WEB-EQUITY-CHARTS-01 — модель 17 тестов, unified chart, без merge на прод.
 - 2026-10-17: на превью при zoom 200% левая метка «2021» резалась скруглением рамки; host без padding, inset перенесён на `.stitch-chart-frame`.
-- 2026-10-28: WEB-PAPER-LIVE-01 этап A — маршруты `#/paper` / `#/live`, пустой LIVE без fallback на PAPER, фикстуры только в `tests/fixtures/`. Production и gh-pages не публиковались.
+- 2026-10-28: WEB-PAPER-LIVE-01 этап A — маршруты `#/paper` / `#/live`, пустой LIVE без fallback на PAPER, фикстуры только в `tests/fixtures/`. Production и gh-pages не публиковались. `npm test` 309/309, `npm run build` 0. Локальный preview A01–A03, A05–A07, A11–A14 пройдены; A04/A08–A10 в браузере не проверялись (нет HTTPS-стенда LIVE-фида).
 
 ## Известные ловушки проекта
 
