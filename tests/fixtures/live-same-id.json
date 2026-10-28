@@ -1,0 +1,33 @@
+{
+  "latest": {
+    "schema_version": "portfolio_live.v1",
+    "mode": "live",
+    "snapshot_id": "live-same-id",
+    "generated_at": "2026-10-28T04:00:00Z",
+    "accounts": [
+      {
+        "bot_id": "v6b1",
+        "account_id": "v6b1",
+        "title": "Демо совпадающий id",
+        "currency": "USDT",
+        "updated_utc": "2026-10-28T03:50:00Z",
+        "equity": 777,
+        "valuation_basis": "broker_mark_to_market"
+      }
+    ]
+  },
+  "history": {
+    "schema_version": "portfolio_live_history.v1",
+    "mode": "live",
+    "snapshot_id": "live-same-id",
+    "generated_at": "2026-10-28T04:00:00Z",
+    "series": {
+      "v6b1::v6b1": {
+        "currency": "USDT",
+        "points": [
+          { "t": "2026-01-15T00:00:00Z", "equity": 777 }
+        ]
+      }
+    }
+  }
+}

@@ -3,6 +3,29 @@
  * это стартовый / начальный капитал счёта. Поле JSON `seed` не трогаем.
  */
 
+export const PORTAL_TITLE_RU = "Портфель стратегий";
+export const PORTAL_KICKER_RU = "Результаты торговых роботов";
+export const PAPER_HEADING_RU = "БОТЫ PAPER";
+export const LIVE_HEADING_RU = "БОТЫ LIVE";
+export const PAPER_MODE_HINT_RU =
+  "Бумажная торговля. Сделки не исполняются на реальном счёте";
+export const LIVE_MODE_HINT_RU =
+  "Результаты роботов на реальных счетах. Эта страница не управляет торговлей";
+export const PAPER_SWITCH_HINT_RU = "Бумажная торговля";
+export const LIVE_SWITCH_HINT_RU = "Реальные счета";
+export const LIVE_BADGE_RU = "LIVE · реальный счёт";
+export const SEARCH_PLACEHOLDER_RU = "Найти стратегию…";
+export const SEARCH_LABEL_RU = "Найти стратегию";
+export const CURRENCY_LABEL_RU = "Валюта";
+export const ALL_CURRENCIES_RU = "Все валюты";
+export const RESET_FILTERS_RU = "Сбросить фильтры";
+export const SEARCH_EMPTY_RU = "По заданным условиям ничего не найдено";
+export const PAGE_NOT_FOUND_RU = "Страница не найдена";
+export const STRATEGY_NOT_FOUND_RU = "Стратегия не найдена";
+export const LIVE_FOOTER_RISK_RU =
+  "Эта страница не управляет торговлей. Это не торговые рекомендации.";
+
+
 export function formatMoneyRu(n, currency) {
   if (n == null || Number.isNaN(n)) return "—";
   try {

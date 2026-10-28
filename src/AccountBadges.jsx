@@ -5,9 +5,20 @@ import {
   showsDefenceBadge,
   showsPaperBadge,
 } from "./strategyMeta.js";
+import { LIVE_BADGE_RU } from "./uiCopy.js";
 
-/** Бейджи карточки: бумага | валюта | id счёта | плечо | защита | стоп. */
-export default function AccountBadges({ account, currency }) {
+/** Бейджи карточки: режим | валюта | id счёта | плечо | защита | стоп. */
+export default function AccountBadges({ account, currency, mode = "paper" }) {
+  if (mode === "live") {
+    return (
+      <div className="badges">
+        <span className="badge badge-live">{LIVE_BADGE_RU}</span>
+        {currency ? <span className="badge">{currency}</span> : null}
+        {account?.accountLabel ? <span className="badge badge-id">{account.accountLabel}</span> : null}
+      </div>
+    );
+  }
+
   const paper = showsPaperBadge(account);
   const idBadge = accountIdBadge(account);
   const lev = leverageBadge(account);

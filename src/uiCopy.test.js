@@ -1,6 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  LIVE_BADGE_RU,
+  LIVE_HEADING_RU,
+  LIVE_MODE_HINT_RU,
+  PAPER_HEADING_RU,
+  PAPER_MODE_HINT_RU,
+  PORTAL_TITLE_RU,
   displayNote,
   fromCapitalLine,
   patternLabel,
@@ -8,6 +14,15 @@ import {
   rewriteAccountCurrencyCopy,
   sideLabel,
 } from "./uiCopy.js";
+
+test("portal chrome copy is Russian and keeps PAPER/LIVE labels", () => {
+  assert.equal(PORTAL_TITLE_RU, "Портфель стратегий");
+  assert.equal(PAPER_HEADING_RU, "БОТЫ PAPER");
+  assert.equal(LIVE_HEADING_RU, "БОТЫ LIVE");
+  assert.match(PAPER_MODE_HINT_RU, /не исполняются на реальном счёте/);
+  assert.match(LIVE_MODE_HINT_RU, /не управляет торговлей/);
+  assert.equal(LIVE_BADGE_RU, "LIVE · реальный счёт");
+});
 
 test("delta line is Russian and never says seed", () => {
   const line = fromCapitalLine({

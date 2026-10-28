@@ -8,6 +8,8 @@ import RateCycleDetails from "./RateCycleDetails.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { lastEquityValue, resolveChartBase, resolveEquityPoints } from "./equityChartModel.js";
+import { liveEquityDisplay, resolveLiveEquityPoints } from "./liveEquity.js";
+import { LIVE_NO_TWR_RU, formatLiveDateTime } from "./liveFeedValidate.js";
 import { cardUpdatedLine } from "./mayakCard.js";
 import {
   cnyMomDescription,
@@ -28,6 +30,7 @@ import {
 } from "./rateCycleCard.js";
 import StitchedCharts from "./StitchedCharts.jsx";
 import { stitchPaperPoints } from "./stitchEquity.js";
+import ModeSwitch from "./ModeSwitch.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
 import { getPassport } from "./strategyPassport.js";
@@ -48,7 +51,7 @@ import {
   showsFreeCash,
   underTitleLabel,
 } from "./strategyMeta.js";
-import { displayNote, fromCapitalLine } from "./uiCopy.js";
+import { displayNote, formatMoneyRu, fromCapitalLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -151,7 +154,7 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
     <section className="card strategy-account">
       <div className="row">
         <strong>{title}</strong>
-        <AccountBadges account={a} currency={currency} />
+        <AccountBadges account={a} currency={currency} mode="paper" />
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       <MayakDetails account={a} hasData={hasData} />
@@ -266,8 +269,38 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
   );
 }
 
+function LiveAccountBlock({ a, points }) {
+  const display = liveEquityDisplay(a);
+  const showChart = display.kind === "value" && points.length > 0;
+  const updated = a.updated_utc ? formatLiveDateTime(a.updated_utc) : "";
+
+  return (
+    <section className="card strategy-account">
+      <div className="row">
+        <strong>{a.title}</strong>
+        <AccountBadges account={a} currency={a.currency} mode="live" />
+      </div>
+      {a.venue ? <div className="updated">{a.venue}</div> : null}
+      <div className="equity">
+        {display.kind === "value"
+          ? `${formatMoneyRu(display.value, a.currency)} ${a.currency}`
+          : display.text}
+      </div>
+      {updated ? <div className="updated">{updated}</div> : null}
+      <p className="note">{LIVE_NO_TWR_RU}</p>
+      <h3 className="subhead">График стоимости</h3>
+      {showChart ? (
+        <EquityChart points={points} seed={null} currency={a.currency} mode="money" height={280} />
+      ) : (
+        <div className="empty-chart">{display.text || "Нет данных о стоимости счёта"}</div>
+      )}
+    </section>
+  );
+}
+
 export default function StrategyPage({
   botId,
+  mode = "paper",
   data,
   history,
   backtests,
@@ -275,54 +308,71 @@ export default function StrategyPage({
   loadError,
   onRetry,
   onBack,
+  sourceHost = "",
+  nowMs,
 }) {
-  const accounts = useMemo(
-    () => mergePortalAccounts(data?.accounts || []).filter((a) => a.bot_id === botId),
-    [data, botId],
-  );
+  const isLive = mode === "live";
+  const accounts = useMemo(() => {
+    if (isLive) return (data?.accounts || []).filter((a) => a.bot_id === botId);
+    return mergePortalAccounts(data?.accounts || []).filter((a) => a.bot_id === botId);
+  }, [data, botId, isLive]);
   const logic =
     (data?.manifest || []).find((m) => m.bot_id === botId && !isHiddenPortalId(m.bot_id))
       ?.logic || "";
-  const pointsFor = (a) => resolveEquityPoints(a, history);
+  const pointsFor = (a) =>
+    isLive ? resolveLiveEquityPoints(a, history) : resolveEquityPoints(a, history);
 
-  if (isHiddenPortalId(botId) || (!accounts.length && !isKnownPortalBot(botId))) {
-    return <StrategyNotFound onBack={onBack} />;
+  if (!isLive && (isHiddenPortalId(botId) || (!accounts.length && !isKnownPortalBot(botId)))) {
+    return <StrategyNotFound onBack={onBack} mode={mode} />;
+  }
+  if (isLive && !accounts.length) {
+    return <StrategyNotFound onBack={onBack} mode={mode} />;
   }
 
-  const passport = getPassport(botId, logic);
-  const pageTitle = chipLabel(botId);
+  const passport = isLive ? null : getPassport(botId, logic);
+  const pageTitle = isLive ? accounts[0]?.title || botId : chipLabel(botId);
 
   return (
     <div className="wrap strategy-page">
       <button type="button" className="chip back-chip" onClick={onBack}>
         ← Все стратегии
       </button>
+      <ModeSwitch mode={mode} />
       <header>
         <h1>{pageTitle}</h1>
-        {pageTitle !== botId ? <p className="strategy-title">{botId}</p> : null}
-        {pageTitle === botId && passport.title !== botId ? (
+        {!isLive && pageTitle !== botId ? <p className="strategy-title">{botId}</p> : null}
+        {!isLive && pageTitle === botId && passport.title !== botId ? (
           <p className="strategy-title">{passport.title}</p>
         ) : null}
         <FeedStatus
-          generatedAt={data.generated_at}
+          mode={mode}
+          generatedAt={data?.generated_at}
           fetchedAt={fetchedAt}
           error={loadError}
           onRetry={onRetry}
+          sourceHost={sourceHost}
+          nowMs={nowMs}
         />
       </header>
 
-      <StrategyPassport botId={botId} logic={logic} generatedAt={data.generated_at} />
+      {isLive ? null : (
+        <StrategyPassport botId={botId} logic={logic} generatedAt={data.generated_at} mode="paper" />
+      )}
 
-      {accounts.map((a) => (
-        <AccountBlock
-          key={`${a.bot_id}-${a.account_id}`}
-          a={a}
-          points={pointsFor(a)}
-          history={history}
-          backtests={backtests}
-          generatedAt={data.generated_at}
-        />
-      ))}
+      {accounts.map((a) =>
+        isLive ? (
+          <LiveAccountBlock key={`${a.bot_id}-${a.account_id}`} a={a} points={pointsFor(a)} />
+        ) : (
+          <AccountBlock
+            key={`${a.bot_id}-${a.account_id}`}
+            a={a}
+            points={pointsFor(a)}
+            history={history}
+            backtests={backtests}
+            generatedAt={data.generated_at}
+          />
+        ),
+      )}
     </div>
   );
 }
