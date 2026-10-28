@@ -43,6 +43,14 @@ test("catalog index accepts a unique allowed account", () => {
   assert.equal(liveCatalogByBot("demo_live_bot", TEST_CATALOG).length, 1);
 });
 
+test("production modules do not import tests/fixtures", () => {
+  const root = join(dirname(fileURLToPath(import.meta.url)));
+  for (const f of ["liveCatalog.js", "loadLiveFeed.js", "liveFeedValidate.js", "App.jsx"]) {
+    const text = readFileSync(join(root, f), "utf8");
+    assert.doesNotMatch(text, /tests\/fixtures/, f);
+  }
+});
+
 test("catalog rejects duplicate pair and does not auto-add unknown PAPER robots", () => {
   const dup = [...TEST_CATALOG, { ...TEST_CATALOG[0] }];
   assert.equal(indexLiveCatalog(dup).ok, false);

@@ -1,5 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { lastEquityValue, resolveEquityPoints } from "./equityChartModel.js";
 import { resolveLiveEquityPoints } from "./liveEquity.js";
 import {
@@ -108,4 +111,18 @@ test("document title names the mode and optional strategy", () => {
     portalDocumentTitle("paper", "v6b1"),
     "v6b1 · Боты PAPER | Портфель стратегий",
   );
+});
+
+test("LIVE helpers do not import PAPER stitch/reset and fixtures stay out of src", () => {
+  const root = dirname(fileURLToPath(import.meta.url));
+  const liveEquity = readFileSync(join(root, "liveEquity.js"), "utf8");
+  const loadLive = readFileSync(join(root, "loadLiveFeed.js"), "utf8");
+  const catalog = readFileSync(join(root, "liveCatalog.js"), "utf8");
+  const app = readFileSync(join(root, "App.jsx"), "utf8");
+  assert.doesNotMatch(liveEquity, /stitchEquity|historyReset|mergePortalAccounts/);
+  assert.doesNotMatch(loadLive, /tests\/fixtures|EQUITY_LIVE_DATA_BASE/);
+  assert.doesNotMatch(loadLive, /from "\.\/equityLiveData\.js"/);
+  assert.doesNotMatch(catalog, /from "\.\/strategyMeta\.js"/);
+  assert.doesNotMatch(app, /portfolio_krsk — бумажные боты/);
+  assert.doesNotMatch(app, /bots\.map\(\(id\) =>/);
 });

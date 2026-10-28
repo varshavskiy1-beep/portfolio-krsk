@@ -127,7 +127,8 @@ function TestingGap({ passport }) {
   );
 }
 
-export default function StrategyPassport({ botId, logic, generatedAt }) {
+export default function StrategyPassport({ botId, logic, generatedAt, mode = "paper" }) {
+  if (mode === "live") return null;
   if (isHiddenPortalId(botId)) return null;
   const passport = getPassport(botId, logic);
   if (passport.hidden) return null;

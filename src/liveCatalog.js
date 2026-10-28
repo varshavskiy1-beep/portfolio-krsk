@@ -1,7 +1,7 @@
 /**
  * Согласованный публичный каталог LIVE.
  * Пустой, пока владелец не утвердит роботов и псевдонимы.
- * Не копировать сюда PAPER excluded / PORTAL_SHELLS.
+ * Не копировать сюда бумажные заглушки и скрытые PAPER-исключения.
  */
 
 /** @typedef {{ botId: string, accountId: string, title: string, accountLabel: string, currency: string }} LiveCatalogItem */

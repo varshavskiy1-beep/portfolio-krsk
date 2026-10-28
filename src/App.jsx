@@ -3,6 +3,7 @@ import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import FeedStatus from "./FeedStatus.jsx";
 import MayakDetails, { MayakFromStart } from "./MayakDetails.jsx";
+import ModeSwitch from "./ModeSwitch.jsx";
 import PositionsTable from "./PositionsTable.jsx";
 import RateCycleDetails from "./RateCycleDetails.jsx";
 import StrategyNotFound from "./StrategyNotFound.jsx";
@@ -11,9 +12,35 @@ import { canonicalCurrency } from "./cashCurrency.js";
 import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { lastEquityValue, resolveChartBase, resolveEquityPoints } from "./equityChartModel.js";
 import { LOAD_ERROR_RU, LIVE_FOOTER_LABEL, REFRESH_MS, RETRY_LABEL } from "./feedValidate.js";
+import { liveEquityDisplay, resolveLiveEquityPoints } from "./liveEquity.js";
+import {
+  LIVE_FEED_EMPTY_RU,
+  LIVE_LOAD_ERROR_RU,
+  LIVE_NOT_CONFIGURED_RU,
+  LIVE_NO_TWR_RU,
+  formatLiveDateTime,
+} from "./liveFeedValidate.js";
 import { fetchCabinetSnapshot } from "./loadFeed.js";
+import { loadLiveMode, readLiveDataBase } from "./loadLiveFeed.js";
 import { cardUpdatedLine } from "./mayakCard.js";
-import { isBlockedStrategyRoute, readPortalRoute } from "./portalRoute.js";
+import {
+  createModeLoadGate,
+  emptyFilters,
+  emptyModeBucket,
+  portalDocumentTitle,
+} from "./portalMode.js";
+import {
+  catalogCurrencies,
+  filterPortalAccounts,
+  modeSummaryCounts,
+} from "./portalFilters.js";
+import {
+  canonicalizePortalRoute,
+  homeHash,
+  isBlockedStrategyRoute,
+  readPortalRoute,
+  strategyHash,
+} from "./portalRoute.js";
 import {
   cnyMomDescription,
   cnyMomFromStartPctLine,
@@ -47,31 +74,40 @@ import {
   showsFreeCash,
   underTitleLabel,
 } from "./strategyMeta.js";
-import { displayNote, fromCapitalLine } from "./uiCopy.js";
+import {
+  ALL_CURRENCIES_RU,
+  CURRENCY_LABEL_RU,
+  LIVE_FOOTER_RISK_RU,
+  LIVE_HEADING_RU as LIVE_H,
+  LIVE_MODE_HINT_RU,
+  PAGE_NOT_FOUND_RU,
+  PAPER_HEADING_RU as PAPER_H,
+  PAPER_MODE_HINT_RU,
+  PORTAL_KICKER_RU,
+  PORTAL_TITLE_RU,
+  RESET_FILTERS_RU,
+  SEARCH_EMPTY_RU,
+  SEARCH_LABEL_RU,
+  SEARCH_PLACEHOLDER_RU,
+  displayNote,
+  formatMoneyRu,
+  fromCapitalLine,
+} from "./uiCopy.js";
 
-const fmt = (n, currency) => {
-  if (n == null || Number.isNaN(n)) return "—";
-  try {
-    return new Intl.NumberFormat("ru-RU", {
-      maximumFractionDigits: currency === "RUB" ? 0 : 2,
-    }).format(n);
-  } catch {
-    return String(n);
-  }
-};
+const fmt = (n, currency) => formatMoneyRu(n, currency);
 
 const num = (v) => (v == null || v === "" ? null : Number(v));
 
 function readRoute() {
-  return readPortalRoute();
+  return canonicalizePortalRoute(readPortalRoute(), window.history, window.location);
 }
 
-function goStrategy(botId) {
-  window.location.hash = `#/s/${encodeURIComponent(botId)}`;
+function goStrategy(mode, botId) {
+  window.location.hash = strategyHash(mode, botId);
 }
 
-function goHome() {
-  window.location.hash = "";
+function goHome(mode) {
+  window.location.hash = homeHash(mode);
 }
 
 function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
@@ -116,10 +152,10 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
   return (
     <article className="card">
       <div className="row">
-        <button type="button" className="linkish" onClick={() => onOpenStrategy(a.bot_id)}>
+        <a className="linkish" href={strategyHash("paper", a.bot_id)}>
           <strong>{title}</strong>
-        </button>
-        <AccountBadges account={a} currency={currency} />
+        </a>
+        <AccountBadges account={a} currency={currency} mode="paper" />
       </div>
       {subtitle ? <div className="account-subtitle">{subtitle}</div> : null}
       <MayakDetails account={a} hasData={hasData} />
@@ -180,9 +216,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         >
           В %
         </button>
-        <button type="button" className="chip tiny" onClick={() => onOpenStrategy(a.bot_id)}>
+        <a className="chip tiny" href={strategyHash("paper", a.bot_id)}>
           Открыть →
-        </button>
+        </a>
       </div>
       <EquityChart
         points={historyPoints}
@@ -232,126 +268,368 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
   );
 }
 
-function Home({ data, history, backtests, filter, setFilter, fetchedAt, loadError, onRetry }) {
-  const accounts = useMemo(() => mergePortalAccounts(data.accounts || []), [data]);
+function LiveAccountCard({ a, historyPoints }) {
+  const display = liveEquityDisplay(a);
+  const showChart = display.kind === "value" && historyPoints.length > 0;
+  const updated = a.updated_utc ? formatLiveDateTime(a.updated_utc) : "";
 
-  const bots = useMemo(() => {
-    const ids = [];
-    const seen = new Set();
-    for (const a of accounts) {
-      if (!seen.has(a.bot_id)) {
-        seen.add(a.bot_id);
-        ids.push(a.bot_id);
-      }
-    }
-    return ids;
-  }, [accounts]);
+  return (
+    <article className="card">
+      <div className="row">
+        <a className="linkish" href={strategyHash("live", a.bot_id)}>
+          <strong>{a.title}</strong>
+        </a>
+        <AccountBadges account={a} currency={a.currency} mode="live" />
+      </div>
+      {a.venue ? <div className="updated">{a.venue}</div> : null}
+      <div className="equity">
+        {display.kind === "value"
+          ? `${fmt(display.value, a.currency)} ${a.currency}`
+          : display.text}
+      </div>
+      {updated ? <div className="updated">{updated}</div> : null}
+      <p className="note">{LIVE_NO_TWR_RU}</p>
+      <div className="chart-toolbar">
+        <a className="chip tiny" href={strategyHash("live", a.bot_id)}>
+          Открыть →
+        </a>
+      </div>
+      {showChart ? (
+        <EquityChart points={historyPoints} seed={null} currency={a.currency} mode="money" />
+      ) : (
+        <div className="empty-chart">{display.text || "Нет данных о стоимости счёта"}</div>
+      )}
+    </article>
+  );
+}
 
-  const currencies = useMemo(() => [...new Set(accounts.map((a) => canonicalCurrency(a)))], [accounts]);
+function PortalHeader({ mode }) {
+  return (
+    <header className="portal-header">
+      <h1 className="portal-title">{PORTAL_TITLE_RU}</h1>
+      <p className="portal-kicker">{PORTAL_KICKER_RU}</p>
+      <ModeSwitch mode={mode} />
+    </header>
+  );
+}
 
-  const pointsFor = (a) => resolveEquityPoints(a, history);
+function ModeIntro({ mode }) {
+  const live = mode === "live";
+  return (
+    <div className="mode-intro">
+      <h2 className="mode-heading">{live ? LIVE_H : PAPER_H}</h2>
+      <p className="mode-hint">{live ? LIVE_MODE_HINT_RU : PAPER_MODE_HINT_RU}</p>
+    </div>
+  );
+}
 
-  const visibleAccounts = useMemo(() => {
-    if (filter === "all") return accounts;
-    if (currencies.includes(filter)) {
-      return accounts.filter((a) => canonicalCurrency(a) === filter);
-    }
-    return accounts.filter((a) => a.bot_id === filter);
-  }, [accounts, filter, currencies]);
+function CatalogFilters({ query, currency, currencies, onQuery, onCurrency }) {
+  return (
+    <div className="catalog-filters">
+      <label className="filter-field">
+        <span className="visually-hidden">{SEARCH_LABEL_RU}</span>
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => onQuery(e.target.value)}
+          placeholder={SEARCH_PLACEHOLDER_RU}
+          aria-label={SEARCH_LABEL_RU}
+        />
+      </label>
+      <label className="filter-field filter-currency">
+        <span className="visually-hidden">{CURRENCY_LABEL_RU}</span>
+        <select value={currency} onChange={(e) => onCurrency(e.target.value)} aria-label={CURRENCY_LABEL_RU}>
+          <option value="all">{ALL_CURRENCIES_RU}</option>
+          {currencies.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+      </label>
+    </div>
+  );
+}
 
-  const liveExcluded = portalExcluded(data.excluded || []);
+function formatPaperSnapshot(generatedAt) {
+  if (!generatedAt) return "—";
+  return String(generatedAt);
+}
+
+function Home({
+  mode,
+  data,
+  history,
+  backtests,
+  filters,
+  setFilters,
+  fetchedAt,
+  loadError,
+  onRetry,
+  configured = true,
+  sourceHost = "",
+  nowMs,
+}) {
+  const isLive = mode === "live";
+  const accounts = useMemo(() => {
+    if (isLive) return data?.accounts || [];
+    return mergePortalAccounts(data?.accounts || []);
+  }, [data, isLive]);
+
+  const accessors = useMemo(
+    () => ({
+      titleOf: (a) => (isLive ? a.title || a.bot_id : cardTitle(a)),
+      currencyOf: (a) => (isLive ? a.currency : canonicalCurrency(a)),
+    }),
+    [isLive],
+  );
+
+  const counts = useMemo(() => modeSummaryCounts(accounts), [accounts]);
+  const currencies = useMemo(
+    () => catalogCurrencies(accounts, accessors.currencyOf),
+    [accounts, accessors],
+  );
+  const visibleAccounts = useMemo(
+    () => filterPortalAccounts(accounts, filters, accessors),
+    [accounts, filters, accessors],
+  );
+  const filterActive = Boolean(filters.query.trim()) || (filters.currency && filters.currency !== "all");
+  const snapshotLabel = isLive
+    ? data?.generated_at
+      ? formatLiveDateTime(data.generated_at)
+      : "—"
+    : formatPaperSnapshot(data?.generated_at);
+
+  const pointsFor = (a) =>
+    isLive ? resolveLiveEquityPoints(a, history) : resolveEquityPoints(a, history);
+
+  const liveExcluded = isLive ? [] : portalExcluded(data?.excluded || []);
 
   return (
     <div className="wrap">
-      <header>
-        <h1>portfolio_krsk — бумажные боты</h1>
-        <FeedStatus
-          generatedAt={data.generated_at}
-          fetchedAt={fetchedAt}
-          error={loadError}
-          onRetry={onRetry}
-        />
-      </header>
+      <PortalHeader mode={mode} />
+      <ModeIntro mode={mode} />
+      {isLive && !configured ? (
+        <p className="empty-state">{LIVE_NOT_CONFIGURED_RU}</p>
+      ) : (
+        <>
+      <p className="mode-summary">
+        Стратегий: {counts.bots} · Счетов: {counts.accounts} · Данные на: {snapshotLabel}
+        {filterActive ? ` · Показано ${visibleAccounts.length} из ${counts.accounts} счетов` : ""}
+      </p>
+      <FeedStatus
+        mode={mode}
+        generatedAt={data?.generated_at}
+        fetchedAt={fetchedAt}
+        error={loadError}
+        onRetry={onRetry}
+        sourceHost={sourceHost}
+        nowMs={nowMs}
+      />
+      <CatalogFilters
+        query={filters.query}
+        currency={filters.currency}
+        currencies={currencies}
+        onQuery={(query) => setFilters((f) => ({ ...f, query }))}
+        onCurrency={(currency) => setFilters((f) => ({ ...f, currency }))}
+      />
+        </>
+      )}
 
-      <div className="chips">
-        <button className={`chip ${filter === "all" ? "active" : ""}`} onClick={() => setFilter("all")}>
-          Все
-        </button>
-        {bots.map((id) => (
-          <button
-            key={id}
-            className={`chip ${filter === id ? "active" : ""}`}
-            onClick={() => goStrategy(id)}
-            title="Открыть страницу стратегии"
-          >
-            {chipLabel(id)}
+      {isLive && !configured ? null : isLive && configured && !loadError && accounts.length === 0 ? (
+        <p className="empty-state">{LIVE_FEED_EMPTY_RU}</p>
+      ) : visibleAccounts.length === 0 ? (
+        <div className="empty-state">
+          <p>{SEARCH_EMPTY_RU}</p>
+          <button type="button" className="chip" onClick={() => setFilters(emptyFilters())}>
+            {RESET_FILTERS_RU}
           </button>
-        ))}
-        {currencies.map((c) => (
-          <button key={c} className={`chip ${filter === c ? "active" : ""}`} onClick={() => setFilter(c)}>
-            {c}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid">
-        {visibleAccounts.map((a) => (
-          <AccountCard
-            key={`${a.bot_id}-${a.account_id}`}
-            a={a}
-            historyPoints={pointsFor(a)}
-            backtests={backtests}
-            onOpenStrategy={goStrategy}
-          />
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="grid">
+          {visibleAccounts.map((a) =>
+            isLive ? (
+              <LiveAccountCard
+                key={`${a.bot_id}-${a.account_id}`}
+                a={a}
+                historyPoints={pointsFor(a)}
+              />
+            ) : (
+              <AccountCard
+                key={`${a.bot_id}-${a.account_id}`}
+                a={a}
+                historyPoints={pointsFor(a)}
+                backtests={backtests}
+                onOpenStrategy={(id) => goStrategy("paper", id)}
+              />
+            ),
+          )}
+        </div>
+      )}
 
       <footer className="foot">
-        {LIVE_FOOTER_LABEL}: {liveExcluded.map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
-        счетов, не торговые рекомендации. Нажмите карточку — откроется подробная страница стратегии.
+        {isLive ? (
+          LIVE_FOOTER_RISK_RU
+        ) : (
+          <>
+            {LIVE_FOOTER_LABEL}: {liveExcluded.map((e) => e.id).join(", ") || "—"}. Это кабинет бумажных
+            счетов, не торговые рекомендации. Нажмите карточку — откроется подробная страница стратегии.
+          </>
+        )}
       </footer>
     </div>
   );
 }
 
+function PageNotFound({ mode }) {
+  return (
+    <div className="wrap">
+      <PortalHeader mode={mode} />
+      <p>{PAGE_NOT_FOUND_RU}</p>
+      <a className="chip" href={homeHash(mode)}>
+        На главную
+      </a>
+    </div>
+  );
+}
+
 export default function App() {
-  const [data, setData] = useState(null);
-  const [history, setHistory] = useState(null);
-  const [backtests, setBacktests] = useState(null);
-  const [err, setErr] = useState(false);
-  const [fetchedAt, setFetchedAt] = useState(null);
-  const [filter, setFilter] = useState("all");
+  const [paper, setPaper] = useState(() => emptyModeBucket("paper"));
+  const [live, setLive] = useState(() => emptyModeBucket("live"));
+  const [liveMeta, setLiveMeta] = useState(() => ({
+    configured: readLiveDataBase().configured,
+    host: "",
+  }));
+  const [filters, setFilters] = useState(emptyFilters);
   const [route, setRoute] = useState(readRoute);
+  const [nowMs, setNowMs] = useState(() => Date.now());
   const loadRef = useRef(() => {});
+  const modeRef = useRef(route.mode);
+  const gateRef = useRef(createModeLoadGate());
+
+  useEffect(() => {
+    if (modeRef.current !== route.mode) {
+      setFilters(emptyFilters());
+      modeRef.current = route.mode;
+    }
+  }, [route.mode]);
+
+  useEffect(() => {
+    const onHash = () => setRoute(readRoute());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => setNowMs(Date.now()), 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    if (route.name !== "strategy") {
+      document.title = portalDocumentTitle(route.mode);
+      return;
+    }
+    if (route.mode === "live") {
+      const acc = (live.data?.accounts || []).find((a) => a.bot_id === route.botId);
+      document.title = portalDocumentTitle("live", acc?.title || route.botId);
+      return;
+    }
+    document.title = portalDocumentTitle("paper", chipLabel(route.botId));
+  }, [route, live.data]);
 
   useEffect(() => {
     const base = import.meta.env.BASE_URL;
     let cancelled = false;
     let ctrl = null;
+    const mode = route.mode;
+
     const load = () => {
       ctrl?.abort();
       ctrl = new AbortController();
       const { signal } = ctrl;
-      fetchCabinetSnapshot(base, { signal })
+      const ticket = gateRef.current.begin(mode);
+
+      if (mode === "paper") {
+        setPaper((s) => ({ ...s, loading: true }));
+        fetchCabinetSnapshot(base, { signal })
+          .then((snap) => {
+            if (cancelled || !ticket.accept("paper", { aborted: signal.aborted })) return;
+            if (snap.ok) {
+              setPaper({
+                mode: "paper",
+                data: snap.latest,
+                history: snap.history,
+                backtests: snap.backtests,
+                fetchedAt: snap.fetchedAt,
+                error: false,
+                errorReason: null,
+                loading: false,
+              });
+              return;
+            }
+            console.warn("snapshot rejected", snap.reason);
+            setPaper((s) => ({ ...s, error: true, errorReason: snap.reason, loading: false }));
+          })
+          .catch((e) => {
+            if (cancelled || e?.name === "AbortError" || !ticket.accept("paper", { aborted: true })) {
+              return;
+            }
+            console.warn("snapshot fetch failed", e);
+            setPaper((s) => ({ ...s, error: true, errorReason: "fetch", loading: false }));
+          });
+        return;
+      }
+
+      const cfg = readLiveDataBase();
+      setLiveMeta({ configured: cfg.configured, host: cfg.host || "" });
+      if (!cfg.configured) {
+        setLive((s) => ({ ...s, loading: false, error: false, errorReason: null }));
+        return;
+      }
+      if (cfg.ok === false) {
+        setLive((s) => ({
+          ...s,
+          loading: false,
+          error: true,
+          errorReason: cfg.reason,
+        }));
+        return;
+      }
+      setLive((s) => ({ ...s, loading: true }));
+      loadLiveMode(cfg.base, { signal })
         .then((snap) => {
-          if (cancelled || signal.aborted) return;
-          if (snap.ok) {
-            setData(snap.latest);
-            setHistory(snap.history);
-            setBacktests(snap.backtests);
-            setFetchedAt(snap.fetchedAt);
-            setErr(false);
+          if (cancelled || !ticket.accept("live", { aborted: signal.aborted })) return;
+          if (snap.ok && snap.configured) {
+            setLive({
+              mode: "live",
+              data: snap.latest,
+              history: snap.history,
+              backtests: undefined,
+              fetchedAt: snap.fetchedAt,
+              error: false,
+              errorReason: null,
+              loading: false,
+            });
+            setLiveMeta({ configured: true, host: snap.host || cfg.host || "" });
             return;
           }
-          console.warn("snapshot rejected", snap.reason);
-          setErr(true);
+          if (snap.ok && !snap.configured) {
+            setLive((s) => ({ ...s, loading: false, error: false }));
+            return;
+          }
+          console.warn("live snapshot rejected", snap.reason);
+          setLive((s) => ({ ...s, error: true, errorReason: snap.reason, loading: false }));
         })
         .catch((e) => {
-          if (cancelled || e?.name === "AbortError") return;
-          console.warn("snapshot fetch failed", e);
-          setErr(true);
+          if (cancelled || e?.name === "AbortError" || !ticket.accept("live", { aborted: true })) {
+            return;
+          }
+          console.warn("live snapshot fetch failed", e);
+          setLive((s) => ({ ...s, error: true, errorReason: "fetch", loading: false }));
         });
     };
+
     loadRef.current = load;
     load();
     const id = window.setInterval(load, REFRESH_MS);
@@ -362,28 +640,52 @@ export default function App() {
     return () => {
       cancelled = true;
       ctrl?.abort();
+      gateRef.current.invalidate();
       window.clearInterval(id);
       document.removeEventListener("visibilitychange", onVis);
     };
-  }, []);
+  }, [route.mode]);
 
   const onRetry = () => loadRef.current();
+  const mode = route.mode === "live" ? "live" : "paper";
+  const bucket = mode === "live" ? live : paper;
 
-  useEffect(() => {
-    const onHash = () => setRoute(readRoute());
-    window.addEventListener("hashchange", onHash);
-    return () => window.removeEventListener("hashchange", onHash);
-  }, []);
-
-  if (isBlockedStrategyRoute(route)) {
-    return <StrategyNotFound onBack={goHome} />;
+  if (route.name === "notFound") {
+    return <PageNotFound mode={mode} />;
   }
-  if (!data) {
+  if (isBlockedStrategyRoute(route)) {
+    return <StrategyNotFound onBack={() => goHome("paper")} mode="paper" />;
+  }
+
+  if (mode === "live" && !liveMeta.configured) {
+    if (route.name === "strategy") {
+      return <StrategyNotFound onBack={() => goHome("live")} mode="live" />;
+    }
+    return (
+      <Home
+        mode="live"
+        data={null}
+        history={null}
+        backtests={null}
+        filters={filters}
+        setFilters={setFilters}
+        fetchedAt={null}
+        loadError={false}
+        onRetry={onRetry}
+        configured={false}
+        nowMs={nowMs}
+      />
+    );
+  }
+
+  if (!bucket.data) {
     return (
       <div className="wrap">
-        {err ? (
+        <PortalHeader mode={mode} />
+        <ModeIntro mode={mode} />
+        {bucket.error ? (
           <>
-            <p>{LOAD_ERROR_RU}</p>
+            <p>{mode === "live" ? LIVE_LOAD_ERROR_RU : LOAD_ERROR_RU}</p>
             <button type="button" className="chip" onClick={onRetry}>
               {RETRY_LABEL}
             </button>
@@ -399,27 +701,34 @@ export default function App() {
     return (
       <StrategyPage
         botId={route.botId}
-        data={data}
-        history={history}
-        backtests={backtests}
-        fetchedAt={fetchedAt}
-        loadError={err}
+        mode={mode}
+        data={bucket.data}
+        history={bucket.history}
+        backtests={bucket.backtests}
+        fetchedAt={bucket.fetchedAt}
+        loadError={bucket.error}
         onRetry={onRetry}
-        onBack={goHome}
+        onBack={() => goHome(mode)}
+        sourceHost={liveMeta.host}
+        nowMs={nowMs}
       />
     );
   }
 
   return (
     <Home
-      data={data}
-      history={history}
-      backtests={backtests}
-      filter={filter}
-      setFilter={setFilter}
-      fetchedAt={fetchedAt}
-      loadError={err}
+      mode={mode}
+      data={bucket.data}
+      history={bucket.history}
+      backtests={bucket.backtests}
+      filters={filters}
+      setFilters={setFilters}
+      fetchedAt={bucket.fetchedAt}
+      loadError={bucket.error}
       onRetry={onRetry}
+      configured={mode === "live" ? liveMeta.configured : true}
+      sourceHost={liveMeta.host}
+      nowMs={nowMs}
     />
   );
 }
