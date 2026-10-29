@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-29T07:40:49Z",
+  "generated_at": "2026-10-29T07:55:56Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24788.585662160014",
-      "updated_utc": "2026-10-29T07:40:33.246711Z",
+      "updated_utc": "2026-10-29T07:55:46.425326Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1877455.9122149",
-      "updated_utc": "2026-10-29T07:40:33.251160Z",
+      "updated_utc": "2026-10-29T07:55:46.430114Z",
       "positions": [
         {
           "position_id": "p_15759e196480",
@@ -81,7 +81,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1451048.3882247205",
-      "updated_utc": "2026-10-29T07:40:33.254689Z",
+      "updated_utc": "2026-10-29T07:55:46.433162Z",
       "positions": [
         {
           "position_id": "p_1e29ebea5bc7",
@@ -90,6 +90,14 @@
           "qty": "30.0",
           "avg_px": "11849.738",
           "stop_px": null
+        },
+        {
+          "position_id": "p_7fa48b3bfc22",
+          "symbol": "SiZ6",
+          "side": "long",
+          "qty": "1.0",
+          "avg_px": "81375.5372",
+          "stop_px": "81338.58"
         }
       ]
     },
@@ -98,17 +106,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "12644.864551894007",
-      "updated_utc": "2026-10-29T07:40:33.258920Z",
+      "equity": "12640.193663984006",
+      "updated_utc": "2026-10-29T07:55:46.437512Z",
       "positions": [
-        {
-          "position_id": "p_6e3152a9ee10",
-          "symbol": "BTC-USDT",
-          "side": "long",
-          "qty": "0.039",
-          "avg_px": "79844.34612",
-          "stop_px": null
-        },
         {
           "position_id": "p_87d5f8f291d3",
           "symbol": "SOL-USDT",
@@ -125,7 +125,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-29T07:40:33.262528Z",
+      "updated_utc": "2026-10-29T07:55:46.441221Z",
       "positions": []
     },
     {
