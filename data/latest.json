@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-29T03:42:59Z",
+  "generated_at": "2026-10-29T04:00:10Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24788.585662160014",
-      "updated_utc": "2026-10-29T03:42:57.010794Z",
+      "updated_utc": "2026-10-29T04:00:07.196653Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1877455.9122149",
-      "updated_utc": "2026-10-29T03:42:57.014608Z",
+      "updated_utc": "2026-10-29T04:00:07.199630Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1452129.2216480004",
-      "updated_utc": "2026-10-29T03:42:57.018628Z",
+      "updated_utc": "2026-10-29T04:00:07.202549Z",
       "positions": []
     },
     {
@@ -73,8 +73,17 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12644.864551894007",
-      "updated_utc": "2026-10-29T03:42:57.021541Z",
-      "positions": []
+      "updated_utc": "2026-10-29T04:00:07.205368Z",
+      "positions": [
+        {
+          "position_id": "p_6e3152a9ee10",
+          "symbol": "BTC-USDT",
+          "side": "long",
+          "qty": "0.039",
+          "avg_px": "79844.34612",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -82,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-29T03:42:57.024166Z",
+      "updated_utc": "2026-10-29T04:00:07.209456Z",
       "positions": []
     },
     {
@@ -472,75 +481,75 @@
       "account_id": "oac_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "9608.59",
+      "equity": "9635.17",
       "cash": "0.0",
-      "boxx_usd": "4769.51",
-      "updated_utc": "2026-10-28T03:45:12Z",
+      "boxx_usd": "4769.11",
+      "updated_utc": "2026-10-29T03:45:13Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
           "qty": "1.4050242041784535",
-          "value_usd": "487.68"
+          "value_usd": "483.09"
         },
         {
           "symbol": "AMD",
           "side": "long",
           "qty": "0.9009310740243197",
-          "value_usd": "504.76"
+          "value_usd": "521.13"
         },
         {
           "symbol": "AMZN",
           "side": "long",
           "qty": "1.8082078526613705",
-          "value_usd": "457.66"
+          "value_usd": "460.37"
         },
         {
           "symbol": "INTC",
           "side": "long",
           "qty": "5.262994464710206",
-          "value_usd": "493.35"
+          "value_usd": "502.77"
         },
         {
           "symbol": "META",
           "side": "long",
           "qty": "0.6870867059056983",
-          "value_usd": "426.12"
+          "value_usd": "420.83"
         },
         {
           "symbol": "MSFT",
           "side": "long",
           "qty": "0.8943670833461206",
-          "value_usd": "475.2"
+          "value_usd": "474.92"
         },
         {
           "symbol": "MU",
           "side": "long",
           "qty": "0.5400919579852649",
-          "value_usd": "501.62"
+          "value_usd": "531.03"
         },
         {
           "symbol": "NVDA",
           "side": "long",
           "qty": "2.2109061713894356",
-          "value_usd": "481.84"
+          "value_usd": "476.18"
         },
         {
           "symbol": "SPCX",
           "side": "long",
           "qty": "3.2668229556845554",
-          "value_usd": "485.38"
+          "value_usd": "474.44"
         },
         {
           "symbol": "TSLA",
           "side": "long",
           "qty": "1.2895957303254117",
-          "value_usd": "525.46"
+          "value_usd": "521.28"
         }
       ],
       "note": "Бумага. «Ядро внимания», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-27",
-      "defence": true
+      "as_of": "2026-10-28",
+      "defence": false
     },
     {
       "bot_id": "desyatka_earn_paper",
