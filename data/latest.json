@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-29T16:02:31Z",
+  "generated_at": "2026-10-29T16:15:36Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -25,11 +25,19 @@
       "bot_id": "v6b1",
       "account_id": "v6b1",
       "currency": "USDT",
-      "equity": "10295.686865640",
-      "cash": "10295.686865640",
+      "equity": "10295.11355304000",
+      "cash": "10295.11355304000",
       "seed": "10000",
-      "updated_utc": "2026-10-29T12:02:53Z",
-      "positions": [],
+      "updated_utc": "2026-10-29T16:04:00Z",
+      "positions": [
+        {
+          "symbol": "PEPE-USDT-SWAP",
+          "side": "long",
+          "qty": "17.4",
+          "avg_px": "0.0000054915",
+          "margin": "955.52100000000"
+        }
+      ],
       "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
     },
     {
@@ -38,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24788.585662160014",
-      "updated_utc": "2026-10-29T16:02:24.225135Z",
+      "updated_utc": "2026-10-29T16:15:33.147061Z",
       "positions": [
         {
           "position_id": "p_c95fa45ea441",
@@ -64,7 +72,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1858066.0331483497",
-      "updated_utc": "2026-10-29T16:02:24.228863Z",
+      "updated_utc": "2026-10-29T16:15:33.150981Z",
       "positions": [
         {
           "position_id": "p_5004f8e4750a",
@@ -90,7 +98,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1449300.0915267204",
-      "updated_utc": "2026-10-29T16:02:24.232530Z",
+      "updated_utc": "2026-10-29T16:15:33.153819Z",
       "positions": [
         {
           "position_id": "p_e33f761720c2",
@@ -116,7 +124,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12643.196626240007",
-      "updated_utc": "2026-10-29T16:02:24.236341Z",
+      "updated_utc": "2026-10-29T16:15:33.156576Z",
       "positions": []
     },
     {
@@ -125,7 +133,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14871.182193031995",
-      "updated_utc": "2026-10-29T16:02:24.240252Z",
+      "updated_utc": "2026-10-29T16:15:33.159519Z",
       "positions": []
     },
     {
@@ -600,7 +608,7 @@
       "seed": "10000",
       "equity": "9572.4824",
       "cash": "2947.399133832372",
-      "updated_utc": "2026-10-29T16:00:01Z",
+      "updated_utc": "2026-10-29T16:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
