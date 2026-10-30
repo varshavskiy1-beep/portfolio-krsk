@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-30T10:31:55Z",
+  "generated_at": "2026-10-30T10:49:02Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24849.028832020016",
-      "updated_utc": "2026-10-30T10:31:49.460562Z",
+      "updated_utc": "2026-10-30T10:48:50.735316Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1856175.45005997",
-      "updated_utc": "2026-10-30T10:31:49.464097Z",
+      "updated_utc": "2026-10-30T10:48:50.738146Z",
       "positions": [
         {
           "position_id": "p_f736f76bdd61",
@@ -73,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1452359.8710545604",
-      "updated_utc": "2026-10-30T10:31:49.469190Z",
+      "updated_utc": "2026-10-30T10:48:50.741214Z",
       "positions": [
         {
           "position_id": "p_687012e49478",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12502.120045080008",
-      "updated_utc": "2026-10-30T10:31:49.472202Z",
+      "updated_utc": "2026-10-30T10:48:50.743776Z",
       "positions": []
     },
     {
@@ -99,8 +99,8 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "14715.557481632995",
-      "updated_utc": "2026-10-30T10:31:49.475346Z",
+      "equity": "14726.406598670996",
+      "updated_utc": "2026-10-30T10:48:50.746644Z",
       "positions": [
         {
           "position_id": "p_89ebbd5e8a95",
@@ -111,11 +111,11 @@
           "stop_px": null
         },
         {
-          "position_id": "p_fcb5f87da9bd",
+          "position_id": "p_ae7fb03d4c2e",
           "symbol": "SOL-USDT-SWAP",
           "side": "long",
-          "qty": "38.066",
-          "avg_px": "96.678995",
+          "qty": "37.956",
+          "avg_px": "97.019097",
           "stop_px": null
         }
       ]
