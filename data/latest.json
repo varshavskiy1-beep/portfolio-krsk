@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-30T03:32:47Z",
+  "generated_at": "2026-10-30T03:48:56Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24849.028832020016",
-      "updated_utc": "2026-10-30T03:32:45.393041Z",
+      "updated_utc": "2026-10-30T03:48:48.468777Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1856175.45005997",
-      "updated_utc": "2026-10-30T03:32:45.396376Z",
+      "updated_utc": "2026-10-30T03:48:48.472517Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1448517.8175123204",
-      "updated_utc": "2026-10-30T03:32:45.399237Z",
+      "updated_utc": "2026-10-30T03:48:48.475333Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12548.925622740007",
-      "updated_utc": "2026-10-30T03:32:45.402011Z",
+      "updated_utc": "2026-10-30T03:48:48.478053Z",
       "positions": []
     },
     {
@@ -74,7 +74,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14715.932336411995",
-      "updated_utc": "2026-10-30T03:32:45.404765Z",
+      "updated_utc": "2026-10-30T03:48:48.480632Z",
       "positions": [
         {
           "position_id": "p_89ebbd5e8a95",
@@ -483,74 +483,74 @@
       "account_id": "oac_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "9635.17",
+      "equity": "9531.86",
       "cash": "0.0",
-      "boxx_usd": "4769.11",
-      "updated_utc": "2026-10-29T03:45:13Z",
+      "boxx_usd": "0.0",
+      "updated_utc": "2026-10-30T03:45:12Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
-          "qty": "1.4050242041784535",
-          "value_usd": "483.09"
+          "qty": "2.755400255221878",
+          "value_usd": "961.39"
         },
         {
           "symbol": "AMD",
           "side": "long",
-          "qty": "0.9009310740243197",
-          "value_usd": "521.13"
+          "qty": "1.7054184855565258",
+          "value_usd": "965.98"
         },
         {
           "symbol": "AMZN",
           "side": "long",
-          "qty": "1.8082078526613705",
-          "value_usd": "460.37"
+          "qty": "3.882631130017054",
+          "value_usd": "946.55"
         },
         {
           "symbol": "INTC",
           "side": "long",
-          "qty": "5.262994464710206",
-          "value_usd": "502.77"
+          "qty": "10.313862578030847",
+          "value_usd": "949.6"
         },
         {
           "symbol": "META",
           "side": "long",
-          "qty": "0.6870867059056983",
-          "value_usd": "420.83"
+          "qty": "1.5416854855835074",
+          "value_usd": "962.81"
         },
         {
           "symbol": "MSFT",
           "side": "long",
-          "qty": "0.8943670833461206",
-          "value_usd": "474.92"
+          "qty": "1.7749632756109803",
+          "value_usd": "940.98"
         },
         {
           "symbol": "MU",
           "side": "long",
-          "qty": "0.5400919579852649",
-          "value_usd": "531.03"
+          "qty": "0.9906915403275837",
+          "value_usd": "925.57"
         },
         {
           "symbol": "NVDA",
           "side": "long",
-          "qty": "2.2109061713894356",
-          "value_usd": "476.18"
+          "qty": "4.47311431460724",
+          "value_usd": "955.73"
         },
         {
           "symbol": "SPCX",
           "side": "long",
-          "qty": "3.2668229556845554",
-          "value_usd": "474.44"
+          "qty": "6.740074882982432",
+          "value_usd": "969.83"
         },
         {
           "symbol": "TSLA",
           "side": "long",
-          "qty": "1.2895957303254117",
-          "value_usd": "521.28"
+          "qty": "2.3640520746097042",
+          "value_usd": "953.42"
         }
       ],
       "note": "Бумага. «Ядро внимания», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-28",
+      "as_of": "2026-10-29",
       "defence": false
     },
     {
