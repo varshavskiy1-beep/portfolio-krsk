@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-10-31T00:48:56Z",
+  "generated_at": "2026-10-31T01:01:04Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24849.028832020016",
-      "updated_utc": "2026-10-31T00:48:51.871054Z",
+      "updated_utc": "2026-10-31T01:00:56.606521Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1856099.0840059398",
-      "updated_utc": "2026-10-31T00:48:51.874311Z",
+      "updated_utc": "2026-10-31T01:00:56.609548Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1447722.8991785604",
-      "updated_utc": "2026-10-31T00:48:51.877845Z",
+      "updated_utc": "2026-10-31T01:00:56.612510Z",
       "positions": []
     },
     {
@@ -72,17 +72,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "12489.224956030008",
-      "updated_utc": "2026-10-31T00:48:51.880818Z",
+      "equity": "12538.784268354008",
+      "updated_utc": "2026-10-31T01:00:56.615538Z",
       "positions": [
-        {
-          "position_id": "p_e33001cdb740",
-          "symbol": "SOL-USDT",
-          "side": "long",
-          "qty": "32.843",
-          "avg_px": "95.088518",
-          "stop_px": null
-        },
         {
           "position_id": "p_f696c51d4b5b",
           "symbol": "BTC-USDT",
@@ -99,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14625.172116557995",
-      "updated_utc": "2026-10-31T00:48:51.886570Z",
+      "updated_utc": "2026-10-31T01:00:56.618046Z",
       "positions": [
         {
           "position_id": "p_4e77fbdeb204",
@@ -600,7 +592,7 @@
       "seed": "10000",
       "equity": "9163.6242",
       "cash": "3050.937770716475",
-      "updated_utc": "2026-10-31T00:40:02Z",
+      "updated_utc": "2026-10-31T01:00:00Z",
       "positions": [
         {
           "symbol": "AMD",
