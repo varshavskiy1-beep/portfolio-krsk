@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-01T09:10:35Z",
+  "generated_at": "2026-11-01T09:27:42Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24849.028832020016",
-      "updated_utc": "2026-11-01T09:10:29.749371Z",
+      "updated_utc": "2026-11-01T09:27:39.617116Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1856099.0840059398",
-      "updated_utc": "2026-11-01T09:10:29.753054Z",
+      "updated_utc": "2026-11-01T09:27:39.621183Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1447722.8991785604",
-      "updated_utc": "2026-11-01T09:10:29.756318Z",
+      "updated_utc": "2026-11-01T09:27:39.624776Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12400.056922784006",
-      "updated_utc": "2026-11-01T09:10:29.759402Z",
+      "updated_utc": "2026-11-01T09:27:39.629962Z",
       "positions": [
         {
           "position_id": "p_8512154795e5",
@@ -88,6 +88,14 @@
           "side": "short",
           "qty": "0.039",
           "avg_px": "77877.12985",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_30286189fde3",
+          "symbol": "SOL-USDT",
+          "side": "short",
+          "qty": "32.381",
+          "avg_px": "95.711278",
           "stop_px": null
         }
       ]
@@ -98,7 +106,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14627.276937299996",
-      "updated_utc": "2026-11-01T09:10:29.762500Z",
+      "updated_utc": "2026-11-01T09:27:39.634706Z",
       "positions": []
     },
     {
@@ -2573,7 +2581,7 @@
       "seed": "300000",
       "equity": "332763.64109224005",
       "cash": "31102.67459224008",
-      "updated_utc": "2026-11-01T08:21:02Z",
+      "updated_utc": "2026-11-01T09:21:03Z",
       "positions": [
         {
           "symbol": "LQDT",
