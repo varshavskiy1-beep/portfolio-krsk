@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-01T00:18:37Z",
+  "generated_at": "2026-11-01T00:26:40Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24849.028832020016",
-      "updated_utc": "2026-11-01T00:18:35.435923Z",
+      "updated_utc": "2026-11-01T00:26:34.561213Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1856099.0840059398",
-      "updated_utc": "2026-11-01T00:18:35.441397Z",
+      "updated_utc": "2026-11-01T00:26:34.563783Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1447722.8991785604",
-      "updated_utc": "2026-11-01T00:18:35.446793Z",
+      "updated_utc": "2026-11-01T00:26:34.566004Z",
       "positions": []
     },
     {
@@ -73,7 +73,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12470.026363110006",
-      "updated_utc": "2026-11-01T00:18:35.451474Z",
+      "updated_utc": "2026-11-01T00:26:34.568289Z",
       "positions": [
         {
           "position_id": "p_e3d99553616c",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14627.276937299996",
-      "updated_utc": "2026-11-01T00:18:35.455439Z",
+      "updated_utc": "2026-11-01T00:26:34.570552Z",
       "positions": []
     },
     {
@@ -2506,7 +2506,7 @@
       "seed": "300000",
       "equity": "332749.4365922401",
       "cash": "31102.67459224008",
-      "updated_utc": "2026-10-31T23:21:02Z",
+      "updated_utc": "2026-11-01T00:21:03Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -2517,12 +2517,12 @@
       ],
       "history": [
         {
-          "t": "2026-10-31",
+          "t": "2026-11-01",
           "equity": "332749.4365922401"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
-      "as_of": "2026-10-31"
+      "as_of": "2026-11-01"
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
