@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-03T12:10:41Z",
+  "generated_at": "2026-11-03T12:29:48Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24801.74318628002",
-      "updated_utc": "2026-11-03T12:10:12.515188Z",
+      "updated_utc": "2026-11-03T12:29:39.426566Z",
       "positions": []
     },
     {
@@ -46,17 +46,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1857038.2791055301",
-      "updated_utc": "2026-11-03T12:10:12.518326Z",
+      "equity": "1858460.42213272",
+      "updated_utc": "2026-11-03T12:29:39.431166Z",
       "positions": [
-        {
-          "position_id": "p_da7b079733c4",
-          "symbol": "SBER",
-          "side": "short",
-          "qty": "1587.0",
-          "avg_px": "292.53366",
-          "stop_px": null
-        },
         {
           "position_id": "p_c192b0845b5b",
           "symbol": "LKOH",
@@ -73,7 +65,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1449764.2801311205",
-      "updated_utc": "2026-11-03T12:10:12.521550Z",
+      "updated_utc": "2026-11-03T12:29:39.434609Z",
       "positions": [
         {
           "position_id": "p_01c3242bc7c3",
@@ -98,17 +90,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "12222.203660615001",
-      "updated_utc": "2026-11-03T12:10:12.523977Z",
+      "equity": "12253.987884559001",
+      "updated_utc": "2026-11-03T12:29:39.437789Z",
       "positions": [
-        {
-          "position_id": "p_4a53be24d755",
-          "symbol": "SOL-USDT",
-          "side": "long",
-          "qty": "33.232",
-          "avg_px": "91.977585",
-          "stop_px": null
-        },
         {
           "position_id": "p_95f5268a2ba9",
           "symbol": "BTC-USDT",
@@ -125,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14627.276937299996",
-      "updated_utc": "2026-11-03T12:10:12.527320Z",
+      "updated_utc": "2026-11-03T12:29:39.444012Z",
       "positions": []
     },
     {
@@ -2821,9 +2805,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "327269.07589024014",
-      "cash": "25395.04189024015",
-      "updated_utc": "2026-11-03T11:21:02Z",
+      "equity": "327731.07589024014",
+      "cash": "25857.04189024013",
+      "updated_utc": "2026-11-03T12:21:05Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -2840,7 +2824,7 @@
       "history": [
         {
           "t": "2026-11-03",
-          "equity": "327269.07589024014"
+          "equity": "327731.07589024014"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
