@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-03T18:33:19Z",
+  "generated_at": "2026-11-03T18:43:23Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -37,18 +37,9 @@
       "account_id": "paper_us_eq",
       "venue": "US_EQ",
       "currency": "USD",
-      "equity": "24801.74318628002",
-      "updated_utc": "2026-11-03T18:33:18.245403Z",
-      "positions": [
-        {
-          "position_id": "p_16cb72b8632f",
-          "symbol": "AMZN",
-          "side": "long",
-          "qty": "25.0",
-          "avg_px": "247.079406",
-          "stop_px": null
-        }
-      ]
+      "equity": "24898.88247579002",
+      "updated_utc": "2026-11-03T18:43:20.114154Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -56,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1869376.03135568",
-      "updated_utc": "2026-11-03T18:33:18.249142Z",
+      "updated_utc": "2026-11-03T18:43:20.118308Z",
       "positions": []
     },
     {
@@ -65,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1448130.7790489604",
-      "updated_utc": "2026-11-03T18:33:18.252448Z",
+      "updated_utc": "2026-11-03T18:43:20.121528Z",
       "positions": [
         {
           "position_id": "p_6625e74da631",
@@ -91,7 +82,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12267.364398914002",
-      "updated_utc": "2026-11-03T18:33:18.255865Z",
+      "updated_utc": "2026-11-03T18:43:20.124756Z",
       "positions": []
     },
     {
@@ -100,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14627.276937299996",
-      "updated_utc": "2026-11-03T18:33:18.258917Z",
+      "updated_utc": "2026-11-03T18:43:20.128630Z",
       "positions": []
     },
     {
@@ -621,7 +612,7 @@
       "seed": "10000",
       "equity": "8954.7502",
       "cash": "1941.3931257024",
-      "updated_utc": "2026-11-03T18:30:02Z",
+      "updated_utc": "2026-11-03T18:40:00Z",
       "positions": [
         {
           "symbol": "AMZN",
