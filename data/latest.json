@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-03T04:13:15Z",
+  "generated_at": "2026-11-03T04:25:21Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24801.74318628002",
-      "updated_utc": "2026-11-03T04:13:11.399269Z",
+      "updated_utc": "2026-11-03T04:25:18.060376Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1862841.86547893",
-      "updated_utc": "2026-11-03T04:13:11.403322Z",
+      "updated_utc": "2026-11-03T04:25:18.062730Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1449912.2786849604",
-      "updated_utc": "2026-11-03T04:13:11.406540Z",
+      "updated_utc": "2026-11-03T04:25:18.067456Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12230.607841653002",
-      "updated_utc": "2026-11-03T04:13:11.409676Z",
+      "updated_utc": "2026-11-03T04:25:18.070764Z",
       "positions": [
         {
           "position_id": "p_8535b2025f15",
@@ -73,6 +73,14 @@
           "side": "long",
           "qty": "1.358",
           "avg_px": "2251.07512",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_9aed5c11d263",
+          "symbol": "BTC-USDT",
+          "side": "long",
+          "qty": "0.039",
+          "avg_px": "76944.17633",
           "stop_px": null
         }
       ]
@@ -83,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14627.276937299996",
-      "updated_utc": "2026-11-03T04:13:11.414228Z",
+      "updated_utc": "2026-11-03T04:25:18.072933Z",
       "positions": []
     },
     {
@@ -519,75 +527,75 @@
       "account_id": "oac_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "8941.49",
+      "equity": "8854.01",
       "cash": "0.0",
-      "boxx_usd": "0.0",
-      "updated_utc": "2026-10-31T03:45:13Z",
+      "boxx_usd": "4494.11",
+      "updated_utc": "2026-11-03T04:15:34Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
-          "qty": "2.755400255221878",
-          "value_usd": "949.59"
+          "qty": "1.313399487318194",
+          "value_usd": "444.35"
         },
         {
           "symbol": "AMD",
           "side": "long",
-          "qty": "1.7054184855565258",
-          "value_usd": "860.9"
+          "qty": "0.8812489034589258",
+          "value_usd": "411.4"
         },
         {
           "symbol": "AMZN",
           "side": "long",
-          "qty": "3.882631130017054",
-          "value_usd": "933.19"
+          "qty": "1.8520333736423527",
+          "value_usd": "454.91"
         },
         {
           "symbol": "INTC",
           "side": "long",
-          "qty": "10.313862578030847",
-          "value_usd": "678.24"
+          "qty": "6.881691276065404",
+          "value_usd": "412.7"
         },
         {
           "symbol": "META",
           "side": "long",
-          "qty": "1.5416854855835074",
-          "value_usd": "948.12"
+          "qty": "0.7324761053431307",
+          "value_usd": "444.42"
         },
         {
           "symbol": "MSFT",
           "side": "long",
-          "qty": "1.7749632756109803",
-          "value_usd": "926.37"
+          "qty": "0.8588653165539325",
+          "value_usd": "435.55"
         },
         {
           "symbol": "MU",
           "side": "long",
-          "qty": "0.9906915403275837",
-          "value_usd": "876.5"
+          "qty": "0.5053817134097105",
+          "value_usd": "421.28"
         },
         {
           "symbol": "NVDA",
           "side": "long",
-          "qty": "4.47311431460724",
-          "value_usd": "915.38"
+          "qty": "2.168662952838619",
+          "value_usd": "438.2"
         },
         {
           "symbol": "SPCX",
           "side": "long",
-          "qty": "6.740074882982432",
-          "value_usd": "908.02"
+          "qty": "3.284888971606007",
+          "value_usd": "447.96"
         },
         {
           "symbol": "TSLA",
           "side": "long",
-          "qty": "2.3640520746097042",
-          "value_usd": "945.17"
+          "qty": "1.1121994165035067",
+          "value_usd": "449.13"
         }
       ],
       "note": "Бумага. «Ядро внимания», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-10-30",
-      "defence": true
+      "as_of": "2026-11-02",
+      "defence": false
     },
     {
       "bot_id": "desyatka_earn_paper",
@@ -2719,15 +2727,15 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "323940.4700282401",
-      "cash": "22279.50352824015",
-      "updated_utc": "2026-11-03T03:21:02Z",
+      "equity": "323895.6970282401",
+      "cash": "22149.503528240108",
+      "updated_utc": "2026-11-03T04:21:01Z",
       "positions": [
         {
           "symbol": "LQDT",
           "side": "long",
           "qty": "142045",
-          "avg_px": "2.1237"
+          "avg_px": "2.1243"
         },
         {
           "symbol": "CRZ6",
@@ -2738,7 +2746,7 @@
       "history": [
         {
           "t": "2026-11-03",
-          "equity": "323940.4700282401"
+          "equity": "323895.6970282401"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
