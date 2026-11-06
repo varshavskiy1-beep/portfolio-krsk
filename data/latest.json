@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-06T19:27:06Z",
+  "generated_at": "2026-11-06T19:49:15Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-06T19:27:04.578695Z",
+      "updated_utc": "2026-11-06T19:49:12.168308Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1865918.1562476803",
-      "updated_utc": "2026-11-06T19:27:04.595850Z",
+      "updated_utc": "2026-11-06T19:49:12.171725Z",
       "positions": []
     },
     {
@@ -70,17 +70,9 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1447569.70089152",
-      "updated_utc": "2026-11-06T19:27:04.612596Z",
+      "equity": "1447587.8769248",
+      "updated_utc": "2026-11-06T19:49:12.174670Z",
       "positions": [
-        {
-          "position_id": "p_3d87f8acb44c",
-          "symbol": "SiZ6",
-          "side": "short",
-          "qty": "4.0",
-          "avg_px": "82898.8272",
-          "stop_px": null
-        },
         {
           "position_id": "p_9be8f36a6098",
           "symbol": "GZZ6",
@@ -97,7 +89,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12026.175564146",
-      "updated_utc": "2026-11-06T19:27:04.636142Z",
+      "updated_utc": "2026-11-06T19:49:12.177278Z",
       "positions": [
         {
           "position_id": "p_b7704b1a070d",
@@ -115,7 +107,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-06T19:27:04.659897Z",
+      "updated_utc": "2026-11-06T19:49:12.179904Z",
       "positions": []
     },
     {
@@ -660,7 +652,7 @@
       "seed": "10000",
       "equity": "8294.6131",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-06T19:20:01Z",
+      "updated_utc": "2026-11-06T19:40:00Z",
       "positions": [
         {
           "symbol": "AAPL",
