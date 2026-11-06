@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-06T08:07:11Z",
+  "generated_at": "2026-11-06T08:35:25Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-06T08:07:03.880168Z",
+      "updated_utc": "2026-11-06T08:34:52.251211Z",
       "positions": []
     },
     {
@@ -46,8 +46,8 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1871831.6996251002",
-      "updated_utc": "2026-11-06T08:07:03.884371Z",
+      "equity": "1870412.1319043203",
+      "updated_utc": "2026-11-06T08:34:52.254457Z",
       "positions": [
         {
           "position_id": "p_698b0be6db4b",
@@ -58,12 +58,12 @@
           "stop_px": null
         },
         {
-          "position_id": "p_94b536b221af",
+          "position_id": "p_c2f41f1348e4",
           "symbol": "GMKN",
           "side": "short",
-          "qty": "4026.0",
-          "avg_px": "116.18188",
-          "stop_px": "116.35624"
+          "qty": "4011.0",
+          "avg_px": "116.50172",
+          "stop_px": null
         }
       ]
     },
@@ -73,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1445805.7192148",
-      "updated_utc": "2026-11-06T08:07:03.887498Z",
+      "updated_utc": "2026-11-06T08:34:52.257222Z",
       "positions": [
         {
           "position_id": "p_0dfccda2c2e4",
@@ -99,7 +99,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12052.005156626",
-      "updated_utc": "2026-11-06T08:07:03.890408Z",
+      "updated_utc": "2026-11-06T08:34:52.261469Z",
       "positions": []
     },
     {
@@ -108,8 +108,17 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14586.768092379996",
-      "updated_utc": "2026-11-06T08:07:03.893676Z",
-      "positions": []
+      "updated_utc": "2026-11-06T08:34:52.265502Z",
+      "positions": [
+        {
+          "position_id": "p_6c4ec9a92770",
+          "symbol": "BTC-USDT-SWAP",
+          "side": "long",
+          "qty": "0.048",
+          "avg_px": "75648.6878",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "forts_adr_adaptive",
