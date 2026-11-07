@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-07T04:16:10Z",
+  "generated_at": "2026-11-07T04:33:20Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-07T04:16:05.600691Z",
+      "updated_utc": "2026-11-07T04:33:08.263735Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1865918.1562476803",
-      "updated_utc": "2026-11-07T04:16:05.603912Z",
+      "updated_utc": "2026-11-07T04:33:08.267202Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1446269.796836",
-      "updated_utc": "2026-11-07T04:16:05.606850Z",
+      "updated_utc": "2026-11-07T04:33:08.270551Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12012.431254456002",
-      "updated_utc": "2026-11-07T04:16:05.610515Z",
+      "updated_utc": "2026-11-07T04:33:08.274115Z",
       "positions": [
         {
           "position_id": "p_3ce23523996b",
@@ -88,6 +88,14 @@
           "side": "long",
           "qty": "0.039",
           "avg_px": "76078.11659",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_82e09be056c3",
+          "symbol": "SOL-USDT",
+          "side": "long",
+          "qty": "33.369",
+          "avg_px": "90.027",
           "stop_px": null
         }
       ]
@@ -98,7 +106,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-07T04:16:05.613470Z",
+      "updated_utc": "2026-11-07T04:33:08.277646Z",
       "positions": []
     },
     {
@@ -716,7 +724,7 @@
       "seed": "1000000",
       "equity": "1012053.4711350587",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-11-06T22:31:45Z",
+      "updated_utc": "2026-11-07T04:32:56Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -3164,7 +3172,7 @@
       "seed": "300000",
       "equity": "321985.26054424024",
       "cash": "19656.68254424018",
-      "updated_utc": "2026-11-07T03:21:02Z",
+      "updated_utc": "2026-11-07T04:21:03Z",
       "positions": [
         {
           "symbol": "LQDT",
