@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-07T00:11:13Z",
+  "generated_at": "2026-11-07T00:35:26Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-07T00:11:02.501751Z",
+      "updated_utc": "2026-11-07T00:35:25.390893Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1865918.1562476803",
-      "updated_utc": "2026-11-07T00:11:02.508662Z",
+      "updated_utc": "2026-11-07T00:35:25.393827Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1446269.796836",
-      "updated_utc": "2026-11-07T00:11:02.511912Z",
+      "updated_utc": "2026-11-07T00:35:25.396478Z",
       "positions": []
     },
     {
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "12017.561758466001",
-      "updated_utc": "2026-11-07T00:11:02.514906Z",
+      "updated_utc": "2026-11-07T00:35:25.399015Z",
       "positions": [
         {
           "position_id": "p_53013851296b",
@@ -106,7 +106,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-07T00:11:02.518079Z",
+      "updated_utc": "2026-11-07T00:35:25.402195Z",
       "positions": []
     },
     {
@@ -651,7 +651,7 @@
       "seed": "10000",
       "equity": "8580.9724",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-07T00:10:01Z",
+      "updated_utc": "2026-11-07T00:30:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -3172,7 +3172,7 @@
       "seed": "300000",
       "equity": "321985.26054424024",
       "cash": "19656.68254424018",
-      "updated_utc": "2026-11-06T23:21:02Z",
+      "updated_utc": "2026-11-07T00:21:07Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -3188,12 +3188,12 @@
       ],
       "history": [
         {
-          "t": "2026-11-06",
+          "t": "2026-11-07",
           "equity": "321985.26054424024"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
-      "as_of": "2026-11-06"
+      "as_of": "2026-11-07"
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
