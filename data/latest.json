@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-07T19:13:48Z",
+  "generated_at": "2026-11-07T19:30:57Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -46,7 +46,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-07T19:13:40.034554Z",
+      "updated_utc": "2026-11-07T19:30:51.174655Z",
       "positions": []
     },
     {
@@ -55,7 +55,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1865918.1562476803",
-      "updated_utc": "2026-11-07T19:13:40.038784Z",
+      "updated_utc": "2026-11-07T19:30:51.178036Z",
       "positions": []
     },
     {
@@ -64,7 +64,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1446269.796836",
-      "updated_utc": "2026-11-07T19:13:40.042150Z",
+      "updated_utc": "2026-11-07T19:30:51.181366Z",
       "positions": []
     },
     {
@@ -72,18 +72,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "11979.374748303002",
-      "updated_utc": "2026-11-07T19:13:40.045689Z",
-      "positions": [
-        {
-          "position_id": "p_eb79753fda50",
-          "symbol": "BTC-USDT",
-          "side": "long",
-          "qty": "0.039",
-          "avg_px": "75916.66817",
-          "stop_px": null
-        }
-      ]
+      "equity": "11968.718015243003",
+      "updated_utc": "2026-11-07T19:30:51.184946Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -91,7 +82,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-07T19:13:40.050137Z",
+      "updated_utc": "2026-11-07T19:30:51.188769Z",
       "positions": []
     },
     {
@@ -3241,7 +3232,7 @@
       "seed": "300000",
       "equity": "322825.12789424014",
       "cash": "20382.91389424017",
-      "updated_utc": "2026-11-07T18:21:12Z",
+      "updated_utc": "2026-11-07T19:21:04Z",
       "positions": [
         {
           "symbol": "LQDT",
