@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-07T12:15:35Z",
+  "generated_at": "2026-11-07T12:32:42Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -53,7 +53,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-07T12:15:34.082965Z",
+      "updated_utc": "2026-11-07T12:32:40.106597Z",
       "positions": []
     },
     {
@@ -62,7 +62,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1865918.1562476803",
-      "updated_utc": "2026-11-07T12:15:34.086902Z",
+      "updated_utc": "2026-11-07T12:32:40.111216Z",
       "positions": []
     },
     {
@@ -71,7 +71,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1446269.796836",
-      "updated_utc": "2026-11-07T12:15:34.090228Z",
+      "updated_utc": "2026-11-07T12:32:40.118295Z",
       "positions": []
     },
     {
@@ -79,17 +79,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "11985.842774201",
-      "updated_utc": "2026-11-07T12:15:34.093546Z",
+      "equity": "11983.661066881",
+      "updated_utc": "2026-11-07T12:32:40.122077Z",
       "positions": [
-        {
-          "position_id": "p_40694c1d6d24",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.039",
-          "avg_px": "76097.06403",
-          "stop_px": null
-        },
         {
           "position_id": "p_639ccfbd709a",
           "symbol": "ETH-USDT",
@@ -106,7 +98,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-07T12:15:34.096776Z",
+      "updated_utc": "2026-11-07T12:32:40.125927Z",
       "positions": []
     },
     {
@@ -3232,7 +3224,7 @@
       "seed": "300000",
       "equity": "322825.12789424014",
       "cash": "20382.91389424017",
-      "updated_utc": "2026-11-07T11:21:03Z",
+      "updated_utc": "2026-11-07T12:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
