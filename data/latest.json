@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-08T17:41:40Z",
+  "generated_at": "2026-11-08T17:58:47Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24282.679022750017",
-      "updated_utc": "2026-11-08T17:41:38.026806Z",
+      "updated_utc": "2026-11-08T17:58:35.272665Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1865918.1562476803",
-      "updated_utc": "2026-11-08T17:41:38.030497Z",
+      "updated_utc": "2026-11-08T17:58:35.275967Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1446269.796836",
-      "updated_utc": "2026-11-08T17:41:38.035038Z",
+      "updated_utc": "2026-11-08T17:58:35.278808Z",
       "positions": []
     },
     {
@@ -64,15 +64,23 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "11893.888320504",
-      "updated_utc": "2026-11-08T17:41:38.038835Z",
+      "equity": "11880.642826976",
+      "updated_utc": "2026-11-08T17:58:35.283182Z",
       "positions": [
         {
-          "position_id": "p_b8384ff3d1a7",
-          "symbol": "ETH-USDT",
+          "position_id": "p_dccbdfb25d04",
+          "symbol": "BTC-USDT",
           "side": "long",
-          "qty": "1.332",
-          "avg_px": "2236.850854",
+          "qty": "0.039",
+          "avg_px": "75797.33238",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_fa3fff9d089c",
+          "symbol": "SOL-USDT",
+          "side": "long",
+          "qty": "33.318",
+          "avg_px": "89.176745",
           "stop_px": null
         }
       ]
@@ -83,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-08T17:41:38.041808Z",
+      "updated_utc": "2026-11-08T17:58:35.286841Z",
       "positions": []
     },
     {
