@@ -8,6 +8,11 @@
 import { canonicalCurrency } from "./cashCurrency.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
+import {
+  applyEthOkxForwardHistoryReplace,
+  dropStaleEthOkxForwardGenerationCache,
+  isEthOkxForwardAttempt,
+} from "./ethOkxForward.js";
 import { applyHistoryResets, filterResetPoints, shouldAppendHistoryPoint } from "./historyReset.js";
 import { capHistoryPoints } from "./historyStore.js";
 import {
@@ -69,6 +74,12 @@ export function mergeLatestIntoHistory(hist, latest) {
   for (const a of latest.accounts || []) {
     if (isHiddenPortalAccount(a)) continue;
     const k = keyOf(a);
+    if (applyEthOkxForwardHistoryReplace(hist, a)) continue;
+    if (isEthOkxForwardAttempt(a)) {
+      dropStaleEthOkxForwardGenerationCache(hist, a);
+      continue;
+    }
+    dropStaleEthOkxForwardGenerationCache(hist, a);
     // ETH по сигналу OKX: ряд с часами (equity_curve или history с UTC) заменяет ключ так же.
     const timedEth = ethOkxTimedSeries(a);
     if (hasEquityCurve(a) || timedEth.length) {

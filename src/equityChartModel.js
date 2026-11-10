@@ -1,5 +1,6 @@
 import { cnyMomHistoryPoints, cnyMomStoredPoints } from "./cnyMomCard.js";
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
+import { ethOkxForwardChartSeed } from "./ethOkxForward.js";
 import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
@@ -202,6 +203,10 @@ export function pctModeUnavailable(seed, mode) {
  * Синтетическую точку и сдвиг на день не добавляем.
  */
 export function resolveChartBase(account, points, backtests) {
+  const forwardSeed = ethOkxForwardChartSeed(account);
+  if (forwardSeed != null && forwardSeed > 0) {
+    return { base: forwardSeed, caption: null };
+  }
   if (!feedSeedMissing(account)) {
     const seedN = parseSeed(account.seed);
     return { base: seedN != null && seedN > 0 ? seedN : null, caption: null };

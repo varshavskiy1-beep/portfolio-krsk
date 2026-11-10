@@ -27,6 +27,7 @@ import {
   rateCycleDescription,
 } from "./rateCycleCard.js";
 import StitchedCharts from "./StitchedCharts.jsx";
+import { ethOkxForwardHourLabelsAfterMs, withoutEthOkxForwardBacktest } from "./ethOkxForward.js";
 import { stitchPaperPoints } from "./stitchEquity.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
@@ -233,12 +234,13 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
           height={280}
           priceDigits={isEthOkxMoex(a) ? 2 : undefined}
           baseCaption={mode === "pct" ? chartBase.caption : null}
+          hourLabelsAfterMs={ethOkxForwardHourLabelsAfterMs(a)}
         />
       </div>
       <StitchedCharts
         account={a}
         paperPoints={stitchPaperPoints(a, points, history)}
-        backtests={backtests}
+        backtests={withoutEthOkxForwardBacktest(backtests, a)}
         generatedAt={generatedAt}
       />
       <MayakFromStart account={a} hasData={hasData} />
@@ -308,6 +310,7 @@ export default function StrategyPage({
           fetchedAt={fetchedAt}
           error={loadError}
           onRetry={onRetry}
+          testFixture={data.test_fixture === true}
         />
       </header>
 

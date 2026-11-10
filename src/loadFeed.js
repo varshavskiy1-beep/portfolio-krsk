@@ -1,6 +1,8 @@
 /**
  * Согласованная загрузка latest / history / backtests.
  * Битый кадр целиком отклоняется; вызывающий держит последнюю исправную версию.
+ * Кривая ETH — accounts[] из latest.json. Sidecar eth_okx_moex.forward.json
+ * не запрашиваем и не считаем ongoing equity.
  */
 import { normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "./equityLiveData.js";

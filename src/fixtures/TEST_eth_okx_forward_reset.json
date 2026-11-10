@@ -1,0 +1,46 @@
+{
+  "schema": "equity_ro.v1",
+  "generated_at": "2026-11-10T08:00:00Z",
+  "test_fixture": true,
+  "test_fixture_note": "ТЕСТОВЫЙ СНИМОК. Не прод. Prospective ETH OKX forward reset generation. Не публиковать как рабочий фид. seed_at=2026-11-10T06:17:42Z (13:17:42 KRAT), не ровный час.",
+  "accounts": [
+    {
+      "bot_id": "v6b1",
+      "account_id": "v6b1",
+      "currency": "USDT",
+      "seed": "10000",
+      "equity": "10125.5",
+      "updated_utc": "2026-11-10T08:00:00Z"
+    },
+    {
+      "bot_id": "eth_okx_moex",
+      "account_id": "eth_okx_moex",
+      "strategy_id": "ETH_OKX_SIGNAL_MOEX_FUT_30D_L05",
+      "currency": "RUB",
+      "seed": "300000",
+      "start_capital": "300000",
+      "start": "2026-11-10T06:17:42Z",
+      "equity": "300180",
+      "cash": "300180",
+      "history_mode": "replace",
+      "generation": "eth_okx_moex.forward.json",
+      "reconstructed": false,
+      "seed_at": "2026-11-10T06:17:42Z",
+      "updated_utc": "2026-11-10T08:00:00Z",
+      "as_of": "2026-11-10",
+      "positions": [],
+      "pending_limits": [],
+      "history": [
+        { "t": "2026-11-10T06:17:42Z", "equity": "300000.0" },
+        { "t": "2026-11-10T07:00:00Z", "equity": "300090.0" },
+        { "t": "2026-11-10T08:00:00Z", "equity": "300180.0" }
+      ],
+      "equity_curve": [
+        { "t": "2026-11-10T06:17:42Z", "equity": "300000.0" },
+        { "t": "2026-11-10T07:00:00Z", "equity": "300090.0" },
+        { "t": "2026-11-10T08:00:00Z", "equity": "300180.0" }
+      ],
+      "note": "ТЕСТОВЫЙ СНИМОК. Бумага: старт 300 000 ₽. Раз в час смотрит 720 закрытых часов ETH-USDT-SWAP на OKX и держит фьючерс ETH на Мосбирже, номинал — половина рублей. На биржу ордера не идут. На Автоследование не выводится."
+    }
+  ]
+}

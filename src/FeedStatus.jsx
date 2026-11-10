@@ -14,6 +14,7 @@ export default function FeedStatus({
   error,
   onRetry,
   extra = "",
+  testFixture = false,
 }) {
   const stale = isFeedStale(fetchedAt);
   const fetchedTxt = formatFetchedAt(fetchedAt);
@@ -23,6 +24,7 @@ export default function FeedStatus({
         снимок {generatedAt} · {ONLY_PAPER_TRADE} · валюты не складываются
         {fetchedTxt ? ` · последнее успешное обновление ${fetchedTxt} UTC` : ""}
         {stale ? <span className="stale"> · {STALE_LABEL}</span> : null}
+        {testFixture ? <span className="test-fixture"> · ТЕСТОВЫЙ СНИМОК, не прод</span> : null}
         {extra}
       </div>
       {error ? (
