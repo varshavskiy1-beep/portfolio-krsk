@@ -47,6 +47,7 @@ import {
   stitchEquity,
 } from "./stitchEquity.js";
 import { stitchPctBase } from "./stitchedChartModel.js";
+import { parseEthOkxForwardReset } from "./ethOkxForward.js";
 
 const UP = "#1f7a4c";
 const DOWN = "#c23b3b";
@@ -408,6 +409,15 @@ function UnifiedStitchedChart({ model, asOfDay, paperStart, pctBase }) {
 }
 
 function HonestyNotes({ backtests, account, generatedAt }) {
+  if (parseEthOkxForwardReset(account)) {
+    const line = feedSourceLine(generatedAt);
+    if (!line) return null;
+    return (
+      <p key={line} className="updated stitch-meta">
+        {line}
+      </p>
+    );
+  }
   const row = backtestRowFor(backtests, account);
   const lines = [
     ...backtestHonestyLines(row, account),

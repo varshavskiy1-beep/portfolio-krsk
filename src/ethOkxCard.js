@@ -5,6 +5,10 @@
  */
 
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
+import {
+  ethOkxForwardChartSeed,
+  ethOkxForwardExportCurve,
+} from "./ethOkxForward.js";
 import { parseFeedNumber, RATE_CYCLE_OPENED_LINE } from "./rateCycleCard.js";
 import { isEmptyEquityField, isEthOkxMoex } from "./strategyMeta.js";
 import { displayNote, formatMoneyRu, positionHasField } from "./uiCopy.js";
@@ -126,6 +130,8 @@ export function timedHistoryPoints(history) {
  */
 export function ethOkxTimedSeries(account) {
   if (!isEthOkxMoex(account)) return [];
+  const forward = ethOkxForwardExportCurve(account);
+  if (forward) return forward;
   if (hasEquityCurve(account)) {
     const curve = equityCurvePoints(account);
     if (curve.length) return curve;
@@ -135,6 +141,8 @@ export function ethOkxTimedSeries(account) {
 
 export function ethOkxHistoryPoints(account) {
   if (!isEthOkxMoex(account) || !hasEthOkxAccountLine(account)) return [];
+  const forward = ethOkxForwardExportCurve(account);
+  if (forward) return forward;
   const timed = ethOkxTimedSeries(account);
   if (timed.length) return timed;
   // В ленте только даты: последняя точка дня, как раньше.
@@ -150,7 +158,7 @@ export function ethOkxOpenedLine(account) {
 
 export function ethOkxFromStartPctLine(account) {
   if (!hasEthOkxAccountLine(account)) return "";
-  const seed = parseFeedNumber(account.seed);
+  const seed = ethOkxForwardChartSeed(account) ?? parseFeedNumber(account.seed);
   const equity = parseFeedNumber(account.equity);
   if (seed == null || equity == null || seed === 0) return "";
   const pct = ((equity - seed) / seed) * 100;

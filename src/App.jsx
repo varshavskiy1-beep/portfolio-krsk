@@ -270,6 +270,7 @@ function Home({ data, history, backtests, filter, setFilter, fetchedAt, loadErro
           fetchedAt={fetchedAt}
           error={loadError}
           onRetry={onRetry}
+          testFixture={data.test_fixture === true}
         />
       </header>
 

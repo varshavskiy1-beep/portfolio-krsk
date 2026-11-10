@@ -48,6 +48,7 @@ header h1 {
 }
 header .meta { color: var(--muted); font-size: 0.92rem; margin-bottom: 16px; }
 .meta .stale { color: var(--bad); }
+.meta .test-fixture { color: var(--bad); font-weight: 600; }
 .load-banner {
   margin: 8px 0 12px;
   padding: 10px 12px;

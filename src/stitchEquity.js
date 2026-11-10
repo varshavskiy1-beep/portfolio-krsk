@@ -6,6 +6,7 @@
 
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
+import { ethOkxForwardExportCurve } from "./ethOkxForward.js";
 import { filterResetPoints, seriesKey as resetSeriesKey } from "./historyReset.js";
 
 export const GAP_DAYS = 7;
@@ -200,6 +201,8 @@ export function seriesKey(account) {
  */
 export function stitchPaperPoints(account, cardPoints, history) {
   const key = seriesKey(account);
+  const forwardEth = ethOkxForwardExportCurve(account);
+  if (forwardEth) return forwardEth;
   const timedEth = ethOkxTimedSeries(account);
   if (timedEth.length) return filterResetPoints(key, timedEth);
   if (hasEquityCurve(account)) {
