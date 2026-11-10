@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-10T22:55:21Z",
+  "generated_at": "2026-11-10T23:19:30Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24346.99465881002",
-      "updated_utc": "2026-11-10T22:55:12.204355Z",
+      "updated_utc": "2026-11-10T23:19:24.847919Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1829912.26357182",
-      "updated_utc": "2026-11-10T22:55:12.206942Z",
+      "updated_utc": "2026-11-10T23:19:24.850936Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1437625.2291658397",
-      "updated_utc": "2026-11-10T22:55:12.209385Z",
+      "updated_utc": "2026-11-10T23:19:24.854077Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11678.434604818",
-      "updated_utc": "2026-11-10T22:55:12.211962Z",
+      "updated_utc": "2026-11-10T23:19:24.857254Z",
       "positions": [
         {
           "position_id": "p_33154e467a69",
@@ -73,6 +73,14 @@
           "side": "long",
           "qty": "34.985",
           "avg_px": "83.435023",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_b82fc67b9880",
+          "symbol": "BTC-USDT",
+          "side": "long",
+          "qty": "0.039",
+          "avg_px": "73749.91834",
           "stop_px": null
         }
       ]
@@ -83,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-10T22:55:12.214614Z",
+      "updated_utc": "2026-11-10T23:19:24.860466Z",
       "positions": []
     },
     {
@@ -660,7 +668,7 @@
       "seed": "10000",
       "equity": "8969.691",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-10T22:50:01Z",
+      "updated_utc": "2026-11-10T23:10:00Z",
       "positions": [
         {
           "symbol": "AAPL",
