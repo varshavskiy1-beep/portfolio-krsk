@@ -2,7 +2,7 @@
   "schema": "equity_ro.v1",
   "generated_at": "2026-11-10T08:00:00Z",
   "test_fixture": true,
-  "test_fixture_note": "ТЕСТОВЫЙ СНИМОК. Не прод. Prospective ETH OKX forward reset generation. Не публиковать как рабочий фид.",
+  "test_fixture_note": "ТЕСТОВЫЙ СНИМОК. Не прод. Prospective ETH OKX forward reset generation. Не публиковать как рабочий фид. seed_at=2026-11-10T06:17:42Z (13:17:42 KRAT), не ровный час.",
   "accounts": [
     {
       "bot_id": "v6b1",
@@ -19,26 +19,24 @@
       "currency": "RUB",
       "seed": "300000",
       "start_capital": "300000",
+      "start": "2026-11-10T06:17:42Z",
       "equity": "300180",
       "cash": "300180",
       "history_mode": "replace",
-      "generation": "eth_okx_forward_g1",
+      "generation": "eth_okx_moex.forward.json",
       "reconstructed": false,
-      "seed_at": "2026-11-10T06:00:00Z",
+      "seed_at": "2026-11-10T06:17:42Z",
       "updated_utc": "2026-11-10T08:00:00Z",
       "as_of": "2026-11-10",
       "positions": [],
       "pending_limits": [],
       "history": [
-        { "t": "2026-10-13T03:59:59Z", "equity": "300000.0" },
-        { "t": "2026-10-27T00:00:00Z", "equity": "331126.7447307759" },
-        { "t": "2026-11-10T05:00:00Z", "equity": "331000" },
-        { "t": "2026-11-10T06:00:00Z", "equity": "300000.0" },
+        { "t": "2026-11-10T06:17:42Z", "equity": "300000.0" },
         { "t": "2026-11-10T07:00:00Z", "equity": "300090.0" },
         { "t": "2026-11-10T08:00:00Z", "equity": "300180.0" }
       ],
       "equity_curve": [
-        { "t": "2026-11-10T06:00:00Z", "equity": "300000.0" },
+        { "t": "2026-11-10T06:17:42Z", "equity": "300000.0" },
         { "t": "2026-11-10T07:00:00Z", "equity": "300090.0" },
         { "t": "2026-11-10T08:00:00Z", "equity": "300180.0" }
       ],

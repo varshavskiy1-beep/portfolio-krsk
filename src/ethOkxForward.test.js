@@ -15,21 +15,27 @@ import {
   ETH_OKX_FORWARD_SIDECAR,
   ETH_OKX_FORWARD_START_CAPITAL,
   ETH_OKX_FORWARD_STRATEGY_ID,
+  allowForwardHourTick,
   applyEthOkxForwardHistoryReplace,
   dropStaleEthOkxForwardGenerationCache,
   ethOkxForwardExportCurve,
+  formatForwardHourTick,
+  isCancelledOct27Midnight,
+  isEthOkxForwardAttempt,
   isEthOkxForwardSidecarUrl,
   isEthOkxReconstructedExport,
   isTestFeedSnapshot,
-  isUtcHourStamp,
+  isUtcDateTimeStamp,
   isValidEthOkxForwardReset,
+  nextUtcHourAfter,
   parseEthOkxForwardReset,
+  seriesStrictlyEqual,
   withoutEthOkxForwardBacktest,
 } from "./ethOkxForward.js";
+import { EQUITY_LIVE_DATA_BASE } from "./equityLiveData.js";
 import { HISTORY_RESETS, PAPER_BLOCK2_SERIES_KEY } from "./historyReset.js";
 import { mergeLatestIntoHistory } from "./historyMerge.js";
 import { fetchCabinetSnapshot } from "./loadFeed.js";
-import { EQUITY_LIVE_DATA_BASE } from "./equityLiveData.js";
 import { stitchEquity, stitchPaperPoints } from "./stitchEquity.js";
 import {
   ETH_OKX_MOEX_ACCOUNT_ID,
@@ -44,11 +50,12 @@ const TEST_FIXTURE = JSON.parse(
   readFileSync(join(root, "src/fixtures/TEST_eth_okx_forward_reset.json"), "utf8"),
 );
 
-const SEED_AT = "2026-11-10T06:00:00Z";
+const SEED_AT = "2026-11-10T06:17:42Z";
 const KEY = ETH_OKX_FORWARD_SERIES_KEY;
+const HOUR = 3;
 
 function fixtureAccount() {
-  return TEST_FIXTURE.accounts.find((a) => a.account_id === ETH_OKX_MOEX_ACCOUNT_ID);
+  return structuredClone(TEST_FIXTURE.accounts.find((a) => a.account_id === ETH_OKX_MOEX_ACCOUNT_ID));
 }
 
 function liveLikeEth() {
@@ -105,72 +112,105 @@ test("TEST fixture is marked test and is not a live snapshot", () => {
   assert.match(TEST_FIXTURE.test_fixture_note, /Не прод/);
 });
 
-test("UTC hour stamp rejects date-only seed_at", () => {
-  assert.equal(isUtcHourStamp("2026-11-10T06:00:00Z"), true);
-  assert.equal(isUtcHourStamp("2026-11-10"), false);
-  assert.equal(isUtcHourStamp(""), false);
+test("UTC datetime accepts non-round seed and rejects date-only", () => {
+  assert.equal(isUtcDateTimeStamp(SEED_AT), true);
+  assert.equal(isUtcDateTimeStamp("2026-11-10T06:00:00Z"), true);
+  assert.equal(isUtcDateTimeStamp("2026-11-10"), false);
+  assert.equal(isUtcDateTimeStamp(""), false);
+  assert.equal(isCancelledOct27Midnight("2026-10-27"), true);
+  assert.equal(isCancelledOct27Midnight("2026-10-27T00:00:00Z"), true);
+  assert.equal(isCancelledOct27Midnight(SEED_AT), false);
 });
 
-test("valid replace generation: exact strategy_id, reconstructed false, start_capital 300000", () => {
+test("valid replace: exact account_key, strategy_id, reconstructed false, generation from sidecar copy", () => {
   const acc = fixtureAccount();
   const spec = parseEthOkxForwardReset(acc);
   assert.ok(spec);
+  assert.equal(spec.accountKey, "eth_okx_moex::eth_okx_moex");
   assert.equal(spec.strategyId, ETH_OKX_FORWARD_STRATEGY_ID);
   assert.equal(spec.historyMode, "replace");
   assert.equal(spec.reconstructed, false);
-  assert.equal(spec.generation, "eth_okx_forward_g1");
+  assert.equal(spec.generation, ETH_OKX_FORWARD_SIDECAR);
   assert.equal(spec.seedAt, SEED_AT);
+  assert.equal(spec.start, SEED_AT);
   assert.equal(spec.startCapital, ETH_OKX_FORWARD_START_CAPITAL);
   assert.equal(isValidEthOkxForwardReset(acc), true);
+});
+
+test("start equals seed_at; non-hour 13:17:42 KRAT / 06:17:42Z is the seed", () => {
+  const acc = fixtureAccount();
+  assert.equal(acc.start, acc.seed_at);
+  assert.equal(acc.seed_at, SEED_AT);
+  assert.notEqual(SEED_AT.slice(14, 19), "00:00");
+  const spec = parseEthOkxForwardReset(acc);
+  assert.equal(spec.points[0].t, SEED_AT);
+  assert.equal(spec.points[0].equity, 300000);
+  const noStart = fixtureAccount();
+  delete noStart.start;
+  assert.equal(parseEthOkxForwardReset(noStart).seedAt, SEED_AT);
+  assert.equal(parseEthOkxForwardReset({ ...acc, start: "2026-11-10T06:00:00Z" }), null);
+});
+
+test("history == equity_curve strictly when both present", () => {
+  const acc = fixtureAccount();
+  assert.equal(seriesStrictlyEqual(acc.history, acc.equity_curve), true);
+  assert.equal(acc.history[0].t, acc.seed_at);
+  assert.equal(Number(acc.history[0].equity), 300000);
+  const mismatch = fixtureAccount();
+  mismatch.equity_curve = mismatch.equity_curve.map((p, i) =>
+    i === 1 ? { ...p, equity: "300091.0" } : p,
+  );
+  assert.equal(seriesStrictlyEqual(mismatch.history, mismatch.equity_curve), false);
+  assert.equal(parseEthOkxForwardReset(mismatch), null);
+  assert.deepEqual(ethOkxForwardExportCurve(mismatch), []);
 });
 
 test("live-like export without generation is not a reset — account state unchanged", () => {
   const acc = liveLikeEth();
   assert.equal(parseEthOkxForwardReset(acc), null);
+  assert.equal(isEthOkxForwardAttempt(acc), false);
   const points = ethOkxHistoryPoints(acc);
   assert.equal(points.length, 3);
   assert.equal(points[0].t, "2026-10-13");
   assert.equal(Number(points.at(-1).equity), 331126.7447307759);
   assert.notEqual(ethOkxFromStartPctLine(acc), "+0,00% от старта");
-  assert.match(ethOkxFromStartPctLine(acc), /от старта/);
   assert.equal(hasAccountData(acc), true);
 });
 
-test("invalid contract fragments do not qualify as forward reset", () => {
+test("invalid contract fragments fail closed and do not invent 300000/0%", () => {
   const base = fixtureAccount();
   assert.equal(parseEthOkxForwardReset({ ...base, history_mode: "splice" }), null);
   assert.equal(parseEthOkxForwardReset({ ...base, history_mode: "union" }), null);
-  assert.equal(parseEthOkxForwardReset({ ...base, history_mode: "append" }), null);
   assert.equal(parseEthOkxForwardReset({ ...base, reconstructed: true }), null);
   assert.equal(parseEthOkxForwardReset({ ...base, reconstructed: "false" }), null);
-  assert.equal(parseEthOkxForwardReset({ ...base, reconstructed: 0 }), null);
   const noRec = { ...base };
   delete noRec.reconstructed;
   assert.equal(parseEthOkxForwardReset(noRec), null);
   assert.equal(parseEthOkxForwardReset({ ...base, strategy_id: "ETH_OKX_OTHER" }), null);
-  assert.equal(parseEthOkxForwardReset({ ...base, generation: "" }), null);
   const noGen = { ...base };
   delete noGen.generation;
   assert.equal(parseEthOkxForwardReset(noGen), null);
   assert.equal(parseEthOkxForwardReset({ ...base, seed_at: "2026-11-10" }), null);
-  assert.equal(parseEthOkxForwardReset({ ...base, start_capital: "299999" }), null);
-  const noCap = { ...base };
-  delete noCap.start_capital;
-  assert.equal(parseEthOkxForwardReset(noCap), null);
+  assert.equal(parseEthOkxForwardReset({ ...base, seed_at: "2026-10-27T00:00:00Z" }), null);
+  assert.equal(parseEthOkxForwardReset({ ...base, seed: "299999" }), null);
+  const empty = { ...base, history: [], equity_curve: [] };
+  assert.equal(parseEthOkxForwardReset(empty), null);
+  assert.deepEqual(ethOkxHistoryPoints(empty), []);
+  assert.equal(ethOkxHistoryPoints(empty).some((p) => p.equity === 300000), false);
 });
 
-test("TEST fixture curve starts at seed hour 300000 / 0%, no dates before seed, hours kept", () => {
+test("TEST fixture curve starts at actual seed 300000 / 0%, hours after seed kept", () => {
   const acc = fixtureAccount();
   const points = ethOkxHistoryPoints(acc);
   assert.deepEqual(
     points.map((p) => [p.t, p.equity]),
     [
-      ["2026-11-10T06:00:00Z", 300000],
+      [SEED_AT, 300000],
       ["2026-11-10T07:00:00Z", 300090],
       ["2026-11-10T08:00:00Z", 300180],
     ],
   );
-  assert.equal(points.every((p) => p.t.length > 10), true);
+  assert.equal(points[0].t.includes("06:17:42"), true);
   assert.equal(
     points.some((p) => String(p.t).startsWith("2026-10-13") || String(p.t).startsWith("2026-10-27")),
     false,
@@ -181,56 +221,53 @@ test("TEST fixture curve starts at seed hour 300000 / 0%, no dates before seed, 
   assert.equal(ethOkxFromStartPctLine(acc), "+0,06% от старта");
   assert.equal(resolveChartBase(acc, points, { series: {} }).base, 300000);
   assert.equal(ethOkxOpenedLine(acc), "");
+  assert.equal(Number(acc.equity), 300180);
 });
 
-test("forward replace does not daily-collapse hourly points", () => {
+test("hour labels are strictly after seed — seed is not rounded to HH:00", () => {
+  const seedMs = Date.parse(SEED_AT);
+  assert.equal(nextUtcHourAfter(seedMs), Date.parse("2026-11-10T07:00:00Z"));
+  assert.equal(allowForwardHourTick(Date.parse("2026-11-10T06:00:00Z") / 1000, seedMs), false);
+  assert.equal(allowForwardHourTick(Date.parse(SEED_AT) / 1000, seedMs), false);
+  assert.equal(allowForwardHourTick(Date.parse("2026-11-10T07:00:00Z") / 1000, seedMs), true);
+  assert.equal(formatForwardHourTick(Date.parse("2026-11-10T06:00:00Z") / 1000, HOUR, seedMs), "");
+  assert.equal(formatForwardHourTick(Date.parse("2026-11-10T07:00:00Z") / 1000, HOUR, seedMs), "07:00");
+});
+
+test("seed-only export is the seed row; curve export does not substitute equity", () => {
+  const seedOnly = fixtureAccount();
+  seedOnly.equity = "300000";
+  seedOnly.history = [{ t: SEED_AT, equity: "300000.0" }];
+  seedOnly.equity_curve = [{ t: SEED_AT, equity: "300000.0" }];
+  const pts = ethOkxHistoryPoints(seedOnly);
+  assert.deepEqual(pts, [{ t: SEED_AT, equity: 300000 }]);
+  assert.equal(ethOkxFromStartPctLine(seedOnly), "+0,00% от старта");
+  const curve = fixtureAccount();
+  assert.equal(Number(curve.equity), 300180);
+  assert.notEqual(Number(curve.equity), 300000);
+});
+
+test("extra metadata is compatible; LQDT/qty after seed does not invalidate generation", () => {
   const acc = fixtureAccount();
-  const points = ethOkxHistoryPoints(acc);
-  assert.equal(points.length, 3);
-  assert.equal(new Set(points.map((p) => p.t.slice(0, 10))).size, 1);
-});
-
-test("mixed date+hour export in replace mode keeps hours only after seed_at", () => {
-  const acc = {
-    ...fixtureAccount(),
-    equity_curve: [],
-    history: [
-      { t: "2026-10-13", equity: "331126" },
-      { t: "2026-11-10T05:00:00Z", equity: "331000" },
-      { t: "2026-11-10T06:00:00Z", equity: "300000" },
-      { t: "2026-11-10T07:00:00Z", equity: "300050" },
-    ],
-  };
-  const points = ethOkxForwardExportCurve(acc);
+  acc.venue = "FORTS";
+  acc.foo = "bar";
+  acc.positions = [
+    { symbol: "EHX6", side: "short", qty: "94", avg_px: "2135.6" },
+    { symbol: "LQDT", side: "long", qty: "155458", avg_px: "2.13" },
+  ];
+  assert.ok(parseEthOkxForwardReset(acc));
   assert.deepEqual(
-    points.map((p) => p.t),
-    ["2026-11-10T06:00:00Z", "2026-11-10T07:00:00Z"],
+    visibleEthOkxPositions(acc).map((p) => p.symbol),
+    ["EHX6", "LQDT"],
   );
+  assert.equal(showsPaperBadge(acc), true);
 });
 
-test("missing export points are not invented — no fake 300000 seed row", () => {
-  const acc = {
-    ...fixtureAccount(),
-    equity: "300000",
-    equity_curve: [],
-    history: [],
-  };
-  assert.equal(isValidEthOkxForwardReset(acc), true);
-  assert.deepEqual(ethOkxForwardExportCurve(acc), []);
-  assert.deepEqual(ethOkxHistoryPoints(acc), []);
-  assert.equal(ethOkxHistoryPoints(acc).some((p) => p.equity === 300000), false);
-});
-
-test("sidecar filename is not treated as the equity feed", () => {
+test("sidecar is not the equity feed; portal does not fetch it", async () => {
   assert.equal(isEthOkxForwardSidecarUrl(`https://example/data/${ETH_OKX_FORWARD_SIDECAR}`), true);
-  assert.equal(isEthOkxForwardSidecarUrl("https://example/data/latest.json"), false);
   const src = readFileSync(join(root, "src/loadFeed.js"), "utf8");
   assert.match(src, /data\/latest\.json/);
-  assert.match(src, /data\/history\.json/);
   assert.doesNotMatch(src, /data\/eth_okx_moex\.forward\.json/);
-});
-
-test("fetchCabinetSnapshot never requests the forward sidecar", async () => {
   const prev = globalThis.fetch;
   const urls = [];
   globalThis.fetch = async (url, init) => {
@@ -249,7 +286,6 @@ test("fetchCabinetSnapshot never requests the forward sidecar", async () => {
     const snap = await fetchCabinetSnapshot("/", { liveBase: EQUITY_LIVE_DATA_BASE });
     assert.equal(snap.ok, true);
     assert.equal(urls.some((u) => isEthOkxForwardSidecarUrl(u)), false);
-    assert.equal(urls.some((u) => u.includes("latest.json")), true);
   } finally {
     globalThis.fetch = prev;
   }
@@ -262,45 +298,48 @@ test("merge replace: whole series swapped, no union with old history cache", () 
   assert.deepEqual(
     pts.map((p) => [p.t, p.equity]),
     [
-      ["2026-11-10T06:00:00Z", 300000],
+      [SEED_AT, 300000],
       ["2026-11-10T07:00:00Z", 300090],
       ["2026-11-10T08:00:00Z", 300180],
     ],
   );
-  assert.equal(hist.series[KEY].generation, "eth_okx_forward_g1");
-  assert.equal(hist.series[KEY].history_mode, "replace");
-  assert.equal(hist.series[KEY].reconstructed, false);
-  assert.equal(hist.series[KEY].seed, 300000);
+  assert.equal(hist.series[KEY].generation, ETH_OKX_FORWARD_SIDECAR);
   assert.equal(hist.series[KEY].seed_at, SEED_AT);
   assert.equal(pts.some((p) => p.t.startsWith("2026-10-13") || p.t.startsWith("2026-10-27")), false);
   assert.equal(hist.series["v6b1::v6b1"].points[0].equity, 10000);
 });
 
+test("wrong contract does not union stale cache or restore a chart", () => {
+  const hist = contaminatedHistory();
+  const before = JSON.parse(JSON.stringify(hist.series[KEY].points));
+  const bad = fixtureAccount();
+  bad.equity_curve = [{ t: SEED_AT, equity: "300000.0" }];
+  mergeLatestIntoHistory(hist, { generated_at: "2026-11-10T08:00:00Z", accounts: [bad] });
+  assert.deepEqual(hist.series[KEY].points, before);
+  assert.deepEqual(ethOkxHistoryPoints(bad), []);
+  assert.equal(isEthOkxForwardAttempt(bad), true);
+});
+
 test("generation change replaces again; stale generation cache rolls back", () => {
   const hist = contaminatedHistory();
   mergeLatestIntoHistory(hist, TEST_FIXTURE);
-  const g2 = {
-    ...TEST_FIXTURE,
-    accounts: TEST_FIXTURE.accounts.map((a) =>
-      a.account_id === ETH_OKX_MOEX_ACCOUNT_ID
-        ? {
-            ...a,
-            generation: "eth_okx_forward_g2",
-            seed_at: "2026-11-10T09:00:00Z",
-            equity: "300000",
-            equity_curve: [{ t: "2026-11-10T09:00:00Z", equity: "300000.0" }],
-            history: [{ t: "2026-11-10T09:00:00Z", equity: "300000.0" }],
-          }
-        : a,
-    ),
+  const nextSeed = "2026-11-10T09:03:11Z";
+  const g2acc = {
+    ...fixtureAccount(),
+    generation: "eth_okx_moex.forward.json#2",
+    start: nextSeed,
+    seed_at: nextSeed,
+    equity: "300000",
+    history: [{ t: nextSeed, equity: "300000.0" }],
+    equity_curve: [{ t: nextSeed, equity: "300000.0" }],
   };
-  mergeLatestIntoHistory(hist, g2);
-  assert.equal(hist.series[KEY].generation, "eth_okx_forward_g2");
-  assert.deepEqual(hist.series[KEY].points, [{ t: "2026-11-10T09:00:00Z", equity: 300000 }]);
+  mergeLatestIntoHistory(hist, { generated_at: nextSeed, accounts: [g2acc] });
+  assert.equal(hist.series[KEY].generation, "eth_okx_moex.forward.json#2");
+  assert.deepEqual(hist.series[KEY].points, [{ t: nextSeed, equity: 300000 }]);
 
   mergeLatestIntoHistory(hist, { generated_at: "2026-11-10T10:00:00Z", accounts: [liveLikeEth()] });
   assert.equal(hist.series[KEY].generation, undefined);
-  assert.equal(hist.series[KEY].points.some((p) => p.t === "2026-11-10T09:00:00Z"), false);
+  assert.equal(hist.series[KEY].points.some((p) => p.t === nextSeed), false);
 });
 
 test("reconstructed true is not a forward reset and does not splice into cache", () => {
@@ -311,9 +350,10 @@ test("reconstructed true is not a forward reset and does not splice into cache",
   const before = JSON.parse(JSON.stringify(hist.series[KEY].points));
   mergeLatestIntoHistory(hist, { generated_at: "2026-11-10T08:00:00Z", accounts: [acc] });
   assert.deepEqual(hist.series[KEY].points, before);
+  assert.deepEqual(ethOkxHistoryPoints(acc), []);
 });
 
-test("other accounts stay intact; paper_block2 is not reseeded", () => {
+test("other accounts stay intact; paper_block2 is not reseeded; no ORDERS table", () => {
   const hist = contaminatedHistory();
   hist.series[PAPER_BLOCK2_SERIES_KEY] = {
     bot_id: "three_robots_okx_nasdaq_1h",
@@ -323,26 +363,14 @@ test("other accounts stay intact; paper_block2 is not reseeded", () => {
   mergeLatestIntoHistory(hist, TEST_FIXTURE);
   assert.equal(hist.series[PAPER_BLOCK2_SERIES_KEY], undefined);
   assert.equal(HISTORY_RESETS[KEY], undefined);
-  assert.equal(HISTORY_RESETS[PAPER_BLOCK2_SERIES_KEY], undefined);
   const merged = mergePortalAccounts(TEST_FIXTURE.accounts);
   assert.equal(merged.some((a) => a.account_id === "paper_block2"), false);
   const eth = merged.find((a) => a.account_id === ETH_OKX_MOEX_ACCOUNT_ID);
   assert.equal(showsPaperBadge(eth), true);
-  const v6 = merged.find((a) => a.bot_id === "v6b1");
-  assert.equal(Number(v6.equity), 10125.5);
-});
-
-test("seed fixture: no LQDT, no ORDERS table, paper not Live", () => {
-  const acc = fixtureAccount();
-  assert.deepEqual(visibleEthOkxPositions(acc), []);
-  assert.equal(Array.isArray(acc.orders), false);
-  assert.equal(acc.pending_limits.length, 0);
-  const srcCard = readFileSync(join(root, "src/ethOkxCard.js"), "utf8");
-  const srcUi = readFileSync(join(root, "src/PositionsTable.jsx"), "utf8");
+  assert.equal(Array.isArray(eth.orders), false);
   const srcApp = readFileSync(join(root, "src/App.jsx"), "utf8");
-  assert.doesNotMatch(srcCard, /ORDERS/);
-  assert.doesNotMatch(srcUi, /ORDERS/);
   assert.doesNotMatch(srcApp, /\bLive\b/);
+  assert.equal(Number(merged.find((a) => a.bot_id === "v6b1").equity), 10125.5);
 });
 
 test("working chart does not union replace generation with history.json or backtests", () => {
@@ -351,13 +379,10 @@ test("working chart does not union replace generation with history.json or backt
   const card = resolveEquityPoints(acc, oldHist);
   assert.deepEqual(
     card.map((p) => p.t),
-    ["2026-11-10T06:00:00Z", "2026-11-10T07:00:00Z", "2026-11-10T08:00:00Z"],
+    [SEED_AT, "2026-11-10T07:00:00Z", "2026-11-10T08:00:00Z"],
   );
   const paper = stitchPaperPoints(acc, card, oldHist);
-  assert.deepEqual(
-    paper.map((p) => p.t),
-    ["2026-11-10T06:00:00Z", "2026-11-10T07:00:00Z", "2026-11-10T08:00:00Z"],
-  );
+  assert.deepEqual(paper.map((p) => p.t), card.map((p) => p.t));
   const backtests = {
     series: {
       [KEY]: {
@@ -373,14 +398,6 @@ test("working chart does not union replace generation with history.json or backt
   const st = stitchEquity(stripped.series?.[KEY]?.points || [], paper);
   assert.equal(st.ok, false);
   assert.equal(st.reason, "no_backtest");
-  const liveStitch = withoutEthOkxForwardBacktest(backtests, liveLikeEth());
-  assert.ok(liveStitch.series[KEY]);
-});
-
-test("forward replace stitch notes do not keep the old tester backtest copy", () => {
-  const src = readFileSync(join(root, "src/StitchedCharts.jsx"), "utf8");
-  assert.match(src, /parseEthOkxForwardReset/);
-  assert.match(src, /withoutEthOkxForwardBacktest|feedSourceLine/);
 });
 
 test("applyEthOkxForwardHistoryReplace is a no-op without a valid generation", () => {

@@ -27,7 +27,7 @@ import {
   rateCycleDescription,
 } from "./rateCycleCard.js";
 import StitchedCharts from "./StitchedCharts.jsx";
-import { withoutEthOkxForwardBacktest } from "./ethOkxForward.js";
+import { ethOkxForwardHourLabelsAfterMs, withoutEthOkxForwardBacktest } from "./ethOkxForward.js";
 import { stitchPaperPoints } from "./stitchEquity.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
@@ -234,6 +234,7 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
           height={280}
           priceDigits={isEthOkxMoex(a) ? 2 : undefined}
           baseCaption={mode === "pct" ? chartBase.caption : null}
+          hourLabelsAfterMs={ethOkxForwardHourLabelsAfterMs(a)}
         />
       </div>
       <StitchedCharts

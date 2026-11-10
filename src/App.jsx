@@ -10,6 +10,7 @@ import StrategyPage from "./StrategyPage.jsx";
 import { canonicalCurrency } from "./cashCurrency.js";
 import { initialChartMode, persistChartMode } from "./chartPrefs.js";
 import { lastEquityValue, resolveChartBase, resolveEquityPoints } from "./equityChartModel.js";
+import { ethOkxForwardHourLabelsAfterMs } from "./ethOkxForward.js";
 import { LOAD_ERROR_RU, LIVE_FOOTER_LABEL, REFRESH_MS, RETRY_LABEL } from "./feedValidate.js";
 import { fetchCabinetSnapshot } from "./loadFeed.js";
 import { cardUpdatedLine } from "./mayakCard.js";
@@ -191,6 +192,7 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         mode={mode}
         priceDigits={isEthOkxMoex(a) ? 2 : undefined}
         baseCaption={mode === "pct" ? chartBase.caption : null}
+        hourLabelsAfterMs={ethOkxForwardHourLabelsAfterMs(a)}
       />
       <MayakFromStart account={a} hasData={hasData} />
 

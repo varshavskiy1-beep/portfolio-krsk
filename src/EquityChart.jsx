@@ -13,6 +13,7 @@ import {
   seedPriceLineSpec,
   TIME_SCALE_MIN_BAR_SPACING,
 } from "./equityChartModel.js";
+import { formatForwardHourTick } from "./ethOkxForward.js";
 import { PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import { chartPriceDigits } from "./rateCycleCard.js";
 
@@ -98,6 +99,7 @@ export default function EquityChart({
   fill = false,
   priceDigits,
   baseCaption,
+  hourLabelsAfterMs = null,
 }) {
   const wrapRef = useRef(null);
   const chartRef = useRef(null);
@@ -146,6 +148,12 @@ export default function EquityChart({
         tickMarkMaxCharacterLength: 12,
         // v5: запас внутри оси, чтобы цифры не прилипали к нижнему краю canvas
         minimumHeight: fill ? TIME_SCALE_MIN_H.fill : TIME_SCALE_MIN_H.normal,
+        ...(hourLabelsAfterMs != null
+          ? {
+              tickMarkFormatter: (time, tickMarkType) =>
+                formatForwardHourTick(time, tickMarkType, hourLabelsAfterMs),
+            }
+          : {}),
       },
       crosshair: {
         horzLine: { labelVisible: true },
@@ -184,7 +192,7 @@ export default function EquityChart({
       chartRef.current = null;
       seriesRef.current = null;
     };
-  }, [fill, height]);
+  }, [fill, height, hourLabelsAfterMs]);
 
   useEffect(() => {
     const chart = chartRef.current;
