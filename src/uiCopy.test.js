@@ -7,6 +7,7 @@ import {
   positionHasField,
   rewriteAccountCurrencyCopy,
   sideLabel,
+  snapshotErrorLine,
 } from "./uiCopy.js";
 
 test("delta line is Russian and never says seed", () => {
@@ -25,6 +26,15 @@ test("displayNote replaces seed in feed comments", () => {
   const shown = displayNote(raw);
   assert.match(shown, /начальный капитал/);
   assert.doesNotMatch(shown, /seed/i);
+});
+
+test("snapshotErrorLine keeps the feed error, does not invent equity", () => {
+  assert.equal(
+    snapshotErrorLine({ error: "NameError: name 'forts_static_curve' is not defined" }),
+    "NameError: name 'forts_static_curve' is not defined",
+  );
+  assert.equal(snapshotErrorLine({ error: "  " }), "");
+  assert.equal(snapshotErrorLine({ equity: 1 }), "");
 });
 
 test("displayNote rewrites Young Bounce account currency to USDT", () => {

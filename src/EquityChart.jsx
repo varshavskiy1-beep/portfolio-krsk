@@ -5,6 +5,7 @@ import {
   buildSeries,
   chartSeriesColors,
   defaultChartRange,
+  emptyChartMessage,
   expandPriceRange,
   formatChartPctLabel,
   isChartUpVsSeed,
@@ -13,7 +14,6 @@ import {
   seedPriceLineSpec,
   TIME_SCALE_MIN_BAR_SPACING,
 } from "./equityChartModel.js";
-import { PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import { chartPriceDigits } from "./rateCycleCard.js";
 
 const RANGES = [
@@ -106,6 +106,7 @@ export default function EquityChart({
   const [userRange, setUserRange] = useState(initialChartRange);
   const pctBlocked = pctModeUnavailable(seed, mode);
   const series = useMemo(() => buildSeries(points, seed, mode), [points, seed, mode]);
+  const emptyMsg = emptyChartMessage({ points, mode, seed });
   const range = userRange ?? defaultChartRange(series);
   const setRange = (id) => {
     setUserRange(id);
@@ -298,11 +299,7 @@ export default function EquityChart({
         </button>
         <span className="chart-hint hint-desktop">колёсико — зум · тяни — сдвиг</span>
       </div>
-      {pctBlocked ? (
-        <div className="empty-chart">{PCT_NO_POSITIVE_SEED}</div>
-      ) : !ready ? (
-        <div className="empty-chart">Нет точек истории для графика.</div>
-      ) : null}
+      {emptyMsg ? <div className="empty-chart">{emptyMsg}</div> : null}
       <div className="tv-chart-stage">
         <div
           ref={wrapRef}

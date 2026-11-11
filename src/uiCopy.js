@@ -49,6 +49,13 @@ export function rewriteAccountCurrencyCopy(text, account) {
   return raw.replace(/\$\s?(?=\d)/g, "").replace(/\bUSD\b/g, "USDT");
 }
 
+/** Ошибка снимка как пришла. Не переводим и не подставляем эквити. */
+export function snapshotErrorLine(account) {
+  const err = account?.error;
+  if (typeof err !== "string") return "";
+  return err.trim();
+}
+
 /** Технические note из снимка: seed → «начальный капитал», без сырых id; валюта — по инструменту. */
 export function displayNote(note, account) {
   if (note == null || note === "") return "";

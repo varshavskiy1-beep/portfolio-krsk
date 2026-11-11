@@ -1,12 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { PCT_BASE_FROM_FIRST_POINT, PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
+import { EMPTY_CHART_NO_POINTS, PCT_BASE_FROM_FIRST_POINT, PCT_NO_POSITIVE_SEED } from "./feedValidate.js";
 import {
   CHART_NEG,
   CHART_POS,
   buildSeries,
   chartSeriesColors,
   defaultChartRange,
+  emptyChartMessage,
   expandPriceRange,
   feedSeedMissing,
   formatChartPctLabel,
@@ -77,6 +78,16 @@ test("P03: Infinity JSON string is dropped; zero seed blocks percent mode", () =
   assert.equal(money[0].value, 0);
   assert.ok(money.every((row) => Number.isFinite(row.value)));
   assert.equal(PCT_NO_POSITIVE_SEED, "Доходность не рассчитана: нет положительного начального капитала");
+  assert.equal(EMPTY_CHART_NO_POINTS, "Нет точек истории для графика.");
+  assert.equal(emptyChartMessage({ points: [], mode: "pct", seed: null }), EMPTY_CHART_NO_POINTS);
+  assert.equal(
+    emptyChartMessage({ points: [{ t: "2026-10-17", equity: 100 }], mode: "pct", seed: 0 }),
+    PCT_NO_POSITIVE_SEED,
+  );
+  assert.equal(
+    emptyChartMessage({ points: [{ t: "2026-10-17", equity: 100 }], mode: "pct", seed: 100 }),
+    null,
+  );
   const blockedZero = resolveChartBase(
     { bot_id: "x", account_id: "x", seed: 0 },
     [{ t: "2026-10-17", equity: 100 }],
