@@ -30,10 +30,6 @@ test("bot_id maps crypto and FORTS when venue is missing", () => {
   assert.equal(canonicalCurrency({ bot_id: "v6b1", account_id: "v6b1", currency: "USD" }), "USDT");
   assert.equal(canonicalCurrency({ bot_id: "pump_radar", account_id: "pump_radar", currency: "USD" }), "USDT");
   assert.equal(
-    canonicalCurrency({ bot_id: "forts_adr_adaptive", account_id: "forts_adr_adaptive", currency: "USD" }),
-    "RUB",
-  );
-  assert.equal(
     canonicalCurrency({ bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "USDT" }),
     "RUB",
   );

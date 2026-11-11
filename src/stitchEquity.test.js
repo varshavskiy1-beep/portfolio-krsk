@@ -440,10 +440,10 @@ test("mayak ×4: honest LQDT series from 2023-10-02, stitched with the gray line
   assert.equal(csvSha, "dce09bfb7ed8d9657f600f5b6e1fc3455927e57834ff741713ab15151b38cd26");
 });
 
-test("stitchPaperPoints: equity_curve wins over stale history.json (forts_adr_*)", () => {
+test("stitchPaperPoints: equity_curve wins over stale history.json (forts_adr_static)", () => {
   const stale = {
     series: {
-      "forts_adr_adaptive::forts_adr_adaptive": {
+      "forts_adr_static::forts_adr_static": {
         points: [
           { t: "2026-09-21T13:10:00Z", equity: 1950000 },
           { t: "2026-09-22T13:10:33Z", equity: 1837991.68 },
@@ -452,8 +452,8 @@ test("stitchPaperPoints: equity_curve wins over stale history.json (forts_adr_*)
     },
   };
   const acc = {
-    bot_id: "forts_adr_adaptive",
-    account_id: "forts_adr_adaptive",
+    bot_id: "forts_adr_static",
+    account_id: "forts_adr_static",
     equity_curve: [
       { t: "2026-09-18T16:39:08Z", equity: "1500000.0" },
       { t: "2026-09-21T13:10:00Z", equity: "1500000.0" },
@@ -464,8 +464,7 @@ test("stitchPaperPoints: equity_curve wins over stale history.json (forts_adr_*)
   assert.equal(pts.length, 3);
   assert.deepEqual(pts[0], { t: "2026-09-18T16:39:08Z", equity: 1500000 });
   assert.ok(!pts.some((p) => p.equity === 1950000));
-  // without equity_curve history.json is still used
-  const noCurve = stitchPaperPoints({ bot_id: "forts_adr_adaptive", account_id: "forts_adr_adaptive" }, null, stale);
+  const noCurve = stitchPaperPoints({ bot_id: "forts_adr_static", account_id: "forts_adr_static" }, null, stale);
   assert.equal(noCurve[0].equity, 1950000);
 });
 

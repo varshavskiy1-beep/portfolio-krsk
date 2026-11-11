@@ -132,6 +132,61 @@ test("live equity JSON: live fail falls back to bundled /data", async () => {
   }
 });
 
+test("stale Pages latest with forts_adr_adaptive is stripped; other accounts stay", async () => {
+  const prev = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes("latest.json")) {
+      return jsonResponse({
+        generated_at: "2026-11-11T00:00:00Z",
+        accounts: [
+          { bot_id: "v6b1", account_id: "v6b1", currency: "USD", seed: "10000", equity: "10000" },
+          {
+            bot_id: "forts_adr_adaptive",
+            account_id: "forts_adr_adaptive",
+            currency: "RUB",
+            seed: "1500000",
+            equity: "2249400",
+          },
+          { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB", seed: "1500000", equity: "1520000" },
+        ],
+      });
+    }
+    if (u.includes("history.json")) {
+      return jsonResponse({
+        series: {
+          "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+          "forts_adr_adaptive::forts_adr_adaptive": {
+            bot_id: "forts_adr_adaptive",
+            account_id: "forts_adr_adaptive",
+            points: [{ t: "2026-11-11T00:00:00Z", equity: 2249400 }],
+          },
+          "forts_adr_static::forts_adr_static": {
+            bot_id: "forts_adr_static",
+            account_id: "forts_adr_static",
+            points: [{ t: "2026-09-19T03:56:37Z", equity: 1520000 }],
+          },
+        },
+      });
+    }
+    if (u.includes("backtests.json")) return jsonResponse({ series: {} });
+    return { ok: false, json: async () => null };
+  };
+  try {
+    const snap = await fetchCabinetSnapshot("/", { liveBase: LIVE });
+    assert.equal(snap.ok, true);
+    assert.deepEqual(
+      snap.latest.accounts.map((a) => a.bot_id),
+      ["v6b1", "forts_adr_static"],
+    );
+    assert.equal(snap.history.series["forts_adr_adaptive::forts_adr_adaptive"], undefined);
+    assert.equal(snap.history.series["v6b1::v6b1"].points[0].equity, 10000);
+    assert.equal(snap.history.series["forts_adr_static::forts_adr_static"].points[0].equity, 1520000);
+  } finally {
+    globalThis.fetch = prev;
+  }
+});
+
 test("live equity JSON: both live and fallback fail → ok:false", async () => {
   const prev = globalThis.fetch;
   globalThis.fetch = async () => {
