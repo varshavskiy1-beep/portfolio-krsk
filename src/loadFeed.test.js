@@ -148,7 +148,7 @@ test("stale Pages latest with forts_adr_adaptive is stripped; other accounts sta
             seed: "1500000",
             equity: "2249400",
           },
-          { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB", seed: "1500000", equity: "1520000" },
+          { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "RUB", seed: "300000", equity: "308800" },
         ],
       });
     }
@@ -161,10 +161,10 @@ test("stale Pages latest with forts_adr_adaptive is stripped; other accounts sta
             account_id: "forts_adr_adaptive",
             points: [{ t: "2026-11-11T00:00:00Z", equity: 2249400 }],
           },
-          "forts_adr_static::forts_adr_static": {
-            bot_id: "forts_adr_static",
-            account_id: "forts_adr_static",
-            points: [{ t: "2026-09-19T03:56:37Z", equity: 1520000 }],
+          "eth_okx_moex::eth_okx_moex": {
+            bot_id: "eth_okx_moex",
+            account_id: "eth_okx_moex",
+            points: [{ t: "2026-10-13T00:00:00Z", equity: 308800 }],
           },
         },
       });
@@ -177,11 +177,11 @@ test("stale Pages latest with forts_adr_adaptive is stripped; other accounts sta
     assert.equal(snap.ok, true);
     assert.deepEqual(
       snap.latest.accounts.map((a) => a.bot_id),
-      ["v6b1", "forts_adr_static"],
+      ["v6b1", "eth_okx_moex"],
     );
     assert.equal(snap.history.series["forts_adr_adaptive::forts_adr_adaptive"], undefined);
     assert.equal(snap.history.series["v6b1::v6b1"].points[0].equity, 10000);
-    assert.equal(snap.history.series["forts_adr_static::forts_adr_static"].points[0].equity, 1520000);
+    assert.equal(snap.history.series["eth_okx_moex::eth_okx_moex"].points[0].equity, 308800);
   } finally {
     globalThis.fetch = prev;
   }

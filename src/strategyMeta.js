@@ -8,6 +8,16 @@ export const FORTS_ADR_ADAPTIVE_BOT_ID = "forts_adr_adaptive";
 export const FORTS_ADR_ADAPTIVE_ACCOUNT_ID = "forts_adr_adaptive";
 export const FORTS_ADR_ADAPTIVE_SERIES_KEY = `${FORTS_ADR_ADAPTIVE_BOT_ID}::${FORTS_ADR_ADAPTIVE_ACCOUNT_ID}`;
 
+/** Снятый pump_radar: tester NO-GO, кривая недостоверна. */
+export const PUMP_RADAR_BOT_ID = "pump_radar";
+export const PUMP_RADAR_ACCOUNT_ID = "pump_radar";
+export const PUMP_RADAR_SERIES_KEY = `${PUMP_RADAR_BOT_ID}::${PUMP_RADAR_ACCOUNT_ID}`;
+
+/** Снятый FORTS ADR static: tester NO-GO, кривая недостоверна. */
+export const FORTS_ADR_STATIC_BOT_ID = "forts_adr_static";
+export const FORTS_ADR_STATIC_ACCOUNT_ID = "forts_adr_static";
+export const FORTS_ADR_STATIC_SERIES_KEY = `${FORTS_ADR_STATIC_BOT_ID}::${FORTS_ADR_STATIC_ACCOUNT_ID}`;
+
 export const YOUNG_BOUNCE_BOT_ID = "young_bounce_combo";
 export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
 
@@ -136,6 +146,10 @@ export const HIDDEN_PORTAL_IDS = new Set([
   ROBOT2_ACCOUNT_ID,
   FORTS_ADR_ADAPTIVE_BOT_ID,
   FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
+  PUMP_RADAR_BOT_ID,
+  PUMP_RADAR_ACCOUNT_ID,
+  FORTS_ADR_STATIC_BOT_ID,
+  FORTS_ADR_STATIC_ACCOUNT_ID,
 ]);
 
 /** Нормализация bot_id из hash/фида: trim, decode, без query и хвостового /. */

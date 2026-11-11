@@ -24,8 +24,6 @@ const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "u
 const DISPLAYED = [
   "v6b1",
   "who_pays",
-  "forts_adr_static",
-  "pump_radar",
   "young_bounce_combo",
   "oac_paper",
   "desyatka_earn_paper",
@@ -417,7 +415,25 @@ test("displayed passport UI has no Grail / grail_b20_3x copy", () => {
     assert.doesNotMatch(text, /Робот 2/, botId);
     assert.doesNotMatch(text, /forts_adr_adaptive/, botId);
     assert.doesNotMatch(text, /сам выбирает ширину/, botId);
+    assert.doesNotMatch(text, /pump_radar/, botId);
+    assert.doesNotMatch(text, /forts_adr_static/, botId);
+    assert.doesNotMatch(text, /фиксированный коридор/, botId);
+    assert.doesNotMatch(text, /Радар резких движений/, botId);
   }
+});
+
+test("retired pump_radar and forts_adr_static have no passport, card or dashboard id", () => {
+  for (const id of ["pump_radar", "forts_adr_static"]) {
+    assert.equal(hasAuthoredPassport(id), false, id);
+    assert.equal(authoredPassportIds().includes(id), false, id);
+    assert.equal(displayedBotIds(latest.accounts).includes(id), false, id);
+    assert.equal(isHiddenPortalId(id), true, id);
+    const stub = getPassport(id);
+    assert.equal(stub.authored, false, id);
+    assert.equal(stub.hidden, true, id);
+  }
+  assert.doesNotMatch(getPassport("forts_adr_static").title, /фиксированный коридор/);
+  assert.doesNotMatch(getPassport("pump_radar").title, /Радар резких/);
 });
 
 test("forts_adr_*: no old English note words anywhere in site code", () => {
@@ -425,11 +441,9 @@ test("forts_adr_*: no old English note words anywhere in site code", () => {
     const src = readFileSync(join(root, "src", f), "utf8");
     assert.ok(!/eod_flat|overnight|jsonl|\bfills\b|pnl_pct/i.test(src), f);
   }
-  const staticAcc = latest.accounts.find((x) => x.bot_id === "forts_adr_static");
-  assert.ok(staticAcc);
-  assert.equal(staticAcc.note, "Капитал посчитан по журналу сделок. Позиции на ночь не переносятся.");
   assert.equal(
     latest.accounts.some((x) => x.bot_id === "forts_adr_adaptive" || x.account_id === "forts_adr_adaptive"),
     false,
   );
+  assert.equal(latest.accounts.some((x) => x.bot_id === "forts_adr_static" || x.bot_id === "pump_radar"), false);
 });
