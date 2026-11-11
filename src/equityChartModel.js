@@ -1,6 +1,10 @@
 import { cnyMomHistoryPoints, cnyMomStoredPoints } from "./cnyMomCard.js";
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
-import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
+import {
+  EMPTY_CHART_NO_POINTS,
+  PCT_BASE_FROM_FIRST_POINT,
+  PCT_NO_POSITIVE_SEED,
+} from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
 import { hasAccountData, isCnyMomH360, isEthOkxMoex, isRfBondsRateCycle } from "./strategyMeta.js";
@@ -193,6 +197,17 @@ export function pctModeUnavailable(seed, mode) {
   if (mode !== "pct") return false;
   const seedN = parseSeed(seed);
   return !(seedN > 0);
+}
+
+/**
+ * Пустой график: сначала «нет точек», и только если точки есть, а базы нет —
+ * сообщение про начальный капитал. Иначе error+пустой equity выглядит как
+ * «обнулился seed», хотя поле seed в снимке может быть.
+ */
+export function emptyChartMessage({ points, mode, seed }) {
+  if (normalizePoints(points).length === 0) return EMPTY_CHART_NO_POINTS;
+  if (pctModeUnavailable(seed, mode)) return PCT_NO_POSITIVE_SEED;
+  return null;
 }
 
 /**

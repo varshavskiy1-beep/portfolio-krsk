@@ -47,7 +47,7 @@ import {
   showsFreeCash,
   underTitleLabel,
 } from "./strategyMeta.js";
-import { displayNote, fromCapitalLine } from "./uiCopy.js";
+import { displayNote, fromCapitalLine, snapshotErrorLine } from "./uiCopy.js";
 
 const fmt = (n, currency) => {
   if (n == null || Number.isNaN(n)) return "—";
@@ -136,6 +136,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
                 : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
+      {!showLine && snapshotErrorLine(a) ? (
+        <div className="updated">{snapshotErrorLine(a)}</div>
+      ) : null}
       {showLine && seed != null && historyCard && fromStart ? (
         <div className={`delta ${delta >= 0 ? "pos" : "neg"}`}>{fromStart}</div>
       ) : null}
