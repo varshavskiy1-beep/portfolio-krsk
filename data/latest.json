@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-11T15:41:35Z",
+  "generated_at": "2026-11-11T15:55:40Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24346.99465881002",
-      "updated_utc": "2026-11-11T15:41:28.320924Z",
+      "updated_utc": "2026-11-11T15:55:39.780665Z",
       "positions": [
         {
           "position_id": "p_0e80b5bc3ed9",
@@ -55,26 +55,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1830672.39756774",
-      "updated_utc": "2026-11-11T15:41:28.324897Z",
-      "positions": [
-        {
-          "position_id": "p_2a0dd78d32ae",
-          "symbol": "LKOH",
-          "side": "short",
-          "qty": "76.0",
-          "avg_px": "5956.0205",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_49741120af3a",
-          "symbol": "SBER",
-          "side": "long",
-          "qty": "1558.0",
-          "avg_px": "293.756805",
-          "stop_px": null
-        }
-      ]
+      "equity": "1830670.4900455398",
+      "updated_utc": "2026-11-11T15:55:39.784630Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -82,7 +65,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1438656.2819307197",
-      "updated_utc": "2026-11-11T15:41:28.330302Z",
+      "updated_utc": "2026-11-11T15:55:39.788064Z",
       "positions": [
         {
           "position_id": "p_75ef8e2b20db",
@@ -108,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11655.835287370997",
-      "updated_utc": "2026-11-11T15:41:28.336988Z",
+      "updated_utc": "2026-11-11T15:55:39.792153Z",
       "positions": [
         {
           "position_id": "p_4c410e1b7df0",
@@ -126,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-11T15:41:28.341267Z",
+      "updated_utc": "2026-11-11T15:55:39.795958Z",
       "positions": []
     },
     {
@@ -232,7 +215,7 @@
       "seed": "10000",
       "equity": "8969.691",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-11T15:40:01Z",
+      "updated_utc": "2026-11-11T15:50:01Z",
       "positions": [
         {
           "symbol": "AAPL",
