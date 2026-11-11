@@ -116,12 +116,14 @@ test("retired forts_adr_adaptive is not a portal shell and does not come back fr
       equity: "2249400",
       seed: "1500000",
     },
-    { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB", equity: "1520000" },
+    { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "RUB", equity: "308800" },
   ]);
   assert.equal(merged.some((a) => a.bot_id === FORTS_ADR_ADAPTIVE_BOT_ID), false);
   assert.equal(merged.some((a) => a.account_id === FORTS_ADR_ADAPTIVE_ACCOUNT_ID), false);
   assert.ok(merged.some((a) => a.bot_id === "v6b1"));
-  assert.ok(merged.some((a) => a.bot_id === "forts_adr_static"));
+  assert.ok(merged.some((a) => a.bot_id === "eth_okx_moex"));
+  assert.equal(merged.some((a) => a.bot_id === "forts_adr_static"), false);
+  assert.equal(merged.some((a) => a.bot_id === "pump_radar"), false);
   assert.equal(isHiddenPortalId(FORTS_ADR_ADAPTIVE_BOT_ID), true);
   assert.equal(isHiddenPortalId(FORTS_ADR_ADAPTIVE_ACCOUNT_ID), true);
   assert.equal(
@@ -134,7 +136,7 @@ test("retired forts_adr_adaptive is not a portal shell and does not come back fr
 });
 
 test("paper badge is on every account card", () => {
-  assert.equal(showsPaperBadge({ bot_id: "forts_adr_static", account_id: "forts_adr_static" }), true);
+  assert.equal(showsPaperBadge({ bot_id: "v6b1", account_id: "v6b1" }), true);
   assert.equal(showsPaperBadge({ bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID }), true);
   assert.equal(showsPaperBadge(null), false);
 });

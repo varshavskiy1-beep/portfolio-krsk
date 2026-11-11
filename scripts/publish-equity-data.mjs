@@ -2,7 +2,8 @@
 /**
  * Публикует только живые артефакты эквити на ветку gh-pages (GitHub Pages).
  * Master / Vercel не трогаем — UI тянет JSON с Pages, backtests остаётся на code-deploy.
- * Hidden / retired ids (paper_block2, forts_adr_adaptive, …) вырезаются из
+ * Hidden / retired ids (paper_block2, forts_adr_adaptive, pump_radar,
+ * forts_adr_static, …) вырезаются из
  * latest.json и history.json перед копированием — повторный bot_id с хоста
  * не публикуется. Vercel rebuild отсюда не запускается.
  *

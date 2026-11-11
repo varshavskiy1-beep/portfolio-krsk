@@ -15,12 +15,15 @@ import {
   FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
   FORTS_ADR_ADAPTIVE_BOT_ID,
   FORTS_ADR_ADAPTIVE_SERIES_KEY,
+  FORTS_ADR_STATIC_SERIES_KEY,
+  PUMP_RADAR_SERIES_KEY,
 } from "./strategyMeta.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
 const history = JSON.parse(readFileSync(join(root, "public/data/history.json"), "utf8"));
-const STATIC = "forts_adr_static::forts_adr_static";
+const ETH = "eth_okx_moex::eth_okx_moex";
+const OAC = "oac_paper::oac_paper";
 const clone = (x) => JSON.parse(JSON.stringify(x));
 
 test("equityCurvePoints: string equity becomes number, sorted, bad points dropped", () => {
@@ -46,39 +49,39 @@ test("merge: equity_curve replaces the stored series entirely (old 1 950 000 gon
     schema: "equity_history.v1",
     updated_at: null,
     series: {
-      [STATIC]: {
-        bot_id: "forts_adr_static",
-        account_id: "forts_adr_static",
-        currency: "RUB",
-        seed: 1500000,
+      [OAC]: {
+        bot_id: "oac_paper",
+        account_id: "oac_paper",
+        currency: "USD",
+        seed: 10000,
         points: [
-          { t: "2026-09-21T13:10:00Z", equity: 1950000 },
-          { t: "2026-09-22T13:10:33Z", equity: 1837991.68 },
+          { t: "2026-09-21T13:10:00Z", equity: 19500 },
+          { t: "2026-09-22T13:10:33Z", equity: 18379.91 },
         ],
       },
     },
   };
   const acc = {
-    bot_id: "forts_adr_static",
-    account_id: "forts_adr_static",
-    currency: "RUB",
-    seed: "1500000",
-    equity: "1387991.68",
+    bot_id: "oac_paper",
+    account_id: "oac_paper",
+    currency: "USD",
+    seed: "10000",
+    equity: "9900",
     updated_utc: "2026-09-22T13:10:33Z",
     equity_curve: [
-      { t: "2026-09-18T16:39:08Z", equity: "1500000.0" },
-      { t: "2026-09-21T13:10:00Z", equity: "1500000.0" },
-      { t: "2026-09-22T13:10:33Z", equity: "1387991.68" },
+      { t: "2026-09-18T16:39:08Z", equity: "10000.0" },
+      { t: "2026-09-21T13:10:00Z", equity: "10000.0" },
+      { t: "2026-09-22T13:10:33Z", equity: "9900" },
     ],
   };
   mergeLatestIntoHistory(hist, { generated_at: "2026-10-20T10:17:45Z", accounts: [acc] });
-  assert.deepEqual(hist.series[STATIC].points, [
-    { t: "2026-09-18T16:39:08Z", equity: 1500000 },
-    { t: "2026-09-21T13:10:00Z", equity: 1500000 },
-    { t: "2026-09-22T13:10:33Z", equity: 1387991.68 },
+  assert.deepEqual(hist.series[OAC].points, [
+    { t: "2026-09-18T16:39:08Z", equity: 10000 },
+    { t: "2026-09-21T13:10:00Z", equity: 10000 },
+    { t: "2026-09-22T13:10:33Z", equity: 9900 },
   ]);
-  assert.equal(hist.series[STATIC].seed, 1500000);
-  assert.equal(hist.series[STATIC].currency, "RUB");
+  assert.equal(hist.series[OAC].seed, 10000);
+  assert.equal(hist.series[OAC].currency, "USD");
 });
 
 test("merge: accounts without equity_curve stay append-only", () => {
@@ -101,21 +104,20 @@ test("merge: accounts without equity_curve stay append-only", () => {
   ]);
 });
 
-test("merge on current latest.json: forts static equals equity_curve, other keys only grow", () => {
+test("merge on current latest.json: pump/static dropped, ETH and others only grow", () => {
   const before = clone(history);
   const after = mergeLatestIntoHistory(clone(history), clone(latest));
   const byKey = Object.fromEntries(latest.accounts.map((a) => [`${a.bot_id}::${a.account_id}`, a]));
   assert.equal(byKey[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
+  assert.equal(byKey[PUMP_RADAR_SERIES_KEY], undefined);
+  assert.equal(byKey[FORTS_ADR_STATIC_SERIES_KEY], undefined);
   assert.equal(after.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-  assert.deepEqual(after.series[STATIC].points, equityCurvePoints(byKey[STATIC]));
-  assert.ok(after.series[STATIC].points.length >= 32);
-  assert.deepEqual(before.series[STATIC].points, after.series[STATIC].points);
-  const s = after.series[STATIC].points;
-  assert.equal(s[0].t.slice(0, 16), "2026-09-19T03:56");
-  assert.equal(s[0].equity, 1500000);
-  assert.ok(Math.abs(s[1].equity - 1508999.9999124017) < 1e-6);
+  assert.equal(after.series[PUMP_RADAR_SERIES_KEY], undefined);
+  assert.equal(after.series[FORTS_ADR_STATIC_SERIES_KEY], undefined);
+  assert.ok(after.series[ETH]);
+  assert.ok(after.series[ETH].points.length >= 1);
+  assert.deepEqual(before.series[ETH].points, after.series[ETH].points.slice(0, before.series[ETH].points.length));
   for (const [key, ser] of Object.entries(before.series)) {
-    if (key === STATIC) continue;
     if (isDroppedEquitySeries(key, ser)) {
       assert.equal(after.series[key], undefined, key);
       continue;
@@ -124,7 +126,6 @@ test("merge on current latest.json: forts static equals equity_curve, other keys
     assert.deepEqual(after.series[key].points.slice(0, prev.length), prev, key);
   }
   assert.equal(after.series["three_robots_okx_nasdaq_1h::paper_block2"], undefined);
-  assert.equal(after.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
 });
 
 test("merge drops retired paper_block2 even if leftover feed still has the account", () => {
@@ -235,10 +236,10 @@ test("merge drops retired forts_adr_adaptive even if leftover feed still has the
         account_id: "v6b1",
         points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }],
       },
-      [STATIC]: {
-        bot_id: "forts_adr_static",
-        account_id: "forts_adr_static",
-        points: [{ t: "2026-09-19T03:56:37Z", equity: 1500000 }],
+      [ETH]: {
+        bot_id: "eth_okx_moex",
+        account_id: "eth_okx_moex",
+        points: [{ t: "2026-10-13T00:00:00Z", equity: 300000 }],
       },
     },
   };
@@ -255,16 +256,16 @@ test("merge drops retired forts_adr_adaptive even if leftover feed still has the
         equity_curve: [{ t: "2026-11-11T00:00:00Z", equity: "2249400" }],
       },
       {
-        bot_id: "forts_adr_static",
-        account_id: "forts_adr_static",
-        equity: "1501000",
+        bot_id: "eth_okx_moex",
+        account_id: "eth_okx_moex",
+        equity: "301000",
         updated_utc: "2026-11-11T00:00:00Z",
       },
     ],
   });
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   assert.equal(hist.series["v6b1::v6b1"].points.at(-1).equity, 10100);
-  assert.equal(hist.series[STATIC].points.at(-1).equity, 1501000);
+  assert.equal(hist.series[ETH].points.at(-1).equity, 301000);
 });
 
 test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps other books", () => {
@@ -277,12 +278,12 @@ test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps othe
         equity: "2249400",
         seed: "1500000",
       },
-      { bot_id: "forts_adr_static", account_id: "forts_adr_static", equity: "1520000" },
+      { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", equity: "308800" },
     ],
     manifest: [
       { bot_id: "v6b1", logic: "ok" },
       { bot_id: FORTS_ADR_ADAPTIVE_BOT_ID, logic: "retired lookahead" },
-      { bot_id: "forts_adr_static", logic: "ok" },
+      { bot_id: "eth_okx_moex", logic: "ok" },
     ],
   };
   const hist = {
@@ -293,25 +294,25 @@ test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps othe
         points: [{ t: "2026-10-23T13:10:50Z", equity: 2249400 }],
       },
       "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
-      [STATIC]: {
-        bot_id: "forts_adr_static",
-        account_id: "forts_adr_static",
-        points: [{ t: "2026-09-19T03:56:37Z", equity: 1500000 }],
+      [ETH]: {
+        bot_id: "eth_okx_moex",
+        account_id: "eth_okx_moex",
+        points: [{ t: "2026-10-13T00:00:00Z", equity: 300000 }],
       },
     },
   };
   const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
-  const staticBefore = JSON.stringify(hist.series[STATIC]);
+  const ethBefore = JSON.stringify(hist.series[ETH]);
   sanitizeCabinetSnapshot(latest, hist);
   assert.deepEqual(
     latest.accounts.map((a) => a.account_id),
-    ["v6b1", "forts_adr_static"],
+    ["v6b1", "eth_okx_moex"],
   );
   assert.deepEqual(
     latest.manifest.map((m) => m.bot_id),
-    ["v6b1", "forts_adr_static"],
+    ["v6b1", "eth_okx_moex"],
   );
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
-  assert.equal(JSON.stringify(hist.series[STATIC]), staticBefore);
+  assert.equal(JSON.stringify(hist.series[ETH]), ethBefore);
 });

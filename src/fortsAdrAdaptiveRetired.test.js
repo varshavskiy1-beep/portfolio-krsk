@@ -35,7 +35,7 @@ import {
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TARGET = FORTS_ADR_ADAPTIVE_BOT_ID;
-const STATIC = "forts_adr_static::forts_adr_static";
+const ETH = "eth_okx_moex::eth_okx_moex";
 const V6 = "v6b1::v6b1";
 
 function jsonResponse(body, ok = true) {
@@ -68,17 +68,17 @@ function staleLatest() {
         ],
       },
       {
-        bot_id: "forts_adr_static",
-        account_id: "forts_adr_static",
+        bot_id: "eth_okx_moex",
+        account_id: "eth_okx_moex",
         currency: "RUB",
-        equity: "1523690.72",
-        seed: "1500000",
+        equity: "308800.21",
+        seed: "300000",
       },
     ],
     manifest: [
       { bot_id: "v6b1", logic: "ok" },
       { bot_id: TARGET, logic: "lookahead in entry hour" },
-      { bot_id: "forts_adr_static", logic: "ok" },
+      { bot_id: "eth_okx_moex", logic: "ok" },
     ],
   };
 }
@@ -105,12 +105,12 @@ function staleHistory() {
           { t: "2026-11-11T00:00:00Z", equity: 2249400 },
         ],
       },
-      [STATIC]: {
-        bot_id: "forts_adr_static",
-        account_id: "forts_adr_static",
+      [ETH]: {
+        bot_id: "eth_okx_moex",
+        account_id: "eth_okx_moex",
         currency: "RUB",
-        seed: 1500000,
-        points: [{ t: "2026-09-19T03:56:37Z", equity: 1523690.72 }],
+        seed: 300000,
+        points: [{ t: "2026-10-13T00:00:00Z", equity: 308800.21 }],
       },
     },
   };
@@ -131,13 +131,13 @@ test("stale feed + history: card, chips, OG, passport and %PnL never surface; ot
   const latest = staleLatest();
   const hist = staleHistory();
   const v6First = hist.series[V6].points[0].equity;
-  const staticFirst = hist.series[STATIC].points[0].equity;
+  const ethFirst = hist.series[ETH].points[0].equity;
 
   const cards = mergePortalAccounts(latest.accounts);
   assert.equal(cards.some((a) => a.bot_id === TARGET || a.account_id === TARGET), false);
   assert.equal(displayedBotIds(latest.accounts).includes(TARGET), false);
   assert.ok(cards.some((a) => a.bot_id === "v6b1"));
-  assert.ok(cards.some((a) => a.bot_id === "forts_adr_static"));
+  assert.ok(cards.some((a) => a.bot_id === "eth_okx_moex"));
 
   const winner = pickOgWinner(latest, hist);
   assert.ok(winner);
@@ -153,7 +153,7 @@ test("stale feed + history: card, chips, OG, passport and %PnL never surface; ot
   mergeLatestIntoHistory(hist, latest);
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   assert.equal(hist.series[V6].points[0].equity, v6First);
-  assert.equal(hist.series[STATIC].points[0].equity, staticFirst);
+  assert.equal(hist.series[ETH].points[0].equity, ethFirst);
 });
 
 test("direct hash #/s/forts_adr_adaptive is blocked and does not keep the old result", () => {
@@ -161,7 +161,7 @@ test("direct hash #/s/forts_adr_adaptive is blocked and does not keep the old re
   assert.equal(isBlockedStrategyRoute(route), true);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/FORTS_ADR_ADAPTIVE")), true);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/forts_adr_adaptive/")), true);
-  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/forts_adr_static")), false);
+  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/eth_okx_moex")), false);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/v6b1")), false);
 });
 
@@ -170,19 +170,19 @@ test("incoming bot_id on a later sync still cannot recreate the series", () => {
   mergeLatestIntoHistory(hist, staleLatest());
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   assert.ok(hist.series[V6]);
-  assert.ok(hist.series[STATIC]);
+  assert.ok(hist.series[ETH]);
 });
 
 test("publisher sanitize drops adaptive from gh-pages payloads and keeps other rows", () => {
   const latest = staleLatest();
   const hist = staleHistory();
-  const staticAcc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "forts_adr_static"));
+  const ethAcc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "eth_okx_moex"));
   const v6Acc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "v6b1"));
   sanitizeCabinetSnapshot(latest, hist);
   assert.equal(latest.accounts.some((a) => a.bot_id === TARGET), false);
   assert.equal(latest.manifest.some((m) => m.bot_id === TARGET), false);
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-  assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "forts_adr_static")), staticAcc);
+  assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "eth_okx_moex")), ethAcc);
   assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "v6b1")), v6Acc);
 });
 
@@ -207,9 +207,9 @@ test("stale live JSON cache: fetchCabinetSnapshot never returns the retired acco
     );
     assert.equal(snap.history.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
     assert.ok(snap.latest.accounts.some((a) => a.bot_id === "v6b1"));
-    assert.ok(snap.latest.accounts.some((a) => a.bot_id === "forts_adr_static"));
+    assert.ok(snap.latest.accounts.some((a) => a.bot_id === "eth_okx_moex"));
     assert.ok(snap.history.series[V6]);
-    assert.ok(snap.history.series[STATIC]);
+    assert.ok(snap.history.series[ETH]);
   } finally {
     globalThis.fetch = prev;
   }
@@ -222,9 +222,9 @@ test("tracked latest.json / history.json have no forts_adr_adaptive; other live 
   assert.equal(historyText.includes(TARGET), false);
   const latest = JSON.parse(latestText);
   const history = JSON.parse(historyText);
-  assert.ok(latest.accounts.some((a) => a.bot_id === "forts_adr_static"));
+  assert.ok(latest.accounts.some((a) => a.bot_id === "eth_okx_moex"));
   assert.ok(latest.accounts.some((a) => a.bot_id === "v6b1"));
-  assert.ok(history.series[STATIC]);
+  assert.ok(history.series[ETH]);
   assert.ok(history.series[V6]);
   assert.equal(history.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   dropHiddenFeedRows(latest);

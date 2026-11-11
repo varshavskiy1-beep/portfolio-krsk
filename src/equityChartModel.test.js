@@ -209,7 +209,7 @@ test("color follows seed, not the last drawdown leg", () => {
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), true);
 });
 
-test("forts_adr_static: six history points stay drawable and include seed on axis", () => {
+test("six RUB history points stay drawable and include seed on axis", () => {
   const money = buildSeries(staticPoints, seed, "money");
   assert.equal(money.length, 6);
   assert.equal(money[0].value, staticPoints[0].equity);
@@ -245,10 +245,10 @@ test("flat range around seed is padded so Area has height", () => {
 });
 
 test("resolveEquityPoints prefers non-empty equity_curve, else history", () => {
-  const account = { bot_id: "forts_adr_static", account_id: "forts_adr_static", equity_curve: [] };
+  const account = { bot_id: "oac_paper", account_id: "oac_paper", equity_curve: [] };
   const history = {
     series: {
-      "forts_adr_static::forts_adr_static": { points: staticPoints },
+      "oac_paper::oac_paper": { points: staticPoints },
     },
   };
   assert.equal(resolveEquityPoints(account, history).length, 6);

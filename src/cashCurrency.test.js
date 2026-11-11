@@ -28,16 +28,14 @@ test("venue wins over bot_id and feed", () => {
 
 test("bot_id maps crypto and FORTS when venue is missing", () => {
   assert.equal(canonicalCurrency({ bot_id: "v6b1", account_id: "v6b1", currency: "USD" }), "USDT");
-  assert.equal(canonicalCurrency({ bot_id: "pump_radar", account_id: "pump_radar", currency: "USD" }), "USDT");
   assert.equal(
-    canonicalCurrency({ bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "USDT" }),
+    canonicalCurrency({ bot_id: "who_pays", account_id: "paper_forts", venue: "FORTS", currency: "USDT" }),
     "RUB",
   );
 });
 
 test("currency chips: Young Bounce under USDT, OAC and Десятка under USD", () => {
   const accounts = [
-    { bot_id: "forts_adr_static", account_id: "forts_adr_static", currency: "RUB" },
     { bot_id: "v6b1", account_id: "v6b1", currency: "USDT" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
@@ -67,7 +65,6 @@ test("currency chips: Young Bounce under USDT, OAC and Десятка under USD"
   assert.deepEqual(
     rub.map((a) => a.account_id),
     [
-      "forts_adr_static",
       "cycle_6040_paper",
       "rf_conservative_comon",
       "rf_bonds_rate_cycle",
