@@ -2,6 +2,9 @@
 /**
  * Публикует только живые артефакты эквити на ветку gh-pages (GitHub Pages).
  * Master / Vercel не трогаем — UI тянет JSON с Pages, backtests остаётся на code-deploy.
+ * Hidden / retired ids (paper_block2, forts_adr_adaptive, …) вырезаются из
+ * latest.json и history.json перед копированием — повторный bot_id с хоста
+ * не публикуется. Vercel rebuild отсюда не запускается.
  *
  * Usage: node scripts/publish-equity-data.mjs [--dry-run]
  */
@@ -10,6 +13,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { sanitizeCabinetSnapshot } from "../src/equitySanitize.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -39,13 +43,26 @@ function loadGeneratedAt() {
   return raw.generated_at;
 }
 
+function copySanitizedJson(from, to, kind) {
+  const raw = JSON.parse(fs.readFileSync(from, "utf8"));
+  if (kind === "latest") {
+    sanitizeCabinetSnapshot(raw, null);
+    fs.writeFileSync(to, `${JSON.stringify(raw, null, 2)}\n`);
+    return;
+  }
+  sanitizeCabinetSnapshot(null, raw);
+  fs.writeFileSync(to, JSON.stringify(raw, null, 2));
+}
+
 function copyArtifacts(workDir) {
   for (const { src, dest } of PUBLISH_FILES) {
     const from = path.join(root, src);
     if (!fs.existsSync(from)) throw new Error(`missing ${src}`);
     const to = path.join(workDir, dest);
     fs.mkdirSync(path.dirname(to), { recursive: true });
-    fs.copyFileSync(from, to);
+    if (src.endsWith("latest.json")) copySanitizedJson(from, to, "latest");
+    else if (src.endsWith("history.json")) copySanitizedJson(from, to, "history");
+    else fs.copyFileSync(from, to);
   }
   const nojekyll = path.join(workDir, ".nojekyll");
   if (!fs.existsSync(nojekyll)) fs.writeFileSync(nojekyll, "");

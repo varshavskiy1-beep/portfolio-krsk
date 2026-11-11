@@ -9,54 +9,19 @@ import { canonicalCurrency } from "./cashCurrency.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { applyHistoryResets, filterResetPoints, shouldAppendHistoryPoint } from "./historyReset.js";
-import { capHistoryPoints } from "./historyStore.js";
 import {
-  ROBOT2_ACCOUNT_ID,
-  ROBOT2_BOT_ID,
-  isHiddenPortalAccount,
-  isHiddenPortalId,
-} from "./strategyMeta.js";
+  dropOrphanHistorySeries,
+  dropHiddenFeedRows,
+  isDroppedEquitySeries,
+  sanitizeCabinetSnapshot,
+} from "./equitySanitize.js";
+import { capHistoryPoints } from "./historyStore.js";
+import { isHiddenPortalAccount } from "./strategyMeta.js";
+
+export { dropHiddenFeedRows, dropOrphanHistorySeries, isDroppedEquitySeries, sanitizeCabinetSnapshot };
 
 function keyOf(a) {
   return `${a.bot_id}::${a.account_id}`;
-}
-
-function isRetiredFeedId(id) {
-  const n = String(id || "").trim().toLowerCase();
-  return n === ROBOT2_BOT_ID || n === ROBOT2_ACCOUNT_ID;
-}
-
-export function isDroppedEquitySeries(key, series) {
-  if (isRetiredFeedId(series?.bot_id) || isRetiredFeedId(series?.account_id)) return true;
-  return String(key || "").split("::").some(isRetiredFeedId);
-}
-
-/** Убирает снятые стратегии из снимка ленты перед публикацией latest.json. */
-export function dropHiddenFeedRows(latest) {
-  if (!latest) return latest;
-  if (Array.isArray(latest.accounts)) {
-    latest.accounts = latest.accounts.filter((a) => a && !isHiddenPortalAccount(a));
-  }
-  if (Array.isArray(latest.manifest)) {
-    latest.manifest = latest.manifest.filter((m) => m && !isHiddenPortalId(m.bot_id));
-  }
-  return latest;
-}
-
-/**
- * Если account_id исчез из ленты или стратегия снята — ряд не оставляем.
- * Карточку из orphan series не восстанавливаем.
- */
-export function dropOrphanHistorySeries(hist, _latest) {
-  if (!hist?.series) return [];
-  const dropped = [];
-  for (const key of Object.keys(hist.series)) {
-    if (isDroppedEquitySeries(key, hist.series[key])) {
-      delete hist.series[key];
-      dropped.push(key);
-    }
-  }
-  return dropped;
 }
 
 export function mergeLatestIntoHistory(hist, latest) {

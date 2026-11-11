@@ -37,7 +37,7 @@ const staticPoints = [
   { t: "2026-09-22T13:21:26.826825Z", equity: 1500499.9995284856 },
 ];
 
-test("forts_adr_adaptive: uses only real points; seed is a reference line, not a fake day", () => {
+test("short series: uses only real points; seed is a reference line, not a fake day", () => {
   const firstReal = toUnix(adaptivePoints[0].t);
   const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(pct.length, 2);
@@ -93,7 +93,7 @@ test("P03: Infinity JSON string is dropped; zero seed blocks percent mode", () =
   assert.equal(pctModeUnavailable(blockedNaN.base, "pct"), true);
 });
 
-test("forts_adr_adaptive: last equity above seed stays green without a fake start point", () => {
+test("short series: last equity above seed stays green without a fake start point", () => {
   const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(isChartUpVsSeed(pct, seed, "pct"), true);
   assert.equal(chartSeriesColors(true).lineColor, CHART_POS.lineColor);
@@ -110,7 +110,7 @@ test("percent axis labels use a Russian comma and never say seed", () => {
   assert.doesNotMatch(formatChartPctLabel(13.1), /seed/i);
 });
 
-test("short series (adaptive) defaults to «Всё» so the seed line stays in view", () => {
+test("short series defaults to «Всё» so the seed line stays in view", () => {
   const pct = buildSeries(adaptivePoints, seed, "pct");
   assert.equal(defaultChartRange(pct), "all");
 });

@@ -3,6 +3,11 @@
 export const ROBOT2_BOT_ID = "three_robots_okx_nasdaq_1h";
 export const ROBOT2_ACCOUNT_ID = "paper_block2";
 
+/** Снятый FORTS ADR adaptive: lookahead в час входа, кривая недостоверна. */
+export const FORTS_ADR_ADAPTIVE_BOT_ID = "forts_adr_adaptive";
+export const FORTS_ADR_ADAPTIVE_ACCOUNT_ID = "forts_adr_adaptive";
+export const FORTS_ADR_ADAPTIVE_SERIES_KEY = `${FORTS_ADR_ADAPTIVE_BOT_ID}::${FORTS_ADR_ADAPTIVE_ACCOUNT_ID}`;
+
 export const YOUNG_BOUNCE_BOT_ID = "young_bounce_combo";
 export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
 
@@ -129,6 +134,8 @@ export const HIDDEN_PORTAL_IDS = new Set([
   "grail_b20_3x",
   ROBOT2_BOT_ID,
   ROBOT2_ACCOUNT_ID,
+  FORTS_ADR_ADAPTIVE_BOT_ID,
+  FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
 ]);
 
 /** Нормализация bot_id из hash/фида: trim, decode, без query и хвостового /. */

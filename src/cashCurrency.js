@@ -17,7 +17,6 @@ export const VENUE_CURRENCY = {
 export const BOT_CURRENCY = {
   v6b1: "USDT",
   pump_radar: "USDT",
-  forts_adr_adaptive: "RUB",
   forts_adr_static: "RUB",
   young_bounce_combo: "USDT",
   oac_paper: "USD",

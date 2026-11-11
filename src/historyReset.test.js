@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { FORTS_ADR_ADAPTIVE_SERIES_KEY } from "./strategyMeta.js";
 import {
   HISTORY_RESETS,
   PAPER_BLOCK2_SERIES_KEY,
@@ -116,11 +117,12 @@ test("reset caption shows while the new book has one calendar day", () => {
   assert.equal(historyResetLine({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo" }, V6B1_OLD), "");
 });
 
-test("HISTORY_RESETS lists v6b1 and rate-cycle, not paper_block2", () => {
+test("HISTORY_RESETS lists v6b1 and rate-cycle, not paper_block2 or forts_adr_adaptive", () => {
   assert.deepEqual(
     Object.keys(HISTORY_RESETS).sort(),
     [RATE_CYCLE_SERIES_KEY, V6B1_SERIES_KEY].sort(),
   );
+  assert.equal(HISTORY_RESETS[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
 });
 
 test("rf_bonds_rate_cycle cutoff drops wealth-index 2.44 and keeps the first ruble print", () => {

@@ -5,6 +5,7 @@
 import { normalizeHistory, normalizeLatest } from "./cashCurrency.js";
 import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "./equityLiveData.js";
 import { assembleSnapshot } from "./feedValidate.js";
+import { sanitizeCabinetSnapshot } from "./equitySanitize.js";
 
 export async function readJson(url, { signal, optional = false } = {}) {
   let res;
@@ -50,6 +51,7 @@ export async function fetchCabinetSnapshot(base, { signal, liveBase = EQUITY_LIV
   if (!backtests.ok) return { ok: false, reason: backtests.reason };
   const snap = assembleSnapshot(latest.value, history.value, backtests.value);
   if (!snap.ok) return snap;
+  sanitizeCabinetSnapshot(snap.latest, snap.history);
   const normalized = normalizeLatest(snap.latest);
   if (!normalized) return { ok: false, reason: "latest_normalize" };
   return {
