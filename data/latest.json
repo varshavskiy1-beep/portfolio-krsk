@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-11T18:32:44Z",
+  "generated_at": "2026-11-11T18:42:50Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -37,18 +37,9 @@
       "account_id": "paper_us_eq",
       "venue": "US_EQ",
       "currency": "USD",
-      "equity": "24346.99465881002",
-      "updated_utc": "2026-11-11T18:32:39.509203Z",
-      "positions": [
-        {
-          "position_id": "p_0e80b5bc3ed9",
-          "symbol": "AMZN",
-          "side": "short",
-          "qty": "22.0",
-          "avg_px": "273.400309",
-          "stop_px": null
-        }
-      ]
+      "equity": "24495.67072785002",
+      "updated_utc": "2026-11-11T18:42:47.442203Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -56,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1830670.4900455398",
-      "updated_utc": "2026-11-11T18:32:39.513836Z",
+      "updated_utc": "2026-11-11T18:42:47.445180Z",
       "positions": []
     },
     {
@@ -65,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1433219.3975383998",
-      "updated_utc": "2026-11-11T18:32:39.517527Z",
+      "updated_utc": "2026-11-11T18:42:47.448479Z",
       "positions": []
     },
     {
@@ -74,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11674.477786182997",
-      "updated_utc": "2026-11-11T18:32:39.520809Z",
+      "updated_utc": "2026-11-11T18:42:47.451918Z",
       "positions": []
     },
     {
@@ -83,7 +74,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-11T18:32:39.531496Z",
+      "updated_utc": "2026-11-11T18:42:47.455156Z",
       "positions": []
     },
     {
@@ -189,7 +180,7 @@
       "seed": "10000",
       "equity": "8969.691",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-11T18:30:01Z",
+      "updated_utc": "2026-11-11T18:40:00Z",
       "positions": [
         {
           "symbol": "AAPL",
