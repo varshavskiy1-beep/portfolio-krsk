@@ -272,6 +272,7 @@ export default function StrategyPage({
   history,
   backtests,
   fetchedAt,
+  feedSource,
   loadError,
   onRetry,
   onBack,
@@ -306,6 +307,7 @@ export default function StrategyPage({
         <FeedStatus
           generatedAt={data.generated_at}
           fetchedAt={fetchedAt}
+          source={feedSource}
           error={loadError}
           onRetry={onRetry}
         />

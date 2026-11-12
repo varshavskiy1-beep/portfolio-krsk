@@ -8,9 +8,12 @@ import {
   ONLY_PAPER_TRADE,
   REFRESH_MS,
   RETRY_LABEL,
+  FALLBACK_BANNER_RU,
   STALE_AFTER_MS,
   STALE_LABEL,
   assembleSnapshot,
+  feedFallbackLine,
+  isGeneratedAtStale,
   backtestSourceLine,
   feedSourceLine,
   formatFetchedAt,
@@ -78,6 +81,11 @@ test("P07: stale after 40 minutes; refresh interval is 5 minutes", () => {
   assert.equal(isFeedStale(null), false);
   assert.equal(STALE_LABEL, "снимок просрочен");
   assert.match(formatFetchedAt(Date.parse("2026-10-17T10:45:00Z")), /17/);
+  const now = Date.parse("2026-11-12T04:41:00Z");
+  assert.equal(isGeneratedAtStale("2026-11-12T04:25:21Z", now), false);
+  assert.equal(isGeneratedAtStale("2026-10-24T06:13:05Z", now), true);
+  assert.match(feedFallbackLine("2026-10-24T06:13:05Z"), /2026-10-24T06:13:05Z/);
+  assert.match(FALLBACK_BANNER_RU, /не живая лента/);
 });
 
 test("P08: feed and backtest source lines stay honest about primary quotes", () => {

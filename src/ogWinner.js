@@ -3,6 +3,7 @@
  * Суммы в разных валютах не сравниваются и не складываются.
  */
 
+import { isStaleBundledCnyAccount } from "./cnyMomCard.js";
 import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "./equityLiveData.js";
 import { isHiddenPortalAccount } from "./strategyMeta.js";
 
@@ -74,6 +75,7 @@ export function pickOgWinner(latest, history, currencyFn) {
   const scored = [];
   for (const account of latest?.accounts || []) {
     if (isHiddenPortalAccount(account)) continue;
+    if (isStaleBundledCnyAccount(account)) continue;
     const row = scoreAccount(account, seriesMap[seriesKey(account)], currencyFn);
     if (row) scored.push(row);
   }

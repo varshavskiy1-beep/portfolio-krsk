@@ -2,7 +2,10 @@
 /**
  * Pull equity-ro latest.json and append points into public/data/history.json.
  * An account with a non-empty equity_curve replaces its history series entirely
- * with that curve (equity → number); other accounts stay append-only.
+ * with that curve (equity → number). cny_mom_h360 with history_mode=replace
+ * or generation=cny-journal-capital-v1 replaces its series with journal.capital
+ * wholly when the journal is non-empty (empty replace does not wipe a valid
+ * series). Other accounts stay append-only.
  * After SCP, remaps cash currency by venue / bot_id (OKX crypto → USDT, FORTS/RU → RUB, US_EQ → USD).
  * --local skips SCP and only remaps the existing public/data snapshot + history series currency.
  * --publish runs scripts/publish-equity-data.mjs (push data/og/share to gh-pages only).

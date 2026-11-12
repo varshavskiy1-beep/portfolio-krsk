@@ -2,6 +2,7 @@
  * Снятие hidden/retired счетов из latest/history без Node API.
  * Браузер (loadFeed), sync и gh-pages publisher пользуются одним фильтром.
  */
+import { neutralizeStaleBundledCny } from "./cnyMomCard.js";
 import {
   FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
   FORTS_ADR_ADAPTIVE_BOT_ID,
@@ -71,5 +72,6 @@ export function dropOrphanHistorySeries(hist, _latest) {
 export function sanitizeCabinetSnapshot(latest, history) {
   dropHiddenFeedRows(latest);
   if (history) dropOrphanHistorySeries(history, latest);
+  neutralizeStaleBundledCny(latest, history);
   return { latest, history };
 }

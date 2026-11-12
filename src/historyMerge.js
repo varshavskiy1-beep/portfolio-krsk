@@ -2,10 +2,19 @@
  * Слияние снимка ленты в history.json (без файлов и сети — для sync-equity и тестов).
  * Счёт с непустым equity_curve: ряд ключа заменяется этой кривой целиком
  * (капитал — число). ETH по сигналу OKX — так же, если history пришёл с часами.
+ * Юань 360 при history_mode=replace / generation=cny-journal-capital-v1 —
+ * ряд ключа заменяется journal.capital целиком (не append к 12 Oct / 569).
  * Остальные счета только дописываются.
  * Снятый / исчезнувший из ленты account_id не держим в series и не создаём заново.
  */
 import { canonicalCurrency } from "./cashCurrency.js";
+import {
+  CNY_JOURNAL_CAPITAL_GENERATION,
+  cnyJournalHistoryPoints,
+  isCnyJournalReplaceSignal,
+  isCnyJournalStoredSeries,
+  isStaleBundledCnyAccount,
+} from "./cnyMomCard.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { applyHistoryResets, filterResetPoints, shouldAppendHistoryPoint } from "./historyReset.js";
@@ -34,6 +43,25 @@ export function mergeLatestIntoHistory(hist, latest) {
   for (const a of latest.accounts || []) {
     if (isHiddenPortalAccount(a)) continue;
     const k = keyOf(a);
+    if (isStaleBundledCnyAccount(a)) continue;
+    if (isCnyJournalReplaceSignal(a)) {
+      const curve = cnyJournalHistoryPoints(a);
+      // Пустой journal не затирает валидный ряд (ни 479 v1, ни предыдущую книгу).
+      if (!curve.length) continue;
+      const prev = hist.series[k] || {};
+      hist.series[k] = {
+        ...prev,
+        bot_id: a.bot_id,
+        account_id: a.account_id,
+        currency: canonicalCurrency(a),
+        seed: a.seed == null || a.seed === "" ? prev.seed ?? null : Number(a.seed),
+        generation: CNY_JOURNAL_CAPITAL_GENERATION,
+        history_mode: "replace",
+        points: capHistoryPoints(filterResetPoints(k, curve)),
+      };
+      continue;
+    }
+    if (isCnyJournalStoredSeries(hist.series[k])) continue;
     // ETH по сигналу OKX: ряд с часами (equity_curve или history с UTC) заменяет ключ так же.
     const timedEth = ethOkxTimedSeries(a);
     if (hasEquityCurve(a) || timedEth.length) {
