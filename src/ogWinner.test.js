@@ -200,6 +200,32 @@ test("og cache-bust is YYYYMMDDHHMM UTC without colons", () => {
   assert.match(ogCacheBust("not-a-date"), /^\d{12}$/);
 });
 
+test("stale bundled CNY 335539 is not the OG winner", () => {
+  const latest = {
+    accounts: [
+      {
+        bot_id: "v6b1",
+        account_id: "v6b1",
+        currency: "USDT",
+        seed: "10000",
+        equity: "10365.1588802",
+      },
+      {
+        bot_id: "cny_mom_h360",
+        account_id: "cny_mom_h360",
+        currency: "RUB",
+        seed: "300000",
+        equity: "335539.3734402401",
+        updated_utc: "2026-10-24T05:21:02Z",
+        as_of: "2026-10-24",
+      },
+    ],
+  };
+  const winner = pickOgWinner(latest, { series: {} });
+  assert.equal(winner.key, "v6b1::v6b1");
+  assert.doesNotMatch(ogDescription(winner), /11,85|35 539|335539/);
+});
+
 test("og:image prefers JPEG path without encoded ISO timestamps", () => {
   const href = ogImageHref("2026-09-20T08:45:43Z");
   assert.equal(

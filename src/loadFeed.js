@@ -1,11 +1,12 @@
 /**
  * Согласованная загрузка latest / history / backtests.
- * Живая лента GitHub Pages — основной источник. Запасной bundled JSON
- * не подмешивается к живому latest и не выдаётся за свежий кадр.
+ * Живая лента: сначала same-origin /equity-live (Vercel rewrite на Pages),
+ * иначе github.io. Запасной bundled JSON не подмешивается к живому latest
+ * и не выдаётся за свежий кадр.
  * Битый кадр целиком отклоняется; вызывающий держит последнюю исправную версию.
  */
 import { normalizeHistory, normalizeLatest } from "./cashCurrency.js";
-import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "./equityLiveData.js";
+import { EQUITY_LIVE_DATA_BASE, normalizeDataBase, sameOriginLiveBase } from "./equityLiveData.js";
 import {
   FEED_SOURCE_FALLBACK,
   FEED_SOURCE_LIVE,
@@ -71,33 +72,40 @@ function emptyHistory() {
   return { schema: "equity_history.v1", series: {} };
 }
 
+async function readLivePair(root, { signal, timeoutMs }) {
+  const bust = equityCacheBust();
+  const [latest, history] = await Promise.all([
+    readJson(`${root}data/latest.json${bust}`, { signal, timeoutMs }),
+    readJson(`${root}data/history.json${bust}`, { signal, timeoutMs }),
+  ]);
+  if (latest.ok && history.ok) return { ok: true, latest, history };
+  return { ok: false };
+}
+
 export async function fetchCabinetSnapshot(
   base,
   {
     signal,
     liveBase = EQUITY_LIVE_DATA_BASE,
+    proxyBase,
     liveTimeoutMs = LIVE_FETCH_TIMEOUT_MS,
   } = {},
 ) {
   const fallbackBase = base || "/";
+  const proxyRoot =
+    proxyBase === null ? null : normalizeDataBase(proxyBase ?? sameOriginLiveBase(fallbackBase));
   const liveRoot = normalizeDataBase(liveBase);
-  const [liveLatest, liveHistory] = await Promise.all([
-    readJson(`${liveRoot}data/latest.json${equityCacheBust()}`, {
-      signal,
-      timeoutMs: liveTimeoutMs,
-    }),
-    readJson(`${liveRoot}data/history.json${equityCacheBust()}`, {
-      signal,
-      timeoutMs: liveTimeoutMs,
-    }),
-  ]);
+
+  // 1) same-origin Vercel rewrite → existing Pages data (browser never talks to github.io).
+  // 2) direct Pages. 3) bundled /data last-resort, tagged fallback — not a quiet Oct 24 live frame.
+  let pair = proxyRoot ? await readLivePair(proxyRoot, { signal, timeoutMs: liveTimeoutMs }) : { ok: false };
+  if (!pair.ok) pair = await readLivePair(liveRoot, { signal, timeoutMs: liveTimeoutMs });
 
   let source = FEED_SOURCE_LIVE;
-  let latest = liveLatest;
-  let history = liveHistory;
+  let latest = pair.ok ? pair.latest : { ok: false };
+  let history = pair.ok ? pair.history : { ok: false };
 
-  if (!liveLatest.ok || !liveHistory.ok) {
-    // Пара целиком: не мешать живой latest с bundled history (кривые Юаня из history.json).
+  if (!pair.ok) {
     source = FEED_SOURCE_FALLBACK;
     latest = await readJson(`${normalizeDataBase(fallbackBase)}data/latest.json`, { signal });
     history = await readJson(`${normalizeDataBase(fallbackBase)}data/history.json`, {

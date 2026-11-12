@@ -10,6 +10,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCanvas, GlobalFonts } from "@napi-rs/canvas";
 import { canonicalCurrency } from "../src/cashCurrency.js";
+import { sanitizeCabinetSnapshot } from "../src/equitySanitize.js";
+import { EQUITY_LIVE_DATA_BASE, normalizeDataBase } from "../src/equityLiveData.js";
 import { renderSharePage } from "../src/ogSharePage.js";
 import {
   formatPct,
@@ -338,6 +340,29 @@ function writeShareHtml(root, row, image) {
   return sharePath;
 }
 
+async function fetchJson(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`http ${res.status}`);
+  return res.json();
+}
+
+/** Live Pages pair for OG. Bundled Oct 24 is last resort and must not advertise CNY 335539. */
+export async function loadOgSnapshot(root) {
+  const base = root || defaultRoot();
+  const pages = normalizeDataBase(EQUITY_LIVE_DATA_BASE);
+  try {
+    const latest = await fetchJson(`${pages}data/latest.json`);
+    const history = await fetchJson(`${pages}data/history.json`);
+    sanitizeCabinetSnapshot(latest, history);
+    return { latest, history, source: "pages" };
+  } catch {
+    const latest = loadJson(path.join(base, "public", "data", "latest.json"), null);
+    const history = loadJson(path.join(base, "public", "data", "history.json"), { series: {} });
+    if (latest) sanitizeCabinetSnapshot(latest, history);
+    return { latest, history, source: "bundled" };
+  }
+}
+
 export function generateOgCover({ latest, history, root } = {}) {
   const base = root || defaultRoot();
   const latestPath = path.join(base, "public", "data", "latest.json");
@@ -345,6 +370,7 @@ export function generateOgCover({ latest, history, root } = {}) {
   const snap = latest || loadJson(latestPath, null);
   const hist = history || loadJson(historyPath, { series: {} });
   if (!snap) throw new Error("latest.json missing — cannot render OG cover");
+  sanitizeCabinetSnapshot(snap, hist);
 
   const row = pickOgWinner(snap, hist, canonicalCurrency);
   const generatedAt = snap.generated_at || new Date().toISOString();
@@ -371,4 +397,8 @@ export function generateOgCover({ latest, history, root } = {}) {
 
 const isMain =
   process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
-if (isMain) generateOgCover();
+if (isMain) {
+  const base = defaultRoot();
+  const { latest, history } = await loadOgSnapshot(base);
+  generateOgCover({ latest, history, root: base });
+}

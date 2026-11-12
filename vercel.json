@@ -7,6 +7,12 @@
       "gh-pages": false
     }
   },
+  "rewrites": [
+    {
+      "source": "/equity-live/data/:path*",
+      "destination": "https://varshavskiy1-beep.github.io/portfolio-krsk/data/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/",
@@ -16,6 +22,12 @@
     },
     {
       "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/equity-live/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]

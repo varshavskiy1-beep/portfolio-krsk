@@ -562,6 +562,33 @@ test("publisher does not append onto an existing journal generation", () => {
   assert.equal(JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY].points), before);
 });
 
+test("publisher empty CNY replace does not wipe a valid journal series", () => {
+  const hist = {
+    series: {
+      [CNY_MOM_H360_SERIES_KEY]: {
+        bot_id: CNY_MOM_H360_BOT_ID,
+        account_id: CNY_MOM_H360_ACCOUNT_ID,
+        generation: CNY_JOURNAL_CAPITAL_GENERATION,
+        history_mode: "replace",
+        points: CNY_JOURNAL_SYNTH.map((p) => ({ t: p.t, equity: Number(p.equity) })),
+      },
+      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+    },
+  };
+  const before = JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]);
+  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"].points);
+  mergeLatestIntoHistory(hist, {
+    generated_at: "2026-11-12T05:10:00Z",
+    accounts: [
+      cnyJournalAccount({ history: [], equity_curve: [] }),
+      { bot_id: "v6b1", account_id: "v6b1", equity: "10000", updated_utc: "2026-10-15T17:27:12Z" },
+    ],
+  });
+  assert.equal(JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]), before);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 3);
+  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"].points), v6Before);
+});
+
 test("publisher skips stale bundled CNY so 335539 is not appended", () => {
   const hist = {
     series: {

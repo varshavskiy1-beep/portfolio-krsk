@@ -46,6 +46,8 @@ export function mergeLatestIntoHistory(hist, latest) {
     if (isStaleBundledCnyAccount(a)) continue;
     if (isCnyJournalReplaceSignal(a)) {
       const curve = cnyJournalHistoryPoints(a);
+      // Пустой journal не затирает валидный ряд (ни 479 v1, ни предыдущую книгу).
+      if (!curve.length) continue;
       const prev = hist.series[k] || {};
       hist.series[k] = {
         ...prev,
