@@ -187,6 +187,71 @@ test("stale Pages latest with forts_adr_adaptive is stripped; other accounts sta
   }
 });
 
+test("CDN fallback of stale bundled CNY is нет данных; other accounts stay", async () => {
+  const prev = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes("latest.json")) {
+      return jsonResponse({
+        generated_at: "2026-10-24T06:13:05Z",
+        accounts: [
+          { bot_id: "v6b1", account_id: "v6b1", currency: "USD", seed: "10000", equity: "10000" },
+          {
+            bot_id: "cny_mom_h360",
+            account_id: "cny_mom_h360",
+            currency: "RUB",
+            seed: "300000",
+            equity: "335539.3734402401",
+            updated_utc: "2026-10-24T05:21:02Z",
+            as_of: "2026-10-24",
+            history: [{ t: "2026-10-24", equity: "335539.3734402401" }],
+          },
+          { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "RUB", seed: "300000", equity: "308800" },
+        ],
+      });
+    }
+    if (u.includes("history.json")) {
+      return jsonResponse({
+        series: {
+          "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+          "cny_mom_h360::cny_mom_h360": {
+            bot_id: "cny_mom_h360",
+            account_id: "cny_mom_h360",
+            points: [
+              { t: "2026-10-12T11:07:00Z", equity: 300000 },
+              { t: "2026-10-24T05:21:02Z", equity: 335539.3734402401 },
+            ],
+          },
+          "eth_okx_moex::eth_okx_moex": {
+            bot_id: "eth_okx_moex",
+            account_id: "eth_okx_moex",
+            points: [{ t: "2026-10-13T00:00:00Z", equity: 308800 }],
+          },
+        },
+      });
+    }
+    if (u.includes("backtests.json")) return jsonResponse({ series: {} });
+    return { ok: false, json: async () => null };
+  };
+  try {
+    const snap = await fetchCabinetSnapshot("/", { liveBase: LIVE });
+    assert.equal(snap.ok, true);
+    const cny = snap.latest.accounts.find((a) => a.bot_id === "cny_mom_h360");
+    assert.equal(cny.no_data, true);
+    assert.equal(cny.equity, null);
+    assert.equal(snap.history.series["cny_mom_h360::cny_mom_h360"], undefined);
+    assert.deepEqual(
+      snap.latest.accounts.filter((a) => a.bot_id !== "cny_mom_h360").map((a) => a.bot_id),
+      ["v6b1", "eth_okx_moex"],
+    );
+    assert.equal(snap.latest.accounts.find((a) => a.bot_id === "v6b1").equity, "10000");
+    assert.equal(snap.history.series["v6b1::v6b1"].points[0].equity, 10000);
+    assert.equal(snap.history.series["eth_okx_moex::eth_okx_moex"].points[0].equity, 308800);
+  } finally {
+    globalThis.fetch = prev;
+  }
+});
+
 test("live equity JSON: both live and fallback fail → ok:false", async () => {
   const prev = globalThis.fetch;
   globalThis.fetch = async () => {

@@ -4,6 +4,11 @@
  * Скачок на стыке не допускается: бумага продолжается с уровня бэктеста.
  */
 
+import {
+  cnyJournalHistoryPoints,
+  isCnyJournalReplaceSignal,
+  isCnyJournalStoredSeries,
+} from "./cnyMomCard.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { filterResetPoints, seriesKey as resetSeriesKey } from "./historyReset.js";
@@ -196,6 +201,7 @@ export function seriesKey(account) {
  * Если в ленте есть equity_curve — берём её (это ряд сервера,
  * старый history.json для этого ключа устарел). Иначе накопленный history.json
  * (после reset_from), иначе точки карточки.
+ * Юань 360 при replace/generation — только journal.capital, без 12 Oct.
  * Иначе у Юань 360 короткий account.history даёт дыру > 7 дней.
  */
 export function stitchPaperPoints(account, cardPoints, history) {
@@ -205,6 +211,12 @@ export function stitchPaperPoints(account, cardPoints, history) {
   if (hasEquityCurve(account)) {
     const curve = equityCurvePoints(account);
     if (curve.length) return filterResetPoints(key, curve);
+  }
+  if (isCnyJournalReplaceSignal(account)) {
+    return filterResetPoints(key, cnyJournalHistoryPoints(account));
+  }
+  if (isCnyJournalStoredSeries(history?.series?.[key])) {
+    return filterResetPoints(key, history.series[key].points || []);
   }
   const histPts = history?.series?.[key]?.points;
   const raw = Array.isArray(histPts) && histPts.length ? histPts : cardPoints || [];
