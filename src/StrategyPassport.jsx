@@ -127,9 +127,9 @@ function TestingGap({ passport }) {
   );
 }
 
-export default function StrategyPassport({ botId, logic, generatedAt }) {
+export default function StrategyPassport({ botId, logic, generatedAt, account = null }) {
   if (isHiddenPortalId(botId)) return null;
-  const passport = getPassport(botId, logic);
+  const passport = getPassport(botId, logic, account);
   if (passport.hidden) return null;
   const tech = logic ? rewriteAccountCurrencyCopy(logic, botId) : "";
   const hasBook = passport.testing.status === TEST_STATUS.HAS_BOOK;

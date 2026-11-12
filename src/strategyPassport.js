@@ -7,6 +7,11 @@
  */
 
 import {
+  cnyMomFuturesSnapshotLine,
+  hasCnyMomAccountLine,
+} from "./cnyMomCard.js";
+import { parseFeedNumber } from "./rateCycleCard.js";
+import {
   ACCOUNT_SUBTITLE,
   CNY_MOM_H360_CANON_ID,
   CNY_MOM_H360_LOGIC,
@@ -19,6 +24,7 @@ import {
   isHiddenPortalId,
   mergePortalAccounts,
 } from "./strategyMeta.js";
+import { formatMoneyRu } from "./uiCopy.js";
 
 export const NO_DATA = "нет данных";
 
@@ -831,15 +837,15 @@ const PASSPORTS = {
     essence: {
       paragraphs: [
         CNY_MOM_H360_LOGIC,
-        "Это бумажный рублёвый счёт. Стартовый капитал и NAV берём только из снимка. Пока идентификатора нет или поле equity пустое, кабинет показывает «нет данных». Линия графика — только поле history счёта, без чужих рядов. Live и live-кластер не используются, кнопки ордеров нет. На Автоследование не выводится.",
-        "На счёте паи LQDT. Фьючерс юаня CR появляется отдельной строкой, когда в снимке есть ненулевое количество. Пока дисконта пая нет, фьючерс не открывается.",
+        "Это бумажный рублёвый счёт. Стартовый капитал и NAV берём только из снимка. Пока идентификатора нет или поле equity пустое, кабинет показывает «нет данных». Линия графика — валидный prefix книги с 12 Oct плюс канон journal.capital с 23 Oct, без чужих рядов. Live и live-кластер не используются, кнопки ордеров нет. На Автоследование не выводится.",
+        "На счёте паи LQDT. Фьючерс юаня CR показывается по полю positions снимка, без выдуманного статуса.",
       ],
     },
     decisionSteps: [
       "Раз в час смотреть 360 часовых закрытий фьючерса юаня.",
       "Держать паи LQDT как денежную ногу.",
       "Номинал фьючерса — 2,5 капитала, когда задан дисконт пая.",
-      "Пока дисконта нет — фьючерс не открывать.",
+      "Фьючерс CR — только если в снимке ненулевое количество; иначе в снимке фьючерса нет.",
       "На биржу ордера не отправляются. Live, Finam и Автоследование не используются.",
     ],
     parameters: [
@@ -864,13 +870,13 @@ const PASSPORTS = {
       ),
       gap(
         "Начальный капитал",
-        "Приходит в снимке. Ожидается 300 000 ₽. Пока id нет или equity пустой — на карточке «нет данных», сумму не подставляем.",
+        "Приходит в снимке. Ожидается 300 000 ₽. Если в снимке поле задано — показываем его. Пока id нет или equity пустой — «нет данных», сумму не подставляем.",
       ),
       param("Шкала", "рубли", "Суммы в ₽, процент от старта с русской запятой."),
       param(
         "Эквити",
         "NAV бумажной книги",
-        "Линия только из поля history счёта в снимке. Чужие ряды на карточку не идут.",
+        "Линия — валидный prefix с 12 Oct плюс канон journal.capital с 23 Oct. Чужие ряды на карточку не идут.",
       ),
       param(
         "Источник данных кабинета",
@@ -1085,7 +1091,42 @@ export function hasAuthoredPassport(botId) {
   return Boolean(PASSPORTS[botId]);
 }
 
-export function getPassport(botId, fallbackLogic = "") {
+function applyCnyAccountToPassport(passport, account) {
+  if (!account) return passport;
+  const copy = {
+    ...passport,
+    essence: { paragraphs: [...passport.essence.paragraphs] },
+    decisionSteps: [...passport.decisionSteps],
+    parameters: passport.parameters.map((row) => ({ ...row })),
+  };
+  const seedN = parseFeedNumber(account.seed);
+  const seedRow = copy.parameters.find((row) => row.name === "Начальный капитал");
+  if (seedRow && seedN != null && hasCnyMomAccountLine(account)) {
+    seedRow.known = true;
+    seedRow.value = `${formatMoneyRu(seedN, "RUB")} ₽`;
+  }
+  const fut = cnyMomFuturesSnapshotLine(account);
+  copy.essence.paragraphs = copy.essence.paragraphs.map((p) => {
+    if (p.includes("без выдуманного статуса")) return `На счёте паи LQDT. ${fut}`;
+    if (p.includes("фьючерс не открывается")) {
+      return p.replace(/Пока дисконта нет, фьючерс не открывается\./, fut);
+    }
+    return p;
+  });
+  copy.decisionSteps = copy.decisionSteps.map((s) =>
+    s.includes("Фьючерс CR — только если") ? fut : s,
+  );
+  const market = copy.parameters.find((row) => row.name === "Рынок");
+  if (market) {
+    market.meaning = String(market.meaning || "").replace(
+      /Пока дисконта нет, фьючерс не открывается\./,
+      fut,
+    );
+  }
+  return copy;
+}
+
+export function getPassport(botId, fallbackLogic = "", account = null) {
   if (isHiddenPortalId(botId)) {
     return {
       ...stubPassport("", ""),
@@ -1094,7 +1135,11 @@ export function getPassport(botId, fallbackLogic = "") {
     };
   }
   const authored = PASSPORTS[botId];
-  if (authored) return { ...authored, authored: true };
+  if (authored) {
+    const base = { ...authored, authored: true };
+    if (botId === "cny_mom_h360") return applyCnyAccountToPassport(base, account);
+    return base;
+  }
   return stubPassport(botId, fallbackLogic);
 }
 

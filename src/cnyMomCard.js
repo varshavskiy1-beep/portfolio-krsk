@@ -1,8 +1,9 @@
 /**
  * Карточка «Юань 360»: бумажный рублёвый счёт.
  * Без replace — накопленный history.json (с открытия рублёвой книги) плюс поле history.
- * history_mode=replace / generation=cny-journal-capital-v1 — только journal.capital целиком,
- * без склейки со старой книгой и без seed 12 Oct. Индексные тикеры в таблицу не идут.
+ * history_mode=replace / generation=cny-journal-capital-v1 — канон journal.capital
+ * с 23 Oct; валидный prefix книги с 12 Oct 300000 сохраняется (cnyPrefix.js).
+ * Индексные тикеры в таблицу не идут.
  */
 
 import { RATE_CYCLE_HIDDEN_SYMBOLS, RATE_CYCLE_OPENED_LINE, parseFeedNumber } from "./rateCycleCard.js";
@@ -57,10 +58,26 @@ export function hasCnyMomAccountLine(account) {
   return !isEmptyEquityField(account.equity);
 }
 
+export function cnyMomFuturesSnapshotLine(account) {
+  const cr = visibleCnyMomPositions(account).find((p) => {
+    const s = normalizeCnySymbol(p?.symbol);
+    return s === "CR" || CR_FUTURES.test(s);
+  });
+  if (!cr) {
+    return "В этом снимке ненулевого фьючерса CR нет.";
+  }
+  const qty = parseFeedNumber(cr.qty);
+  const side = String(cr.side || "").trim() || "qty";
+  const symbol = normalizeCnySymbol(cr.symbol);
+  const qtyTxt = qty == null ? String(cr.qty) : String(qty);
+  return `В снимке фьючерс ${symbol} ${side} ${qtyTxt}.`;
+}
+
 export function cnyMomFallbackNote(account) {
   const seed = parseFeedNumber(account?.seed);
   const start = seed != null ? formatMoneyRu(seed, "RUB") : "300 000";
-  return `Бумага: старт ${start} ₽ в паях LQDT. Раз в час смотрит 360 часовых закрытий фьючерса юаня. Номинал фьючерса — 2,5 капитала, когда будет задан дисконт пая. Пока дисконта нет, фьючерс не открывается. На биржу ордера не идут. На Автоследование не выводится.`;
+  const fut = cnyMomFuturesSnapshotLine(account);
+  return `Бумага: старт ${start} ₽ в паях LQDT. Раз в час смотрит 360 часовых закрытий фьючерса юаня. Номинал фьючерса — 2,5 капитала, когда задан дисконт пая. ${fut} На биржу ордера не идут. На Автоследование не выводится.`;
 }
 
 export function cnyMomDescription(account) {
