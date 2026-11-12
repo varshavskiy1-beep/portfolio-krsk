@@ -232,7 +232,7 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
   );
 }
 
-function Home({ data, history, backtests, filter, setFilter, fetchedAt, loadError, onRetry }) {
+function Home({ data, history, backtests, filter, setFilter, fetchedAt, feedSource, loadError, onRetry }) {
   const accounts = useMemo(() => mergePortalAccounts(data.accounts || []), [data]);
 
   const bots = useMemo(() => {
@@ -268,6 +268,7 @@ function Home({ data, history, backtests, filter, setFilter, fetchedAt, loadErro
         <FeedStatus
           generatedAt={data.generated_at}
           fetchedAt={fetchedAt}
+          source={feedSource}
           error={loadError}
           onRetry={onRetry}
         />
@@ -320,6 +321,7 @@ export default function App() {
   const [backtests, setBacktests] = useState(null);
   const [err, setErr] = useState(false);
   const [fetchedAt, setFetchedAt] = useState(null);
+  const [feedSource, setFeedSource] = useState(null);
   const [filter, setFilter] = useState("all");
   const [route, setRoute] = useState(readRoute);
   const loadRef = useRef(() => {});
@@ -340,6 +342,7 @@ export default function App() {
             setHistory(snap.history);
             setBacktests(snap.backtests);
             setFetchedAt(snap.fetchedAt);
+            setFeedSource(snap.source || null);
             setErr(false);
             return;
           }
@@ -403,6 +406,7 @@ export default function App() {
         history={history}
         backtests={backtests}
         fetchedAt={fetchedAt}
+        feedSource={feedSource}
         loadError={err}
         onRetry={onRetry}
         onBack={goHome}
@@ -418,6 +422,7 @@ export default function App() {
       filter={filter}
       setFilter={setFilter}
       fetchedAt={fetchedAt}
+      feedSource={feedSource}
       loadError={err}
       onRetry={onRetry}
     />
