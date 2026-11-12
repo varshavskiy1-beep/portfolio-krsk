@@ -12,9 +12,13 @@ export const PCT_NO_POSITIVE_SEED = "Доходность не рассчита�
 export const PCT_BASE_FROM_FIRST_POINT =
   "Доходность считается от первой записи счёта: начальный капитал в ленте не указан.";
 export const STALE_LABEL = "снимок просрочен";
+export const FALLBACK_BANNER_RU =
+  "Показан запасной снимок сайта, не живая лента. Даты и кривые могут быть старыми.";
 export const REFRESH_MS = 5 * 60 * 1000;
 export const STALE_AFTER_MS = 40 * 60 * 1000;
 export const FEED_SOURCE_NAME = "лента бумажных счетов";
+export const FEED_SOURCE_LIVE = "live";
+export const FEED_SOURCE_FALLBACK = "fallback";
 
 export function isNonEmptyString(v) {
   return typeof v === "string" && v.trim() !== "";
@@ -80,6 +84,19 @@ export function assembleSnapshot(latestRaw, historyRaw, backtestsRaw) {
 export function isFeedStale(fetchedAtMs, nowMs = Date.now()) {
   if (fetchedAtMs == null || !Number.isFinite(fetchedAtMs)) return false;
   return nowMs - fetchedAtMs > STALE_AFTER_MS;
+}
+
+/** Свежесть самого снимка (generated_at), не час клиентского fetch. */
+export function isGeneratedAtStale(generatedAt, nowMs = Date.now()) {
+  if (generatedAt == null || generatedAt === "") return false;
+  const t = Date.parse(generatedAt);
+  if (Number.isNaN(t)) return false;
+  return nowMs - t > STALE_AFTER_MS;
+}
+
+export function feedFallbackLine(generatedAt) {
+  const when = generatedAt == null || generatedAt === "" ? "" : ` ${generatedAt}`;
+  return `Показан запасной снимок${when}. Живая лента GitHub Pages недоступна.`;
 }
 
 export function formatFetchedAt(fetchedAtMs) {

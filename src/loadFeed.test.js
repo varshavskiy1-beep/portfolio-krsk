@@ -1,9 +1,14 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { test } from "node:test";
+import { fileURLToPath } from "node:url";
 import { EQUITY_LIVE_DATA_BASE } from "./equityLiveData.js";
+import { FEED_SOURCE_FALLBACK, FEED_SOURCE_LIVE } from "./feedValidate.js";
 import { fetchCabinetSnapshot } from "./loadFeed.js";
 
 const LIVE = EQUITY_LIVE_DATA_BASE;
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const VALID_LATEST = {
   generated_at: "2026-10-17T10:00:00Z",
   accounts: [{ bot_id: "v6b1", account_id: "v6b1", currency: "USD", seed: "10000", equity: "10000" }],
@@ -104,8 +109,10 @@ test("live equity JSON: success from Pages base", async () => {
   try {
     const snap = await fetchCabinetSnapshot("/app/", { liveBase: LIVE });
     assert.equal(snap.ok, true);
+    assert.equal(snap.source, FEED_SOURCE_LIVE);
     assert.ok(calls.some((c) => c.startsWith(LIVE) && c.includes("latest.json")));
     assert.ok(calls.some((c) => c === "/app/data/backtests.json"));
+    assert.equal(calls.some((c) => c === "/app/data/latest.json"), false);
   } finally {
     globalThis.fetch = prev;
   }
@@ -126,6 +133,7 @@ test("live equity JSON: live fail falls back to bundled /data", async () => {
   try {
     const snap = await fetchCabinetSnapshot("/", { liveBase: LIVE });
     assert.equal(snap.ok, true);
+    assert.equal(snap.source, FEED_SOURCE_FALLBACK);
     assert.equal(snap.latest.accounts[0].bot_id, "v6b1");
   } finally {
     globalThis.fetch = prev;
@@ -187,6 +195,150 @@ test("stale Pages latest with forts_adr_adaptive is stripped; other accounts sta
   }
 });
 
+test("hung live github.io times out and uses bundled fallback, tagged fallback", async () => {
+  const prev = globalThis.fetch;
+  globalThis.fetch = async (url, init) => {
+    const u = String(url);
+    if (u.startsWith(LIVE)) {
+      return new Promise((_, reject) => {
+        const fail = () => {
+          const e = new Error("aborted");
+          e.name = "AbortError";
+          reject(e);
+        };
+        if (init?.signal?.aborted) {
+          fail();
+          return;
+        }
+        init?.signal?.addEventListener("abort", fail, { once: true });
+      });
+    }
+    if (u === "/data/latest.json") {
+      return jsonResponse({
+        generated_at: "2026-10-24T06:13:05Z",
+        accounts: [{ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", seed: "10000", equity: "10365" }],
+      });
+    }
+    if (u === "/data/history.json") return jsonResponse({ series: {} });
+    if (u === "/data/backtests.json") return jsonResponse({ series: {} });
+    return { ok: false, json: async () => null };
+  };
+  try {
+    const snap = await fetchCabinetSnapshot("/", { liveBase: LIVE, liveTimeoutMs: 40 });
+    assert.equal(snap.ok, true);
+    assert.equal(snap.source, FEED_SOURCE_FALLBACK);
+    assert.equal(snap.latest.generated_at, "2026-10-24T06:13:05Z");
+  } finally {
+    globalThis.fetch = prev;
+  }
+});
+
+test("live latest with failed live history does not mix Nov equity with Oct curves", async () => {
+  const prev = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.startsWith(LIVE) && u.includes("latest.json")) {
+      return jsonResponse({
+        generated_at: "2026-11-12T04:25:21Z",
+        accounts: [
+          {
+            bot_id: "cny_mom_h360",
+            account_id: "cny_mom_h360",
+            currency: "RUB",
+            seed: "300000",
+            equity: "318428.0364462402",
+          },
+        ],
+      });
+    }
+    if (u.startsWith(LIVE) && u.includes("history.json")) {
+      return { ok: false, status: 503, json: async () => null };
+    }
+    if (u === "/data/latest.json") {
+      return jsonResponse({
+        generated_at: "2026-10-24T06:13:05Z",
+        accounts: [
+          {
+            bot_id: "cny_mom_h360",
+            account_id: "cny_mom_h360",
+            currency: "RUB",
+            seed: "300000",
+            equity: "335539.3734402401",
+          },
+        ],
+      });
+    }
+    if (u === "/data/history.json") {
+      return jsonResponse({
+        series: {
+          "cny_mom_h360::cny_mom_h360": {
+            bot_id: "cny_mom_h360",
+            account_id: "cny_mom_h360",
+            points: [{ t: "2026-10-24T05:21:02Z", equity: 335539.3734402401 }],
+          },
+        },
+      });
+    }
+    if (u.includes("backtests.json")) return jsonResponse({ series: {} });
+    return { ok: false, json: async () => null };
+  };
+  try {
+    const snap = await fetchCabinetSnapshot("/", { liveBase: LIVE });
+    assert.equal(snap.ok, true);
+    assert.equal(snap.source, FEED_SOURCE_FALLBACK);
+    assert.equal(snap.latest.generated_at, "2026-10-24T06:13:05Z");
+    assert.equal(Number(snap.latest.accounts[0].equity), 335539.3734402401);
+    assert.equal(snap.history.series["cny_mom_h360::cny_mom_h360"].points[0].equity, 335539.3734402401);
+  } finally {
+    globalThis.fetch = prev;
+  }
+});
+
+test("fallback snapshot still hides retired paper_block2", async () => {
+  const prev = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.startsWith(LIVE)) return { ok: false, status: 503, json: async () => null };
+    if (u === "/data/latest.json") {
+      return jsonResponse({
+        generated_at: "2026-10-24T06:13:05Z",
+        accounts: [
+          { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", seed: "10000", equity: "10365" },
+          {
+            bot_id: "three_robots_okx_nasdaq_1h",
+            account_id: "paper_block2",
+            currency: "USDT",
+            seed: "10000",
+            equity: "10306",
+          },
+        ],
+      });
+    }
+    if (u === "/data/history.json") {
+      return jsonResponse({
+        series: {
+          "three_robots_okx_nasdaq_1h::paper_block2": {
+            bot_id: "three_robots_okx_nasdaq_1h",
+            account_id: "paper_block2",
+            points: [{ t: "2026-10-15T08:57:31Z", equity: 10000 }],
+          },
+        },
+      });
+    }
+    if (u === "/data/backtests.json") return jsonResponse({ series: {} });
+    return { ok: false, json: async () => null };
+  };
+  try {
+    const snap = await fetchCabinetSnapshot("/", { liveBase: LIVE });
+    assert.equal(snap.ok, true);
+    assert.equal(snap.source, FEED_SOURCE_FALLBACK);
+    assert.equal(snap.latest.accounts.some((a) => a.account_id === "paper_block2"), false);
+    assert.equal(snap.history.series["three_robots_okx_nasdaq_1h::paper_block2"], undefined);
+  } finally {
+    globalThis.fetch = prev;
+  }
+});
+
 test("live equity JSON: both live and fallback fail → ok:false", async () => {
   const prev = globalThis.fetch;
   globalThis.fetch = async () => {
@@ -199,4 +351,21 @@ test("live equity JSON: both live and fallback fail → ok:false", async () => {
   } finally {
     globalThis.fetch = prev;
   }
+});
+
+test("bundled same-origin fallback is the Oct 24 snapshot the user screenshot matched", () => {
+  const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
+  assert.equal(latest.generated_at, "2026-10-24T06:13:05Z");
+  const cny = latest.accounts.find((a) => a.bot_id === "cny_mom_h360");
+  const cycle = latest.accounts.find((a) => a.bot_id === "rf_bonds_rate_cycle");
+  const mayak = latest.accounts.find((a) => a.bot_id === "mayak_imoex_lowvol10");
+  assert.equal(Number(cny.equity), 335539.3734402401);
+  assert.equal(cny.updated_utc, "2026-10-24T05:21:02Z");
+  assert.equal(Number(cycle.equity), 300932.048);
+  assert.equal(cycle.updated_utc, "2026-10-24T01:01:34Z");
+  assert.equal(cycle.as_of, "2026-10-23");
+  assert.equal(Number(mayak.equity), 301898.55348306044);
+  assert.equal(mayak.updated_utc, "2026-10-23T16:26:40Z");
+  assert.equal(mayak.as_of, "2026-10-22");
+  assert.equal(latest.accounts.some((a) => a.account_id === "paper_block2"), true);
 });
