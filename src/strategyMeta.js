@@ -51,6 +51,7 @@ export const RF_BONDS_RATE_CYCLE_LOGIC =
 /** Paper id: cny_mom_h360. Бумажный рублёвый счёт. Канон: CNY_MOM_H360_LEV25. Пока нет в accounts[] или equity пустой — «нет данных». */
 export const CNY_MOM_H360_BOT_ID = "cny_mom_h360";
 export const CNY_MOM_H360_ACCOUNT_ID = "cny_mom_h360";
+export const CNY_MOM_H360_SERIES_KEY = `${CNY_MOM_H360_BOT_ID}::${CNY_MOM_H360_ACCOUNT_ID}`;
 export const CNY_MOM_H360_TITLE = "Юань 360";
 export const CNY_MOM_H360_CANON_ID = "CNY_MOM_H360_LEV25";
 export const CNY_MOM_H360_CURRENCY = "RUB";

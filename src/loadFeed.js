@@ -39,28 +39,27 @@ function timeoutSignal(parent, timeoutMs) {
 
 export async function readJson(url, { signal, optional = false, timeoutMs } = {}) {
   const gate = timeoutSignal(signal, timeoutMs);
-  let res;
   try {
-    res = await fetch(url, { signal: gate.signal, cache: "no-store" });
+    const res = await fetch(url, { signal: gate.signal, cache: "no-store" });
+    if (!res.ok) {
+      if (optional) return { ok: true, value: null };
+      return { ok: false, reason: "http" };
+    }
+    // Keep the abort gate until the body is parsed: hung CDN headers+stuck body
+    // used to wait forever after fetch() resolved.
+    const value = await res.json();
+    return { ok: true, value };
   } catch (e) {
-    gate.cancel();
     if (e && e.name === "AbortError") {
       if (signal?.aborted) throw e;
       if (optional) return { ok: true, value: null, reason: "timeout" };
       return { ok: false, reason: "timeout" };
     }
+    if (e instanceof SyntaxError) return { ok: false, reason: "json" };
     if (optional) return { ok: true, value: null };
     return { ok: false, reason: "fetch" };
-  }
-  gate.cancel();
-  if (!res.ok) {
-    if (optional) return { ok: true, value: null };
-    return { ok: false, reason: "http" };
-  }
-  try {
-    return { ok: true, value: await res.json() };
-  } catch {
-    return { ok: false, reason: "json" };
+  } finally {
+    gate.cancel();
   }
 }
 
