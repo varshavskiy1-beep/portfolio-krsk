@@ -4,8 +4,10 @@
  * An account with a non-empty equity_curve replaces its history series entirely
  * with that curve (equity → number). cny_mom_h360 with history_mode=replace
  * or generation=cny-journal-capital-v1 replaces the canonical journal tail
- * when the journal is non-empty, keeping a validated 12 Oct 300000 prefix
- * (empty replace does not wipe a valid series). Other accounts stay append-only.
+ * when the journal is non-empty, keeping the reviewed 12 Oct 300000 prefix
+ * (198 UTC-Z points, cut strictly before 2026-10-23T06:21:01Z; empty replace
+ * does not wipe a valid series; unknown future generation does not inherit v1
+ * prefix). Other accounts stay append-only.
  * After SCP, remaps cash currency by venue / bot_id (OKX crypto → USDT, FORTS/RU → RUB, US_EQ → USD).
  * --local skips SCP and only remaps the existing public/data snapshot + history series currency.
  * --publish runs scripts/publish-equity-data.mjs (push data/og/share to gh-pages only).

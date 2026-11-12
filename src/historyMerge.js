@@ -4,7 +4,8 @@
  * (капитал — число). ETH по сигналу OKX — так же, если history пришёл с часами.
  * Юань 360 при history_mode=replace / generation=cny-journal-capital-v1 —
  * канон journal.capital заменяет хвост; валидный prefix с 12 Oct 300000
- * сохраняется и не срезается повторным generation.
+ * (198 точек, cutoff 2026-10-23T06:21:01Z) сохраняется и не срезается
+ * повторным sync. Неизвестный будущий generation v1 prefix не наследует.
  * Остальные счета только дописываются.
  * Снятый / исчезнувший из ленты account_id не держим в series и не создаём заново.
  */
@@ -15,7 +16,13 @@ import {
   isCnyJournalStoredSeries,
   isStaleBundledCnyAccount,
 } from "./cnyMomCard.js";
-import { CNY_BOOK_PREFIX_GENERATION, cnyPublisherPoints } from "./cnyPrefix.js";
+import {
+  CNY_BOOK_PREFIX_GENERATION,
+  CNY_PREFIX_EXCLUDE_FROM,
+  CNY_PREFIX_SCHEMA,
+  cnyPrefixCompatibleGeneration,
+  cnyPublisherPoints,
+} from "./cnyPrefix.js";
 import { equityCurvePoints, hasEquityCurve } from "./equityCurve.js";
 import { ethOkxTimedSeries } from "./ethOkxCard.js";
 import { applyHistoryResets, filterResetPoints, shouldAppendHistoryPoint } from "./historyReset.js";
@@ -50,17 +57,29 @@ export function mergeLatestIntoHistory(hist, latest) {
       const curve = cnyPublisherPoints(a, prev.points);
       // Пустой journal не затирает валидный ряд (ни journal v1, ни prefix).
       if (!curve) continue;
-      hist.series[k] = {
+      const compatible = cnyPrefixCompatibleGeneration(a.generation || prev.generation);
+      const next = {
         ...prev,
         bot_id: a.bot_id,
         account_id: a.account_id,
         currency: canonicalCurrency(a),
         seed: a.seed == null || a.seed === "" ? prev.seed ?? null : Number(a.seed),
-        generation: CNY_JOURNAL_CAPITAL_GENERATION,
-        prefix_generation: CNY_BOOK_PREFIX_GENERATION,
+        generation: compatible
+          ? CNY_JOURNAL_CAPITAL_GENERATION
+          : String(a.generation || prev.generation || "").trim(),
         history_mode: "replace",
         points: capHistoryPoints(filterResetPoints(k, curve)),
       };
+      if (compatible) {
+        next.prefix_generation = CNY_BOOK_PREFIX_GENERATION;
+        next.prefix_schema = CNY_PREFIX_SCHEMA;
+        next.prefix_exclude_from = CNY_PREFIX_EXCLUDE_FROM;
+      } else {
+        delete next.prefix_generation;
+        delete next.prefix_schema;
+        delete next.prefix_exclude_from;
+      }
+      hist.series[k] = next;
       continue;
     }
     if (isCnyJournalStoredSeries(hist.series[k])) continue;

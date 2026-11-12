@@ -675,8 +675,8 @@ test("live Pages CNY replace 479 is used; polluted 570 Oct12 series is not stitc
     assert.equal(pts[0].t, "2026-10-12T11:07:00Z");
     assert.equal(Number(pts[0].equity), 300000);
     const canonAt = pts.findIndex((p) => p.t === "2026-10-23T08:00:00");
-    assert.ok(canonAt > 0);
-    assert.equal(pts.length, canonAt + 479);
+    assert.equal(canonAt, 198);
+    assert.equal(pts.length, 198 + 479);
     assert.equal(Number(pts[canonAt].equity), 332497.77);
     assert.equal(pts.at(-1).t, "2026-11-12T06:00:00");
     assert.ok(pts.every((p) => Number(p.equity) !== 335539.3734402401));

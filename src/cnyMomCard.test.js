@@ -21,7 +21,16 @@ import {
   isCnyMomPaperSymbol,
   visibleCnyMomPositions,
 } from "./cnyMomCard.js";
-import { CNY_BOOK_PREFIX_GENERATION, reviewedCnyPrefixFixture } from "./cnyPrefix.js";
+import {
+  CNY_BOOK_PREFIX_GENERATION,
+  CNY_PREFIX_EXCLUDE_FROM,
+  CNY_PREFIX_SCHEMA,
+  CNY_PREFIX_SEAM,
+  cnyChartUnix,
+  cnyPrefixCompatibleGeneration,
+  extractCnyValidatedPrefix,
+  reviewedCnyPrefixFixture,
+} from "./cnyPrefix.js";
 import { sanitizeCabinetSnapshot } from "./equitySanitize.js";
 import { mergeLatestIntoHistory } from "./historyMerge.js";
 import { stitchPaperPoints } from "./stitchEquity.js";
@@ -243,13 +252,14 @@ test("journal replace keeps 12 Oct 300000 prefix and drops 335539 tail", () => {
   assert.equal(cnyMomFromStartPctLine(row), "+6,14% от старта");
   const oldHist = { series: { [CNY_MOM_H360_SERIES_KEY]: { points: OLD_CNY_BOOK } } };
   const points = resolveEquityPoints(row, oldHist);
+  const prefix = reviewedCnyPrefixFixture();
   assert.equal(points[0].t, "2026-10-12T11:07:00Z");
   assert.equal(Number(points[0].equity), 300000);
-  assert.equal(points[1].t, "2026-10-19T09:02:00Z");
+  assert.equal(points[1].t, prefix[1].t);
   const canonAt = points.findIndex((p) => p.t === CNY_JOURNAL_FROM);
-  assert.equal(canonAt, 2);
+  assert.equal(canonAt, prefix.length);
   assert.equal(Number(points[canonAt].equity), 332497.77);
-  assert.equal(points.length, 5);
+  assert.equal(points.length, prefix.length + CNY_JOURNAL_SYNTH.length);
   assert.equal(Number(points.at(-1).equity), 318428.04);
   assert.ok(points.every((p) => Number(p.equity) !== STALE_BUNDLED_CNY_EQUITY));
   assert.ok(!points.some((p) => String(p.t) === STALE_BUNDLED_CNY_UPDATED_UTC));
@@ -484,8 +494,8 @@ test("host extract: replace writes exact 479 naive points; pct is from seed not 
   assert.equal(clientPts[0].t, "2026-10-12T11:07:00Z");
   assert.equal(Number(clientPts[0].equity), 300000);
   const canonAt = clientPts.findIndex((p) => p.t === "2026-10-23T08:00:00");
-  assert.ok(canonAt > 0);
-  assert.equal(clientPts.length, canonAt + 479);
+  assert.equal(canonAt, 198);
+  assert.equal(clientPts.length, 198 + 479);
   assert.equal(Number(clientPts[canonAt].equity), 332497.77);
   assert.equal(clientPts.at(-1).t, "2026-11-12T06:00:00");
   assert.equal(Number(clientPts.at(-1).equity), 318428.04);
@@ -523,7 +533,10 @@ test("host extract: replace writes exact 479 naive points; pct is from seed not 
   assert.equal(ser.points[0].t, "2026-10-12T11:07:00Z");
   assert.equal(ser.points[0].equity, 300000);
   const pubCanon = ser.points.findIndex((p) => p.t === "2026-10-23T08:00:00");
-  assert.equal(ser.points.length, pubCanon + 479);
+  assert.equal(pubCanon, 198);
+  assert.equal(ser.points.length, 198 + 479);
+  assert.equal(ser.prefix_schema, CNY_PREFIX_SCHEMA);
+  assert.equal(ser.prefix_exclude_from, CNY_PREFIX_EXCLUDE_FROM);
   assert.equal(ser.generation, CNY_JOURNAL_CAPITAL_GENERATION);
   assert.equal(ser.prefix_generation, CNY_BOOK_PREFIX_GENERATION);
   assert.equal(ser.history_mode, "replace");
@@ -631,12 +644,15 @@ test("bundled public/data CNY 335539 cannot silently paint after sanitize", () =
   assert.equal(JSON.stringify(history.series["v6b1::v6b1"]), v6Before);
 });
 
-test("reviewed prefix 201 + canonical 480: first 12 Oct 300000, no 335539, others untouched", () => {
+test("reviewed prefix 198 + live journal tail: first 12 Oct 300000, no 335539, others untouched", () => {
   const prefix = reviewedCnyPrefixFixture();
-  assert.equal(prefix.length, 201);
+  assert.equal(prefix.length, 198);
   assert.equal(prefix[0].t, "2026-10-12T11:07:00Z");
   assert.equal(prefix[0].equity, 300000);
-  assert.equal(prefix.at(-1).t, "2026-10-23T07:21:01Z");
+  assert.equal(prefix.at(-1).t, "2026-10-23T06:17:26Z");
+  assert.equal(prefix.at(-1).equity, 332483.56266424);
+  assert.ok(prefix.every((p) => String(p.t).endsWith("Z")));
+  assert.ok(!prefix.some((p) => ["2026-10-23T06:21:01Z", "2026-10-23T07:01:01Z", "2026-10-23T07:21:01Z"].includes(p.t)));
   const extract = JSON.parse(
     readFileSync(join(dirname(fileURLToPath(import.meta.url)), "fixtures/cny_mom_h360_host_account_extract.json"), "utf8"),
   );
@@ -674,20 +690,133 @@ test("reviewed prefix 201 + canonical 480: first 12 Oct 300000, no 335539, other
   assert.equal(pts[0].t, "2026-10-12T11:07:00Z");
   assert.equal(Number(pts[0].equity), 300000);
   const canonAt = pts.findIndex((p) => p.t === "2026-10-23T08:00:00");
-  assert.equal(canonAt, 201);
-  assert.equal(pts.length, 201 + 480);
+  assert.equal(canonAt, 198);
+  assert.equal(pts.length, 198 + journal.length);
   assert.equal(Number(pts.at(-1).equity), 316776.4);
+  assert.equal(pts.at(-1).t, journal.at(-1).t);
+  assert.ok(pts.slice(0, 198).every((p) => String(p.t).endsWith("Z")));
+  assert.ok(pts.slice(198).every((p) => !String(p.t).endsWith("Z")));
   assert.ok(pts.every((p) => Number(p.equity) !== STALE_BUNDLED_CNY_EQUITY));
   assert.equal(cnyMomFromStartPctLine(row), "+5,59% от старта");
   assert.match(cnyMomFuturesSnapshotLine(row), /CRZ6 short -63/);
   assert.doesNotMatch(cnyMomDescription(row), /фьючерс не открывается/);
 
   mergeLatestIntoHistory(hist, { generated_at: "2026-11-12T07:00:00Z", accounts: [row] });
-  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 201 + 480);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 198 + journal.length);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].prefix_generation, CNY_BOOK_PREFIX_GENERATION);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].prefix_schema, CNY_PREFIX_SCHEMA);
   mergeLatestIntoHistory(hist, { generated_at: "2026-11-12T08:00:00Z", accounts: [row] });
-  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 201 + 480);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 198 + journal.length);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points[0].equity, 300000);
+  const grown = {
+    ...row,
+    history: [...journal, { t: "2026-11-12T08:00:00", equity: "316800.00" }],
+    equity: "316800.00",
+  };
+  mergeLatestIntoHistory(hist, { generated_at: "2026-11-12T09:00:00Z", accounts: [grown] });
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 198 + journal.length + 1);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.at(-1).equity, 316800);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points[0].equity, 300000);
   assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
   assert.equal(JSON.stringify(hist.series["eth_okx_moex::eth_okx_moex"]), ethBefore);
+});
+
+test("prefix cutoff excludes published 06:21/07:01/07:21 duplicates of naive 08:00/09:00", () => {
+  const leaked = [
+    ...reviewedCnyPrefixFixture(),
+    { t: "2026-10-23T06:21:01Z", equity: 332497.77 },
+    { t: "2026-10-23T07:01:01Z", equity: 332600 },
+    { t: "2026-10-23T07:21:01Z", equity: 332701.76 },
+  ];
+  const prefix = extractCnyValidatedPrefix(leaked, CNY_PREFIX_EXCLUDE_FROM);
+  assert.equal(prefix.length, 198);
+  assert.equal(prefix.at(-1).t, "2026-10-23T06:17:26Z");
+  assert.ok(!prefix.some((p) => p.t === "2026-10-23T06:21:01Z"));
+  const wrongBound = extractCnyValidatedPrefix(leaked, CNY_JOURNAL_FROM);
+  assert.ok(wrongBound.some((p) => p.t === "2026-10-23T06:21:01Z"));
+  assert.equal(CNY_PREFIX_SEAM.equity_delta_rub.toFixed(2), "14.21");
+  assert.equal(CNY_PREFIX_SEAM.prefix_clock, "utc_z");
+  assert.equal(CNY_PREFIX_SEAM.canonical_clock, "naive");
+});
+
+test("unknown future CNY generation does not inherit v1 prefix", () => {
+  assert.equal(cnyPrefixCompatibleGeneration(""), true);
+  assert.equal(cnyPrefixCompatibleGeneration(CNY_JOURNAL_CAPITAL_GENERATION), true);
+  assert.equal(cnyPrefixCompatibleGeneration("cny-journal-capital-v2-reset"), false);
+  const journal = [
+    { t: "2026-10-23T08:00:00", equity: "332497.77" },
+    { t: "2026-11-12T07:00:00", equity: "316776.40" },
+  ];
+  const row = cnyJournalAccount({
+    generation: "cny-journal-capital-v2-reset",
+    history: journal,
+    equity: "316776.40",
+  });
+  const v6 = { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] };
+  const hist = {
+    series: {
+      [CNY_MOM_H360_SERIES_KEY]: {
+        bot_id: CNY_MOM_H360_BOT_ID,
+        account_id: CNY_MOM_H360_ACCOUNT_ID,
+        generation: CNY_JOURNAL_CAPITAL_GENERATION,
+        prefix_generation: CNY_BOOK_PREFIX_GENERATION,
+        points: reviewedCnyPrefixFixture(),
+      },
+      "v6b1::v6b1": v6,
+    },
+  };
+  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const pts = resolveEquityPoints(row, hist);
+  assert.equal(pts.length, journal.length);
+  assert.equal(pts[0].t, CNY_JOURNAL_FROM);
+  assert.equal(Number(pts.at(-1).equity), 316776.4);
+  mergeLatestIntoHistory(hist, { generated_at: "2026-11-12T09:00:00Z", accounts: [row] });
+  const ser = hist.series[CNY_MOM_H360_SERIES_KEY];
+  assert.equal(ser.generation, "cny-journal-capital-v2-reset");
+  assert.equal(ser.prefix_generation, undefined);
+  assert.equal(ser.points.length, journal.length);
+  assert.equal(ser.points[0].t, CNY_JOURNAL_FROM);
+  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+});
+
+test("empty replace does not wipe persisted prefix+journal", () => {
+  const journal = [
+    { t: "2026-10-23T08:00:00", equity: 332497.77 },
+    { t: "2026-11-12T07:00:00", equity: 316776.4 },
+  ];
+  const hist = {
+    series: {
+      [CNY_MOM_H360_SERIES_KEY]: {
+        bot_id: CNY_MOM_H360_BOT_ID,
+        account_id: CNY_MOM_H360_ACCOUNT_ID,
+        generation: CNY_JOURNAL_CAPITAL_GENERATION,
+        prefix_generation: CNY_BOOK_PREFIX_GENERATION,
+        points: [...reviewedCnyPrefixFixture(), ...journal],
+      },
+      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] },
+    },
+  };
+  const before = JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]);
+  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  mergeLatestIntoHistory(hist, {
+    generated_at: "2026-11-12T09:10:00Z",
+    accounts: [cnyJournalAccount({ history: [], equity_curve: [] })],
+  });
+  assert.equal(JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]), before);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 198 + journal.length);
+  assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points[0].equity, 300000);
+  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+});
+
+test("mixed CNY clocks: naive 08:00 stays after prefix 06:17Z and does not overlay", () => {
+  const mixed = [
+    { t: "2026-10-23T06:17:26Z", equity: 332483.56266424 },
+    { t: "2026-10-23T08:00:00", equity: 332497.77 },
+  ];
+  const series = buildSeries(mixed, 300000, "money");
+  assert.equal(series.length, 2);
+  assert.ok(series[0].time < series[1].time);
+  assert.equal(series[0].time, cnyChartUnix("2026-10-23T06:17:26Z"));
+  assert.equal(series[1].time, cnyChartUnix("2026-10-23T08:00:00"));
+  assert.equal(cnyChartUnix("2026-10-23T08:00:00") - cnyChartUnix("2026-10-23T06:21:01Z"), 1 * 3600 + 38 * 60 + 59);
 });

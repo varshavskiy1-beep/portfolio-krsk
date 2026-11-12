@@ -2,7 +2,8 @@
  * Карточка «Юань 360»: бумажный рублёвый счёт.
  * Без replace — накопленный history.json (с открытия рублёвой книги) плюс поле history.
  * history_mode=replace / generation=cny-journal-capital-v1 — канон journal.capital
- * с 23 Oct; валидный prefix книги с 12 Oct 300000 сохраняется (cnyPrefix.js).
+ * с 23 Oct; валидный prefix книги с 12 Oct 300000 (198 точек, cutoff 06:21:01Z)
+ * сохраняется (cnyPrefix.js). Не резать prefix по naive 08:00.
  * Индексные тикеры в таблицу не идут.
  */
 

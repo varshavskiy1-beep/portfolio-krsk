@@ -1,25 +1,40 @@
 {
-  "source": "bundled public/data/history.json (569-era book before Pages journal replace)",
-  "generation": "cny-book-prefix-v1",
-  "canonical_from": "2026-10-23T08:00:00",
+  "schema": "cny_mom_h360.early_prefix.v1",
+  "status": "candidate_for_restore",
+  "do_not_publish": true,
+  "bot_id": "cny_mom_h360",
+  "account_id": "cny_mom_h360",
+  "series_key": "cny_mom_h360::cny_mom_h360",
   "seed": 300000,
-  "n": 201,
+  "n": 198,
   "first": {
     "t": "2026-10-12T11:07:00Z",
-    "equity": 300000.0
+    "equity": 300000
   },
   "last": {
-    "t": "2026-10-23T07:21:01Z",
-    "equity": 332701.7671642401
+    "t": "2026-10-23T06:17:26Z",
+    "equity": 332483.56266424
   },
+  "cut_rule": {
+    "exclude_from": "2026-10-23T06:21:01Z",
+    "reason": "first published sample whose equity rounds to 2 decimals as the first canonical journal point 332497.77 (journal t=2026-10-23T08:00:00 naive). Including 06:21/07:01/07:21 would duplicate journal 08:00 and 09:00.",
+    "clock_alignment_note": "Across the start of the overlap, journal naive hour consistently matches published UTC samples ~1.65h earlier (08:00 naive ↔ 06:21:01Z). Journal naive is not KRAT UTC+7 and is not marked Z. Do not rewrite timestamps in this artifact."
+  },
+  "pct_from_seed_300000": {
+    "first_point": 0.0,
+    "last_prefix": 10.827854221413338,
+    "first_canonical": 10.832590000000005,
+    "current_canonical_last": 5.592133333333341
+  },
+  "provenance_ok": true,
   "points": [
     {
       "t": "2026-10-12T11:07:00Z",
-      "equity": 300000.0
+      "equity": 300000
     },
     {
       "t": "2026-10-12T19:10:01Z",
-      "equity": 300000.0
+      "equity": 300000
     },
     {
       "t": "2026-10-13T07:40:52Z",
@@ -804,18 +819,6 @@
     {
       "t": "2026-10-23T06:17:26Z",
       "equity": 332483.56266424
-    },
-    {
-      "t": "2026-10-23T06:21:01Z",
-      "equity": 332497.76716424007
-    },
-    {
-      "t": "2026-10-23T07:01:06Z",
-      "equity": 332497.76716424007
-    },
-    {
-      "t": "2026-10-23T07:21:01Z",
-      "equity": 332701.7671642401
     }
   ]
 }
