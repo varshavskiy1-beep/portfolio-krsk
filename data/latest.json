@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-12T23:16:07Z",
+  "generated_at": "2026-11-12T23:32:11Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24495.67072785002",
-      "updated_utc": "2026-11-12T23:16:06.036476Z",
+      "updated_utc": "2026-11-12T23:32:10.872700Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1835023.2900756598",
-      "updated_utc": "2026-11-12T23:16:06.042333Z",
+      "updated_utc": "2026-11-12T23:32:10.875646Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432754.16532448",
-      "updated_utc": "2026-11-12T23:16:06.047204Z",
+      "updated_utc": "2026-11-12T23:32:10.878289Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11506.99486119",
-      "updated_utc": "2026-11-12T23:16:06.050966Z",
+      "updated_utc": "2026-11-12T23:32:10.880964Z",
       "positions": [
         {
           "position_id": "p_d9d5f745ab48",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-12T23:16:06.054161Z",
+      "updated_utc": "2026-11-12T23:32:10.885133Z",
       "positions": []
     },
     {
@@ -188,7 +188,7 @@
       "seed": "10000",
       "equity": "9309.1303",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-12T23:10:00Z",
+      "updated_utc": "2026-11-12T23:30:06Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -578,7 +578,7 @@
       "seed": "300000",
       "equity": "323447.73",
       "cash": "20678.809182240213",
-      "updated_utc": "2026-11-12T22:21:13Z",
+      "updated_utc": "2026-11-12T23:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -2579,6 +2579,10 @@
         },
         {
           "t": "2026-11-13T00:00:00",
+          "equity": "323447.73"
+        },
+        {
+          "t": "2026-11-13T01:00:00",
           "equity": "323447.73"
         }
       ],
