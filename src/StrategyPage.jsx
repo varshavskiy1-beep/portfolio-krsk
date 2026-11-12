@@ -313,7 +313,12 @@ export default function StrategyPage({
         />
       </header>
 
-      <StrategyPassport botId={botId} logic={logic} generatedAt={data.generated_at} />
+      <StrategyPassport
+        botId={botId}
+        logic={logic}
+        generatedAt={data.generated_at}
+        account={accounts[0] || null}
+      />
 
       {accounts.map((a) => (
         <AccountBlock

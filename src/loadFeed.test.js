@@ -497,8 +497,11 @@ test("same-origin equity-live pair is used when github.io is blocked", async () 
     assert.equal(Number(cny.equity), 318428.04);
     assert.equal(cnyMomFromStartPctLine(cny), "+6,14% от старта");
     const pts = resolveEquityPoints(cny, snap.history);
-    assert.equal(pts.length, 479);
-    assert.equal(pts[0].t, "2026-10-23T08:00:00");
+    assert.equal(pts[0].t, "2026-10-12T11:07:00Z");
+    assert.equal(Number(pts[0].equity), 300000);
+    assert.ok(pts.length > 479);
+    assert.equal(pts.at(-1).t, "2026-11-12T06:00:00");
+    assert.ok(pts.every((p) => Number(p.equity) !== 335539.3734402401));
     assert.notEqual(snap.latest.generated_at, "2026-10-24T06:13:05Z");
   } finally {
     globalThis.fetch = prev;
@@ -669,11 +672,14 @@ test("live Pages CNY replace 479 is used; polluted 570 Oct12 series is not stitc
     assert.equal(Number(cny.equity), 318428.04);
     assert.equal(cnyMomFromStartPctLine(cny), "+6,14% от старта");
     const pts = resolveEquityPoints(cny, snap.history);
-    assert.equal(pts.length, 479);
-    assert.equal(pts[0].t, "2026-10-23T08:00:00");
-    assert.equal(Number(pts[0].equity), 332497.77);
+    assert.equal(pts[0].t, "2026-10-12T11:07:00Z");
+    assert.equal(Number(pts[0].equity), 300000);
+    const canonAt = pts.findIndex((p) => p.t === "2026-10-23T08:00:00");
+    assert.equal(canonAt, 198);
+    assert.equal(pts.length, 198 + 479);
+    assert.equal(Number(pts[canonAt].equity), 332497.77);
     assert.equal(pts.at(-1).t, "2026-11-12T06:00:00");
-    assert.ok(pts.every((p) => !String(p.t).startsWith("2026-10-12")));
+    assert.ok(pts.every((p) => Number(p.equity) !== 335539.3734402401));
     assert.equal(snap.latest.accounts.find((a) => a.bot_id === "v6b1").equity, "10112.25605731400");
     assert.equal(snap.history.series["v6b1::v6b1"].points.at(-1).equity, 10112.256057314);
     assert.equal(snap.history.series["eth_okx_moex::eth_okx_moex"].points.at(-1).equity, 302889.84);

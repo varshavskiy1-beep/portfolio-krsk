@@ -1,0 +1,102 @@
+{
+  "checked_at_local_krasnoyarsk": "2026-11-12T13:13+07:00",
+  "do_not_publish": true,
+  "only_cny": true,
+  "host_db_not_read": true,
+  "sftp": {
+    "file": "only /var/lib/equity-ro/latest.json",
+    "dest": "/tmp/pk-cny-early-restore-20261112/host/latest.json",
+    "sha256": "68efb0c18b469d526db18e9cd41a8a797507c1896fc276cfdea87cf1e26bc3f0",
+    "generated_at": "2026-11-12T06:16:01Z",
+    "cny_history_n": 480,
+    "cny_history_first": {
+      "t": "2026-10-23T08:00:00",
+      "equity": "332497.77"
+    },
+    "cny_history_last": {
+      "t": "2026-11-12T07:00:00",
+      "equity": "316776.40"
+    },
+    "pre_23oct_08_naive": 0
+  },
+  "canonical_journal": {
+    "authoritative_from": "2026-10-23T08:00:00",
+    "source_now": "host latest.json and Pages/latest.history",
+    "generation": "cny-journal-capital-v1",
+    "history_mode": "replace",
+    "n": 480,
+    "first": {
+      "t": "2026-10-23T08:00:00",
+      "equity": "332497.77"
+    },
+    "last": {
+      "t": "2026-11-12T07:00:00",
+      "equity": "316776.40"
+    },
+    "pages_tip_at_prior_review": "b1d14b232cd5d3c696b453f09331cb018f189a73",
+    "before_pages_backup_tip": "c43e0f78fc2b749ef4fba4a1283b560884e010f8",
+    "host_extract_479_first_same": true
+  },
+  "prefix_identity": {
+    "n": 198,
+    "identical_in": [
+      "backup sha-history / tmp/pk-cny-replace-audit-20261112T115134/before-pages (c43e0f78, 569-point series)",
+      "current live history.json series (571-point series, prefix 198 identical)",
+      "Vercel bundled public/data 2026-10-24T06:13:05Z (226-point series, prefix 198 identical)",
+      "gh-pages 0194a6773a17fc66bf29d49e76b7222f4882ac6d 2026-10-24T06:17:06Z (226 points, prefix 198 identical)",
+      "master public/data 9e63419f9473cf2cd9938fe7273464647c95d483 updated 2026-10-23T06:17:58Z — exactly the 198-point prefix, contemporaneous at the seam"
+    ],
+    "growth_checks": [
+      {
+        "sha": "6d07fa4b24cda1facec49589231477ec13bdcd48",
+        "at": "2026-10-12T19:09:00Z",
+        "n": 1,
+        "note": "first appearance of CNY in master latest+history; latest.updated_utc already 2026-10-12T11:07:00Z equity 300000; not present in 11:04/11:16/11:52 syncs"
+      },
+      {
+        "sha": "ecd6124e1184a65b8b6a5cce420a77583c2b1e23",
+        "at": "2026-10-12T19:37:14Z",
+        "n": 2,
+        "last": "2026-10-12T19:10:01Z / 300000"
+      },
+      {
+        "sha": "ad2dc52a94bc422a9a55ae0f93549861c7889137",
+        "at": "2026-10-13T07:47:15Z",
+        "n": 3,
+        "last": "2026-10-13T07:40:52Z / 300213.6435 first PnL move"
+      },
+      {
+        "sha": "3c6191bd63880b87f0f105559d609cbc1ca19fa1",
+        "at": "2026-10-20T12:41:43Z",
+        "n": 132,
+        "last": "2026-10-20T12:02:04Z / 314382.58519124",
+        "is_prefix_of_198": true
+      },
+      {
+        "sha": "1fdd398d5018c24772f576c5dc965838d0988629",
+        "at": "2026-10-23T06:02:53Z",
+        "n": 197,
+        "last": "2026-10-23T06:02:03Z / 332483.56266424"
+      },
+      {
+        "sha": "9e63419f9473cf2cd9938fe7273464647c95d483",
+        "at": "2026-10-23T06:17:58Z",
+        "n": 198,
+        "last": "2026-10-23T06:17:26Z / 332483.56266424"
+      }
+    ]
+  },
+  "known": [
+    "Официальная первая точка 2026-10-12T11:07:00Z / 300000 — из синхронизации 12 Oct 19:09 (6d07fa4b), не выдумана сейчас. В 11:04–11:52 счёта ещё не было в latest.",
+    "Prefix 198 точек до 06:21:01Z идентичен в contemporaneous master, Oct 24 bundle, Nov 12 backup и текущем history.series.",
+    "Канон 23 Oct 08:00 → now (480, generation cny-journal-capital-v1) authoritative; host latest сейчас не содержит точек до 23 Oct 08:00.",
+    "Шов +14.21 ₽ (0.0047% seed). Weekend/holiday stalls в prefix (17–19 Oct плоский 307918.64; старт 12 Oct 8ч и 12ч на 300000) не делают ряд ложным.",
+    "% карточки от seed 300000: сейчас +5.592% (316776.40). Без prefix график начинается уже с +10.83% (332497.77), скрывая набор с 12 Oct."
+  ],
+  "unknown": [
+    "Host DB / journal.capital на сервере не читались (запрещено). Неизвестно, есть ли там ранний участок, который просто не попадает в latest.history.",
+    "Точная таймзона naive journal часов (эмпирика ≈ UTC+1.65 к меткам published :21Z). Не KRAT +7.",
+    "Нужен ли новый generation tag (v2) для prefix+journal, или оставлять cny-journal-capital-v1.",
+    "Как 15-мин routine должна вставлять prefix, чтобы следующий replace с host latest (480 с 23 Oct) снова его не срезал."
+  ]
+}

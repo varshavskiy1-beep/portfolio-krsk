@@ -1,10 +1,9 @@
 import {
-  cnyJournalHistoryPoints,
   cnyMomHistoryPoints,
   cnyMomStoredPoints,
-  isCnyJournalReplaceSignal,
   isCnyJournalStoredSeries,
 } from "./cnyMomCard.js";
+import { cnyChartUnix, cnyFullHistoryPoints, cnyPointsHaveMixedClocks } from "./cnyPrefix.js";
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
 import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
@@ -72,8 +71,8 @@ export function isAlreadySeed(equity, seedN) {
   return Math.abs(equity - seedN) <= Math.max(1e-6, Math.abs(seedN) * 1e-9);
 }
 
-function parsePoint(p) {
-  const time = toUnix(p?.t);
+function parsePoint(p, timeFn = toUnix) {
+  const time = timeFn(p?.t);
   if (time == null) return null;
   const raw = p?.equity;
   if (typeof raw !== "number" && typeof raw !== "string") return null;
@@ -84,9 +83,10 @@ function parsePoint(p) {
 }
 
 export function normalizePoints(points) {
+  const timeFn = cnyPointsHaveMixedClocks(points) ? cnyChartUnix : toUnix;
   const raw = [];
   for (const p of points || []) {
-    const row = parsePoint(p);
+    const row = parsePoint(p, timeFn);
     if (row) raw.push(row);
   }
   raw.sort((a, b) => a.time - b.time);
@@ -133,7 +133,8 @@ export function lastEquityValue(account) {
 export function resolveEquityPoints(account, history) {
   if (isRfBondsRateCycle(account)) return rateCycleHistoryPoints(account);
   if (isCnyMomH360(account)) {
-    if (isCnyJournalReplaceSignal(account)) return cnyJournalHistoryPoints(account);
+    const full = cnyFullHistoryPoints(account, history);
+    if (full) return full;
     const key = `${account.bot_id}::${account.account_id}`;
     if (isCnyJournalStoredSeries(history?.series?.[key])) {
       return cnyMomStoredPoints(account, history);

@@ -344,6 +344,20 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
     assert.doesNotMatch(s, /\bseed\b/i, s);
     assert.doesNotMatch(s, /RUCBTR5YNS|RUCBITR1Y|CNYRUB_TOM/, s);
   }
+  const liveCny = getPassport("cny_mom_h360", "", {
+    bot_id: "cny_mom_h360",
+    account_id: "cny_mom_h360",
+    seed: "300000",
+    equity: "316776.40",
+    positions: [
+      { symbol: "LQDT", side: "long", qty: "142045" },
+      { symbol: "CRZ6", side: "short", qty: "-63" },
+    ],
+  });
+  assert.equal(liveCny.parameters.find((r) => r.name === "Начальный капитал").known, true);
+  assert.match(liveCny.parameters.find((r) => r.name === "Начальный капитал").value, /300\s?000/);
+  assert.match(liveCny.essence.paragraphs.join("\n"), /CRZ6 short -63/);
+  assert.doesNotMatch(liveCny.essence.paragraphs.join("\n"), /фьючерс не открывается/);
 
   const eth = getPassport("eth_okx_moex");
   assert.equal(eth.title, "ETH по сигналу OKX");
