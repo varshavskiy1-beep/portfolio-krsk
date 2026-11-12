@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-12T07:04:22Z",
+  "generated_at": "2026-11-12T07:13:25Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24495.67072785002",
-      "updated_utc": "2026-11-12T07:04:14.568584Z",
+      "updated_utc": "2026-11-12T07:13:13.948173Z",
       "positions": []
     },
     {
@@ -46,16 +46,16 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1830670.4900455398",
-      "updated_utc": "2026-11-12T07:04:14.572628Z",
+      "equity": "1829393.8095546397",
+      "updated_utc": "2026-11-12T07:13:13.951672Z",
       "positions": [
         {
-          "position_id": "p_16bee33c7d28",
-          "symbol": "NVTK",
-          "side": "long",
-          "qty": "404.0",
-          "avg_px": "1131.06525",
-          "stop_px": "1130.0688"
+          "position_id": "p_9d4c9ac6c0a3",
+          "symbol": "ROSN",
+          "side": "short",
+          "qty": "1283.0",
+          "avg_px": "356.4217",
+          "stop_px": null
         }
       ]
     },
@@ -64,8 +64,8 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1433219.3975383998",
-      "updated_utc": "2026-11-12T07:04:14.575077Z",
+      "equity": "1433021.3423383997",
+      "updated_utc": "2026-11-12T07:13:13.955117Z",
       "positions": [
         {
           "position_id": "p_e2b01ae45fbe",
@@ -83,7 +83,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11674.477786182997",
-      "updated_utc": "2026-11-12T07:04:14.577945Z",
+      "updated_utc": "2026-11-12T07:13:13.959299Z",
       "positions": [
         {
           "position_id": "p_5b0bb64efb36",
@@ -109,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-12T07:04:14.580726Z",
+      "updated_utc": "2026-11-12T07:13:13.964084Z",
       "positions": []
     },
     {
