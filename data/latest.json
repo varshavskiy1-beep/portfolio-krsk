@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-13T21:01:36Z",
+  "generated_at": "2026-11-13T21:19:46Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24336.260431530027",
-      "updated_utc": "2026-11-13T21:01:33.954336Z",
+      "updated_utc": "2026-11-13T21:19:40.982496Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1829283.67471496",
-      "updated_utc": "2026-11-13T21:01:33.957249Z",
+      "updated_utc": "2026-11-13T21:19:40.985977Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432046.06819504",
-      "updated_utc": "2026-11-13T21:01:33.959641Z",
+      "updated_utc": "2026-11-13T21:19:40.988979Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11453.537933867998",
-      "updated_utc": "2026-11-13T21:01:33.961994Z",
+      "updated_utc": "2026-11-13T21:19:40.991777Z",
       "positions": [
         {
           "position_id": "p_f270b70b03bc",
@@ -83,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14481.937580119995",
-      "updated_utc": "2026-11-13T21:01:33.965356Z",
+      "updated_utc": "2026-11-13T21:19:40.995083Z",
       "positions": []
     },
     {
@@ -180,7 +180,7 @@
       "seed": "10000",
       "equity": "9309.1303",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-13T21:00:01Z",
+      "updated_utc": "2026-11-13T21:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -296,20 +296,20 @@
       "account_id": "eth_okx_moex",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "310074.790315442",
-      "cash": "1.6433154420170535",
-      "updated_utc": "2026-11-13T20:02:09Z",
+      "equity": "310752.41155086196",
+      "cash": "0.7161508620098402",
+      "updated_utc": "2026-11-13T21:02:26Z",
       "positions": [
         {
           "symbol": "EHX6",
           "side": "short",
-          "qty": "95",
-          "avg_px": "1969.1"
+          "qty": "96",
+          "avg_px": "1960.5"
         },
         {
           "symbol": "LQDT",
           "side": "long",
-          "qty": "145315",
+          "qty": "145633",
           "avg_px": "2.1338"
         }
       ],
@@ -645,6 +645,10 @@
         {
           "t": "2026-11-13T22:00:00",
           "equity": "310074.79"
+        },
+        {
+          "t": "2026-11-13T23:00:00",
+          "equity": "310752.41"
         }
       ],
       "note": "Бумага. «ETH по сигналу OKX, фьючерс Мосбиржи», старт 300000 RUB. Новый forward с фактического seed; история replace, без ряда с 13.10. Дисконт пая не задан, паёв LQDT ноль. На биржу ордера не идут.",
@@ -653,7 +657,7 @@
       "generation": "20261110T091054Z",
       "start": "2026-11-10T09:10:55Z",
       "as_of": "2026-11-13",
-      "pct_return": 3.3582634384806687
+      "pct_return": 3.5841371836206504
     },
     {
       "bot_id": "cny_mom_h360",
