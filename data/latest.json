@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-13T10:30:10Z",
+  "generated_at": "2026-11-13T10:47:18Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24495.67072785002",
-      "updated_utc": "2026-11-13T10:29:54.597298Z",
+      "updated_utc": "2026-11-13T10:47:17.892522Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1830907.9799346698",
-      "updated_utc": "2026-11-13T10:29:54.601392Z",
+      "updated_utc": "2026-11-13T10:47:17.896966Z",
       "positions": [
         {
           "position_id": "p_ceb9b89ec76b",
@@ -72,26 +72,9 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1432109.90850512",
-      "updated_utc": "2026-11-13T10:29:54.603962Z",
-      "positions": [
-        {
-          "position_id": "p_dfd1c1a66833",
-          "symbol": "SRZ6",
-          "side": "short",
-          "qty": "11.0",
-          "avg_px": "30478.8036",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_31ae60942572",
-          "symbol": "GZZ6",
-          "side": "short",
-          "qty": "13.0",
-          "avg_px": "11860.254",
-          "stop_px": null
-        }
-      ]
+      "equity": "1432197.73835912",
+      "updated_utc": "2026-11-13T10:47:17.899981Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -99,7 +82,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11451.168732123999",
-      "updated_utc": "2026-11-13T10:29:54.606188Z",
+      "updated_utc": "2026-11-13T10:47:17.902677Z",
       "positions": [
         {
           "position_id": "p_8164f99f68f7",
@@ -125,7 +108,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-13T10:29:54.608447Z",
+      "updated_utc": "2026-11-13T10:47:17.905378Z",
       "positions": []
     },
     {
