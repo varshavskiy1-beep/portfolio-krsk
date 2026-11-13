@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-13T12:29:56Z",
+  "generated_at": "2026-11-13T12:43:01Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24495.67072785002",
-      "updated_utc": "2026-11-13T12:29:54.135862Z",
+      "updated_utc": "2026-11-13T12:42:47.358381Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1827307.0393629998",
-      "updated_utc": "2026-11-13T12:29:54.141338Z",
+      "updated_utc": "2026-11-13T12:42:47.363484Z",
       "positions": [
         {
           "position_id": "p_a953ed11d11b",
@@ -55,6 +55,14 @@
           "side": "long",
           "qty": "3805.0",
           "avg_px": "120.38016",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_b044e625e57f",
+          "symbol": "ROSN",
+          "side": "short",
+          "qty": "1273.0",
+          "avg_px": "358.52065",
           "stop_px": null
         }
       ]
@@ -65,7 +73,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432197.73835912",
-      "updated_utc": "2026-11-13T12:29:54.147361Z",
+      "updated_utc": "2026-11-13T12:42:47.367099Z",
       "positions": [
         {
           "position_id": "p_5f762c7c78a0",
@@ -83,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11451.168732123999",
-      "updated_utc": "2026-11-13T12:29:54.159738Z",
+      "updated_utc": "2026-11-13T12:42:47.372237Z",
       "positions": [
         {
           "position_id": "p_8164f99f68f7",
@@ -109,7 +117,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-13T12:29:54.164312Z",
+      "updated_utc": "2026-11-13T12:42:47.376062Z",
       "positions": []
     },
     {
