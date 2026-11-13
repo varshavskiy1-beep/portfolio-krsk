@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-13T14:28:43Z",
+  "generated_at": "2026-11-13T14:40:47Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -37,9 +37,18 @@
       "account_id": "paper_us_eq",
       "venue": "US_EQ",
       "currency": "USD",
-      "equity": "24495.67072785002",
-      "updated_utc": "2026-11-13T14:28:36.971755Z",
-      "positions": []
+      "equity": "24481.887680150023",
+      "updated_utc": "2026-11-13T14:40:43.302663Z",
+      "positions": [
+        {
+          "position_id": "p_0b90dc164a1c",
+          "symbol": "NVDA",
+          "side": "long",
+          "qty": "37.0",
+          "avg_px": "163.797753",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "who_pays",
@@ -47,7 +56,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1829432.360924",
-      "updated_utc": "2026-11-13T14:28:36.974639Z",
+      "updated_utc": "2026-11-13T14:40:43.306535Z",
       "positions": [
         {
           "position_id": "p_b044e625e57f",
@@ -65,7 +74,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1431886.84315016",
-      "updated_utc": "2026-11-13T14:28:36.977561Z",
+      "updated_utc": "2026-11-13T14:40:43.309857Z",
       "positions": [
         {
           "position_id": "p_5f762c7c78a0",
@@ -83,7 +92,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11497.283287261998",
-      "updated_utc": "2026-11-13T14:28:36.982097Z",
+      "updated_utc": "2026-11-13T14:40:43.313298Z",
       "positions": [
         {
           "position_id": "p_c9adcd957359",
@@ -100,18 +109,9 @@
       "account_id": "paper_crypto_perp",
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
-      "equity": "14551.089618949996",
-      "updated_utc": "2026-11-13T14:28:36.985858Z",
-      "positions": [
-        {
-          "position_id": "p_e8c46b9ac321",
-          "symbol": "BTC-USDT-SWAP",
-          "side": "long",
-          "qty": "0.052",
-          "avg_px": "69199.45361",
-          "stop_px": null
-        }
-      ]
+      "equity": "14534.090151669996",
+      "updated_utc": "2026-11-13T14:40:43.316570Z",
+      "positions": []
     },
     {
       "bot_id": "young_bounce_combo",
@@ -207,7 +207,7 @@
       "seed": "10000",
       "equity": "9309.1303",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-13T14:20:01Z",
+      "updated_utc": "2026-11-13T14:40:07Z",
       "positions": [
         {
           "symbol": "AAPL",
