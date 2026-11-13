@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-13T11:42:38Z",
+  "generated_at": "2026-11-13T12:01:45Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24495.67072785002",
-      "updated_utc": "2026-11-13T11:42:34.681994Z",
+      "updated_utc": "2026-11-13T12:01:39.235090Z",
       "positions": []
     },
     {
@@ -46,17 +46,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1830907.9799346698",
-      "updated_utc": "2026-11-13T11:42:34.687378Z",
+      "equity": "1827307.0393629998",
+      "updated_utc": "2026-11-13T12:01:39.237906Z",
       "positions": [
-        {
-          "position_id": "p_ceb9b89ec76b",
-          "symbol": "NVTK",
-          "side": "long",
-          "qty": "401.0",
-          "avg_px": "1143.87165",
-          "stop_px": null
-        },
         {
           "position_id": "p_a953ed11d11b",
           "symbol": "GMKN",
@@ -73,7 +65,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432197.73835912",
-      "updated_utc": "2026-11-13T11:42:34.692651Z",
+      "updated_utc": "2026-11-13T12:01:39.243661Z",
       "positions": [
         {
           "position_id": "p_5f762c7c78a0",
@@ -91,7 +83,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11451.168732123999",
-      "updated_utc": "2026-11-13T11:42:34.696908Z",
+      "updated_utc": "2026-11-13T12:01:39.246661Z",
       "positions": [
         {
           "position_id": "p_8164f99f68f7",
@@ -117,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-13T11:42:34.701625Z",
+      "updated_utc": "2026-11-13T12:01:39.249943Z",
       "positions": []
     },
     {
