@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-13T12:43:01Z",
+  "generated_at": "2026-11-13T13:00:12Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24495.67072785002",
-      "updated_utc": "2026-11-13T12:42:47.358381Z",
+      "updated_utc": "2026-11-13T12:59:51.981492Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1827307.0393629998",
-      "updated_utc": "2026-11-13T12:42:47.363484Z",
+      "updated_utc": "2026-11-13T12:59:51.986049Z",
       "positions": [
         {
           "position_id": "p_a953ed11d11b",
@@ -72,8 +72,8 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1432197.73835912",
-      "updated_utc": "2026-11-13T12:42:47.367099Z",
+      "equity": "1431886.84315016",
+      "updated_utc": "2026-11-13T12:59:51.989863Z",
       "positions": [
         {
           "position_id": "p_5f762c7c78a0",
@@ -90,26 +90,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "11451.168732123999",
-      "updated_utc": "2026-11-13T12:42:47.372237Z",
-      "positions": [
-        {
-          "position_id": "p_8164f99f68f7",
-          "symbol": "BTC-USDT",
-          "side": "long",
-          "qty": "0.041",
-          "avg_px": "68835.84456",
-          "stop_px": null
-        },
-        {
-          "position_id": "p_8915904f7b3e",
-          "symbol": "ETH-USDT",
-          "side": "long",
-          "qty": "1.479",
-          "avg_px": "1935.830575",
-          "stop_px": null
-        }
-      ]
+      "equity": "11497.283287261998",
+      "updated_utc": "2026-11-13T12:59:51.993897Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -117,8 +100,17 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14551.089618949996",
-      "updated_utc": "2026-11-13T12:42:47.376062Z",
-      "positions": []
+      "updated_utc": "2026-11-13T12:59:51.998382Z",
+      "positions": [
+        {
+          "position_id": "p_e8c46b9ac321",
+          "symbol": "BTC-USDT-SWAP",
+          "side": "long",
+          "qty": "0.052",
+          "avg_px": "69199.45361",
+          "stop_px": null
+        }
+      ]
     },
     {
       "bot_id": "young_bounce_combo",
