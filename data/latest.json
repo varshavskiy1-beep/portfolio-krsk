@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-14T00:56:27Z",
+  "generated_at": "2026-11-14T01:16:33Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24336.260431530027",
-      "updated_utc": "2026-11-14T00:56:19.101525Z",
+      "updated_utc": "2026-11-14T01:16:33.123478Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1829283.67471496",
-      "updated_utc": "2026-11-14T00:56:19.106189Z",
+      "updated_utc": "2026-11-14T01:16:33.127306Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432046.06819504",
-      "updated_utc": "2026-11-14T00:56:19.109155Z",
+      "updated_utc": "2026-11-14T01:16:33.130371Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11448.305795121998",
-      "updated_utc": "2026-11-14T00:56:19.112142Z",
+      "updated_utc": "2026-11-14T01:16:33.134902Z",
       "positions": [
         {
           "position_id": "p_c808f653a7c3",
@@ -83,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14481.937580119995",
-      "updated_utc": "2026-11-14T00:56:19.115435Z",
+      "updated_utc": "2026-11-14T01:16:33.137787Z",
       "positions": []
     },
     {
@@ -189,7 +189,7 @@
       "seed": "10000",
       "equity": "9085.6442",
       "cash": "149.51325747703982",
-      "updated_utc": "2026-11-14T00:50:02Z",
+      "updated_utc": "2026-11-14T01:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -2796,27 +2796,27 @@
       "account_id": "rf_bonds_rate_cycle",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "303895.813",
+      "equity": "304698.289",
       "cash": null,
-      "updated_utc": "2026-11-07T01:02:18Z",
+      "updated_utc": "2026-11-14T01:02:33Z",
       "positions": [
         {
           "symbol": "OBLG",
           "side": "long",
           "qty": "1129",
-          "avg_px": "215.24"
+          "avg_px": "215.8"
         },
         {
           "symbol": "SBRB",
           "side": "long",
-          "qty": "3142",
-          "avg_px": "19.34"
+          "qty": "3141",
+          "avg_px": "19.398"
         },
         {
           "symbol": "CRZ6",
           "side": "long",
           "qty": "4",
-          "avg_px": "12.439"
+          "avg_px": "12.436"
         }
       ],
       "history": [
@@ -2839,10 +2839,14 @@
         {
           "t": "2026-11-06",
           "equity": "303895.813"
+        },
+        {
+          "t": "2026-11-13",
+          "equity": "304698.289"
         }
       ],
       "note": "Бумага. «Цикл ставки 80/20», старт 300000 RUB. Паи OBLG и SBRB и фьючерс CR. На биржу ордера не идут.",
-      "as_of": "2026-11-06",
+      "as_of": "2026-11-13",
       "book": "OBLG_SBRB_CR"
     },
     {
