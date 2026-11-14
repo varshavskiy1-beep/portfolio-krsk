@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-14T14:13:05Z",
+  "generated_at": "2026-11-14T14:31:15Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24336.260431530027",
-      "updated_utc": "2026-11-14T14:13:01.647959Z",
+      "updated_utc": "2026-11-14T14:31:08.033634Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1829283.67471496",
-      "updated_utc": "2026-11-14T14:13:01.651430Z",
+      "updated_utc": "2026-11-14T14:31:08.037143Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432046.06819504",
-      "updated_utc": "2026-11-14T14:13:01.655375Z",
+      "updated_utc": "2026-11-14T14:31:08.040116Z",
       "positions": []
     },
     {
@@ -64,17 +64,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "11395.850804377998",
-      "updated_utc": "2026-11-14T14:13:01.659114Z",
+      "equity": "11314.976666843999",
+      "updated_utc": "2026-11-14T14:31:08.045760Z",
       "positions": [
-        {
-          "position_id": "p_66211c73b352",
-          "symbol": "ETH-USDT",
-          "side": "long",
-          "qty": "1.492",
-          "avg_px": "1909.77276",
-          "stop_px": null
-        },
         {
           "position_id": "p_9870d9110ee4",
           "symbol": "BTC-USDT",
@@ -91,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14481.937580119995",
-      "updated_utc": "2026-11-14T14:13:01.663375Z",
+      "updated_utc": "2026-11-14T14:31:08.049673Z",
       "positions": []
     },
     {
@@ -751,7 +743,7 @@
       "seed": "300000",
       "equity": "324551.93",
       "cash": "21342.67627324021",
-      "updated_utc": "2026-11-14T13:21:26Z",
+      "updated_utc": "2026-11-14T14:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -2903,6 +2895,10 @@
         },
         {
           "t": "2026-11-14T15:00:00",
+          "equity": "324551.93"
+        },
+        {
+          "t": "2026-11-14T16:00:00",
           "equity": "324551.93"
         }
       ],
