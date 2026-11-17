@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-17T21:14:50Z",
+  "generated_at": "2026-11-17T21:26:56Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24176.304048680027",
-      "updated_utc": "2026-11-17T21:14:41.466235Z",
+      "updated_utc": "2026-11-17T21:26:46.681785Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1828550.1858013999",
-      "updated_utc": "2026-11-17T21:14:41.469864Z",
+      "updated_utc": "2026-11-17T21:26:46.684380Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1431270.22754096",
-      "updated_utc": "2026-11-17T21:14:41.473248Z",
+      "updated_utc": "2026-11-17T21:26:46.686658Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11099.138552560002",
-      "updated_utc": "2026-11-17T21:14:41.476880Z",
+      "updated_utc": "2026-11-17T21:26:46.689499Z",
       "positions": [
         {
           "position_id": "p_f3b0072c8f76",
@@ -91,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14481.937580119995",
-      "updated_utc": "2026-11-17T21:14:41.480134Z",
+      "updated_utc": "2026-11-17T21:26:46.691988Z",
       "positions": []
     },
     {
@@ -195,67 +195,67 @@
       "account_id": "desyatka_earn_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "8754.0575",
+      "equity": "8768.2029",
       "cash": "809.0496958869144",
-      "updated_utc": "2026-11-17T21:10:01Z",
+      "updated_utc": "2026-11-17T21:20:07Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
           "qty": "2.636815644446298",
-          "avg_px": "352.7799987792969"
+          "avg_px": "351.9100036621094"
         },
         {
           "symbol": "AMD",
           "side": "long",
           "qty": "1.963780744212067",
-          "avg_px": "504.2799987792969"
+          "avg_px": "503.4100036621094"
         },
         {
           "symbol": "AMZN",
           "side": "long",
           "qty": "3.7959085084905864",
-          "avg_px": "257.75"
+          "avg_px": "257.8900146484375"
         },
         {
           "symbol": "AVGO",
           "side": "long",
           "qty": "2.6988671037736016",
-          "avg_px": "333.3999938964844"
+          "avg_px": "341.6000061035156"
         },
         {
           "symbol": "INTC",
           "side": "long",
           "qty": "14.111197227935603",
-          "avg_px": "55.470001220703125"
+          "avg_px": "55.16999816894531"
         },
         {
           "symbol": "MSFT",
           "side": "long",
           "qty": "1.7543891623633763",
-          "avg_px": "517.989990234375"
+          "avg_px": "506.239990234375"
         },
         {
           "symbol": "MU",
           "side": "long",
           "qty": "0.9879623560562981",
-          "avg_px": "719.02001953125"
+          "avg_px": "712.4199829101562"
         },
         {
           "symbol": "SPCX",
           "side": "long",
           "qty": "5.9802920175931975",
-          "avg_px": "137.36000061035156"
+          "avg_px": "141.6999969482422"
         },
         {
           "symbol": "TSLA",
           "side": "long",
           "qty": "2.4305502016776126",
-          "avg_px": "379.739990234375"
+          "avg_px": "380.1099853515625"
         }
       ],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-11-16"
+      "as_of": "2026-11-17"
     },
     {
       "bot_id": "cycle_6040_paper",
@@ -1061,7 +1061,7 @@
       "seed": "300000",
       "equity": "320264.04",
       "cash": "16941.14354124025",
-      "updated_utc": "2026-11-17T20:21:03Z",
+      "updated_utc": "2026-11-17T21:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -3534,6 +3534,10 @@
         },
         {
           "t": "2026-11-17T22:00:00",
+          "equity": "320264.04"
+        },
+        {
+          "t": "2026-11-17T23:00:00",
           "equity": "320264.04"
         }
       ],
