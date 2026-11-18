@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-18T16:26:06Z",
+  "generated_at": "2026-11-18T16:48:17Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24176.304048680027",
-      "updated_utc": "2026-11-18T16:26:03.266816Z",
+      "updated_utc": "2026-11-18T16:48:15.254392Z",
       "positions": [
         {
           "position_id": "p_2e15d2ff7e58",
@@ -64,7 +64,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1814189.0534061696",
-      "updated_utc": "2026-11-18T16:26:03.270197Z",
+      "updated_utc": "2026-11-18T16:48:15.258406Z",
       "positions": [
         {
           "position_id": "p_ab4ae7e20b50",
@@ -82,7 +82,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1436569.75464152",
-      "updated_utc": "2026-11-18T16:26:03.273454Z",
+      "updated_utc": "2026-11-18T16:48:15.261359Z",
       "positions": [
         {
           "position_id": "p_22ed27074459",
@@ -100,7 +100,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11098.810748824",
-      "updated_utc": "2026-11-18T16:26:03.276639Z",
+      "updated_utc": "2026-11-18T16:48:15.263527Z",
       "positions": [
         {
           "position_id": "p_aabc1451922f",
@@ -118,7 +118,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14418.233606145996",
-      "updated_utc": "2026-11-18T16:26:03.279621Z",
+      "updated_utc": "2026-11-18T16:48:15.265684Z",
       "positions": []
     },
     {
@@ -224,7 +224,7 @@
       "seed": "10000",
       "equity": "8768.2029",
       "cash": "809.0496958869144",
-      "updated_utc": "2026-11-18T16:20:01Z",
+      "updated_utc": "2026-11-18T16:40:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -3792,9 +3792,9 @@
       "canonical_id": "MAYAK_imoex_lowvol10",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "304710.69661210495",
-      "cash": "304710.69661210495",
-      "as_of": "2026-11-16",
+      "equity": "304824.89531785296",
+      "cash": "304824.89531785296",
+      "as_of": "2026-11-17",
       "positions": [],
       "note": "Бумага. «Маяк Low Vol», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -3803,7 +3803,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.35",
-      "updated_utc": "2026-11-17T16:35:09Z"
+      "updated_utc": "2026-11-18T16:34:39Z"
     },
     {
       "bot_id": "mayak_imoex_mom10",
@@ -3811,9 +3811,9 @@
       "canonical_id": "MAYAK_imoex_mom10",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "304710.69661210495",
-      "cash": "304710.69661210495",
-      "as_of": "2026-11-16",
+      "equity": "304824.89531785296",
+      "cash": "304824.89531785296",
+      "as_of": "2026-11-17",
       "positions": [],
       "note": "Бумага. «Маяк Momentum», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -3822,7 +3822,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.35",
-      "updated_utc": "2026-11-17T16:35:17Z"
+      "updated_utc": "2026-11-18T16:34:47Z"
     },
     {
       "bot_id": "mayak_imoex_mom10_lev15",
@@ -3830,9 +3830,9 @@
       "canonical_id": "MAYAK_imoex_mom10_lev15",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "304710.69661210495",
-      "cash": "304710.69661210495",
-      "as_of": "2026-11-16",
+      "equity": "304824.89531785296",
+      "cash": "304824.89531785296",
+      "as_of": "2026-11-17",
       "positions": [],
       "note": "Бумага. «Маяк Momentum ×1,5», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -3841,7 +3841,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.35",
-      "updated_utc": "2026-11-17T16:35:25Z"
+      "updated_utc": "2026-11-18T16:34:55Z"
     },
     {
       "bot_id": "mayak_imoex_mom10_lev2",
@@ -3849,9 +3849,9 @@
       "canonical_id": "MAYAK_imoex_mom10_lev2",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "304710.69661210495",
-      "cash": "304710.69661210495",
-      "as_of": "2026-11-16",
+      "equity": "304824.89531785296",
+      "cash": "304824.89531785296",
+      "as_of": "2026-11-17",
       "positions": [],
       "note": "Бумага. «Маяк Momentum ×2», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -3860,7 +3860,7 @@
       "regime": "hard",
       "key_rate_pct": "14",
       "cpi_pct": "6.35",
-      "updated_utc": "2026-11-17T16:35:30Z"
+      "updated_utc": "2026-11-18T16:35:04Z"
     }
   ],
   "manifest": [
