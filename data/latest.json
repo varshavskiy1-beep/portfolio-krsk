@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-18T19:02:17Z",
+  "generated_at": "2026-11-18T19:18:22Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24204.058188880026",
-      "updated_utc": "2026-11-18T19:02:02.777631Z",
+      "updated_utc": "2026-11-18T19:18:18.494878Z",
       "positions": []
     },
     {
@@ -46,18 +46,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1814189.0534061696",
-      "updated_utc": "2026-11-18T19:02:02.783049Z",
-      "positions": [
-        {
-          "position_id": "p_ab4ae7e20b50",
-          "symbol": "GMKN",
-          "side": "short",
-          "qty": "3925.0",
-          "avg_px": "115.70212",
-          "stop_px": null
-        }
-      ]
+      "equity": "1815244.8003967896",
+      "updated_utc": "2026-11-18T19:18:18.499332Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -65,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1436569.75464152",
-      "updated_utc": "2026-11-18T19:02:02.786784Z",
+      "updated_utc": "2026-11-18T19:18:18.503365Z",
       "positions": [
         {
           "position_id": "p_22ed27074459",
@@ -83,7 +74,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11014.092826595",
-      "updated_utc": "2026-11-18T19:02:02.790539Z",
+      "updated_utc": "2026-11-18T19:18:18.509242Z",
       "positions": [
         {
           "position_id": "p_b84f7c53cafd",
@@ -101,7 +92,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14418.233606145996",
-      "updated_utc": "2026-11-18T19:02:02.793924Z",
+      "updated_utc": "2026-11-18T19:18:18.513484Z",
       "positions": []
     },
     {
@@ -207,7 +198,7 @@
       "seed": "10000",
       "equity": "8768.2029",
       "cash": "809.0496958869144",
-      "updated_utc": "2026-11-18T19:00:00Z",
+      "updated_utc": "2026-11-18T19:10:02Z",
       "positions": [
         {
           "symbol": "AAPL",
