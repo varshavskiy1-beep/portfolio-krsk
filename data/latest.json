@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-18T03:10:28Z",
+  "generated_at": "2026-11-18T03:26:34Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24176.304048680027",
-      "updated_utc": "2026-11-18T03:10:24.646011Z",
+      "updated_utc": "2026-11-18T03:26:29.293543Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1828550.1858013999",
-      "updated_utc": "2026-11-18T03:10:24.649203Z",
+      "updated_utc": "2026-11-18T03:26:29.297402Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1431270.22754096",
-      "updated_utc": "2026-11-18T03:10:24.651516Z",
+      "updated_utc": "2026-11-18T03:26:29.301141Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11192.16646623",
-      "updated_utc": "2026-11-18T03:10:24.653945Z",
+      "updated_utc": "2026-11-18T03:26:29.304044Z",
       "positions": [
         {
           "position_id": "p_09cdbe4e3d4c",
@@ -73,6 +73,14 @@
           "side": "short",
           "qty": "1.533",
           "avg_px": "1823.892668",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_b8895edf66b3",
+          "symbol": "SOL-USDT",
+          "side": "short",
+          "qty": "37.494",
+          "avg_px": "74.607611",
           "stop_px": null
         }
       ]
@@ -83,7 +91,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14481.937580119995",
-      "updated_utc": "2026-11-18T03:10:24.656343Z",
+      "updated_utc": "2026-11-18T03:26:29.308529Z",
       "positions": []
     },
     {
@@ -1053,7 +1061,7 @@
       "seed": "300000",
       "equity": "320264.04",
       "cash": "16941.14354124025",
-      "updated_utc": "2026-11-18T02:21:02Z",
+      "updated_utc": "2026-11-18T03:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -3550,6 +3558,10 @@
         },
         {
           "t": "2026-11-18T04:00:00",
+          "equity": "320264.04"
+        },
+        {
+          "t": "2026-11-18T05:00:00",
           "equity": "320264.04"
         }
       ],
