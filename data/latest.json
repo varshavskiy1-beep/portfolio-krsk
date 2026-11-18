@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-18T21:14:16Z",
+  "generated_at": "2026-11-18T21:29:23Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24197.634056830026",
-      "updated_utc": "2026-11-18T21:14:13.315716Z",
+      "updated_utc": "2026-11-18T21:29:12.588385Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1815244.8003967896",
-      "updated_utc": "2026-11-18T21:14:13.319440Z",
+      "updated_utc": "2026-11-18T21:29:12.594030Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1437889.0155788",
-      "updated_utc": "2026-11-18T21:14:13.322825Z",
+      "updated_utc": "2026-11-18T21:29:12.597530Z",
       "positions": []
     },
     {
@@ -65,7 +65,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11014.092826595",
-      "updated_utc": "2026-11-18T21:14:13.327348Z",
+      "updated_utc": "2026-11-18T21:29:12.600993Z",
       "positions": [
         {
           "position_id": "p_b84f7c53cafd",
@@ -83,7 +83,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14418.233606145996",
-      "updated_utc": "2026-11-18T21:14:13.331175Z",
+      "updated_utc": "2026-11-18T21:29:12.605709Z",
       "positions": []
     },
     {
@@ -187,67 +187,67 @@
       "account_id": "desyatka_earn_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "8768.2029",
+      "equity": "8902.125",
       "cash": "809.0496958869144",
-      "updated_utc": "2026-11-18T21:10:01Z",
+      "updated_utc": "2026-11-18T21:20:06Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
           "qty": "2.636815644446298",
-          "avg_px": "351.9100036621094"
+          "avg_px": "352.45001220703125"
         },
         {
           "symbol": "AMD",
           "side": "long",
           "qty": "1.963780744212067",
-          "avg_px": "503.4100036621094"
+          "avg_px": "530.1400146484375"
         },
         {
           "symbol": "AMZN",
           "side": "long",
           "qty": "3.7959085084905864",
-          "avg_px": "257.8900146484375"
+          "avg_px": "267.739990234375"
         },
         {
           "symbol": "AVGO",
           "side": "long",
           "qty": "2.6988671037736016",
-          "avg_px": "341.6000061035156"
+          "avg_px": "354.04998779296875"
         },
         {
           "symbol": "INTC",
           "side": "long",
           "qty": "14.111197227935603",
-          "avg_px": "55.16999816894531"
+          "avg_px": "54.66999816894531"
         },
         {
           "symbol": "MSFT",
           "side": "long",
           "qty": "1.7543891623633763",
-          "avg_px": "506.239990234375"
+          "avg_px": "508.2900085449219"
         },
         {
           "symbol": "MU",
           "side": "long",
           "qty": "0.9879623560562981",
-          "avg_px": "712.4199829101562"
+          "avg_px": "705.27001953125"
         },
         {
           "symbol": "SPCX",
           "side": "long",
           "qty": "5.9802920175931975",
-          "avg_px": "141.6999969482422"
+          "avg_px": "143.5"
         },
         {
           "symbol": "TSLA",
           "side": "long",
           "qty": "2.4305502016776126",
-          "avg_px": "380.1099853515625"
+          "avg_px": "383.7200012207031"
         }
       ],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-11-17"
+      "as_of": "2026-11-18"
     },
     {
       "bot_id": "cycle_6040_paper",
@@ -1147,9 +1147,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "323302.67",
-      "cash": "19866.143541240246",
-      "updated_utc": "2026-11-18T20:21:11Z",
+      "equity": "323562.67",
+      "cash": "20126.143541240217",
+      "updated_utc": "2026-11-18T21:21:01Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -3719,6 +3719,10 @@
         {
           "t": "2026-11-18T22:00:00",
           "equity": "323302.67"
+        },
+        {
+          "t": "2026-11-18T23:00:00",
+          "equity": "323562.67"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -3727,7 +3731,7 @@
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
       "as_of": "2026-11-18",
-      "pct_return": 7.767556666666664
+      "pct_return": 7.854223333333321
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
