@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-18T10:48:46Z",
+  "generated_at": "2026-11-18T11:01:50Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "US_EQ",
       "currency": "USD",
       "equity": "24176.304048680027",
-      "updated_utc": "2026-11-18T10:48:38.266041Z",
+      "updated_utc": "2026-11-18T11:01:43.750098Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1827376.43898659",
-      "updated_utc": "2026-11-18T10:48:38.270679Z",
+      "updated_utc": "2026-11-18T11:01:43.756324Z",
       "positions": [
         {
           "position_id": "p_01b5a808973e",
@@ -72,17 +72,9 @@
       "account_id": "paper_forts",
       "venue": "FORTS",
       "currency": "RUB",
-      "equity": "1431270.22754096",
-      "updated_utc": "2026-11-18T10:48:38.274593Z",
+      "equity": "1436364.1243817601",
+      "updated_utc": "2026-11-18T11:01:43.763050Z",
       "positions": [
-        {
-          "position_id": "p_10af31076bab",
-          "symbol": "GZZ6",
-          "side": "short",
-          "qty": "29.0",
-          "avg_px": "12047.1792",
-          "stop_px": null
-        },
         {
           "position_id": "p_dd87d30a8964",
           "symbol": "SRZ6",
@@ -99,7 +91,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "11189.608623696",
-      "updated_utc": "2026-11-18T10:48:38.278726Z",
+      "updated_utc": "2026-11-18T11:01:43.767296Z",
       "positions": [
         {
           "position_id": "p_14bef6ab9872",
@@ -117,7 +109,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14481.937580119995",
-      "updated_utc": "2026-11-18T10:48:38.282895Z",
+      "updated_utc": "2026-11-18T11:01:43.770561Z",
       "positions": [
         {
           "position_id": "p_9556c9fa6010",
