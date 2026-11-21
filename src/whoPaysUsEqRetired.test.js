@@ -11,6 +11,7 @@ import {
   sanitizeCabinetSnapshot,
 } from "./historyMerge.js";
 import { pickOgWinner } from "./ogWinner.js";
+import { getPassport, passportUiStrings } from "./strategyPassport.js";
 import {
   HIDDEN_PORTAL_IDS,
   WHO_PAYS_BOT_ID,
@@ -120,4 +121,26 @@ test("stale feed: paper_us_eq dropped; paper_ru_eq stays; OG skips US sleeve", (
   if (winner?.account) {
     assert.notEqual(winner.account.account_id, WHO_PAYS_US_EQ_ACCOUNT_ID);
   }
+});
+
+test("authored who_pays passport: four wallets, no active five-account or US_EQ glossary", () => {
+  const who = getPassport(WHO_PAYS_BOT_ID);
+  assert.equal(who.accounts.length, 4);
+  assert.equal(
+    who.accounts.some((a) => a.accountId === WHO_PAYS_US_EQ_ACCOUNT_ID),
+    false,
+  );
+  assert.deepEqual(
+    who.accounts.map((a) => a.accountId),
+    ["paper_ru_eq", "paper_forts", "paper_crypto_spot", "paper_crypto_perp"],
+  );
+
+  const text = passportUiStrings(WHO_PAYS_BOT_ID).join("\n");
+  assert.doesNotMatch(text, /Пять счетов/);
+  assert.doesNotMatch(text, /пяти счетов/);
+  assert.doesNotMatch(text, /US_EQ\s*→\s*USD/);
+  assert.doesNotMatch(text, /USD \/ RUB \/ USDT/);
+  assert.match(text, /Четыре счёта, валюты не суммируются/);
+  assert.match(text, /RUB \/ USDT — по площадке счёта/);
+  assert.match(text, /KILL S5×US_EQ/);
 });
