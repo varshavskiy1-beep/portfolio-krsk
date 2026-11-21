@@ -365,9 +365,8 @@ const PASSPORTS = {
 
   who_pays: {
     botId: "who_pays",
-    title: "Пять отдельных «кошельков»",
+    title: "Четыре отдельных «кошелька»",
     accounts: [
-      { botId: "who_pays", accountId: "paper_us_eq", venue: "US_EQ", currency: "USD" },
       { botId: "who_pays", accountId: "paper_ru_eq", venue: "RU_EQ", currency: "RUB" },
       { botId: "who_pays", accountId: "paper_forts", venue: "FORTS", currency: "RUB" },
       { botId: "who_pays", accountId: "paper_crypto_spot", venue: "CRYPTO_SPOT", currency: "USDT" },
@@ -375,13 +374,13 @@ const PASSPORTS = {
     ],
     essence: {
       paragraphs: [
-        "Один бот и пять отдельных бумажных счетов: акции США, акции РФ, срочный рынок FORTS, крипто-спот и крипто-перпетуалы. У каждого счёта своя валюта. Складывать USD, RUB и USDT в одну цифру нельзя — это разные единицы.",
+        "Один бот и четыре отдельных бумажных счёта: акции РФ, срочный рынок FORTS, крипто-спот и крипто-перпетуалы. Счёт США (paper_us_eq / S5×US_EQ) снят по KILL 2026-11-20. У каждого счёта своя валюта. Складывать RUB и USDT в одну цифру нельзя — это разные единицы.",
         "Новая сделка разрешена только если биржа открыта и в снимке latest.json есть сигнал уровней S2–S5. Что именно означают S2–S5 (формула, порог, источник) в этом репозитории не описано.",
         "Ордера на живую биржу не отправляются.",
       ],
     },
     decisionSteps: [
-      "Смотреть каждый из пяти счетов отдельно. Общего «плюса по портфелю» в кабинете нет.",
+      "Смотреть каждый из четырёх счетов отдельно. Общего «плюса по портфелю» в кабинете нет.",
       "Проверить, открыта ли биржа этого счёта. Если рынок закрыт — новой сделки нет.",
       "Проверить, есть ли в latest.json сигнал уровней S2–S5. Формула сигнала в репозитории не задана.",
       "Если оба условия выполнены — модель может открыть сделку на этом счёте. Размер, сторона и выход в манифесте не описаны.",
@@ -391,8 +390,8 @@ const PASSPORTS = {
       param("Режим", "бумага", "Ордера на живую биржу не отправляются."),
       param(
         "Счета",
-        "paper_us_eq (US_EQ, USD); paper_ru_eq (RU_EQ, RUB); paper_forts (FORTS, RUB); paper_crypto_spot (CRYPTO_SPOT, USDT); paper_crypto_perp (CRYPTO_PERP, USDT)",
-        "Пять независимых бумажных кошельков. Валюты не складываются.",
+        "paper_ru_eq (RU_EQ, RUB); paper_forts (FORTS, RUB); paper_crypto_spot (CRYPTO_SPOT, USDT); paper_crypto_perp (CRYPTO_PERP, USDT). paper_us_eq снят (KILL S5×US_EQ).",
+        "Четыре независимых бумажных кошелька. Валюты не складываются.",
       ),
       param(
         "Условие допуска сделки",

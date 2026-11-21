@@ -248,7 +248,6 @@ export const EXTRA_HONESTY_BY_KEY = {
 };
 
 export const WHO_PAYS_NO_TAPE_KEYS = [
-  "who_pays::paper_us_eq",
   "who_pays::paper_ru_eq",
   "who_pays::paper_forts",
   "who_pays::paper_crypto_spot",

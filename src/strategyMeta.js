@@ -18,6 +18,11 @@ export const FORTS_ADR_STATIC_BOT_ID = "forts_adr_static";
 export const FORTS_ADR_STATIC_ACCOUNT_ID = "forts_adr_static";
 export const FORTS_ADR_STATIC_SERIES_KEY = `${FORTS_ADR_STATIC_BOT_ID}::${FORTS_ADR_STATIC_ACCOUNT_ID}`;
 
+/** Снятый Who-Pays paper_us_eq: owner KILL S5×US_EQ 2026-11-20 (аудит ce393d9c). */
+export const WHO_PAYS_BOT_ID = "who_pays";
+export const WHO_PAYS_US_EQ_ACCOUNT_ID = "paper_us_eq";
+export const WHO_PAYS_US_EQ_SERIES_KEY = `${WHO_PAYS_BOT_ID}::${WHO_PAYS_US_EQ_ACCOUNT_ID}`;
+
 export const YOUNG_BOUNCE_BOT_ID = "young_bounce_combo";
 export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
 
@@ -151,6 +156,7 @@ export const HIDDEN_PORTAL_IDS = new Set([
   PUMP_RADAR_ACCOUNT_ID,
   FORTS_ADR_STATIC_BOT_ID,
   FORTS_ADR_STATIC_ACCOUNT_ID,
+  WHO_PAYS_US_EQ_ACCOUNT_ID,
 ]);
 
 /** Нормализация bot_id из hash/фида: trim, decode, без query и хвостового /. */
