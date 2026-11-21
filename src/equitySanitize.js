@@ -12,6 +12,7 @@ import {
   PUMP_RADAR_BOT_ID,
   ROBOT2_ACCOUNT_ID,
   ROBOT2_BOT_ID,
+  WHO_PAYS_US_EQ_ACCOUNT_ID,
   isHiddenPortalAccount,
   isHiddenPortalId,
 } from "./strategyMeta.js";
@@ -25,6 +26,7 @@ const RETIRED_EQUITY_IDS = new Set([
   PUMP_RADAR_ACCOUNT_ID,
   FORTS_ADR_STATIC_BOT_ID,
   FORTS_ADR_STATIC_ACCOUNT_ID,
+  WHO_PAYS_US_EQ_ACCOUNT_ID,
 ]);
 
 function isRetiredFeedId(id) {

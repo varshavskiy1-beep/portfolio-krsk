@@ -352,8 +352,9 @@ test("who_pays paper_crypto_perp stitch: join 2026-09-19, no jump", () => {
   assert.ok(st.daily.every((row) => row.eq > 10000));
 });
 
-test("who_pays us/ru/forts/spot have no tape backtest — one gray line", () => {
-  assert.equal(WHO_PAYS_NO_TAPE_KEYS.length, 4);
+test("who_pays ru/forts/spot have no tape backtest — one gray line", () => {
+  assert.equal(WHO_PAYS_NO_TAPE_KEYS.length, 3);
+  assert.ok(!WHO_PAYS_NO_TAPE_KEYS.includes("who_pays::paper_us_eq"));
   const paper = [{ t: "2026-09-19T06:34:49Z", equity: 15000 }];
   for (const key of WHO_PAYS_NO_TAPE_KEYS) {
     const [bot_id, account_id] = key.split("::");

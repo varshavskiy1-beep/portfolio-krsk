@@ -153,15 +153,15 @@ test("retired paper_block2 is skipped even with larger paper pnl", () => {
 
 test("who_pays without seed uses first history point", () => {
   const latest = {
-    accounts: [acc({ bot_id: "who_pays", account_id: "paper_us_eq", currency: "USD", equity: 25000, seed: null })],
+    accounts: [acc({ bot_id: "who_pays", account_id: "paper_ru_eq", currency: "RUB", equity: 2000000, seed: null })],
   };
   const history = {
     series: {
-      "who_pays::paper_us_eq": { seed: null, points: [{ t: "a", equity: 25000 }, { t: "b", equity: 25000 }] },
+      "who_pays::paper_ru_eq": { seed: null, points: [{ t: "a", equity: 2000000 }, { t: "b", equity: 2000000 }] },
     },
   };
   const winner = pickOgWinner(latest, history);
-  assert.equal(winner.seed, 25000);
+  assert.equal(winner.seed, 2000000);
   assert.equal(winner.pnl, 0);
 });
 
