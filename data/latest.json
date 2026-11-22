@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-22T22:12:29Z",
+  "generated_at": "2026-11-22T22:26:34Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1788178.9392115492",
-      "updated_utc": "2026-11-22T22:12:16.422849Z",
+      "updated_utc": "2026-11-22T22:26:31.128232Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432948.4489813603",
-      "updated_utc": "2026-11-22T22:12:16.425848Z",
+      "updated_utc": "2026-11-22T22:26:31.130676Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10743.730998983001",
-      "updated_utc": "2026-11-22T22:12:16.429911Z",
+      "updated_utc": "2026-11-22T22:26:31.133393Z",
       "positions": [
         {
           "position_id": "p_99d7ee80c39c",
@@ -82,7 +82,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-22T22:12:16.434056Z",
+      "updated_utc": "2026-11-22T22:26:31.136162Z",
       "positions": []
     },
     {
@@ -1518,7 +1518,7 @@
       "seed": "300000",
       "equity": "313798.21",
       "cash": "9779.300133240251",
-      "updated_utc": "2026-11-22T22:01:02Z",
+      "updated_utc": "2026-11-22T22:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -4471,6 +4471,10 @@
         {
           "t": "2026-11-22T23:00:00",
           "equity": "313798.21"
+        },
+        {
+          "t": "2026-11-23T00:00:00",
+          "equity": "313798.21"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -4478,7 +4482,7 @@
       "reconstructed": false,
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
-      "as_of": "2026-11-22",
+      "as_of": "2026-11-23",
       "pct_return": 4.5994033333333295
     },
     {
