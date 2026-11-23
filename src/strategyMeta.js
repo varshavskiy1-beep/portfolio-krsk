@@ -23,6 +23,10 @@ export const WHO_PAYS_BOT_ID = "who_pays";
 export const WHO_PAYS_US_EQ_ACCOUNT_ID = "paper_us_eq";
 export const WHO_PAYS_US_EQ_SERIES_KEY = `${WHO_PAYS_BOT_ID}::${WHO_PAYS_US_EQ_ACCOUNT_ID}`;
 
+/** Снятый v6b1: tester KILL paper-log honest retest 2026-11-23 (SHA 4c4f529…). */
+export const V6B1_BOT_ID = "v6b1";
+export const V6B1_ACCOUNT_ID = "v6b1";
+
 export const YOUNG_BOUNCE_BOT_ID = "young_bounce_combo";
 export const YOUNG_BOUNCE_ACCOUNT_ID = "young_bounce_combo";
 
@@ -157,6 +161,8 @@ export const HIDDEN_PORTAL_IDS = new Set([
   FORTS_ADR_STATIC_BOT_ID,
   FORTS_ADR_STATIC_ACCOUNT_ID,
   WHO_PAYS_US_EQ_ACCOUNT_ID,
+  V6B1_BOT_ID,
+  V6B1_ACCOUNT_ID,
 ]);
 
 /** Нормализация bot_id из hash/фида: trim, decode, без query и хвостового /. */

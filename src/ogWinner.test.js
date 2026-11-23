@@ -54,11 +54,11 @@ test("P05: 10% USD beats 0.2% RUB even when RUB pnl is larger in nominal units",
   assert.equal(winner.pct, 0.1);
 });
 
-test("current-style data: v6b1 beats smaller USDT and zero RUB", () => {
+test("current-style data: young_bounce beats smaller USDT and zero RUB", () => {
   const latest = {
     accounts: [
-      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 14515.61, seed: 10000 }),
-      acc({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: 10508.47, seed: 10000 }),
+      acc({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: 14515.61, seed: 10000 }),
+      acc({ bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: 10508.47, seed: 10000 }),
       acc({ bot_id: "cycle_6040_paper", account_id: "cycle_6040_paper", currency: "RUB", equity: 1500000, seed: 1500000 }),
       acc({
         bot_id: "who_pays",
@@ -75,7 +75,7 @@ test("current-style data: v6b1 beats smaller USDT and zero RUB", () => {
     },
   };
   const winner = pickOgWinner(latest, history);
-  assert.equal(winner.key, "v6b1::v6b1");
+  assert.equal(winner.key, "young_bounce_combo::young_bounce_combo");
   assert.ok(winner.pnl > 4500);
   assert.equal(winner.currency, "USDT");
 });
@@ -83,19 +83,19 @@ test("current-style data: v6b1 beats smaller USDT and zero RUB", () => {
 test("decommissioned grail_b20_3x is skipped even with larger paper pnl", () => {
   const latest = {
     accounts: [
-      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 11359.56, seed: 10000 }),
+      acc({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: 11359.56, seed: 10000 }),
       acc({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x", currency: "USDT", equity: 24440.08, seed: 10000 }),
     ],
   };
   const winner = pickOgWinner(latest, { series: {} });
-  assert.equal(winner.key, "v6b1::v6b1");
+  assert.equal(winner.key, "young_bounce_combo::young_bounce_combo");
   assert.doesNotMatch(winner.key, /grail/i);
 });
 
 test("retired forts_adr_adaptive is skipped even with larger paper pnl", () => {
   const latest = {
     accounts: [
-      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 11359.56, seed: 10000 }),
+      acc({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: 11359.56, seed: 10000 }),
       acc({
         bot_id: "forts_adr_adaptive",
         account_id: "forts_adr_adaptive",
@@ -106,7 +106,7 @@ test("retired forts_adr_adaptive is skipped even with larger paper pnl", () => {
     ],
   };
   const winner = pickOgWinner(latest, { series: {} });
-  assert.equal(winner.key, "v6b1::v6b1");
+  assert.equal(winner.key, "young_bounce_combo::young_bounce_combo");
   assert.doesNotMatch(winner.key, /forts_adr_adaptive/);
   assert.equal(ogDescription(winner).includes("forts_adr_adaptive"), false);
 });
@@ -114,7 +114,7 @@ test("retired forts_adr_adaptive is skipped even with larger paper pnl", () => {
 test("retired pump_radar and forts_adr_static are skipped even with larger paper pnl", () => {
   const latest = {
     accounts: [
-      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 11359.56, seed: 10000 }),
+      acc({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: 11359.56, seed: 10000 }),
       acc({ bot_id: "pump_radar", account_id: "pump_radar", currency: "USDT", equity: 24440.08, seed: 10000 }),
       acc({
         bot_id: "forts_adr_static",
@@ -126,7 +126,7 @@ test("retired pump_radar and forts_adr_static are skipped even with larger paper
     ],
   };
   const winner = pickOgWinner(latest, { series: {} });
-  assert.equal(winner.key, "v6b1::v6b1");
+  assert.equal(winner.key, "young_bounce_combo::young_bounce_combo");
   assert.doesNotMatch(winner.key, /pump_radar/);
   assert.doesNotMatch(winner.key, /forts_adr_static/);
   assert.equal(ogDescription(winner).includes("pump_radar"), false);
@@ -135,7 +135,7 @@ test("retired pump_radar and forts_adr_static are skipped even with larger paper
 test("retired paper_block2 is skipped even with larger paper pnl", () => {
   const latest = {
     accounts: [
-      acc({ bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: 11359.56, seed: 10000 }),
+      acc({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: 11359.56, seed: 10000 }),
       acc({
         bot_id: "three_robots_okx_nasdaq_1h",
         account_id: "paper_block2",
@@ -146,7 +146,7 @@ test("retired paper_block2 is skipped even with larger paper pnl", () => {
     ],
   };
   const winner = pickOgWinner(latest, { series: {} });
-  assert.equal(winner.key, "v6b1::v6b1");
+  assert.equal(winner.key, "young_bounce_combo::young_bounce_combo");
   assert.doesNotMatch(winner.key, /paper_block2/);
   assert.doesNotMatch(winner.key, /three_robots_okx_nasdaq_1h/);
 });
@@ -181,15 +181,15 @@ test("formats money and description with regular spaces and ASCII digits", () =>
   assert.equal(formatSignedMoney(4515.61, "USDT"), "+4 516");
   assert.equal(formatPct(0.451561), "+45,16");
   const desc = ogDescription({
-    account: { bot_id: "v6b1", account_id: "v6b1" },
+    account: { bot_id: "young_bounce_combo", account_id: "young_bounce_combo" },
     pnl: 4515.61,
     pct: 0.451561,
     currency: "USDT",
-    key: "v6b1::v6b1",
+    key: "young_bounce_combo::young_bounce_combo",
   });
   assert.equal(
     desc,
-    `v6b1: +4 516 USDT (+45,16%) с запуска. ${OG_METHOD}`,
+    `young_bounce_combo: +4 516 USDT (+45,16%) с запуска. ${OG_METHOD}`,
   );
   assert.match(desc, /процентах/);
   assert.equal(/[\u00a0\u202f\u2007\u2009]/.test(desc), false);
@@ -204,8 +204,8 @@ test("stale bundled CNY 335539 is not the OG winner", () => {
   const latest = {
     accounts: [
       {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         currency: "USDT",
         seed: "10000",
         equity: "10365.1588802",
@@ -222,7 +222,7 @@ test("stale bundled CNY 335539 is not the OG winner", () => {
     ],
   };
   const winner = pickOgWinner(latest, { series: {} });
-  assert.equal(winner.key, "v6b1::v6b1");
+  assert.equal(winner.key, "young_bounce_combo::young_bounce_combo");
   assert.doesNotMatch(ogDescription(winner), /11,85|35 539|335539/);
 });
 

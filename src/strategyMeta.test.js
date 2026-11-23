@@ -86,7 +86,7 @@ test("Finam robot 1 and SPCX/BTC robot 3 stay unhidden", () => {
 
 test("retired robot 2 is not a portal shell and does not come back from the feed", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
     {
       bot_id: ROBOT2_BOT_ID,
       account_id: ROBOT2_ACCOUNT_ID,
@@ -97,7 +97,7 @@ test("retired robot 2 is not a portal shell and does not come back from the feed
   ]);
   assert.equal(merged.some((a) => a.bot_id === ROBOT2_BOT_ID), false);
   assert.equal(merged.some((a) => a.account_id === ROBOT2_ACCOUNT_ID), false);
-  assert.ok(merged.some((a) => a.bot_id === "v6b1"));
+  assert.ok(merged.some((a) => a.bot_id === "young_bounce_combo"));
   assert.equal(isHiddenPortalId(ROBOT2_BOT_ID), true);
   assert.equal(isHiddenPortalId(ROBOT2_ACCOUNT_ID), true);
   assert.equal(
@@ -108,7 +108,7 @@ test("retired robot 2 is not a portal shell and does not come back from the feed
 
 test("retired forts_adr_adaptive is not a portal shell and does not come back from the feed", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
     {
       bot_id: FORTS_ADR_ADAPTIVE_BOT_ID,
       account_id: FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
@@ -120,7 +120,7 @@ test("retired forts_adr_adaptive is not a portal shell and does not come back fr
   ]);
   assert.equal(merged.some((a) => a.bot_id === FORTS_ADR_ADAPTIVE_BOT_ID), false);
   assert.equal(merged.some((a) => a.account_id === FORTS_ADR_ADAPTIVE_ACCOUNT_ID), false);
-  assert.ok(merged.some((a) => a.bot_id === "v6b1"));
+  assert.ok(merged.some((a) => a.bot_id === "young_bounce_combo"));
   assert.ok(merged.some((a) => a.bot_id === "eth_okx_moex"));
   assert.equal(merged.some((a) => a.bot_id === "forts_adr_static"), false);
   assert.equal(merged.some((a) => a.bot_id === "pump_radar"), false);
@@ -136,7 +136,7 @@ test("retired forts_adr_adaptive is not a portal shell and does not come back fr
 });
 
 test("paper badge is on every account card", () => {
-  assert.equal(showsPaperBadge({ bot_id: "v6b1", account_id: "v6b1" }), true);
+  assert.equal(showsPaperBadge({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo" }), true);
   assert.equal(showsPaperBadge({ bot_id: YOUNG_BOUNCE_BOT_ID, account_id: YOUNG_BOUNCE_ACCOUNT_ID }), true);
   assert.equal(showsPaperBadge(null), false);
 });
@@ -150,7 +150,7 @@ test("displayTitle maps young bounce ids to human title", () => {
 
 test("mergePortalAccounts adds young bounce shell when absent", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "RUB", equity: "300000" },
   ]);
   const yb = merged.find((a) => a.bot_id === YOUNG_BOUNCE_BOT_ID);
   assert.ok(yb);
@@ -224,7 +224,7 @@ test("displayTitle maps oac paper ids to human title", () => {
 
 test("mergePortalAccounts adds oac paper shell when absent", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const oac = merged.find((a) => a.bot_id === OAC_PAPER_BOT_ID);
   assert.ok(oac);
@@ -321,7 +321,7 @@ test("displayTitle maps desyatka earn ids to Десятка Earn", () => {
 
 test("mergePortalAccounts adds desyatka earn shell when absent", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const row = merged.find((a) => a.bot_id === DESYATKA_EARN_BOT_ID);
   assert.ok(row);
@@ -427,18 +427,18 @@ test("decommissioned grail_b20_3x is hidden from portal accounts", () => {
   assert.equal(isHiddenPortalId("GRAIL_B20_3X"), true);
   assert.equal(isHiddenPortalAccount({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), true);
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
     { bot_id: "grail_b20_3x", account_id: "grail_b20_3x", currency: "USDT", equity: "24440" },
   ]);
   assert.equal(merged.some((a) => a.bot_id === "grail_b20_3x"), false);
   assert.equal(merged.some((a) => a.account_id === "grail_b20_3x"), false);
-  assert.ok(merged.some((a) => a.bot_id === "v6b1"));
+  assert.ok(merged.some((a) => a.bot_id === "young_bounce_combo"));
   assert.doesNotMatch(cardTitle({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), /Grail B20/);
   assert.equal(cardSubtitle({ bot_id: "grail_b20_3x", account_id: "grail_b20_3x" }), "");
 });
 
 test("non-portal bot still shows account id under title when title differs", () => {
-  assert.equal(underTitleLabel({ bot_id: "v6b1", account_id: "v6b1" }), null);
+  assert.equal(underTitleLabel({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo" }), null);
   assert.equal(underTitleLabel({ bot_id: "who_pays", account_id: "paper_us_eq" }), "who_pays");
 });
 
@@ -454,7 +454,7 @@ test("displayTitle maps cycle 60/40 ids to Цикл 60/40", () => {
 
 test("mergePortalAccounts adds cycle 60/40 shell when absent — нет данных, not invented seed", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const row = merged.find((a) => a.bot_id === CYCLE_6040_BOT_ID);
   assert.ok(row);
@@ -557,7 +557,7 @@ test("displayTitle maps rf conservative ids to full card title", () => {
 
 test("mergePortalAccounts adds rf conservative shell when absent — нет данных, not invented seed", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const row = merged.find((a) => a.bot_id === RF_CONSERVATIVE_BOT_ID);
   assert.ok(row);
@@ -639,7 +639,7 @@ test("rf conservative helpers: subtitle, paper badge, not cycle 60/40", () => {
 
 test("mergePortalAccounts adds four separate Mayak shells when absent — нет данных, seed not hardcoded", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const ids = [
     "mayak_imoex_lowvol10",
@@ -698,7 +698,7 @@ test("displayTitle maps rate-cycle ids to full card title", () => {
 
 test("mergePortalAccounts adds rate-cycle shell when absent — нет данных, seed not hardcoded", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const row = merged.find((a) => a.bot_id === RF_BONDS_RATE_CYCLE_BOT_ID);
   assert.ok(row);
@@ -750,7 +750,7 @@ test("displayTitle maps yuan-360 ids to Юань 360", () => {
 
 test("mergePortalAccounts adds yuan-360 shell when absent — нет данных, seed not hardcoded", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const row = merged.find((a) => a.bot_id === CNY_MOM_H360_BOT_ID);
   assert.ok(row);
@@ -799,7 +799,7 @@ test("displayTitle maps eth-okx ids to ETH по сигналу OKX", () => {
 
 test("mergePortalAccounts adds eth-okx shell when absent — нет данных, seed not hardcoded", () => {
   const merged = mergePortalAccounts([
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
   ]);
   const row = merged.find((a) => a.bot_id === ETH_OKX_MOEX_BOT_ID);
   assert.ok(row);

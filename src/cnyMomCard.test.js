@@ -58,7 +58,7 @@ import {
 
 const FEED_WITHOUT = {
   accounts: [
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
     { bot_id: RF_BONDS_RATE_CYCLE_BOT_ID, account_id: RF_BONDS_RATE_CYCLE_BOT_ID, currency: "RUB", equity: "300000" },
   ],
 };
@@ -318,7 +318,7 @@ test("stale bundled 335539 CNY becomes нет данных; other accounts stay"
   const latest = {
     generated_at: "2026-10-24T06:13:05Z",
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", seed: "10000", equity: "10100" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", seed: "10000", equity: "10100" },
       {
         bot_id: CNY_MOM_H360_BOT_ID,
         account_id: CNY_MOM_H360_ACCOUNT_ID,
@@ -334,7 +334,7 @@ test("stale bundled 335539 CNY becomes нет данных; other accounts stay"
   };
   const hist = {
     series: {
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
       [CNY_MOM_H360_SERIES_KEY]: {
         bot_id: CNY_MOM_H360_BOT_ID,
         account_id: CNY_MOM_H360_ACCOUNT_ID,
@@ -347,7 +347,7 @@ test("stale bundled 335539 CNY becomes нет данных; other accounts stay"
       },
     },
   };
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]);
   const rateBefore = JSON.stringify(hist.series["rf_bonds_rate_cycle::rf_bonds_rate_cycle"]);
   sanitizeCabinetSnapshot(latest, hist);
   const cny = latest.accounts.find((a) => a.bot_id === CNY_MOM_H360_BOT_ID);
@@ -358,10 +358,10 @@ test("stale bundled 335539 CNY becomes нет данных; other accounts stay"
   assert.equal(cnyMomFromStartPctLine(cny), "");
   assert.deepEqual(resolveEquityPoints(cny, hist), []);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY], undefined);
-  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+  assert.equal(JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]), v6Before);
   assert.equal(JSON.stringify(hist.series["rf_bonds_rate_cycle::rf_bonds_rate_cycle"]), rateBefore);
   assert.equal(
-    latest.accounts.find((a) => a.bot_id === "v6b1").equity,
+    latest.accounts.find((a) => a.bot_id === "young_bounce_combo").equity,
     "10100",
   );
   assert.equal(
@@ -381,7 +381,7 @@ test("publisher replace writes journal generation and leaves neighbor series unt
         seed: 300000,
         points: OLD_CNY_BOOK,
       },
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
       "eth_okx_moex::eth_okx_moex": {
         bot_id: "eth_okx_moex",
         account_id: "eth_okx_moex",
@@ -389,12 +389,12 @@ test("publisher replace writes journal generation and leaves neighbor series unt
       },
     },
   };
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]);
   const ethBefore = JSON.stringify(hist.series["eth_okx_moex::eth_okx_moex"]);
   mergeLatestIntoHistory(hist, {
     generated_at: "2026-11-12T04:30:00Z",
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10100", updated_utc: "2026-11-12T04:30:00Z" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10100", updated_utc: "2026-11-12T04:30:00Z" },
       cnyJournalAccount(),
       { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", equity: "300000", updated_utc: "2026-10-13T00:00:00Z" },
     ],
@@ -411,7 +411,7 @@ test("publisher replace writes journal generation and leaves neighbor series unt
   assert.ok(!ser.points.some((p) => String(p.t).startsWith("2026-10-24T05:21:02")));
   assert.deepEqual(hist.series["eth_okx_moex::eth_okx_moex"].points, JSON.parse(ethBefore).points);
   assert.equal(hist.series["eth_okx_moex::eth_okx_moex"].generation, undefined);
-  assert.equal(hist.series["v6b1::v6b1"].points.at(-1).equity, 10100);
+  assert.equal(hist.series["young_bounce_combo::young_bounce_combo"].points.at(-1).equity, 10100);
   assert.equal(JSON.parse(v6Before).points[0].equity, 10000);
 });
 
@@ -477,7 +477,7 @@ test("host extract: replace writes exact 479 naive points; pct is from seed not 
           })),
         ],
       },
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112.256057314 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112.256057314 }] },
       "eth_okx_moex::eth_okx_moex": {
         bot_id: "eth_okx_moex",
         account_id: "eth_okx_moex",
@@ -487,7 +487,7 @@ test("host extract: replace writes exact 479 naive points; pct is from seed not 
   };
   const oldN = oldHist.series[CNY_MOM_H360_SERIES_KEY].points.length;
   assert.ok(oldN > 479);
-  const v6Pts = JSON.stringify(oldHist.series["v6b1::v6b1"].points);
+  const v6Pts = JSON.stringify(oldHist.series["young_bounce_combo::young_bounce_combo"].points);
   const ethPts = JSON.stringify(oldHist.series["eth_okx_moex::eth_okx_moex"].points);
 
   const clientPts = resolveEquityPoints(row, oldHist);
@@ -517,7 +517,7 @@ test("host extract: replace writes exact 479 naive points; pct is from seed not 
   mergeLatestIntoHistory(oldHist, {
     generated_at: extract.generated_at,
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10112.256057314", updated_utc: "2026-10-15T17:27:12Z" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10112.256057314", updated_utc: "2026-10-15T17:27:12Z" },
       row,
       {
         bot_id: "eth_okx_moex",
@@ -542,7 +542,7 @@ test("host extract: replace writes exact 479 naive points; pct is from seed not 
   assert.equal(ser.history_mode, "replace");
   assert.equal(ser.points.at(-1).t, "2026-11-12T06:00:00");
   assert.equal(ser.points.at(-1).equity, 318428.04);
-  assert.equal(JSON.stringify(oldHist.series["v6b1::v6b1"].points), v6Pts);
+  assert.equal(JSON.stringify(oldHist.series["young_bounce_combo::young_bounce_combo"].points), v6Pts);
   assert.equal(JSON.stringify(oldHist.series["eth_okx_moex::eth_okx_moex"].points), ethPts);
   assert.equal(oldHist.series["eth_okx_moex::eth_okx_moex"].generation, undefined);
 });
@@ -585,21 +585,21 @@ test("publisher empty CNY replace does not wipe a valid journal series", () => {
         history_mode: "replace",
         points: CNY_JOURNAL_SYNTH.map((p) => ({ t: p.t, equity: Number(p.equity) })),
       },
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
     },
   };
   const before = JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]);
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"].points);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"].points);
   mergeLatestIntoHistory(hist, {
     generated_at: "2026-11-12T05:10:00Z",
     accounts: [
       cnyJournalAccount({ history: [], equity_curve: [] }),
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10000", updated_utc: "2026-10-15T17:27:12Z" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10000", updated_utc: "2026-10-15T17:27:12Z" },
     ],
   });
   assert.equal(JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]), before);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 3);
-  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"].points), v6Before);
+  assert.equal(JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"].points), v6Before);
 });
 
 test("publisher skips stale bundled CNY so 335539 is not appended", () => {
@@ -635,13 +635,13 @@ test("bundled public/data CNY 335539 cannot silently paint after sanitize", () =
   const history = JSON.parse(readFileSync(join(root, "public/data/history.json"), "utf8"));
   const cnyRaw = (latest.accounts || []).find((a) => a.bot_id === CNY_MOM_H360_BOT_ID);
   if (!cnyRaw || isCnyJournalReplace(cnyRaw)) return;
-  const v6Before = JSON.stringify(history.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(history.series["young_bounce_combo::young_bounce_combo"]);
   sanitizeCabinetSnapshot(latest, history);
   const cny = latest.accounts.find((a) => a.bot_id === CNY_MOM_H360_BOT_ID);
   assert.notEqual(Number(cny.equity), STALE_BUNDLED_CNY_EQUITY);
   assert.equal(cnyMomFromStartPctLine(cny), "");
   assert.deepEqual(resolveEquityPoints(cny, history), []);
-  assert.equal(JSON.stringify(history.series["v6b1::v6b1"]), v6Before);
+  assert.equal(JSON.stringify(history.series["young_bounce_combo::young_bounce_combo"]), v6Before);
 });
 
 test("reviewed prefix 198 + live journal tail: first 12 Oct 300000, no 335539, others untouched", () => {
@@ -670,7 +670,7 @@ test("reviewed prefix 198 + live journal tail: first 12 Oct 300000, no 335539, o
       { symbol: "CRZ6", side: "short", qty: "-63" },
     ],
   };
-  const v6 = { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] };
+  const v6 = { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] };
   const eth = { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", points: [{ t: "2026-11-10T13:00:00", equity: 302889.84 }] };
   const hist = {
     series: {
@@ -680,11 +680,11 @@ test("reviewed prefix 198 + live journal tail: first 12 Oct 300000, no 335539, o
         generation: CNY_JOURNAL_CAPITAL_GENERATION,
         points: journal.map((p) => ({ t: p.t, equity: Number(p.equity) })),
       },
-      "v6b1::v6b1": v6,
+      "young_bounce_combo::young_bounce_combo": v6,
       "eth_okx_moex::eth_okx_moex": eth,
     },
   };
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]);
   const ethBefore = JSON.stringify(hist.series["eth_okx_moex::eth_okx_moex"]);
   const pts = resolveEquityPoints(row, hist);
   assert.equal(pts[0].t, "2026-10-12T11:07:00Z");
@@ -717,7 +717,7 @@ test("reviewed prefix 198 + live journal tail: first 12 Oct 300000, no 335539, o
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 198 + journal.length + 1);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.at(-1).equity, 316800);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points[0].equity, 300000);
-  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+  assert.equal(JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]), v6Before);
   assert.equal(JSON.stringify(hist.series["eth_okx_moex::eth_okx_moex"]), ethBefore);
 });
 
@@ -752,7 +752,7 @@ test("unknown future CNY generation does not inherit v1 prefix", () => {
     history: journal,
     equity: "316776.40",
   });
-  const v6 = { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] };
+  const v6 = { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] };
   const hist = {
     series: {
       [CNY_MOM_H360_SERIES_KEY]: {
@@ -762,10 +762,10 @@ test("unknown future CNY generation does not inherit v1 prefix", () => {
         prefix_generation: CNY_BOOK_PREFIX_GENERATION,
         points: reviewedCnyPrefixFixture(),
       },
-      "v6b1::v6b1": v6,
+      "young_bounce_combo::young_bounce_combo": v6,
     },
   };
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]);
   const pts = resolveEquityPoints(row, hist);
   assert.equal(pts.length, journal.length);
   assert.equal(pts[0].t, CNY_JOURNAL_FROM);
@@ -776,7 +776,7 @@ test("unknown future CNY generation does not inherit v1 prefix", () => {
   assert.equal(ser.prefix_generation, undefined);
   assert.equal(ser.points.length, journal.length);
   assert.equal(ser.points[0].t, CNY_JOURNAL_FROM);
-  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+  assert.equal(JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]), v6Before);
 });
 
 test("empty replace does not wipe persisted prefix+journal", () => {
@@ -793,11 +793,11 @@ test("empty replace does not wipe persisted prefix+journal", () => {
         prefix_generation: CNY_BOOK_PREFIX_GENERATION,
         points: [...reviewedCnyPrefixFixture(), ...journal],
       },
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10112 }] },
     },
   };
   const before = JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]);
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]);
   mergeLatestIntoHistory(hist, {
     generated_at: "2026-11-12T09:10:00Z",
     accounts: [cnyJournalAccount({ history: [], equity_curve: [] })],
@@ -805,7 +805,7 @@ test("empty replace does not wipe persisted prefix+journal", () => {
   assert.equal(JSON.stringify(hist.series[CNY_MOM_H360_SERIES_KEY]), before);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points.length, 198 + journal.length);
   assert.equal(hist.series[CNY_MOM_H360_SERIES_KEY].points[0].equity, 300000);
-  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+  assert.equal(JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]), v6Before);
 });
 
 test("mixed CNY clocks: naive 08:00 stays after prefix 06:17Z and does not overlay", () => {

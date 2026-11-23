@@ -569,7 +569,8 @@ test("eth okx moex: line comes only from account.history, same-day last point wi
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
 });
 
-test("v6b1: resolveEquityPoints drops pre-reset history and keeps 10000", () => {
+test("v6b1 historyReset: resolveEquityPoints drops pre-reset history and keeps 10000", () => {
+  // historyReset cutoff still keyed to v6b1 even after portal card retirement
   const account = {
     bot_id: "v6b1",
     account_id: "v6b1",
