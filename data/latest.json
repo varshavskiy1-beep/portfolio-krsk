@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-23T00:04:23Z",
+  "generated_at": "2026-11-23T00:19:30Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -38,7 +38,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1788178.9392115492",
-      "updated_utc": "2026-11-23T00:04:19.651922Z",
+      "updated_utc": "2026-11-23T00:19:24.819776Z",
       "positions": []
     },
     {
@@ -47,7 +47,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432948.4489813603",
-      "updated_utc": "2026-11-23T00:04:19.654479Z",
+      "updated_utc": "2026-11-23T00:19:24.822683Z",
       "positions": []
     },
     {
@@ -56,7 +56,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10717.494854063001",
-      "updated_utc": "2026-11-23T00:04:19.657223Z",
+      "updated_utc": "2026-11-23T00:19:24.825404Z",
       "positions": [
         {
           "position_id": "p_2ac63fd08897",
@@ -74,7 +74,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-23T00:04:19.660436Z",
+      "updated_utc": "2026-11-23T00:19:24.828068Z",
       "positions": []
     },
     {
@@ -82,21 +82,21 @@
       "account_id": "young_bounce_combo",
       "currency": "USDT",
       "seed": "10000",
-      "equity": "9196.86",
+      "equity": "9238.31",
       "cash": "8641.54",
-      "updated_utc": "2026-11-22T00:07:20Z",
+      "updated_utc": "2026-11-23T00:07:38Z",
       "positions": [
         {
           "symbol": "牛来USDT",
           "side": "long",
           "qty": "15352.919202055986",
           "avg_px": "0.06254",
-          "mark": "0.03617",
+          "mark": "0.03887",
           "pattern": "listing_dump"
         }
       ],
       "note": "Бумага. Young Bounce Combo, Binance spot, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-11-21"
+      "as_of": "2026-11-22"
     },
     {
       "bot_id": "oac_paper",
