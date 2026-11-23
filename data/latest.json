@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-23T15:03:02Z",
+  "generated_at": "2026-11-23T15:13:06Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -26,17 +26,9 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1791913.3019906993",
-      "updated_utc": "2026-11-23T15:02:51.607080Z",
+      "equity": "1802472.1648571992",
+      "updated_utc": "2026-11-23T15:12:52.557416Z",
       "positions": [
-        {
-          "position_id": "p_2ac8418a7805",
-          "symbol": "LKOH",
-          "side": "long",
-          "qty": "78.0",
-          "avg_px": "5744.37075",
-          "stop_px": null
-        },
         {
           "position_id": "p_38b8cf953696",
           "symbol": "SBER",
@@ -53,7 +45,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1430415.2592620004",
-      "updated_utc": "2026-11-23T15:02:51.611049Z",
+      "updated_utc": "2026-11-23T15:12:52.562254Z",
       "positions": [
         {
           "position_id": "p_c89dc7484875",
@@ -71,7 +63,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10665.583634932",
-      "updated_utc": "2026-11-23T15:02:51.613939Z",
+      "updated_utc": "2026-11-23T15:12:52.565941Z",
       "positions": [
         {
           "position_id": "p_7b11fe84aaa4",
@@ -97,7 +89,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-23T15:02:51.617731Z",
+      "updated_utc": "2026-11-23T15:12:52.570700Z",
       "positions": []
     },
     {
@@ -203,7 +195,7 @@
       "seed": "10000",
       "equity": "7905.7765",
       "cash": "-101.35395414379116",
-      "updated_utc": "2026-11-23T15:00:01Z",
+      "updated_utc": "2026-11-23T15:10:01Z",
       "positions": [
         {
           "symbol": "AAPL",
