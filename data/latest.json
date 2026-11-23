@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-23T08:26:21Z",
+  "generated_at": "2026-11-23T09:03:35Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -22,23 +22,12 @@
   ],
   "accounts": [
     {
-      "bot_id": "v6b1",
-      "account_id": "v6b1",
-      "currency": "USDT",
-      "equity": "10112.25605731400",
-      "cash": "10112.25605731400",
-      "seed": "10000",
-      "updated_utc": "2026-11-08T11:03:21Z",
-      "positions": [],
-      "note": "equity — кэш леджера после комиссий. Открытая маржа в positions. Нереализованный pnl не переоценён."
-    },
-    {
       "bot_id": "who_pays",
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1788178.9392115492",
-      "updated_utc": "2026-11-23T08:26:18.276573Z",
+      "updated_utc": "2026-11-23T09:03:30.405891Z",
       "positions": [
         {
           "position_id": "p_4ce60f01a974",
@@ -64,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1432948.4489813603",
-      "updated_utc": "2026-11-23T08:26:18.279114Z",
+      "updated_utc": "2026-11-23T09:03:30.408710Z",
       "positions": [
         {
           "position_id": "p_c22e507ef4ef",
@@ -89,23 +78,23 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "10719.463016587",
-      "updated_utc": "2026-11-23T08:26:18.281583Z",
+      "equity": "10712.528444262",
+      "updated_utc": "2026-11-23T09:03:30.411707Z",
       "positions": [
-        {
-          "position_id": "p_74e96247829f",
-          "symbol": "ETH-USDT",
-          "side": "short",
-          "qty": "1.553",
-          "avg_px": "1724.272563",
-          "stop_px": null
-        },
         {
           "position_id": "p_0bc63072df9b",
           "symbol": "SOL-USDT",
           "side": "short",
           "qty": "37.451",
           "avg_px": "71.538532",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_378847c29b01",
+          "symbol": "ETH-USDT",
+          "side": "short",
+          "qty": "1.551",
+          "avg_px": "1725.372233",
           "stop_px": null
         }
       ]
@@ -116,7 +105,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-23T08:26:18.285026Z",
+      "updated_utc": "2026-11-23T09:03:30.414481Z",
       "positions": []
     },
     {
@@ -338,20 +327,20 @@
       "account_id": "eth_okx_moex",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "330538.150456066",
-      "cash": "0.9199560660293429",
-      "updated_utc": "2026-11-23T08:02:08Z",
+      "equity": "329952.746214072",
+      "cash": "1.9579140720335726",
+      "updated_utc": "2026-11-23T09:02:09Z",
       "positions": [
         {
           "symbol": "EHF7",
           "side": "short",
-          "qty": "113",
-          "avg_px": "1780.0"
+          "qty": "112",
+          "avg_px": "1786.3"
         },
         {
           "symbol": "LQDT",
           "side": "long",
-          "qty": "154435",
+          "qty": "154161",
           "avg_px": "2.1403"
         }
       ],
@@ -1599,6 +1588,10 @@
         {
           "t": "2026-11-23T10:00:00",
           "equity": "330538.15"
+        },
+        {
+          "t": "2026-11-23T11:00:00",
+          "equity": "329952.75"
         }
       ],
       "note": "Бумага. «ETH по сигналу OKX, фьючерс Мосбиржи», старт 300000 RUB. Новый forward с фактического seed; история replace, без ряда с 13.10. Дисконт пая не задан, паёв LQDT ноль. На биржу ордера не идут.",
@@ -1607,7 +1600,7 @@
       "generation": "20261110T091054Z",
       "start": "2026-11-10T09:10:55Z",
       "as_of": "2026-11-23",
-      "pct_return": 10.179383485355341
+      "pct_return": 9.984248738023993
     },
     {
       "bot_id": "cny_mom_h360",
@@ -4768,10 +4761,6 @@
     }
   ],
   "manifest": [
-    {
-      "bot_id": "v6b1",
-      "logic": "OKX USDT-SWAP, бумага. Час закрылся — если цена у дневного хая и радар дня включён, лонг примерно на 1% риска. В час выхода новая нога не открывается. Стоп и тейк на бумаге. На биржу ордера не идут."
-    },
     {
       "bot_id": "who_pays",
       "logic": "Пять отдельных бумажных счетов: США, РФ, FORTS, крипто-спот, крипто-перп. Новая сделка только если биржа открыта и в latest.json есть сигнал S2–S5. Валюты не складываются. На биржу ордера не идут."
