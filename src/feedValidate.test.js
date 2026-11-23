@@ -30,10 +30,10 @@ test("P01: latest.json must be an object with an accounts array of objects with 
   assert.equal(validateLatest({ accounts: [null] }).ok, false);
   assert.equal(validateLatest({ accounts: {} }).ok, false);
   assert.equal(validateLatest([{ bot_id: "x" }]).ok, false);
-  assert.equal(validateLatest({ accounts: [{ bot_id: "v6b1" }] }).ok, false);
+  assert.equal(validateLatest({ accounts: [{ bot_id: "young_bounce_combo" }] }).ok, false);
   assert.equal(
     validateLatest({
-      accounts: [{ bot_id: "v6b1", account_id: "v6b1" }],
+      accounts: [{ bot_id: "young_bounce_combo", account_id: "young_bounce_combo" }],
     }).ok,
     true,
   );
@@ -41,7 +41,7 @@ test("P01: latest.json must be an object with an accounts array of objects with 
   assert.equal(assembleSnapshot({ accounts: {} }, null, null).ok, false);
   assert.equal(
     assembleSnapshot(
-      { accounts: [{ bot_id: "v6b1", account_id: "v6b1" }] },
+      { accounts: [{ bot_id: "young_bounce_combo", account_id: "young_bounce_combo" }] },
       { series: {} },
       { series: {} },
     ).ok,

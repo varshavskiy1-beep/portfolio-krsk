@@ -37,7 +37,7 @@ import {
 } from "./strategyMeta.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const V6 = "v6b1::v6b1";
+const YB = "young_bounce_combo::young_bounce_combo";
 const ETH = "eth_okx_moex::eth_okx_moex";
 const TARGETS = [PUMP_RADAR_BOT_ID, FORTS_ADR_STATIC_BOT_ID];
 
@@ -53,8 +53,8 @@ function staleLatest() {
     generated_at: "2026-11-11T00:00:00Z",
     accounts: [
       {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         currency: "USDT",
         equity: "14515.61",
         seed: "10000",
@@ -86,7 +86,7 @@ function staleLatest() {
       },
     ],
     manifest: [
-      { bot_id: "v6b1", logic: "ok" },
+      { bot_id: "young_bounce_combo", logic: "ok" },
       { bot_id: PUMP_RADAR_BOT_ID, logic: "retired" },
       { bot_id: FORTS_ADR_STATIC_BOT_ID, logic: "retired" },
       { bot_id: "eth_okx_moex", logic: "ok" },
@@ -99,9 +99,9 @@ function staleHistory() {
     schema: "equity_history.v1",
     updated_at: "2026-11-11T00:00:00Z",
     series: {
-      [V6]: {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+      [YB]: {
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         currency: "USDT",
         seed: 10000,
         points: [{ t: "2026-10-15T17:27:12Z", equity: 14515.61 }],
@@ -151,10 +151,10 @@ test("exclusion list names retired pump and static ids", () => {
   assert.equal(isDroppedEquitySeries(ETH, staleHistory().series[ETH]), false);
 });
 
-test("stale feed + history: neither target surfaces; v6b1 and ETH stay; OG skips both", () => {
+test("stale feed + history: neither target surfaces; young_bounce and ETH stay; OG skips both", () => {
   const latest = staleLatest();
   const hist = staleHistory();
-  const v6First = hist.series[V6].points[0].equity;
+  const v6First = hist.series[YB].points[0].equity;
   const ethFirst = hist.series[ETH].points[0].equity;
 
   const cards = mergePortalAccounts(latest.accounts);
@@ -166,7 +166,7 @@ test("stale feed + history: neither target surfaces; v6b1 and ETH stay; OG skips
     assert.equal(passport.hidden, true, id);
     assert.equal(passport.title, "");
   }
-  assert.ok(cards.some((a) => a.bot_id === "v6b1"));
+  assert.ok(cards.some((a) => a.bot_id === "young_bounce_combo"));
   assert.ok(cards.some((a) => a.bot_id === "eth_okx_moex"));
 
   const winner = pickOgWinner(latest, hist);
@@ -180,7 +180,7 @@ test("stale feed + history: neither target surfaces; v6b1 and ETH stay; OG skips
   mergeLatestIntoHistory(hist, latest);
   assert.equal(hist.series[PUMP_RADAR_SERIES_KEY], undefined);
   assert.equal(hist.series[FORTS_ADR_STATIC_SERIES_KEY], undefined);
-  assert.equal(hist.series[V6].points[0].equity, v6First);
+  assert.equal(hist.series[YB].points[0].equity, v6First);
   assert.equal(hist.series[ETH].points[0].equity, ethFirst);
 });
 
@@ -190,7 +190,7 @@ test("direct hashes #/s/pump_radar and #/s/forts_adr_static are blocked", () => 
     assert.equal(isBlockedStrategyRoute(parsePortalHash(`#/s/${id.toUpperCase()}`)), true, id);
     assert.equal(isBlockedStrategyRoute(parsePortalHash(`#/s/${id}/`)), true, id);
   }
-  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/v6b1")), false);
+  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/young_bounce_combo")), false);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/eth_okx_moex")), false);
 });
 
@@ -199,7 +199,7 @@ test("reintroduced bot_id on a later sync cannot recreate either series", () => 
   mergeLatestIntoHistory(hist, staleLatest());
   assert.equal(hist.series[PUMP_RADAR_SERIES_KEY], undefined);
   assert.equal(hist.series[FORTS_ADR_STATIC_SERIES_KEY], undefined);
-  assert.ok(hist.series[V6]);
+  assert.ok(hist.series[YB]);
   assert.ok(hist.series[ETH]);
 });
 
@@ -207,37 +207,37 @@ test("publisher sanitize drops both series even if accounts were already removed
   const latest = {
     generated_at: "2026-11-11T00:00:00Z",
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10000" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10000" },
       { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", equity: "308800" },
     ],
-    manifest: [{ bot_id: "v6b1" }, { bot_id: "eth_okx_moex" }],
+    manifest: [{ bot_id: "young_bounce_combo" }, { bot_id: "eth_okx_moex" }],
   };
   const hist = staleHistory();
-  const v6Before = JSON.stringify(hist.series[V6]);
+  const v6Before = JSON.stringify(hist.series[YB]);
   const ethBefore = JSON.stringify(hist.series[ETH]);
   sanitizeCabinetSnapshot(latest, hist);
   assert.equal(hist.series[PUMP_RADAR_SERIES_KEY], undefined);
   assert.equal(hist.series[FORTS_ADR_STATIC_SERIES_KEY], undefined);
-  assert.equal(JSON.stringify(hist.series[V6]), v6Before);
+  assert.equal(JSON.stringify(hist.series[YB]), v6Before);
   assert.equal(JSON.stringify(hist.series[ETH]), ethBefore);
   assert.deepEqual(
     latest.accounts.map((a) => a.bot_id),
-    ["v6b1", "eth_okx_moex"],
+    ["young_bounce_combo", "eth_okx_moex"],
   );
 });
 
 test("sanitize of leftover accounts is byte-identical for neighbors", () => {
   const latest = staleLatest();
   const hist = staleHistory();
-  const v6Acc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "v6b1"));
+  const v6Acc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "young_bounce_combo"));
   const ethAcc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "eth_okx_moex"));
-  const v6Ser = JSON.stringify(hist.series[V6]);
+  const v6Ser = JSON.stringify(hist.series[YB]);
   const ethSer = JSON.stringify(hist.series[ETH]);
   sanitizeCabinetSnapshot(latest, hist);
   assert.equal(latest.accounts.some((a) => TARGETS.includes(a.bot_id)), false);
-  assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "v6b1")), v6Acc);
+  assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "young_bounce_combo")), v6Acc);
   assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "eth_okx_moex")), ethAcc);
-  assert.equal(JSON.stringify(hist.series[V6]), v6Ser);
+  assert.equal(JSON.stringify(hist.series[YB]), v6Ser);
   assert.equal(JSON.stringify(hist.series[ETH]), ethSer);
 });
 
@@ -265,16 +265,16 @@ test("stale live JSON cache: fetchCabinetSnapshot never returns pump or static",
     }
     assert.equal(snap.history.series[PUMP_RADAR_SERIES_KEY], undefined);
     assert.equal(snap.history.series[FORTS_ADR_STATIC_SERIES_KEY], undefined);
-    assert.ok(snap.latest.accounts.some((a) => a.bot_id === "v6b1"));
+    assert.ok(snap.latest.accounts.some((a) => a.bot_id === "young_bounce_combo"));
     assert.ok(snap.latest.accounts.some((a) => a.bot_id === "eth_okx_moex"));
-    assert.ok(snap.history.series[V6]);
+    assert.ok(snap.history.series[YB]);
     assert.ok(snap.history.series[ETH]);
   } finally {
     globalThis.fetch = prev;
   }
 });
 
-test("tracked latest.json / history.json have no pump or static; ETH and v6b1 remain", () => {
+test("tracked latest.json / history.json have no pump or static; ETH and young_bounce remain", () => {
   const latestText = readFileSync(join(root, "public/data/latest.json"), "utf8");
   const historyText = readFileSync(join(root, "public/data/history.json"), "utf8");
   for (const id of TARGETS) {
@@ -283,9 +283,9 @@ test("tracked latest.json / history.json have no pump or static; ETH and v6b1 re
   }
   const latest = JSON.parse(latestText);
   const history = JSON.parse(historyText);
-  assert.ok(latest.accounts.some((a) => a.bot_id === "v6b1"));
+  assert.ok(latest.accounts.some((a) => a.bot_id === "young_bounce_combo"));
   assert.ok(latest.accounts.some((a) => a.bot_id === "eth_okx_moex"));
-  assert.ok(history.series[V6]);
+  assert.ok(history.series[YB]);
   assert.ok(history.series[ETH]);
   assert.equal(history.series[ETH].points.length > 0, true);
   assert.equal(history.series[PUMP_RADAR_SERIES_KEY], undefined);

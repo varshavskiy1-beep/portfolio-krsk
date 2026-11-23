@@ -12,6 +12,8 @@ import {
   PUMP_RADAR_BOT_ID,
   ROBOT2_ACCOUNT_ID,
   ROBOT2_BOT_ID,
+  V6B1_ACCOUNT_ID,
+  V6B1_BOT_ID,
   WHO_PAYS_US_EQ_ACCOUNT_ID,
   isHiddenPortalAccount,
   isHiddenPortalId,
@@ -27,6 +29,8 @@ const RETIRED_EQUITY_IDS = new Set([
   FORTS_ADR_STATIC_BOT_ID,
   FORTS_ADR_STATIC_ACCOUNT_ID,
   WHO_PAYS_US_EQ_ACCOUNT_ID,
+  V6B1_BOT_ID,
+  V6B1_ACCOUNT_ID,
 ]);
 
 function isRetiredFeedId(id) {

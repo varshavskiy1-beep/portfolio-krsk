@@ -38,7 +38,7 @@ import {
 
 const FEED_WITHOUT_MAYAK = {
   accounts: [
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
     { bot_id: "cycle_6040_paper", account_id: "cycle_6040_paper", currency: "RUB", equity: "1000000" },
     { bot_id: "rf_conservative_comon", account_id: "rf_conservative_comon", currency: "RUB", equity: "50000" },
   ],

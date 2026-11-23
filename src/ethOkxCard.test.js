@@ -43,7 +43,7 @@ import {
 
 const FEED_WITHOUT = {
   accounts: [
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT", equity: "10000" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
     { bot_id: RF_BONDS_RATE_CYCLE_BOT_ID, account_id: RF_BONDS_RATE_CYCLE_BOT_ID, currency: "RUB", equity: "300000" },
     { bot_id: CNY_MOM_H360_BOT_ID, account_id: CNY_MOM_H360_BOT_ID, currency: "RUB", equity: "300000" },
   ],

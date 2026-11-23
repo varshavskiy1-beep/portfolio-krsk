@@ -15,7 +15,6 @@ export const VENUE_CURRENCY = {
 };
 
 export const BOT_CURRENCY = {
-  v6b1: "USDT",
   young_bounce_combo: "USDT",
   oac_paper: "USD",
   desyatka_earn_paper: "USD",

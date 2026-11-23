@@ -5,11 +5,11 @@ import { ogDescription, ogImageHref, ogTitle } from "./ogWinner.js";
 
 test("share page keeps og/twitter tags and redirects browsers to the portal", () => {
   const row = {
-    account: { bot_id: "v6b1", account_id: "v6b1" },
+    account: { bot_id: "young_bounce_combo", account_id: "young_bounce_combo" },
     pnl: 4515.61,
     pct: 0.451561,
     currency: "USDT",
-    key: "v6b1::v6b1",
+    key: "young_bounce_combo::young_bounce_combo",
   };
   const image = ogImageHref("2026-09-20T08:45:43Z");
   const html = renderSharePage({ row, image });

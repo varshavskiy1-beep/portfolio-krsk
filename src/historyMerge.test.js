@@ -140,9 +140,9 @@ test("merge drops retired paper_block2 even if leftover feed still has the accou
           { t: "2026-10-23T19:09:44Z", equity: 10306.11 },
         ],
       },
-      "v6b1::v6b1": {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+      "young_bounce_combo::young_bounce_combo": {
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }],
       },
     },
@@ -150,7 +150,7 @@ test("merge drops retired paper_block2 even if leftover feed still has the accou
   mergeLatestIntoHistory(hist, {
     generated_at: "2026-10-28T00:00:00Z",
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10100", updated_utc: "2026-10-28T00:00:00Z" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10100", updated_utc: "2026-10-28T00:00:00Z" },
       {
         bot_id: "three_robots_okx_nasdaq_1h",
         account_id: "paper_block2",
@@ -160,7 +160,7 @@ test("merge drops retired paper_block2 even if leftover feed still has the accou
     ],
   });
   assert.equal(hist.series[key], undefined);
-  assert.equal(hist.series["v6b1::v6b1"].points.at(-1).equity, 10100);
+  assert.equal(hist.series["young_bounce_combo::young_bounce_combo"].points.at(-1).equity, 10100);
 });
 
 test("orphan series is dropped when account_id left the feed; other books stay", () => {
@@ -177,26 +177,26 @@ test("orphan series is dropped when account_id left the feed; other books stay",
         account_id: "grail_b20_3x",
         points: [{ t: "2026-09-01T00:00:00Z", equity: 20000 }],
       },
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
     },
   };
   const dropped = dropOrphanHistorySeries(hist, {
-    accounts: [{ bot_id: "v6b1", account_id: "v6b1", equity: "10000" }],
+    accounts: [{ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10000" }],
   });
   assert.deepEqual(dropped, [key]);
   assert.equal(hist.series[key], undefined);
   assert.ok(hist.series["grail_b20_3x::grail_b20_3x"]);
-  assert.ok(hist.series["v6b1::v6b1"]);
+  assert.ok(hist.series["young_bounce_combo::young_bounce_combo"]);
 });
 
 test("dropHiddenFeedRows strips paper_block2 from accounts and manifest, keeps robot 3 live mark", () => {
   const latest = {
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10000" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10000" },
       { bot_id: "three_robots_okx_nasdaq_1h", account_id: "paper_block2", equity: "10306" },
     ],
     manifest: [
-      { bot_id: "v6b1", logic: "ok" },
+      { bot_id: "young_bounce_combo", logic: "ok" },
       { bot_id: "three_robots_okx_nasdaq_1h", logic: "retired" },
     ],
     excluded: [
@@ -208,11 +208,11 @@ test("dropHiddenFeedRows strips paper_block2 from accounts and manifest, keeps r
   dropHiddenFeedRows(latest);
   assert.deepEqual(
     latest.accounts.map((a) => a.account_id),
-    ["v6b1"],
+    ["young_bounce_combo"],
   );
   assert.deepEqual(
     latest.manifest.map((m) => m.bot_id),
-    ["v6b1"],
+    ["young_bounce_combo"],
   );
   assert.deepEqual(
     latest.excluded.map((e) => e.id),
@@ -231,9 +231,9 @@ test("merge drops retired forts_adr_adaptive even if leftover feed still has the
           { t: "2026-10-23T13:10:50Z", equity: 2249400 },
         ],
       },
-      "v6b1::v6b1": {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+      "young_bounce_combo::young_bounce_combo": {
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }],
       },
       [ETH]: {
@@ -246,7 +246,7 @@ test("merge drops retired forts_adr_adaptive even if leftover feed still has the
   mergeLatestIntoHistory(hist, {
     generated_at: "2026-11-11T00:00:00Z",
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10100", updated_utc: "2026-11-11T00:00:00Z" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10100", updated_utc: "2026-11-11T00:00:00Z" },
       {
         bot_id: FORTS_ADR_ADAPTIVE_BOT_ID,
         account_id: FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
@@ -264,14 +264,14 @@ test("merge drops retired forts_adr_adaptive even if leftover feed still has the
     ],
   });
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-  assert.equal(hist.series["v6b1::v6b1"].points.at(-1).equity, 10100);
+  assert.equal(hist.series["young_bounce_combo::young_bounce_combo"].points.at(-1).equity, 10100);
   assert.equal(hist.series[ETH].points.at(-1).equity, 301000);
 });
 
 test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps other books", () => {
   const latest = {
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", equity: "10000" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", equity: "10000" },
       {
         bot_id: FORTS_ADR_ADAPTIVE_BOT_ID,
         account_id: FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
@@ -281,7 +281,7 @@ test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps othe
       { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", equity: "308800" },
     ],
     manifest: [
-      { bot_id: "v6b1", logic: "ok" },
+      { bot_id: "young_bounce_combo", logic: "ok" },
       { bot_id: FORTS_ADR_ADAPTIVE_BOT_ID, logic: "retired lookahead" },
       { bot_id: "eth_okx_moex", logic: "ok" },
     ],
@@ -293,7 +293,7 @@ test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps othe
         account_id: FORTS_ADR_ADAPTIVE_ACCOUNT_ID,
         points: [{ t: "2026-10-23T13:10:50Z", equity: 2249400 }],
       },
-      "v6b1::v6b1": { bot_id: "v6b1", account_id: "v6b1", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
+      "young_bounce_combo::young_bounce_combo": { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", points: [{ t: "2026-10-15T17:27:12Z", equity: 10000 }] },
       [ETH]: {
         bot_id: "eth_okx_moex",
         account_id: "eth_okx_moex",
@@ -301,18 +301,18 @@ test("sanitizeCabinetSnapshot strips adaptive from latest+history and keeps othe
       },
     },
   };
-  const v6Before = JSON.stringify(hist.series["v6b1::v6b1"]);
+  const v6Before = JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]);
   const ethBefore = JSON.stringify(hist.series[ETH]);
   sanitizeCabinetSnapshot(latest, hist);
   assert.deepEqual(
     latest.accounts.map((a) => a.account_id),
-    ["v6b1", "eth_okx_moex"],
+    ["young_bounce_combo", "eth_okx_moex"],
   );
   assert.deepEqual(
     latest.manifest.map((m) => m.bot_id),
-    ["v6b1", "eth_okx_moex"],
+    ["young_bounce_combo", "eth_okx_moex"],
   );
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-  assert.equal(JSON.stringify(hist.series["v6b1::v6b1"]), v6Before);
+  assert.equal(JSON.stringify(hist.series["young_bounce_combo::young_bounce_combo"]), v6Before);
   assert.equal(JSON.stringify(hist.series[ETH]), ethBefore);
 });

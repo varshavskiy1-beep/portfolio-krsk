@@ -27,7 +27,7 @@ test("venue wins over bot_id and feed", () => {
 });
 
 test("bot_id maps crypto and FORTS when venue is missing", () => {
-  assert.equal(canonicalCurrency({ bot_id: "v6b1", account_id: "v6b1", currency: "USD" }), "USDT");
+  assert.equal(canonicalCurrency({ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD" }), "USDT");
   assert.equal(
     canonicalCurrency({ bot_id: "who_pays", account_id: "paper_forts", venue: "FORTS", currency: "USDT" }),
     "RUB",
@@ -36,7 +36,7 @@ test("bot_id maps crypto and FORTS when venue is missing", () => {
 
 test("currency chips: Young Bounce under USDT, OAC and Десятка under USD", () => {
   const accounts = [
-    { bot_id: "v6b1", account_id: "v6b1", currency: "USDT" },
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT" },
     { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD", equity: "10000" },
     { bot_id: "oac_paper", account_id: "oac_paper", currency: "USD", equity: "10000" },
     { bot_id: "desyatka_earn_paper", account_id: "desyatka_earn_paper", currency: "USDT", equity: "10000" },
@@ -60,7 +60,7 @@ test("currency chips: Young Bounce under USDT, OAC and Десятка under USD"
   );
   assert.deepEqual(
     usdt.map((a) => a.account_id),
-    ["v6b1", "young_bounce_combo"],
+    ["young_bounce_combo", "young_bounce_combo"],
   );
   assert.deepEqual(
     rub.map((a) => a.account_id),
@@ -288,17 +288,17 @@ test("P01: null account and non-array accounts are rejected at the JSON boundary
   assert.equal(normalizeLatest(null), null);
   const ok = normalizeLatest({
     generated_at: "2026-10-17T10:00:00Z",
-    accounts: [{ bot_id: "v6b1", account_id: "v6b1", currency: "USD" }],
+    accounts: [{ bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD" }],
   });
   assert.equal(ok.accounts.length, 1);
   assert.equal(ok.accounts[0].currency, "USDT");
-  assert.equal(ok.accounts[0].bot_id, "v6b1");
+  assert.equal(ok.accounts[0].bot_id, "young_bounce_combo");
 });
 
 test("applyCanonicalCurrencies rewrites accounts in place", () => {
   const latest = {
     accounts: [
-      { bot_id: "v6b1", account_id: "v6b1", currency: "USD" },
+      { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USD" },
       { bot_id: "who_pays", account_id: "paper_us_eq", venue: "US_EQ", currency: "USD" },
     ],
   };

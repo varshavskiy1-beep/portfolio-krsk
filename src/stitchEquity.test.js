@@ -43,7 +43,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const backtests = JSON.parse(readFileSync(join(root, "public/data/backtests.json"), "utf8"));
 const history = JSON.parse(readFileSync(join(root, "public/data/history.json"), "utf8"));
 const OAC = { bot_id: "oac_paper", account_id: "oac_paper" };
-const RETIRED_BACKTEST_KEYS = ["three_robots_okx_nasdaq_1h::paper_block2"];
+const RETIRED_BACKTEST_KEYS = [
+  "three_robots_okx_nasdaq_1h::paper_block2",
+  "v6b1::v6b1",
+];
+/** Portal-retired series that still keep Russian stitch copy for archival curves. */
+const RETIRED_STITCH_COPY_KEYS = ["v6b1::v6b1"];
 const SERIES_KEYS = [
   "oac_paper::oac_paper",
   "desyatka_earn_paper::desyatka_earn_paper",
@@ -52,13 +57,13 @@ const SERIES_KEYS = [
   "rf_bonds_rate_cycle::rf_bonds_rate_cycle",
   "eth_okx_moex::eth_okx_moex",
   "cny_mom_h360::cny_mom_h360",
-  "v6b1::v6b1",
   "who_pays::paper_crypto_perp",
   "mayak_imoex_lowvol10::mayak_imoex_lowvol10",
   "mayak_imoex_mom10::mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15::mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2::mayak_imoex_mom10_lev2",
 ];
+/** Archived backtest curve still present in stitchEquity.js; portal card retired. */
 const V6B1 = { bot_id: "v6b1", account_id: "v6b1" };
 const WHO_PERP = { bot_id: "who_pays", account_id: "paper_crypto_perp" };
 const IN_SAMPLE_ONLY = "Бэктест: только на тех же данных, где подбирались правила.";
@@ -258,11 +263,16 @@ test("kindHonestyLine maps known kinds and hides unknown", () => {
 });
 
 test("stitch card source and costs are Russian — no tester jargon, paths or sha", () => {
-  assert.equal(Object.keys(SOURCE_RU_BY_KEY).sort().join("\n"), SERIES_KEYS.slice().sort().join("\n"));
+  assert.equal(
+    Object.keys(SOURCE_RU_BY_KEY).sort().join("\n"),
+    [...SERIES_KEYS, ...RETIRED_STITCH_COPY_KEYS].sort().join("\n"),
+  );
   // Маяк: издержек в пакете тестировщика нет — строку не выдумываем.
   assert.equal(
     Object.keys(COSTS_RU_BY_KEY).sort().join("\n"),
-    SERIES_KEYS.filter((k) => !MAYAK_KEYS.includes(k)).sort().join("\n"),
+    [...SERIES_KEYS.filter((k) => !MAYAK_KEYS.includes(k)), ...RETIRED_STITCH_COPY_KEYS]
+      .sort()
+      .join("\n"),
   );
   assert.equal(
     SOURCE_RU_BY_KEY[seriesKey(V6B1)],
@@ -367,20 +377,7 @@ test("who_pays ru/forts/spot have no tape backtest — one gray line", () => {
   }
 });
 
-test("v6b1 stitch: join 2026-10-14→2026-10-15, yoy present", () => {
-  const st = stitchAccount(V6B1);
-  assert.equal(st.ok, true);
-  assert.equal(st.joinDay, "2026-10-14");
-  assert.equal(st.paperStart, "2026-10-15");
-  const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
-  assert.equal(Math.round(gapMs / 86400000), 1);
-  const paperRows = st.daily.filter((row) => row.segment === "paper");
-  const before = st.daily.filter((row) => row.day < st.paperStart).at(-1);
-  assert.ok(Math.abs(paperRows[0].eq - before.eq) < 1e-4);
-  assert.ok(st.yoy.length >= 1, `yoy bars: ${st.yoy.length}`);
-});
-
-test("all ten tester series stitch with history.json within GAP_DAYS", () => {
+test("all remaining tester series stitch with history.json within GAP_DAYS", () => {
   const accounts = SERIES_KEYS.map((k) => {
     const [bot_id, account_id] = k.split("::");
     return { bot_id, account_id };

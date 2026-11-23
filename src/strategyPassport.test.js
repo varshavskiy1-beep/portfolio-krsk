@@ -22,7 +22,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const latest = JSON.parse(readFileSync(join(root, "public/data/latest.json"), "utf8"));
 
 const DISPLAYED = [
-  "v6b1",
   "who_pays",
   "young_bounce_combo",
   "oac_paper",
@@ -183,22 +182,23 @@ test("unknown bot gets a stub passport, not invented facts", () => {
   assert.deepEqual(errors, []);
 });
 
-test("v6b1 passport uses 1% risk sizing from the feed, not all-cash long", () => {
-  const p = getPassport("v6b1");
-  const blob = [
-    p.essence.paragraphs.join("\n"),
-    p.decisionSteps.join("\n"),
-    p.parameters.find((r) => r.name === "Условие входа").value,
-    p.risk.paragraphs.join("\n"),
-  ].join("\n");
-  assert.match(blob, /лонг примерно на 1% риска/);
-  assert.match(blob, /В час выхода новая нога не открывается/);
-  assert.doesNotMatch(blob, /весь свободный кэш/);
-  assert.doesNotMatch(blob, /PYTH/i);
+test("retired v6b1 has no passport, card or dashboard id", () => {
+  assert.equal(hasAuthoredPassport("v6b1"), false);
+  assert.equal(authoredPassportIds().includes("v6b1"), false);
+  assert.equal(displayedBotIds(latest.accounts).includes("v6b1"), false);
+  assert.equal(isHiddenPortalId("v6b1"), true);
+  const stub = getPassport("v6b1");
+  assert.equal(stub.authored, false);
+  assert.equal(stub.hidden, true);
+  assert.doesNotMatch(stub.title, /Ловит сильный день/);
+  for (const s of passportUiStrings("v6b1")) {
+    assert.doesNotMatch(s, /v6b1/);
+    assert.doesNotMatch(s, /Ловит сильный/);
+  }
 });
 
 test("validatePassport rejects invented test blocks and seed in copy", () => {
-  const base = getPassport("v6b1");
+  const base = getPassport("eth_okx_moex");
   const withWf = {
     ...base,
     testing: { ...base.testing, walkForward: { windows: 3 } },

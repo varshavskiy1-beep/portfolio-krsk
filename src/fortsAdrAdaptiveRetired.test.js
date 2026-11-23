@@ -36,7 +36,7 @@ import {
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const TARGET = FORTS_ADR_ADAPTIVE_BOT_ID;
 const ETH = "eth_okx_moex::eth_okx_moex";
-const V6 = "v6b1::v6b1";
+const YB = "young_bounce_combo::young_bounce_combo";
 
 function jsonResponse(body, ok = true) {
   return {
@@ -50,8 +50,8 @@ function staleLatest() {
     generated_at: "2026-11-11T00:00:00Z",
     accounts: [
       {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         currency: "USDT",
         equity: "14515.61",
         seed: "10000",
@@ -76,7 +76,7 @@ function staleLatest() {
       },
     ],
     manifest: [
-      { bot_id: "v6b1", logic: "ok" },
+      { bot_id: "young_bounce_combo", logic: "ok" },
       { bot_id: TARGET, logic: "lookahead in entry hour" },
       { bot_id: "eth_okx_moex", logic: "ok" },
     ],
@@ -88,9 +88,9 @@ function staleHistory() {
     schema: "equity_history.v1",
     updated_at: "2026-11-11T00:00:00Z",
     series: {
-      [V6]: {
-        bot_id: "v6b1",
-        account_id: "v6b1",
+      [YB]: {
+        bot_id: "young_bounce_combo",
+        account_id: "young_bounce_combo",
         currency: "USDT",
         seed: 10000,
         points: [{ t: "2026-10-15T17:27:12Z", equity: 14515.61 }],
@@ -130,13 +130,13 @@ test("exclusion list names the retired adaptive ids", () => {
 test("stale feed + history: card, chips, OG, passport and %PnL never surface; other books stay", () => {
   const latest = staleLatest();
   const hist = staleHistory();
-  const v6First = hist.series[V6].points[0].equity;
+  const v6First = hist.series[YB].points[0].equity;
   const ethFirst = hist.series[ETH].points[0].equity;
 
   const cards = mergePortalAccounts(latest.accounts);
   assert.equal(cards.some((a) => a.bot_id === TARGET || a.account_id === TARGET), false);
   assert.equal(displayedBotIds(latest.accounts).includes(TARGET), false);
-  assert.ok(cards.some((a) => a.bot_id === "v6b1"));
+  assert.ok(cards.some((a) => a.bot_id === "young_bounce_combo"));
   assert.ok(cards.some((a) => a.bot_id === "eth_okx_moex"));
 
   const winner = pickOgWinner(latest, hist);
@@ -152,7 +152,7 @@ test("stale feed + history: card, chips, OG, passport and %PnL never surface; ot
 
   mergeLatestIntoHistory(hist, latest);
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-  assert.equal(hist.series[V6].points[0].equity, v6First);
+  assert.equal(hist.series[YB].points[0].equity, v6First);
   assert.equal(hist.series[ETH].points[0].equity, ethFirst);
 });
 
@@ -162,14 +162,14 @@ test("direct hash #/s/forts_adr_adaptive is blocked and does not keep the old re
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/FORTS_ADR_ADAPTIVE")), true);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/forts_adr_adaptive/")), true);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/eth_okx_moex")), false);
-  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/v6b1")), false);
+  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/young_bounce_combo")), false);
 });
 
 test("incoming bot_id on a later sync still cannot recreate the series", () => {
   const hist = { series: {} };
   mergeLatestIntoHistory(hist, staleLatest());
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-  assert.ok(hist.series[V6]);
+  assert.ok(hist.series[YB]);
   assert.ok(hist.series[ETH]);
 });
 
@@ -177,13 +177,13 @@ test("publisher sanitize drops adaptive from gh-pages payloads and keeps other r
   const latest = staleLatest();
   const hist = staleHistory();
   const ethAcc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "eth_okx_moex"));
-  const v6Acc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "v6b1"));
+  const v6Acc = JSON.stringify(latest.accounts.find((a) => a.bot_id === "young_bounce_combo"));
   sanitizeCabinetSnapshot(latest, hist);
   assert.equal(latest.accounts.some((a) => a.bot_id === TARGET), false);
   assert.equal(latest.manifest.some((m) => m.bot_id === TARGET), false);
   assert.equal(hist.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "eth_okx_moex")), ethAcc);
-  assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "v6b1")), v6Acc);
+  assert.equal(JSON.stringify(latest.accounts.find((a) => a.bot_id === "young_bounce_combo")), v6Acc);
 });
 
 test("stale live JSON cache: fetchCabinetSnapshot never returns the retired account", async () => {
@@ -206,9 +206,9 @@ test("stale live JSON cache: fetchCabinetSnapshot never returns the retired acco
       false,
     );
     assert.equal(snap.history.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
-    assert.ok(snap.latest.accounts.some((a) => a.bot_id === "v6b1"));
+    assert.ok(snap.latest.accounts.some((a) => a.bot_id === "young_bounce_combo"));
     assert.ok(snap.latest.accounts.some((a) => a.bot_id === "eth_okx_moex"));
-    assert.ok(snap.history.series[V6]);
+    assert.ok(snap.history.series[YB]);
     assert.ok(snap.history.series[ETH]);
   } finally {
     globalThis.fetch = prev;
@@ -223,9 +223,9 @@ test("tracked latest.json / history.json have no forts_adr_adaptive; other live 
   const latest = JSON.parse(latestText);
   const history = JSON.parse(historyText);
   assert.ok(latest.accounts.some((a) => a.bot_id === "eth_okx_moex"));
-  assert.ok(latest.accounts.some((a) => a.bot_id === "v6b1"));
+  assert.ok(latest.accounts.some((a) => a.bot_id === "young_bounce_combo"));
   assert.ok(history.series[ETH]);
-  assert.ok(history.series[V6]);
+  assert.ok(history.series[YB]);
   assert.equal(history.series[FORTS_ADR_ADAPTIVE_SERIES_KEY], undefined);
   dropHiddenFeedRows(latest);
   assert.equal(latest.accounts.some((a) => a.bot_id === TARGET), false);
