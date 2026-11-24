@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-24T06:29:36Z",
+  "generated_at": "2026-11-24T06:44:42Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1802995.6120923192",
-      "updated_utc": "2026-11-24T06:29:30.642469Z",
+      "updated_utc": "2026-11-24T06:44:39.900906Z",
       "positions": [
         {
           "position_id": "p_51678cebdd68",
@@ -53,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1428607.6091309604",
-      "updated_utc": "2026-11-24T06:29:30.645626Z",
+      "updated_utc": "2026-11-24T06:44:39.903593Z",
       "positions": [
         {
           "position_id": "p_74281b53b068",
@@ -71,7 +71,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10501.103666386",
-      "updated_utc": "2026-11-24T06:29:30.648445Z",
+      "updated_utc": "2026-11-24T06:44:39.906174Z",
       "positions": [
         {
           "position_id": "p_b3cbc0a61e15",
@@ -89,7 +89,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-24T06:29:30.654172Z",
+      "updated_utc": "2026-11-24T06:44:39.909055Z",
       "positions": []
     },
     {
@@ -279,7 +279,7 @@
       "seed": "50000",
       "equity": "51373.51679812",
       "cash": "100.25479811999605",
-      "updated_utc": "2026-11-24T06:15:02Z",
+      "updated_utc": "2026-11-24T06:30:02Z",
       "positions": [
         {
           "symbol": "SBRB",
@@ -4809,6 +4809,26 @@
       "key_rate_pct": "14",
       "cpi_pct": "6.35",
       "updated_utc": "2026-11-23T16:33:35Z"
+    },
+    {
+      "bot_id": "office_signals_comon_cny",
+      "account_id": "office_signals_comon_cny",
+      "canonical_id": "OFFICE_SIGNALS_lowbeta250_8_mxi_sma40_comon_cny",
+      "currency": "RUB",
+      "seed": "1000000",
+      "equity": "1000000.00",
+      "cash": "1000000.00",
+      "updated_utc": "2026-11-24T05:59:48Z",
+      "positions": [],
+      "history": [
+        {
+          "t": "2026-11-24",
+          "equity": 1000000
+        }
+      ],
+      "note": "Бумага. «Сигналы Офиса · Comon + Юань 360» (Режим A · CR 1,0×), старт 1 000 000 RUB. На биржу ордера не идут.",
+      "regime": "INIT",
+      "as_of": "2026-11-24"
     }
   ],
   "manifest": [
@@ -4863,6 +4883,10 @@
     {
       "bot_id": "mayak_imoex_mom10_lev2",
       "logic": "РФ, бумага. Маяк Momentum ×2: корзина как у Momentum, плечо 2 (до 20% на бумагу, всего до 200%); заём — ключевая ставка плюс 8 п.п. годовых. Акции РФ из списка Автоследования с P/E ниже рынка (прибыль сверена с независимыми источниками), корзина из 10 бумаг раз в месяц, у каждой бумаги трейлинг по EMA100. Режим HARD (ключевая выше 12% и реальная ставка выше 6 п.п.) или индекс Мосбиржи ниже EMA100 — всё в LQDT. Решение по close D, сделка на open D+1. На биржу ордера не идут."
+    },
+    {
+      "bot_id": "office_signals_comon_cny",
+      "logic": "РФ, бумага, старт 1 000 000 ₽ (Режим A · CR 1,0×). STOCKS_MXI: 8 акций IMOEX ∩ Comon с минимальной бетой + квартальный MXI 1,0× + FMMM; SMA40_PARK: при sh < SMA40 всё в FMMM без юаня; CNY360_PARK: при Офис OFF парковка FMMM с буфером 12% + лонг CR строго 1,0× по 360 будним часам. На биржу ордера не идут."
     }
   ]
 }
