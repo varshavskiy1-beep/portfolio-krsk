@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-24T15:11:35Z",
+  "generated_at": "2026-11-24T15:31:42Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1802995.6120923192",
-      "updated_utc": "2026-11-24T15:11:26.836925Z",
+      "updated_utc": "2026-11-24T15:31:35.451420Z",
       "positions": [
         {
           "position_id": "p_51678cebdd68",
@@ -53,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1428607.6091309604",
-      "updated_utc": "2026-11-24T15:11:26.840472Z",
+      "updated_utc": "2026-11-24T15:31:35.455840Z",
       "positions": [
         {
           "position_id": "p_74281b53b068",
@@ -71,7 +71,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10540.902479198",
-      "updated_utc": "2026-11-24T15:11:26.843585Z",
+      "updated_utc": "2026-11-24T15:31:35.461482Z",
       "positions": [
         {
           "position_id": "p_03e60d610ee4",
@@ -89,7 +89,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-24T15:11:26.846917Z",
+      "updated_utc": "2026-11-24T15:31:35.466098Z",
       "positions": []
     },
     {
@@ -186,7 +186,7 @@
       "seed": "10000",
       "equity": "8645.8594",
       "cash": "-101.35395414379116",
-      "updated_utc": "2026-11-24T15:10:01Z",
+      "updated_utc": "2026-11-24T15:30:01Z",
       "positions": [
         {
           "symbol": "AAPL",
@@ -4816,18 +4816,26 @@
       "canonical_id": "OFFICE_SIGNALS_lowbeta250_8_mxi_sma40_comon_cny",
       "currency": "RUB",
       "seed": "1000000",
-      "equity": "1000000.00",
-      "cash": "1000000.00",
-      "updated_utc": "2026-11-24T05:59:48Z",
-      "positions": [],
+      "equity": "999800.04",
+      "cash": "7.04",
+      "updated_utc": "2026-11-24T15:25:03Z",
+      "positions": [
+        {
+          "symbol": "FMMM",
+          "side": "long",
+          "qty": "70403",
+          "avg_px": "14.201",
+          "mark": "14.201"
+        }
+      ],
       "history": [
         {
           "t": "2026-11-24",
-          "equity": 1000000
+          "equity": 999800.04
         }
       ],
       "note": "Бумага. «Сигналы Офиса · Comon + Юань 360» (Режим A · CR 1,0×), старт 1 000 000 RUB. На биржу ордера не идут.",
-      "regime": "INIT",
+      "regime": "SMA40_PARK",
       "as_of": "2026-11-24"
     }
   ],
