@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-24T09:28:59Z",
+  "generated_at": "2026-11-24T09:42:06Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1802995.6120923192",
-      "updated_utc": "2026-11-24T09:28:50.571335Z",
+      "updated_utc": "2026-11-24T09:41:58.748695Z",
       "positions": [
         {
           "position_id": "p_51678cebdd68",
@@ -53,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1428607.6091309604",
-      "updated_utc": "2026-11-24T09:28:50.573967Z",
+      "updated_utc": "2026-11-24T09:41:58.752711Z",
       "positions": [
         {
           "position_id": "p_74281b53b068",
@@ -71,7 +71,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10493.307062677999",
-      "updated_utc": "2026-11-24T09:28:50.577183Z",
+      "updated_utc": "2026-11-24T09:41:58.755886Z",
       "positions": [
         {
           "position_id": "p_ec900bc829ae",
@@ -89,7 +89,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-24T09:28:50.580196Z",
+      "updated_utc": "2026-11-24T09:41:58.760966Z",
       "positions": []
     },
     {
@@ -259,7 +259,7 @@
       "seed": "1000000",
       "equity": "1017331.5100350586",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-11-24T04:31:00Z",
+      "updated_utc": "2026-11-24T09:30:59Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -269,7 +269,7 @@
         }
       ],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-11-22",
+      "as_of": "2026-11-23",
       "braked": false
     },
     {
