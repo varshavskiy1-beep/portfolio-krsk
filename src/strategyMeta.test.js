@@ -18,6 +18,10 @@ import {
   ETH_OKX_MOEX_BOT_ID,
   ETH_OKX_MOEX_CANON_ID,
   ETH_OKX_MOEX_TITLE,
+  OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID,
+  OFFICE_SIGNALS_COMON_CNY_BOT_ID,
+  OFFICE_SIGNALS_COMON_CNY_CANON_ID,
+  OFFICE_SIGNALS_COMON_CNY_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -42,6 +46,7 @@ import {
   isDesyatkaEarn,
   isCnyMomH360,
   isEthOkxMoex,
+  isOfficeSignalsComonCny,
   isRfBondsRateCycle,
   isRfConservative,
   isHiddenPortalAccount,
@@ -67,6 +72,7 @@ test("portalExcluded drops outdated live OKX mark and retired robot 2", () => {
     { id: RF_BONDS_RATE_CYCLE_BOT_ID, reason: "live cluster" },
     { id: "cny_mom_h360", reason: "live cluster" },
     { id: "eth_okx_moex", reason: "live cluster" },
+    { id: "office_signals_comon_cny", reason: "live cluster" },
     { id: "mayak_imoex_lowvol10", reason: "live cluster" },
     { id: "mayak_imoex_mom10", reason: "live cluster" },
     { id: "mayak_imoex_mom10_lev15", reason: "live cluster" },
@@ -832,4 +838,55 @@ test("published eth-okx book replaces the shell and keeps seed from the feed", (
   assert.equal(hasAccountData(rows[0]), true);
   assert.equal(rows[0].seed, "300000");
   assert.equal(rows[0].equity, "299970.19681904");
+});
+
+test("displayTitle maps office-signals ids to Сигналы Офиса · Comon + Юань 360", () => {
+  assert.equal(
+    displayTitle({ bot_id: OFFICE_SIGNALS_COMON_CNY_BOT_ID, account_id: OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID }),
+    OFFICE_SIGNALS_COMON_CNY_TITLE,
+  );
+  assert.equal(
+    cardTitle({ bot_id: OFFICE_SIGNALS_COMON_CNY_BOT_ID, account_id: OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID }),
+    OFFICE_SIGNALS_COMON_CNY_TITLE,
+  );
+  assert.equal(chipLabel(OFFICE_SIGNALS_COMON_CNY_BOT_ID), OFFICE_SIGNALS_COMON_CNY_TITLE);
+  assert.doesNotMatch(OFFICE_SIGNALS_COMON_CNY_TITLE, /Цикл ставки 80\/20|ETH по сигналу OKX|РФ Консерватив|Цикл 60\/40/);
+});
+
+test("mergePortalAccounts adds office-signals shell when absent — нет данных, seed not hardcoded", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
+  ]);
+  const row = merged.find((a) => a.bot_id === OFFICE_SIGNALS_COMON_CNY_BOT_ID);
+  assert.ok(row);
+  assert.equal(row.account_id, OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID);
+  assert.equal(row.no_data, true);
+  assert.equal(row.currency, "RUB");
+  assert.equal(row.seed, undefined);
+  assert.equal(hasAccountData(row), false);
+  assert.equal(isOfficeSignalsComonCny(row), true);
+  assert.equal(isCnyMomH360(row), false);
+  assert.equal(isEthOkxMoex(row), false);
+  assert.equal(isRfBondsRateCycle(row), false);
+  assert.equal(accountIdBadge(row), OFFICE_SIGNALS_COMON_CNY_CANON_ID);
+  assert.equal(underTitleLabel(row), null);
+  assert.equal(showsPaperBadge(row), true);
+});
+
+test("published office-signals book replaces the shell and keeps seed from the feed", () => {
+  const published = {
+    bot_id: OFFICE_SIGNALS_COMON_CNY_BOT_ID,
+    account_id: OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID,
+    currency: "RUB",
+    equity: "1000000.00",
+    seed: "1000000",
+    positions: [{ symbol: "FMMM", side: "long", qty: "520000", avg_px: "1.92" }],
+  };
+  const merged = mergePortalAccounts([published]);
+  const rows = merged.filter((a) => a.bot_id === OFFICE_SIGNALS_COMON_CNY_BOT_ID);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].no_data, undefined);
+  assert.equal(hasAccountData(rows[0]), true);
+  assert.equal(rows[0].seed, "1000000");
+  assert.equal(rows[0].equity, "1000000.00");
 });

@@ -26,6 +26,12 @@ import {
   hasEthOkxAccountLine,
 } from "./ethOkxCard.js";
 import {
+  hasOfficeSignalsAccountLine,
+  officeSignalsDescription,
+  officeSignalsEquityLine,
+  officeSignalsFromStartPctLine,
+} from "./officeSignalsComonCnyCard.js";
+import {
   chartMoneyLabel,
   fromStartPctLine,
   hasRateCycleAccountLine,
@@ -40,6 +46,7 @@ import {
   isCnyMomH360,
   isEthOkxMoex,
   isHistoryOnlyRubPaper,
+  isOfficeSignalsComonCny,
   isMayak,
   isRfBondsRateCycle,
   mergePortalAccounts,
@@ -88,7 +95,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
       ? hasCnyMomAccountLine(a)
       : isEthOkxMoex(a)
         ? hasEthOkxAccountLine(a)
-        : hasData;
+        : isOfficeSignalsComonCny(a)
+          ? hasOfficeSignalsAccountLine(a)
+          : hasData;
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -103,14 +112,18 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
       ? cnyMomFromStartPctLine(a)
       : isEthOkxMoex(a)
         ? ethOkxFromStartPctLine(a)
-        : "";
+        : isOfficeSignalsComonCny(a)
+          ? officeSignalsFromStartPctLine(a)
+          : "";
   const noteText = isRfBondsRateCycle(a)
     ? rateCycleDescription(a)
     : isCnyMomH360(a)
       ? cnyMomDescription(a)
       : isEthOkxMoex(a)
         ? ethOkxDescription(a)
-        : "";
+        : isOfficeSignalsComonCny(a)
+          ? officeSignalsDescription(a)
+          : "";
   const limits = showLine ? a.pending_limits || [] : [];
 
   return (
@@ -133,7 +146,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
             : historyCard
               ? isEthOkxMoex(a)
                 ? ethOkxEquityLine(a)
-                : `${fmt(equity, "RUB")} ₽`
+                : isOfficeSignalsComonCny(a)
+                  ? officeSignalsEquityLine(a)
+                  : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && historyCard && fromStart ? (
@@ -189,7 +204,7 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         seed={chartBase.base}
         currency={currency}
         mode={mode}
-        priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+        priceDigits={isEthOkxMoex(a) || isOfficeSignalsComonCny(a) ? 2 : undefined}
         baseCaption={mode === "pct" ? chartBase.caption : null}
       />
       <MayakFromStart account={a} hasData={hasData} />

@@ -1,8 +1,16 @@
 import { visibleCnyMomPositions } from "./cnyMomCard.js";
 import { formatEthOkxMark, visibleEthOkxPositions } from "./ethOkxCard.js";
 import { emptyPositionsHint } from "./mayakCard.js";
+import { formatOfficeSignalsMark, visibleOfficeSignalsPositions } from "./officeSignalsComonCnyCard.js";
 import { visibleRateCyclePositions } from "./rateCycleCard.js";
-import { isCnyMomH360, isEthOkxMoex, isMayak, isRfBondsRateCycle, OAC_PAPER_BOT_ID } from "./strategyMeta.js";
+import {
+  isCnyMomH360,
+  isEthOkxMoex,
+  isMayak,
+  isOfficeSignalsComonCny,
+  isRfBondsRateCycle,
+  OAC_PAPER_BOT_ID,
+} from "./strategyMeta.js";
 import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCopy.js";
 
 /**
@@ -16,6 +24,7 @@ import { formatMoneyRu, patternLabel, positionHasField, sideLabel } from "./uiCo
  * Цикл ставки 80/20: только OBLG/SBRB/CR; индексы отфильтрованы; пустая таблица нейтральная.
  * Юань 360: LQDT и CR с qty ≠ 0; индексы отфильтрованы.
  * ETH по сигналу OKX: qty ≠ 0; цена — текущая отметка, не вход; LQDT не выдумываем.
+ * Сигналы Офиса: акции TQBR, MM*, CR*, FMMM/LQDT с qty ≠ 0; IMOEXF скрыт; номинал фьючерса не суммируется.
  */
 export default function PositionsTable({ positions, compact = false, botId, account }) {
   const acc = account || { bot_id: botId };
@@ -23,14 +32,17 @@ export default function PositionsTable({ positions, compact = false, botId, acco
   const rateCycle = isRfBondsRateCycle(acc);
   const cnyMom = isCnyMomH360(acc);
   const ethOkx = isEthOkxMoex(acc);
-  const paperBook = rateCycle || cnyMom || ethOkx;
+  const officeSignals = isOfficeSignalsComonCny(acc);
+  const paperBook = rateCycle || cnyMom || ethOkx || officeSignals;
   const rows = rateCycle
     ? visibleRateCyclePositions({ ...acc, positions: positions || acc.positions })
     : cnyMom
       ? visibleCnyMomPositions({ ...acc, positions: positions || acc.positions })
       : ethOkx
         ? visibleEthOkxPositions({ ...acc, positions: positions || acc.positions })
-        : positions;
+        : officeSignals
+          ? visibleOfficeSignalsPositions({ ...acc, positions: positions || acc.positions })
+          : positions;
   if (!rows?.length) {
     if (paperBook) {
       return (
@@ -41,7 +53,7 @@ export default function PositionsTable({ positions, compact = false, botId, acco
                 <th>{compact ? "Позиция" : "Инструмент"}</th>
                 <th>Сторона</th>
                 <th>Кол-во</th>
-                <th>{ethOkx ? "Цена (отметка)" : compact ? "Цена" : "Цена пая / контракта"}</th>
+                <th>{ethOkx || officeSignals ? "Цена (отметка)" : compact ? "Цена" : "Цена пая / контракта"}</th>
               </tr>
             </thead>
             <tbody />
@@ -82,13 +94,13 @@ export default function PositionsTable({ positions, compact = false, botId, acco
     );
   }
 
-  const showMark = ethOkx ? false : rows.some((p) => positionHasField(p, "mark"));
+  const showMark = ethOkx || officeSignals ? false : rows.some((p) => positionHasField(p, "mark"));
   const showPattern = rows.some((p) => positionHasField(p, "pattern"));
-  const showValueUsd = ethOkx ? false : rows.some((p) => positionHasField(p, "value_usd"));
-  const showValueRub = ethOkx ? false : rows.some((p) => positionHasField(p, "value_rub"));
+  const showValueUsd = ethOkx || officeSignals ? false : rows.some((p) => positionHasField(p, "value_usd"));
+  const showValueRub = ethOkx || officeSignals ? false : rows.some((p) => positionHasField(p, "value_rub"));
   const showAvgPx = mayak ? rows.some((p) => positionHasField(p, "avg_px")) : true;
   const showStop = compact ? false : mayak ? rows.some((p) => positionHasField(p, "stop_px")) : true;
-  const priceHead = ethOkx
+  const priceHead = ethOkx || officeSignals
     ? "Цена (отметка)"
     : paperBook
       ? compact
@@ -119,7 +131,15 @@ export default function PositionsTable({ positions, compact = false, botId, acco
               <td>{p.symbol}</td>
               <td>{sideLabel(p.side)}</td>
               <td>{p.qty == null || p.qty === "" ? "" : String(p.qty)}</td>
-              {showAvgPx ? <td>{ethOkx ? formatEthOkxMark(p) : (p.avg_px ?? "—")}</td> : null}
+              {showAvgPx ? (
+                <td>
+                  {ethOkx
+                    ? formatEthOkxMark(p)
+                    : officeSignals
+                      ? formatOfficeSignalsMark(p)
+                      : (p.avg_px ?? "—")}
+                </td>
+              ) : null}
               {showValueUsd ? (
                 <td>{formatMoneyRu(Number(p.value_usd), "USD")}</td>
               ) : null}

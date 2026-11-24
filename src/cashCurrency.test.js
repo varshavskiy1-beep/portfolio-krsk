@@ -45,6 +45,7 @@ test("currency chips: Young Bounce under USDT, OAC and Десятка under USD"
     { bot_id: "rf_bonds_rate_cycle", account_id: "rf_bonds_rate_cycle", currency: "RUB", equity: "1" },
     { bot_id: "cny_mom_h360", account_id: "cny_mom_h360", currency: "USD", equity: "1" },
     { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "USD", equity: "1" },
+    { bot_id: "office_signals_comon_cny", account_id: "office_signals_comon_cny", currency: "USD", equity: "1" },
     { bot_id: "mayak_imoex_lowvol10", account_id: "mayak_imoex_lowvol10", currency: "USD", equity: "1" },
     { bot_id: "mayak_imoex_mom10", account_id: "mayak_imoex_mom10", currency: "USDT", equity: "1" },
     { bot_id: "mayak_imoex_mom10_lev15", account_id: "mayak_imoex_mom10_lev15", currency: "USD", equity: "1" },
@@ -70,6 +71,7 @@ test("currency chips: Young Bounce under USDT, OAC and Десятка under USD"
       "rf_bonds_rate_cycle",
       "cny_mom_h360",
       "eth_okx_moex",
+      "office_signals_comon_cny",
       "mayak_imoex_lowvol10",
       "mayak_imoex_mom10",
       "mayak_imoex_mom10_lev15",
@@ -203,6 +205,26 @@ test("eth okx moex is always RUB and never remapped to USD/USDT", () => {
     canonicalCurrency({
       bot_id: "eth_okx_moex",
       account_id: "eth_okx_moex",
+      venue: "US_EQ",
+      currency: "USDT",
+    }),
+    "RUB",
+  );
+});
+
+test("office signals comon cny is always RUB and never remapped to USD/USDT", () => {
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "office_signals_comon_cny",
+      account_id: "office_signals_comon_cny",
+      currency: "USD",
+    }),
+    "RUB",
+  );
+  assert.equal(
+    canonicalCurrency({
+      bot_id: "office_signals_comon_cny",
+      account_id: "office_signals_comon_cny",
       venue: "US_EQ",
       currency: "USDT",
     }),

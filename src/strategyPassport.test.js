@@ -35,6 +35,7 @@ const DISPLAYED = [
   "mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2",
+  "office_signals_comon_cny",
 ];
 
 test("cycle_6040_paper stays on the dashboard; snapshot row is used when present", () => {
@@ -70,6 +71,15 @@ test("eth_okx_moex stays on the dashboard; snapshot row is used when present", (
     assert.equal(Number(row.seed), 300000);
   } else {
     assert.equal(hasAccountData({ bot_id: "eth_okx_moex", no_data: true }), false);
+  }
+});
+
+test("office_signals_comon_cny stays on the dashboard; absent snapshot → нет данных", () => {
+  const ids = displayedBotIds(latest.accounts);
+  assert.equal(ids.includes("office_signals_comon_cny"), true);
+  const row = (latest.accounts || []).find((a) => a.bot_id === "office_signals_comon_cny");
+  if (!row) {
+    assert.equal(hasAccountData({ bot_id: "office_signals_comon_cny", no_data: true }), false);
   }
 });
 
@@ -375,6 +385,27 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
     assert.doesNotMatch(s, /включить ордера/, s);
     assert.doesNotMatch(s, /\bseed\b/i, s);
     assert.doesNotMatch(s, /\/var\/lib|sqlite|2,046839/, s);
+  }
+
+  const office = getPassport("office_signals_comon_cny");
+  assert.equal(office.title, "Сигналы Офиса · Comon + Юань 360");
+  assert.equal(office.accounts[0].currency, "RUB");
+  assert.equal(office.parameters.find((r) => r.name === "Начальный капитал").known, false);
+  assert.equal(office.parameters.find((r) => r.name === "Начальный капитал").value, NO_DATA);
+  assert.match(
+    office.parameters.find((r) => r.name === "Канон (документация)").value,
+    /OFFICE_SIGNALS_lowbeta250_8_mxi_sma40_comon_cny/,
+  );
+  assert.match(office.essence.paragraphs.join("\n"), /STOCKS_MXI/);
+  assert.match(office.essence.paragraphs.join("\n"), /исторический replay/);
+  assert.match(office.essence.paragraphs.join("\n"), /\+65,95%/);
+  assert.match(office.essence.paragraphs.join("\n"), /\+50,29%/);
+  assert.doesNotMatch(office.essence.paragraphs.join("\n"), /\bseed\b/i);
+  assert.doesNotMatch(office.essence.paragraphs.join("\n"), /Цикл ставки 80\/20|ETH по сигналу OKX/);
+  for (const s of passportUiStrings("office_signals_comon_cny")) {
+    assert.doesNotMatch(s, /включить ордера/, s);
+    assert.doesNotMatch(s, /\bseed\b/i, s);
+    assert.doesNotMatch(s, /\/var\/lib|sqlite/, s);
   }
 
   const rbc = getPassport("rf_bonds_rate_cycle");

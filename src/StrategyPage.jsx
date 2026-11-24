@@ -21,6 +21,12 @@ import {
   hasEthOkxAccountLine,
 } from "./ethOkxCard.js";
 import {
+  hasOfficeSignalsAccountLine,
+  officeSignalsDescription,
+  officeSignalsEquityLine,
+  officeSignalsFromStartPctLine,
+} from "./officeSignalsComonCnyCard.js";
+import {
   chartMoneyLabel,
   fromStartPctLine,
   hasRateCycleAccountLine,
@@ -41,6 +47,7 @@ import {
   isEthOkxMoex,
   isHiddenPortalId,
   isHistoryOnlyRubPaper,
+  isOfficeSignalsComonCny,
   isKnownPortalBot,
   isMayak,
   isRfBondsRateCycle,
@@ -106,21 +113,27 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
       ? hasCnyMomAccountLine(a)
       : isEthOkxMoex(a)
         ? hasEthOkxAccountLine(a)
-        : hasData;
+        : isOfficeSignalsComonCny(a)
+          ? hasOfficeSignalsAccountLine(a)
+          : hasData;
   const fromStart = isRfBondsRateCycle(a)
     ? fromStartPctLine(a)
     : isCnyMomH360(a)
       ? cnyMomFromStartPctLine(a)
       : isEthOkxMoex(a)
         ? ethOkxFromStartPctLine(a)
-        : "";
+        : isOfficeSignalsComonCny(a)
+          ? officeSignalsFromStartPctLine(a)
+          : "";
   const noteText = isRfBondsRateCycle(a)
     ? rateCycleDescription(a)
     : isCnyMomH360(a)
       ? cnyMomDescription(a)
       : isEthOkxMoex(a)
         ? ethOkxDescription(a)
-        : "";
+        : isOfficeSignalsComonCny(a)
+          ? officeSignalsDescription(a)
+          : "";
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -164,7 +177,9 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
             : historyCard
               ? isEthOkxMoex(a)
                 ? ethOkxEquityLine(a)
-                : `${fmt(equity, "RUB")} ₽`
+                : isOfficeSignalsComonCny(a)
+                  ? officeSignalsEquityLine(a)
+                  : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && historyCard && fromStart ? (
@@ -231,7 +246,7 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
           mode={mode}
           fill={fs}
           height={280}
-          priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+          priceDigits={isEthOkxMoex(a) || isOfficeSignalsComonCny(a) ? 2 : undefined}
           baseCaption={mode === "pct" ? chartBase.caption : null}
         />
       </div>
