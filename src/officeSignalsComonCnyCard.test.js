@@ -16,6 +16,7 @@ import {
   officeSignalsFromStartPctLine,
   officeSignalsHistoryPoints,
   officeSignalsOpenedLine,
+  officeSignalsPositionSide,
   officeSignalsRegimeLine,
   visibleOfficeSignalsPositions,
 } from "./officeSignalsComonCnyCard.js";
@@ -83,7 +84,7 @@ const PARK_BOOK = {
   regime: "SMA40_PARK",
   as_of: "2026-11-24",
   updated_utc: "2026-11-24T16:30:05Z",
-  positions: [{ symbol: "FMMM", side: "long", qty: "520000", avg_px: "1.92" }],
+  positions: [{ symbol: "FMMM", side: "long", qty: "71000", avg_px: "14" }],
   history: [{ t: "2026-11-24", equity: 1000000.0 }],
   note: "Бумага. «Сигналы Офиса · Comon + Юань 360» (Режим A · CR 1,0×), старт 1 000 000 RUB. На биржу ордера не идут.",
 };
@@ -103,7 +104,7 @@ const STOCKS_BOOK = {
     { symbol: "HEAD", side: "long", qty: "10", avg_px: "210" },
     { symbol: "SBER", side: "long", qty: "25", avg_px: "300" },
     { symbol: "MMZ6", side: "long", qty: "36", mark: "2780" },
-    { symbol: "FMMM", side: "long", qty: "40000", avg_px: "1.92" },
+    { symbol: "FMMM", side: "long", qty: "40000", avg_px: "14" },
     { symbol: "IMOEXF", side: "long", qty: "10", mark: "2700" },
     { symbol: "CRZ6", side: "long", qty: "0", mark: "11.2" },
   ],
@@ -119,13 +120,44 @@ const CNY_BOOK = {
   cash: "120000",
   regime: "CNY360_PARK",
   positions: [
-    { symbol: "FMMM", side: "long", qty: "458000", avg_px: "1.92" },
+    { symbol: "FMMM", side: "long", qty: "458000", avg_px: "14" },
     { symbol: "CRZ6", side: "long", qty: "88", mark: "11.25" },
     { symbol: "LQDT", side: "long", qty: "0", avg_px: "2.1" },
   ],
   history: [
     { t: "2026-11-24", equity: "1000000" },
     { t: "2026-11-25T13:21:00Z", equity: "998750.25" },
+  ],
+};
+
+const INIT_BOOK = {
+  bot_id: OFFICE_SIGNALS_COMON_CNY_BOT_ID,
+  account_id: OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID,
+  canonical_id: OFFICE_SIGNALS_COMON_CNY_CANON_ID,
+  currency: "RUB",
+  seed: "1000000",
+  equity: "1000000.00",
+  cash: "1000000.00",
+  regime: "INIT",
+  as_of: "2026-11-24",
+  updated_utc: "2026-11-24T05:59:48Z",
+  positions: [],
+  history: [{ t: "2026-11-24", equity: 1000000.0 }],
+};
+
+const CR_SHORT_BOOK = {
+  ...CNY_BOOK,
+  positions: [
+    { symbol: "FMMM", side: "long", qty: "458000", avg_px: "14" },
+    { symbol: "CRZ6", side: "short", qty: "111", mark: "11.25" },
+  ],
+};
+
+const CR_SHORT_QTY_BOOK = {
+  ...CNY_BOOK,
+  positions: [
+    { symbol: "FMMM", side: "long", qty: "458000", avg_px: "14" },
+    { symbol: "CRZ6", qty: "-111", mark: "11.25" },
   ],
 };
 
@@ -179,8 +211,8 @@ test("SMA40_PARK fixture: 1 000 000,00 ₽, FMMM only, 0,00% from start", () => 
   assert.match(officeSignalsRegimeLine(row), /FMMM/);
   assert.doesNotMatch(officeSignalsRegimeLine(row), /CR 1,0×/);
   const visible = visibleOfficeSignalsPositions(row).map((p) => `${p.symbol}:${p.side}:${p.qty}`);
-  assert.deepEqual(visible, ["FMMM:long:520000"]);
-  assert.match(formatOfficeSignalsMark(row.positions[0]), /1,92/);
+  assert.deepEqual(visible, ["FMMM:long:71000"]);
+  assert.match(formatOfficeSignalsMark(row.positions[0]), /14/);
   assert.equal(showsFreeCash(row), false);
   assert.equal(officeSignalsCollateralLine(row), "");
   assert.match(officeSignalsDescription(row), /Сигналы Офиса · Comon \+ Юань 360/);
@@ -235,7 +267,7 @@ test("CNY360_PARK fixture: FMMM + CRZ6, zero LQDT hidden", () => {
   assert.deepEqual(visible, ["FMMM:458000", "CRZ6:88"]);
   assert.equal(visible.some((s) => s.startsWith("LQDT")), false);
   assert.match(officeSignalsRegimeLine(CNY_BOOK), /CNY360_PARK/);
-  assert.match(officeSignalsRegimeLine(CNY_BOOK), /CR строго 1,0×/);
+  assert.match(officeSignalsRegimeLine(CNY_BOOK), /лонг\/шорт CR строго ±1,0×/);
   assert.equal(officeSignalsFromStartPctLine(CNY_BOOK), "−0,12% от старта");
   assert.match(officeSignalsEquityLine(CNY_BOOK), /998\s?750,25 ₽/);
 });
@@ -335,18 +367,32 @@ test("authored passport validates with zero errors and no seed in UI", () => {
   assert.match(text, /исторический replay/);
   assert.match(text, /CAGR \+65,95%/);
   assert.match(text, /MaxDD −9,46%/);
-  assert.match(text, /LongDD 77 дн/);
+  assert.match(text, /LongDD 77 торг/);
   assert.match(text, /MAR 6,97/);
   assert.match(text, /ИТА 0,405/);
   assert.match(text, /CAGR \+50,29%/);
   assert.match(text, /MaxDD −17,71%/);
-  assert.match(text, /LongDD 151 дн/);
+  assert.match(text, /LongDD 151 торг/);
   assert.match(text, /MAR 2,84/);
   assert.match(text, /ИТА 0,538/);
   assert.match(text, /не живая доходность|не live/i);
   assert.match(text, /08d3ca6/);
-  assert.match(text, /Режим B \(юань в паузе SMA40\) запрещён|Режим B, плечо CR выше 1,0×/);
+  assert.match(text, /Режим B \(юань в паузе SMA40\) запрещён|Режим B, плечо \|CR\| выше 1,0×/);
   assert.match(text, /IMOEXF запрещён/);
+  assert.match(text, /лонг или шорт|лонг и шорт/);
+  assert.match(text, /±1,0×/);
+  assert.match(text, /short_blocked_by_funding: false/);
+  assert.match(text, /стоп лонга ≥ 10%/);
+  assert.match(text, /wknd_hold/);
+  assert.match(text, /10:00–18:59 МСК/);
+  assert.match(text, /\+64,00%/);
+  assert.match(text, /−9,48%/);
+  assert.match(text, /\+49,09%/);
+  assert.match(text, /−17,78%/);
+  assert.match(text, /прокси-фьючерс Si/);
+  assert.match(text, /replay_roll0/);
+  assert.match(text, /не partner_memo/);
+  assert.match(text, /403 дня шорта/);
   assert.doesNotMatch(text, /\bseed\b/i);
   for (const s of passportUiStrings(OFFICE_SIGNALS_COMON_CNY_BOT_ID)) {
     assert.doesNotMatch(s, /\bseed\b/i, s);
@@ -357,6 +403,32 @@ test("authored passport validates with zero errors and no seed in UI", () => {
   assert.equal(p.parameters.find((r) => r.name === "Начальный капитал").value, "нет данных");
   assert.equal(p.testing.status, "needs_data");
   assert.equal(p.testing.backtest, null);
+});
+
+test("INIT 24 Nov fixture: 1 000 000,00 ₽, empty positions, no fabricated FMMM", () => {
+  assert.equal(hasOfficeSignalsAccountLine(INIT_BOOK), true);
+  assert.equal(INIT_BOOK.regime, "INIT");
+  assert.equal(INIT_BOOK.equity, "1000000.00");
+  assert.equal(INIT_BOOK.cash, "1000000.00");
+  assert.equal(INIT_BOOK.as_of, "2026-11-24");
+  assert.deepEqual(INIT_BOOK.positions, []);
+  assert.deepEqual(visibleOfficeSignalsPositions(INIT_BOOK), []);
+  assert.match(officeSignalsRegimeLine(INIT_BOOK), /INIT/);
+  assert.match(officeSignalsEquityLine(INIT_BOOK), /1\s?000\s?000,00 ₽/);
+  assert.equal(officeSignalsFromStartPctLine(INIT_BOOK), "+0,00% от старта");
+});
+
+test("CR positions show long and short sides", () => {
+  const longVis = visibleOfficeSignalsPositions(CNY_BOOK);
+  const shortVis = visibleOfficeSignalsPositions(CR_SHORT_BOOK);
+  const qtyShortVis = visibleOfficeSignalsPositions(CR_SHORT_QTY_BOOK);
+  assert.equal(officeSignalsPositionSide(longVis.find((p) => p.symbol === "CRZ6")), "long");
+  assert.equal(officeSignalsPositionSide(shortVis.find((p) => p.symbol === "CRZ6")), "short");
+  assert.equal(officeSignalsPositionSide(qtyShortVis.find((p) => p.symbol === "CRZ6")), "short");
+  assert.deepEqual(
+    shortVis.map((p) => `${p.symbol}:${officeSignalsPositionSide(p)}`),
+    ["FMMM:long", "CRZ6:short"],
+  );
 });
 
 test("retired cards stay retired; CNY book from 12 Oct stays in history.json", () => {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import FeedStatus from "./FeedStatus.jsx";
@@ -36,6 +36,8 @@ import StitchedCharts from "./StitchedCharts.jsx";
 import { stitchPaperPoints } from "./stitchEquity.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
+
+const OfficeSignalsReplaySection = lazy(() => import("./OfficeSignalsReplaySection.jsx"));
 import { getPassport } from "./strategyPassport.js";
 import {
   cardSubtitle,
@@ -250,12 +252,14 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
           baseCaption={mode === "pct" ? chartBase.caption : null}
         />
       </div>
-      <StitchedCharts
-        account={a}
-        paperPoints={stitchPaperPoints(a, points, history)}
-        backtests={backtests}
-        generatedAt={generatedAt}
-      />
+      {isOfficeSignalsComonCny(a) ? null : (
+        <StitchedCharts
+          account={a}
+          paperPoints={stitchPaperPoints(a, points, history)}
+          backtests={backtests}
+          generatedAt={generatedAt}
+        />
+      )}
       <MayakFromStart account={a} hasData={hasData} />
 
       <h3 className="subhead">Открытые позиции</h3>
@@ -334,6 +338,12 @@ export default function StrategyPage({
         generatedAt={data.generated_at}
         account={accounts[0] || null}
       />
+
+      {isOfficeSignalsComonCny({ bot_id: botId }) ? (
+        <Suspense fallback={<p className="muted">Загрузка исторического replay…</p>}>
+          <OfficeSignalsReplaySection />
+        </Suspense>
+      ) : null}
 
       {accounts.map((a) => (
         <AccountBlock

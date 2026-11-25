@@ -1,7 +1,11 @@
 import { visibleCnyMomPositions } from "./cnyMomCard.js";
 import { formatEthOkxMark, visibleEthOkxPositions } from "./ethOkxCard.js";
 import { emptyPositionsHint } from "./mayakCard.js";
-import { formatOfficeSignalsMark, visibleOfficeSignalsPositions } from "./officeSignalsComonCnyCard.js";
+import {
+  formatOfficeSignalsMark,
+  officeSignalsPositionSide,
+  visibleOfficeSignalsPositions,
+} from "./officeSignalsComonCnyCard.js";
 import { visibleRateCyclePositions } from "./rateCycleCard.js";
 import {
   isCnyMomH360,
@@ -129,7 +133,7 @@ export default function PositionsTable({ positions, compact = false, botId, acco
           {rows.map((p, i) => (
             <tr key={p.position_id || `${p.symbol}-${i}`}>
               <td>{p.symbol}</td>
-              <td>{sideLabel(p.side)}</td>
+              <td>{sideLabel(officeSignals ? officeSignalsPositionSide(p) : p.side)}</td>
               <td>{p.qty == null || p.qty === "" ? "" : String(p.qty)}</td>
               {showAvgPx ? (
                 <td>

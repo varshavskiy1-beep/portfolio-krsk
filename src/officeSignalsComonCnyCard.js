@@ -1,7 +1,7 @@
 /**
  * Карточка «Сигналы Офиса · Comon + Юань 360»: бумажный рублёвый счёт.
- * Линия — только history бумажной книги. Номинал MXI/CR к equity не прибавляем.
- * Replay W1/W2 в паспорт, не в кривую кабинета.
+ * Линия карточки — только history бумажной книги (форвард с 24.11.2026).
+ * Номинал MXI/CR к equity не прибавляем. Исторический replay — отдельная секция.
  */
 
 import {
@@ -32,7 +32,7 @@ export const OFFICE_SIGNALS_REGIMES = {
 const REGIME_LINE = {
   STOCKS_MXI: "Режим STOCKS_MXI: 8 акций IMOEX ∩ Comon и квартальный MXI 1,0×, юань закрыт.",
   SMA40_PARK: "Режим SMA40_PARK: весь капитал в FMMM, юань закрыт.",
-  CNY360_PARK: "Режим CNY360_PARK: парковка FMMM с буфером 12% и лонг CR строго 1,0×.",
+  CNY360_PARK: "Режим CNY360_PARK: парковка FMMM с буфером 12% и лонг/шорт CR строго ±1,0×.",
   INIT: "Режим INIT: робот ещё не принял первое торговое решение.",
 };
 
@@ -177,4 +177,15 @@ export function formatOfficeSignalsMark(position) {
 /** cash — залог/остаток книги, не свободные деньги для вывода. */
 export function officeSignalsCollateralLine() {
   return "";
+}
+
+/** CR/MXI: явная сторона или знак qty. Шорт допустим (фильтр фандинга блокирует только лонг). */
+export function officeSignalsPositionSide(position) {
+  const qty = parseFeedNumber(position?.qty);
+  const raw = String(position?.side || "").trim().toLowerCase();
+  if (qty != null && qty < 0) return "short";
+  if (raw === "short") return "short";
+  if (raw === "long") return "long";
+  if (qty != null && qty > 0) return "long";
+  return raw;
 }

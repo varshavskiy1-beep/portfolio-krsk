@@ -400,6 +400,11 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   assert.match(office.essence.paragraphs.join("\n"), /исторический replay/);
   assert.match(office.essence.paragraphs.join("\n"), /\+65,95%/);
   assert.match(office.essence.paragraphs.join("\n"), /\+50,29%/);
+  assert.match(office.essence.paragraphs.join("\n"), /лонг или шорт/);
+  assert.match(office.essence.paragraphs.join("\n"), /прокси-фьючерс Si/);
+  assert.match(office.essence.paragraphs.join("\n"), /replay_roll0/);
+  assert.match(office.parameters.find((r) => r.name === "Фильтр фандинга F2/F1").value, /≥ 10%/);
+  assert.match(office.parameters.find((r) => r.name === "Политика выходных CR (wknd_hold)").value, /переносится/);
   assert.doesNotMatch(office.essence.paragraphs.join("\n"), /\bseed\b/i);
   assert.doesNotMatch(office.essence.paragraphs.join("\n"), /Цикл ставки 80\/20|ETH по сигналу OKX/);
   for (const s of passportUiStrings("office_signals_comon_cny")) {

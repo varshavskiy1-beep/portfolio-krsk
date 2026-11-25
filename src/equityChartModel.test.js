@@ -577,7 +577,7 @@ test("office signals comon cny: line comes only from account.history, replay ser
     equity: "1000000.00",
     seed: "1000000",
     history: [{ t: "2026-11-24", equity: 1000000.0 }],
-    positions: [{ symbol: "FMMM", side: "long", qty: "520000", avg_px: "1.92" }],
+    positions: [{ symbol: "FMMM", side: "long", qty: "71000", avg_px: "14" }],
   };
   assert.equal(lastEquityValue(account), 1000000);
   const points = resolveEquityPoints(account, {

@@ -880,7 +880,7 @@ test("published office-signals book replaces the shell and keeps seed from the f
     currency: "RUB",
     equity: "1000000.00",
     seed: "1000000",
-    positions: [{ symbol: "FMMM", side: "long", qty: "520000", avg_px: "1.92" }],
+    positions: [{ symbol: "FMMM", side: "long", qty: "71000", avg_px: "14" }],
   };
   const merged = mergePortalAccounts([published]);
   const rows = merged.filter((a) => a.bot_id === OFFICE_SIGNALS_COMON_CNY_BOT_ID);
