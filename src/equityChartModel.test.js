@@ -569,6 +569,44 @@ test("eth okx moex: line comes only from account.history, same-day last point wi
   assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
 });
 
+test("office signals comon cny: line comes only from account.history, replay series ignored", () => {
+  const account = {
+    bot_id: "office_signals_comon_cny",
+    account_id: "office_signals_comon_cny",
+    currency: "RUB",
+    equity: "1000000.00",
+    seed: "1000000",
+    history: [{ t: "2026-11-24", equity: 1000000.0 }],
+    positions: [{ symbol: "FMMM", side: "long", qty: "71000", avg_px: "14" }],
+  };
+  assert.equal(lastEquityValue(account), 1000000);
+  const points = resolveEquityPoints(account, {
+    series: {
+      "office_signals_comon_cny::office_signals_comon_cny": {
+        points: [{ t: "2019-07-31", equity: "19100000" }],
+      },
+    },
+  });
+  assert.equal(points.length, 1);
+  assert.equal(points[0].t, "2026-11-24");
+  assert.equal(Number(points[0].equity), 1000000);
+  assert.ok(points.every((p) => Number(p.equity) !== 19100000));
+  const pct = buildSeries(points, 1000000, "pct");
+  assert.equal(pct.length, 1);
+  assert.equal(pct[0].value, 0);
+
+  const noHist = { ...account, history: [] };
+  assert.deepEqual(resolveEquityPoints(noHist, null), []);
+
+  const shell = {
+    bot_id: "office_signals_comon_cny",
+    account_id: "office_signals_comon_cny",
+    currency: "RUB",
+    no_data: true,
+  };
+  assert.deepEqual(resolveEquityPoints(shell, { series: {} }), []);
+});
+
 test("v6b1 historyReset: resolveEquityPoints drops pre-reset history and keeps 10000", () => {
   // historyReset cutoff still keyed to v6b1 even after portal card retirement
   const account = {

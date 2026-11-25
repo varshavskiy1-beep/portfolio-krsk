@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import AccountBadges from "./AccountBadges.jsx";
 import EquityChart from "./EquityChart.jsx";
 import FeedStatus from "./FeedStatus.jsx";
@@ -21,6 +21,12 @@ import {
   hasEthOkxAccountLine,
 } from "./ethOkxCard.js";
 import {
+  hasOfficeSignalsAccountLine,
+  officeSignalsDescription,
+  officeSignalsEquityLine,
+  officeSignalsFromStartPctLine,
+} from "./officeSignalsComonCnyCard.js";
+import {
   chartMoneyLabel,
   fromStartPctLine,
   hasRateCycleAccountLine,
@@ -30,6 +36,8 @@ import StitchedCharts from "./StitchedCharts.jsx";
 import { stitchPaperPoints } from "./stitchEquity.js";
 import StrategyNotFound from "./StrategyNotFound.jsx";
 import StrategyPassport from "./StrategyPassport.jsx";
+
+const OfficeSignalsReplaySection = lazy(() => import("./OfficeSignalsReplaySection.jsx"));
 import { getPassport } from "./strategyPassport.js";
 import {
   cardSubtitle,
@@ -41,6 +49,7 @@ import {
   isEthOkxMoex,
   isHiddenPortalId,
   isHistoryOnlyRubPaper,
+  isOfficeSignalsComonCny,
   isKnownPortalBot,
   isMayak,
   isRfBondsRateCycle,
@@ -106,21 +115,27 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
       ? hasCnyMomAccountLine(a)
       : isEthOkxMoex(a)
         ? hasEthOkxAccountLine(a)
-        : hasData;
+        : isOfficeSignalsComonCny(a)
+          ? hasOfficeSignalsAccountLine(a)
+          : hasData;
   const fromStart = isRfBondsRateCycle(a)
     ? fromStartPctLine(a)
     : isCnyMomH360(a)
       ? cnyMomFromStartPctLine(a)
       : isEthOkxMoex(a)
         ? ethOkxFromStartPctLine(a)
-        : "";
+        : isOfficeSignalsComonCny(a)
+          ? officeSignalsFromStartPctLine(a)
+          : "";
   const noteText = isRfBondsRateCycle(a)
     ? rateCycleDescription(a)
     : isCnyMomH360(a)
       ? cnyMomDescription(a)
       : isEthOkxMoex(a)
         ? ethOkxDescription(a)
-        : "";
+        : isOfficeSignalsComonCny(a)
+          ? officeSignalsDescription(a)
+          : "";
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -164,7 +179,9 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
             : historyCard
               ? isEthOkxMoex(a)
                 ? ethOkxEquityLine(a)
-                : `${fmt(equity, "RUB")} ₽`
+                : isOfficeSignalsComonCny(a)
+                  ? officeSignalsEquityLine(a)
+                  : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && historyCard && fromStart ? (
@@ -231,16 +248,18 @@ function AccountBlock({ a, points, history, backtests, generatedAt }) {
           mode={mode}
           fill={fs}
           height={280}
-          priceDigits={isEthOkxMoex(a) ? 2 : undefined}
+          priceDigits={isEthOkxMoex(a) || isOfficeSignalsComonCny(a) ? 2 : undefined}
           baseCaption={mode === "pct" ? chartBase.caption : null}
         />
       </div>
-      <StitchedCharts
-        account={a}
-        paperPoints={stitchPaperPoints(a, points, history)}
-        backtests={backtests}
-        generatedAt={generatedAt}
-      />
+      {isOfficeSignalsComonCny(a) ? null : (
+        <StitchedCharts
+          account={a}
+          paperPoints={stitchPaperPoints(a, points, history)}
+          backtests={backtests}
+          generatedAt={generatedAt}
+        />
+      )}
       <MayakFromStart account={a} hasData={hasData} />
 
       <h3 className="subhead">Открытые позиции</h3>
@@ -319,6 +338,12 @@ export default function StrategyPage({
         generatedAt={data.generated_at}
         account={accounts[0] || null}
       />
+
+      {isOfficeSignalsComonCny({ bot_id: botId }) ? (
+        <Suspense fallback={<p className="muted">Загрузка исторического replay…</p>}>
+          <OfficeSignalsReplaySection />
+        </Suspense>
+      ) : null}
 
       {accounts.map((a) => (
         <AccountBlock

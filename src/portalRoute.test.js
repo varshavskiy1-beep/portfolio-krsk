@@ -24,6 +24,7 @@ test("hash #/s/forts_adr_adaptive is a blocked strategy route", () => {
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/FORTS_ADR_ADAPTIVE")), true);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/forts_adr_adaptive/")), true);
   assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/eth_okx_moex")), false);
+  assert.equal(isBlockedStrategyRoute(parsePortalHash("#/s/office_signals_comon_cny")), false);
 });
 
 test("hash #/s/pump_radar and #/s/forts_adr_static are blocked strategy routes", () => {

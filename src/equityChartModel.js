@@ -7,8 +7,15 @@ import { cnyChartUnix, cnyFullHistoryPoints, cnyPointsHaveMixedClocks } from "./
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
 import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
+import { officeSignalsHistoryPoints } from "./officeSignalsComonCnyCard.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
-import { hasAccountData, isCnyMomH360, isEthOkxMoex, isRfBondsRateCycle } from "./strategyMeta.js";
+import {
+  hasAccountData,
+  isCnyMomH360,
+  isEthOkxMoex,
+  isOfficeSignalsComonCny,
+  isRfBondsRateCycle,
+} from "./strategyMeta.js";
 
 /**
  * Цвет графика = знак PnL от начального капитала (поле JSON `seed`).
@@ -142,6 +149,7 @@ export function resolveEquityPoints(account, history) {
     return mergeStoredAndFeedHistory(cnyMomStoredPoints(account, history), cnyMomHistoryPoints(account));
   }
   if (isEthOkxMoex(account)) return ethOkxHistoryPoints(account);
+  if (isOfficeSignalsComonCny(account)) return officeSignalsHistoryPoints(account);
   if (!hasAccountData(account)) return [];
   let points = [];
   if (Array.isArray(account.equity) && account.equity.length) {
