@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T10:12:59Z",
+  "generated_at": "2026-11-26T10:31:05Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1822706.4696807093",
-      "updated_utc": "2026-11-26T10:12:48.958912Z",
+      "updated_utc": "2026-11-26T10:30:59.482120Z",
       "positions": [
         {
           "position_id": "p_bc237792f71a",
@@ -53,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1442366.1839280804",
-      "updated_utc": "2026-11-26T10:12:48.961937Z",
+      "updated_utc": "2026-11-26T10:30:59.484478Z",
       "positions": [
         {
           "position_id": "p_0565101b6779",
@@ -79,7 +79,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10364.614860726",
-      "updated_utc": "2026-11-26T10:12:48.964693Z",
+      "updated_utc": "2026-11-26T10:30:59.486994Z",
       "positions": [
         {
           "position_id": "p_1f2e91fa178b",
@@ -105,7 +105,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T10:12:48.967250Z",
+      "updated_utc": "2026-11-26T10:30:59.490585Z",
       "positions": []
     },
     {
@@ -1890,9 +1890,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "311791.29",
-      "cash": "7431.463506240263",
-      "updated_utc": "2026-11-26T09:21:02Z",
+      "equity": "309397.29",
+      "cash": "5037.463506240247",
+      "updated_utc": "2026-11-26T10:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -5186,6 +5186,10 @@
         {
           "t": "2026-11-26T11:00:00",
           "equity": "311791.29"
+        },
+        {
+          "t": "2026-11-26T12:00:00",
+          "equity": "309397.29"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -5194,7 +5198,7 @@
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
       "as_of": "2026-11-26",
-      "pct_return": 3.930429999999996
+      "pct_return": 3.132429999999986
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
