@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T09:13:29Z",
+  "generated_at": "2026-11-26T09:32:40Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1822706.4696807093",
-      "updated_utc": "2026-11-26T09:13:16.636312Z",
+      "updated_utc": "2026-11-26T09:32:28.974553Z",
       "positions": [
         {
           "position_id": "p_bc237792f71a",
@@ -53,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1442366.1839280804",
-      "updated_utc": "2026-11-26T09:13:16.639184Z",
+      "updated_utc": "2026-11-26T09:32:28.976717Z",
       "positions": [
         {
           "position_id": "p_0565101b6779",
@@ -79,7 +79,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10364.614860726",
-      "updated_utc": "2026-11-26T09:13:16.642086Z",
+      "updated_utc": "2026-11-26T09:32:28.979007Z",
       "positions": [
         {
           "position_id": "p_1f2e91fa178b",
@@ -105,7 +105,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T09:13:16.646043Z",
+      "updated_utc": "2026-11-26T09:32:28.981552Z",
       "positions": []
     },
     {
@@ -275,7 +275,7 @@
       "seed": "1000000",
       "equity": "1017331.5100350586",
       "cash": "1.3995350586483255",
-      "updated_utc": "2026-11-26T04:31:00Z",
+      "updated_utc": "2026-11-26T09:31:00Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -285,7 +285,7 @@
         }
       ],
       "note": "Бумага. «Цикл 60/40», РФ DIVD/SBLB/LQDT, старт 1000000 RUB. На биржу ордера не идут.",
-      "as_of": "2026-11-24",
+      "as_of": "2026-11-25",
       "braked": false
     },
     {
@@ -1878,9 +1878,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "311287.29",
-      "cash": "6927.463506240207",
-      "updated_utc": "2026-11-26T08:21:02Z",
+      "equity": "311791.29",
+      "cash": "7431.463506240263",
+      "updated_utc": "2026-11-26T09:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -5170,6 +5170,10 @@
         {
           "t": "2026-11-26T10:00:00",
           "equity": "311287.29"
+        },
+        {
+          "t": "2026-11-26T11:00:00",
+          "equity": "311791.29"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -5178,7 +5182,7 @@
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
       "as_of": "2026-11-26",
-      "pct_return": 3.7624299999999833
+      "pct_return": 3.930429999999996
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
