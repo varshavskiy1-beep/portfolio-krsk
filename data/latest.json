@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T09:02:24Z",
+  "generated_at": "2026-11-26T09:13:29Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1822706.4696807093",
-      "updated_utc": "2026-11-26T09:02:22.166890Z",
+      "updated_utc": "2026-11-26T09:13:16.636312Z",
       "positions": [
         {
           "position_id": "p_bc237792f71a",
@@ -36,6 +36,14 @@
           "qty": "1377.0",
           "avg_px": "331.13435",
           "stop_px": null
+        },
+        {
+          "position_id": "p_01f6495e9a3c",
+          "symbol": "SBER",
+          "side": "short",
+          "qty": "1582.0",
+          "avg_px": "287.75605",
+          "stop_px": "288.13785"
         }
       ]
     },
@@ -45,7 +53,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1442366.1839280804",
-      "updated_utc": "2026-11-26T09:02:22.170477Z",
+      "updated_utc": "2026-11-26T09:13:16.639184Z",
       "positions": [
         {
           "position_id": "p_0565101b6779",
@@ -71,7 +79,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10364.614860726",
-      "updated_utc": "2026-11-26T09:02:22.175705Z",
+      "updated_utc": "2026-11-26T09:13:16.642086Z",
       "positions": [
         {
           "position_id": "p_1f2e91fa178b",
@@ -79,6 +87,14 @@
           "side": "short",
           "qty": "1.524",
           "avg_px": "1699.020141",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_21bd65d2a630",
+          "symbol": "BTC-USDT",
+          "side": "short",
+          "qty": "0.042",
+          "avg_px": "60839.54266",
           "stop_px": null
         }
       ]
@@ -89,7 +105,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T09:02:22.179802Z",
+      "updated_utc": "2026-11-26T09:13:16.646043Z",
       "positions": []
     },
     {
