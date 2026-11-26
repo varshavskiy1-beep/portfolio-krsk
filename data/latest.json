@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T11:16:27Z",
+  "generated_at": "2026-11-26T11:24:30Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1825377.8505757493",
-      "updated_utc": "2026-11-26T11:16:26.789050Z",
+      "updated_utc": "2026-11-26T11:24:13.737399Z",
       "positions": [
         {
           "position_id": "p_01f6495e9a3c",
@@ -45,7 +45,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1443363.1858496002",
-      "updated_utc": "2026-11-26T11:16:26.791643Z",
+      "updated_utc": "2026-11-26T11:24:13.741159Z",
       "positions": []
     },
     {
@@ -54,7 +54,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10364.614860726",
-      "updated_utc": "2026-11-26T11:16:26.795164Z",
+      "updated_utc": "2026-11-26T11:24:13.746039Z",
       "positions": [
         {
           "position_id": "p_1f2e91fa178b",
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T11:16:26.798217Z",
+      "updated_utc": "2026-11-26T11:24:13.749452Z",
       "positions": []
     },
     {
@@ -1865,9 +1865,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "309397.29",
-      "cash": "5037.463506240247",
-      "updated_utc": "2026-11-26T10:21:02Z",
+      "equity": "309460.29",
+      "cash": "5100.463506240212",
+      "updated_utc": "2026-11-26T11:21:02Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -5165,6 +5165,10 @@
         {
           "t": "2026-11-26T12:00:00",
           "equity": "309397.29"
+        },
+        {
+          "t": "2026-11-26T13:00:00",
+          "equity": "309460.29"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -5173,7 +5177,7 @@
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
       "as_of": "2026-11-26",
-      "pct_return": 3.132429999999986
+      "pct_return": 3.1534299999999904
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
