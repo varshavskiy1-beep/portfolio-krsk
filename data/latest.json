@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T20:18:32Z",
+  "generated_at": "2026-11-26T20:33:39Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1825548.0783495991",
-      "updated_utc": "2026-11-26T20:18:30.752624Z",
+      "updated_utc": "2026-11-26T20:33:29.970187Z",
       "positions": []
     },
     {
@@ -36,7 +36,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1443363.1858496002",
-      "updated_utc": "2026-11-26T20:18:30.756324Z",
+      "updated_utc": "2026-11-26T20:33:29.972859Z",
       "positions": []
     },
     {
@@ -45,7 +45,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10361.517396875002",
-      "updated_utc": "2026-11-26T20:18:30.760738Z",
+      "updated_utc": "2026-11-26T20:33:29.975863Z",
       "positions": [
         {
           "position_id": "p_35c1503d44ac",
@@ -71,7 +71,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T20:18:30.765037Z",
+      "updated_utc": "2026-11-26T20:33:29.978788Z",
       "positions": []
     },
     {
@@ -1896,9 +1896,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "309397.29",
-      "cash": "5037.463506240248",
-      "updated_utc": "2026-11-26T19:21:02Z",
+      "equity": "311350.29",
+      "cash": "6990.463506240284",
+      "updated_utc": "2026-11-26T20:21:01Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -5232,6 +5232,10 @@
         {
           "t": "2026-11-26T21:00:00",
           "equity": "309397.29"
+        },
+        {
+          "t": "2026-11-26T22:00:00",
+          "equity": "311350.29"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -5240,7 +5244,7 @@
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
       "as_of": "2026-11-26",
-      "pct_return": 3.132429999999986
+      "pct_return": 3.7834299999999876
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
