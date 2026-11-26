@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T23:09:57Z",
+  "generated_at": "2026-11-26T23:27:06Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1825548.0783495991",
-      "updated_utc": "2026-11-26T23:09:54.720580Z",
+      "updated_utc": "2026-11-26T23:27:03.882614Z",
       "positions": []
     },
     {
@@ -36,7 +36,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1443363.1858496002",
-      "updated_utc": "2026-11-26T23:09:54.723665Z",
+      "updated_utc": "2026-11-26T23:27:03.885201Z",
       "positions": []
     },
     {
@@ -44,23 +44,23 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "10345.711889277003",
-      "updated_utc": "2026-11-26T23:09:54.728718Z",
+      "equity": "10347.642066177003",
+      "updated_utc": "2026-11-26T23:27:03.888003Z",
       "positions": [
-        {
-          "position_id": "p_861428bb48db",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.042",
-          "avg_px": "60591.11721",
-          "stop_px": null
-        },
         {
           "position_id": "p_f8107218de67",
           "symbol": "ETH-USDT",
           "side": "short",
           "qty": "1.523",
           "avg_px": "1696.650852",
+          "stop_px": null
+        },
+        {
+          "position_id": "p_8f5b10202aa2",
+          "symbol": "SOL-USDT",
+          "side": "short",
+          "qty": "36.458",
+          "avg_px": "70.938712",
           "stop_px": null
         }
       ]
@@ -71,7 +71,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T23:09:54.732666Z",
+      "updated_utc": "2026-11-26T23:27:03.890899Z",
       "positions": []
     },
     {
@@ -1898,7 +1898,7 @@
       "seed": "300000",
       "equity": "312232.29",
       "cash": "7872.463506240243",
-      "updated_utc": "2026-11-26T22:21:02Z",
+      "updated_utc": "2026-11-26T23:21:01Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -5243,6 +5243,10 @@
         },
         {
           "t": "2026-11-27T00:00:00",
+          "equity": "312232.29"
+        },
+        {
+          "t": "2026-11-27T01:00:00",
           "equity": "312232.29"
         }
       ],
