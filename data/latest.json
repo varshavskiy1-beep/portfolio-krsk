@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T16:25:41Z",
+  "generated_at": "2026-11-26T16:47:48Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1824503.7067595792",
-      "updated_utc": "2026-11-26T16:25:31.284659Z",
+      "updated_utc": "2026-11-26T16:47:41.948640Z",
       "positions": [
         {
           "position_id": "p_e4eb351b7905",
@@ -45,7 +45,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1443363.1858496002",
-      "updated_utc": "2026-11-26T16:25:31.287297Z",
+      "updated_utc": "2026-11-26T16:47:41.951192Z",
       "positions": []
     },
     {
@@ -54,7 +54,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10341.574776676001",
-      "updated_utc": "2026-11-26T16:25:31.290519Z",
+      "updated_utc": "2026-11-26T16:47:41.954230Z",
       "positions": [
         {
           "position_id": "p_d4c14d65ccb5",
@@ -80,7 +80,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T16:25:31.295752Z",
+      "updated_utc": "2026-11-26T16:47:41.957213Z",
       "positions": []
     },
     {
@@ -5291,9 +5291,9 @@
       "canonical_id": "MAYAK_imoex_lowvol10",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "305410.16368481144",
-      "cash": "305410.16368481144",
-      "as_of": "2026-11-20",
+      "equity": "305752.75980205537",
+      "cash": "305752.75980205537",
+      "as_of": "2026-11-25",
       "positions": [],
       "note": "Бумага. «Маяк Low Vol», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -5301,8 +5301,8 @@
       "borrowing": false,
       "regime": "hard",
       "key_rate_pct": "14",
-      "cpi_pct": "6.35",
-      "updated_utc": "2026-11-23T16:33:14Z"
+      "cpi_pct": "6.87",
+      "updated_utc": "2026-11-26T16:34:25Z"
     },
     {
       "bot_id": "mayak_imoex_mom10",
@@ -5310,9 +5310,9 @@
       "canonical_id": "MAYAK_imoex_mom10",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "305410.16368481144",
-      "cash": "305410.16368481144",
-      "as_of": "2026-11-20",
+      "equity": "305752.75980205537",
+      "cash": "305752.75980205537",
+      "as_of": "2026-11-25",
       "positions": [],
       "note": "Бумага. «Маяк Momentum», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -5320,8 +5320,8 @@
       "borrowing": false,
       "regime": "hard",
       "key_rate_pct": "14",
-      "cpi_pct": "6.35",
-      "updated_utc": "2026-11-23T16:33:20Z"
+      "cpi_pct": "6.87",
+      "updated_utc": "2026-11-26T16:34:30Z"
     },
     {
       "bot_id": "mayak_imoex_mom10_lev15",
@@ -5329,9 +5329,9 @@
       "canonical_id": "MAYAK_imoex_mom10_lev15",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "305410.16368481144",
-      "cash": "305410.16368481144",
-      "as_of": "2026-11-20",
+      "equity": "305752.75980205537",
+      "cash": "305752.75980205537",
+      "as_of": "2026-11-25",
       "positions": [],
       "note": "Бумага. «Маяк Momentum ×1,5», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -5339,8 +5339,8 @@
       "borrowing": false,
       "regime": "hard",
       "key_rate_pct": "14",
-      "cpi_pct": "6.35",
-      "updated_utc": "2026-11-23T16:33:28Z"
+      "cpi_pct": "6.87",
+      "updated_utc": "2026-11-26T16:34:36Z"
     },
     {
       "bot_id": "mayak_imoex_mom10_lev2",
@@ -5348,9 +5348,9 @@
       "canonical_id": "MAYAK_imoex_mom10_lev2",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "305410.16368481144",
-      "cash": "305410.16368481144",
-      "as_of": "2026-11-20",
+      "equity": "305752.75980205537",
+      "cash": "305752.75980205537",
+      "as_of": "2026-11-25",
       "positions": [],
       "note": "Бумага. «Маяк Momentum ×2», акции MOEX (TQBR) и LQDT, старт 300 000 RUB. На биржу ордера не идут.",
       "stocks": "0",
@@ -5358,8 +5358,8 @@
       "borrowing": false,
       "regime": "hard",
       "key_rate_pct": "14",
-      "cpi_pct": "6.35",
-      "updated_utc": "2026-11-23T16:33:35Z"
+      "cpi_pct": "6.87",
+      "updated_utc": "2026-11-26T16:34:45Z"
     },
     {
       "bot_id": "office_signals_comon_cny",
@@ -5367,16 +5367,16 @@
       "canonical_id": "OFFICE_SIGNALS_lowbeta250_8_mxi_sma40_comon_cny",
       "currency": "RUB",
       "seed": "1000000",
-      "equity": "1000644.88",
+      "equity": "1000574.47",
       "cash": "7.04",
-      "updated_utc": "2026-11-26T15:25:03Z",
+      "updated_utc": "2026-11-26T16:30:03Z",
       "positions": [
         {
           "symbol": "FMMM",
           "side": "long",
           "qty": "70403",
-          "avg_px": "14.213",
-          "mark": "14.213"
+          "avg_px": "14.212",
+          "mark": "14.212"
         }
       ],
       "history": [
@@ -5390,7 +5390,7 @@
         },
         {
           "t": "2026-11-26",
-          "equity": 1000644.88
+          "equity": 1000574.47
         }
       ],
       "note": "Бумага. «Сигналы Офиса · Comon + Юань 360» (Режим A · CR 1,0×), старт 1 000 000 RUB. На биржу ордера не идут.",
