@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-26T08:28:12Z",
+  "generated_at": "2026-11-26T08:40:16Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -26,8 +26,8 @@
       "account_id": "paper_ru_eq",
       "venue": "RU_EQ",
       "currency": "RUB",
-      "equity": "1823823.8302821494",
-      "updated_utc": "2026-11-26T08:28:04.440031Z",
+      "equity": "1822706.4696807093",
+      "updated_utc": "2026-11-26T08:40:05.828412Z",
       "positions": [
         {
           "position_id": "p_bc237792f71a",
@@ -36,14 +36,6 @@
           "qty": "1377.0",
           "avg_px": "331.13435",
           "stop_px": null
-        },
-        {
-          "position_id": "p_46f2bd89af8a",
-          "symbol": "SBER",
-          "side": "short",
-          "qty": "1583.0",
-          "avg_px": "287.71607",
-          "stop_px": "287.9877"
         }
       ]
     },
@@ -53,7 +45,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1442366.1839280804",
-      "updated_utc": "2026-11-26T08:28:04.442811Z",
+      "updated_utc": "2026-11-26T08:40:05.830887Z",
       "positions": [
         {
           "position_id": "p_0565101b6779",
@@ -78,18 +70,9 @@
       "account_id": "paper_crypto_spot",
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
-      "equity": "10353.082156826",
-      "updated_utc": "2026-11-26T08:28:04.445286Z",
-      "positions": [
-        {
-          "position_id": "p_9a211b1d94a0",
-          "symbol": "BTC-USDT",
-          "side": "short",
-          "qty": "0.042",
-          "avg_px": "61054.97801",
-          "stop_px": null
-        }
-      ]
+      "equity": "10364.614860726",
+      "updated_utc": "2026-11-26T08:40:05.833148Z",
+      "positions": []
     },
     {
       "bot_id": "who_pays",
@@ -97,7 +80,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-26T08:28:04.447659Z",
+      "updated_utc": "2026-11-26T08:40:05.835458Z",
       "positions": []
     },
     {
