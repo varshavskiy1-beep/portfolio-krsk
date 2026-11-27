@@ -1,6 +1,6 @@
 {
   "schema": "equity_ro.v1",
-  "generated_at": "2026-11-27T21:17:30Z",
+  "generated_at": "2026-11-27T21:29:35Z",
   "scope": "paper_only",
   "excluded": [
     {
@@ -27,7 +27,7 @@
       "venue": "RU_EQ",
       "currency": "RUB",
       "equity": "1811756.597699389",
-      "updated_utc": "2026-11-27T21:17:20.367757Z",
+      "updated_utc": "2026-11-27T21:29:32.053060Z",
       "positions": []
     },
     {
@@ -36,7 +36,7 @@
       "venue": "FORTS",
       "currency": "RUB",
       "equity": "1439692.4422656803",
-      "updated_utc": "2026-11-27T21:17:20.370348Z",
+      "updated_utc": "2026-11-27T21:29:32.055607Z",
       "positions": []
     },
     {
@@ -45,7 +45,7 @@
       "venue": "CRYPTO_SPOT",
       "currency": "USDT",
       "equity": "10348.323288646003",
-      "updated_utc": "2026-11-27T21:17:20.372756Z",
+      "updated_utc": "2026-11-27T21:29:32.057970Z",
       "positions": [
         {
           "position_id": "p_c60fda83a46e",
@@ -71,7 +71,7 @@
       "venue": "CRYPTO_PERP",
       "currency": "USDT",
       "equity": "14416.096504931995",
-      "updated_utc": "2026-11-27T21:17:20.375329Z",
+      "updated_utc": "2026-11-27T21:29:32.062182Z",
       "positions": []
     },
     {
@@ -166,73 +166,73 @@
       "account_id": "desyatka_earn_paper",
       "currency": "USD",
       "seed": "10000",
-      "equity": "8169.1897",
+      "equity": "8464.8517",
       "cash": "-101.35395414379116",
-      "updated_utc": "2026-11-27T21:10:00Z",
+      "updated_utc": "2026-11-27T21:20:05Z",
       "positions": [
         {
           "symbol": "AAPL",
           "side": "long",
           "qty": "2.636815644446298",
-          "avg_px": "355.5799865722656"
+          "avg_px": "358.5400085449219"
         },
         {
           "symbol": "AMD",
           "side": "long",
           "qty": "1.963780744212067",
-          "avg_px": "406.0299987792969"
+          "avg_px": "424.5400085449219"
         },
         {
           "symbol": "AMZN",
           "side": "long",
           "qty": "3.7959085084905864",
-          "avg_px": "244.42999267578125"
+          "avg_px": "254.1199951171875"
         },
         {
           "symbol": "AVGO",
           "side": "long",
           "qty": "2.6988671037736016",
-          "avg_px": "300.8599853515625"
+          "avg_px": "312.3399963378906"
         },
         {
           "symbol": "INTC",
           "side": "long",
           "qty": "14.111197227935603",
-          "avg_px": "54.470001220703125"
+          "avg_px": "57.400001525878906"
         },
         {
           "symbol": "MSFT",
           "side": "long",
           "qty": "1.7543891623633763",
-          "avg_px": "489.92999267578125"
+          "avg_px": "492.8500061035156"
         },
         {
           "symbol": "MU",
           "side": "long",
           "qty": "0.9879623560562981",
-          "avg_px": "601.25"
+          "avg_px": "646.9500122070312"
         },
         {
           "symbol": "NVDA",
           "side": "long",
           "qty": "5.944546826972614",
-          "avg_px": "149.3000030517578"
+          "avg_px": "150.49000549316406"
         },
         {
           "symbol": "SPCX",
           "side": "long",
           "qty": "5.9802920175931975",
-          "avg_px": "127.44000244140625"
+          "avg_px": "133.58999633789062"
         },
         {
           "symbol": "TSLA",
           "side": "long",
           "qty": "2.4305502016776126",
-          "avg_px": "380.1400146484375"
+          "avg_px": "400.0"
         }
       ],
       "note": "Бумага. «Десятка Earn», акции США, старт 10000 USD. На биржу ордера не идут.",
-      "as_of": "2026-11-25"
+      "as_of": "2026-11-27"
     },
     {
       "bot_id": "cycle_6040_paper",
@@ -1996,9 +1996,9 @@
       "account_id": "cny_mom_h360",
       "currency": "RUB",
       "seed": "300000",
-      "equity": "307933.63",
-      "cash": "3232.901838240227",
-      "updated_utc": "2026-11-27T20:21:01Z",
+      "equity": "306862.63",
+      "cash": "2161.901838240261",
+      "updated_utc": "2026-11-27T21:21:01Z",
       "positions": [
         {
           "symbol": "LQDT",
@@ -5432,6 +5432,10 @@
         {
           "t": "2026-11-27T22:00:00",
           "equity": "307933.63"
+        },
+        {
+          "t": "2026-11-27T23:00:00",
+          "equity": "306862.63"
         }
       ],
       "note": "Бумага. «Юань 360», старт 300000 RUB. Паи LQDT и фьючерс юаня CR. Дисконт пая 0: пай в залог целиком. Фьючерс юаня по сигналу. На биржу ордера не идут.",
@@ -5440,7 +5444,7 @@
       "generation": "cny-journal-capital-v1",
       "start": "2026-10-23T08:00:00",
       "as_of": "2026-11-27",
-      "pct_return": 2.644543333333327
+      "pct_return": 2.2875433333333417
     },
     {
       "bot_id": "rf_bonds_rate_cycle",
@@ -5628,9 +5632,9 @@
       "mode": "paper",
       "currency": "RUB",
       "seed": "1000000",
-      "equity": "996846.95",
-      "cash": "996846.95",
-      "updated_utc": "2026-11-27T20:40:07Z",
+      "equity": "996354.25",
+      "cash": "996354.25",
+      "updated_utc": "2026-11-27T21:22:04Z",
       "positions": [
         {
           "symbol": "CRZ6",
@@ -5639,11 +5643,11 @@
           "side": "short",
           "qty": "51",
           "signed_qty": -51,
-          "notional_rub": 633522,
+          "notional_rub": 634389,
           "go_rub": 53873.85,
           "status": "ok",
           "avg_px": "12.395",
-          "mark": "12.422"
+          "mark": "12.439"
         },
         {
           "symbol": "IMOEXF",
@@ -5652,11 +5656,11 @@
           "side": "short",
           "qty": "14",
           "signed_qty": -14,
-          "notional_rub": 331380,
+          "notional_rub": 331240,
           "go_rub": 32918.76,
           "status": "ok",
           "avg_px": "2368.5",
-          "mark": "2367"
+          "mark": "2366"
         },
         {
           "symbol": "GLDRUBF",
@@ -5665,11 +5669,11 @@
           "side": "short",
           "qty": "20",
           "signed_qty": -20,
-          "notional_rub": 194224,
+          "notional_rub": 194428,
           "go_rub": 19175,
           "status": "ok",
           "avg_px": "9626.2",
-          "mark": "9711.2"
+          "mark": "9721.4"
         },
         {
           "symbol": "EHZ6",
@@ -5678,11 +5682,11 @@
           "side": "short",
           "qty": "100",
           "signed_qty": -100,
-          "notional_rub": 138725.78,
+          "notional_rub": 138479.39,
           "go_rub": 56735,
           "status": "ok",
           "avg_px": "1690.9",
-          "mark": "1689.1"
+          "mark": "1686.1"
         }
       ],
       "history": [
@@ -5709,6 +5713,10 @@
         {
           "t": "2026-11-27T20:00:00Z",
           "equity": 996846.95
+        },
+        {
+          "t": "2026-11-27T21:00:00Z",
+          "equity": 996354.25
         }
       ],
       "equity_curve": [
@@ -5735,19 +5743,23 @@
         {
           "t": "2026-11-27T20:00:00Z",
           "equity": "996846.95"
+        },
+        {
+          "t": "2026-11-27T21:00:00Z",
+          "equity": "996354.25"
         }
       ],
       "note": "Бумага. «Кватро-360 Ставка и Крипта» (CR, IMOEXF, GLDRUBF, EH под 100% залог ближних ОФЗ <= 1 г.), старт 1 000 000 RUB. На биржу ордера не идут.",
       "seed_capital": 1000000,
-      "cash_rub": 996846.95,
+      "cash_rub": 996354.25,
       "ofz_secid": "SU26232RMFS7",
       "ofz_qty": 0,
       "ofz_value_rub": 0,
-      "pct_return": -0.3153,
-      "as_of": "2026-11-27",
+      "pct_return": -0.3646,
+      "as_of": "2026-11-28",
       "go_used_rub": 162702.61,
-      "go_pct": 16.32,
-      "collateral_coverage_x": 6.13
+      "go_pct": 16.33,
+      "collateral_coverage_x": 6.12
     },
     {
       "bot_id": "moex_trio_360_clean_v1",
@@ -5757,9 +5769,9 @@
       "mode": "paper",
       "currency": "RUB",
       "seed": "1000000",
-      "equity": "996715.34",
-      "cash": "996715.34",
-      "updated_utc": "2026-11-27T20:42:04Z",
+      "equity": "995647.84",
+      "cash": "995647.84",
+      "updated_utc": "2026-11-27T21:24:04Z",
       "positions": [
         {
           "symbol": "CRZ6",
@@ -5768,11 +5780,11 @@
           "side": "short",
           "qty": "52",
           "signed_qty": -52,
-          "notional_rub": 645944,
+          "notional_rub": 646828,
           "go_rub": 54930.2,
           "status": "ok",
           "avg_px": "12.395",
-          "mark": "12.422"
+          "mark": "12.439"
         },
         {
           "symbol": "MMZ6",
@@ -5781,11 +5793,11 @@
           "side": "short",
           "qty": "13",
           "signed_qty": -13,
-          "notional_rub": 304161,
+          "notional_rub": 304213,
           "go_rub": 31858.19,
           "status": "ok",
           "avg_px": "2342.1",
-          "mark": "2339.7"
+          "mark": "2340.1"
         },
         {
           "symbol": "GLDRUBF",
@@ -5794,11 +5806,11 @@
           "side": "short",
           "qty": "21",
           "signed_qty": -21,
-          "notional_rub": 203935.2,
+          "notional_rub": 204149.4,
           "go_rub": 20133.75,
           "status": "ok",
           "avg_px": "9626.2",
-          "mark": "9711.2"
+          "mark": "9721.4"
         }
       ],
       "history": [
@@ -5825,6 +5837,10 @@
         {
           "t": "2026-11-27T20:00:00Z",
           "equity": 996715.34
+        },
+        {
+          "t": "2026-11-27T21:00:00Z",
+          "equity": 995647.84
         }
       ],
       "equity_curve": [
@@ -5851,19 +5867,23 @@
         {
           "t": "2026-11-27T20:00:00Z",
           "equity": "996715.34"
+        },
+        {
+          "t": "2026-11-27T21:00:00Z",
+          "equity": "995647.84"
         }
       ],
       "note": "Бумага. «Трио-360 · Всепогодный» (CR, MXI, GLDRUBF под 100% залог ближних ОФЗ <= 1 г., только MOEX), старт 1 000 000 RUB. На биржу ордера не идут.",
       "seed_capital": 1000000,
-      "cash_rub": 996715.34,
+      "cash_rub": 995647.84,
       "ofz_secid": "SU26232RMFS7",
       "ofz_qty": 0,
       "ofz_value_rub": 0,
-      "pct_return": -0.3285,
-      "as_of": "2026-11-27",
+      "pct_return": -0.4352,
+      "as_of": "2026-11-28",
       "go_used_rub": 106922.14,
-      "go_pct": 10.73,
-      "collateral_coverage_x": 9.32
+      "go_pct": 10.74,
+      "collateral_coverage_x": 9.31
     }
   ],
   "manifest": [
