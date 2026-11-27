@@ -540,3 +540,55 @@ test("authored passports validate with zero errors and no seed in UI", () => {
   assert.doesNotMatch(trioText, /EH\* \(ETH\)/);
   assert.doesNotMatch(trioText, /IMOEXF как рукав индекса/);
 });
+
+test("passport Начальный капитал fills from snapshot seed only when the book is present", () => {
+  function seedRow(p) {
+    return p.parameters.find((r) => r.name === "Начальный капитал");
+  }
+
+  const liveQuad = getPassport(MOEX_QUAD_360_BOT_ID, "", QUAD_BOOK);
+  assert.equal(seedRow(liveQuad).known, true);
+  assert.match(seedRow(liveQuad).value, /1\s?000\s?000\s?₽/);
+  assert.doesNotMatch(seedRow(liveQuad).value, /\bseed\b/i);
+  assert.deepEqual(validatePassport(liveQuad), []);
+
+  const liveTrio = getPassport(MOEX_TRIO_360_BOT_ID, "", TRIO_BOOK);
+  assert.equal(seedRow(liveTrio).known, true);
+  assert.match(seedRow(liveTrio).value, /1\s?000\s?000\s?₽/);
+  assert.deepEqual(validatePassport(liveTrio), []);
+
+  const fromAlias = getPassport(MOEX_QUAD_360_BOT_ID, "", {
+    ...QUAD_BOOK,
+    seed: "",
+    seed_capital: 1000000,
+  });
+  assert.equal(seedRow(fromAlias).known, true);
+  assert.match(seedRow(fromAlias).value, /1\s?000\s?000\s?₽/);
+
+  const noSeed = getPassport(MOEX_QUAD_360_BOT_ID, "", {
+    ...QUAD_BOOK,
+    seed: "",
+    seed_capital: undefined,
+  });
+  assert.equal(seedRow(noSeed).known, false);
+  assert.equal(seedRow(noSeed).value, "нет данных");
+
+  const emptyBook = { ...TRIO_BOOK, equity: "", no_data: true };
+  assert.equal(hasMoexMulti360AccountLine(emptyBook), false);
+  const emptyEquity = getPassport(MOEX_TRIO_360_BOT_ID, "", emptyBook);
+  assert.equal(seedRow(emptyEquity).known, false);
+  assert.equal(seedRow(emptyEquity).value, "нет данных");
+
+  const shell = getPassport(MOEX_QUAD_360_BOT_ID, "", {
+    bot_id: MOEX_QUAD_360_BOT_ID,
+    account_id: MOEX_QUAD_360_ACCOUNT_ID,
+    currency: "RUB",
+    no_data: true,
+  });
+  assert.equal(seedRow(shell).known, false);
+  assert.equal(seedRow(shell).value, "нет данных");
+
+  const crossed = getPassport(MOEX_QUAD_360_BOT_ID, "", TRIO_BOOK);
+  assert.equal(seedRow(crossed).known, false);
+  assert.equal(seedRow(crossed).value, "нет данных");
+});

@@ -431,6 +431,7 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
   assert.equal(quad.title, "Кватро-360 Ставка и Крипта");
   assert.equal(quad.accounts[0].currency, "RUB");
   assert.equal(quad.parameters.find((r) => r.name === "Начальный капитал").known, false);
+  assert.equal(quad.parameters.find((r) => r.name === "Начальный капитал").value, NO_DATA);
   assert.match(quad.parameters.find((r) => r.name === "Канон (документация)").value, /MOEX_QUAD_360_CARRY_v1/);
   assert.match(quad.essence.paragraphs.join("\n"), /ENABLE_EXCHANGE_ORDERS=0/);
   assert.match(quad.parameters.find((r) => r.name.startsWith("Проверенный replay")).value, /\+71,89%/);
@@ -439,10 +440,21 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
     assert.doesNotMatch(s, /\bseed\b/i, s);
     assert.doesNotMatch(s, /включить ордера/, s);
   }
+  const liveQuad = getPassport("moex_quad_360_carry_v1", "", {
+    bot_id: "moex_quad_360_carry_v1",
+    account_id: "paper_moex_quad_360_carry_v1",
+    seed: "1000000",
+    equity: "999705.16",
+  });
+  assert.equal(liveQuad.parameters.find((r) => r.name === "Начальный капитал").known, true);
+  assert.match(liveQuad.parameters.find((r) => r.name === "Начальный капитал").value, /1\s?000\s?000\s?₽/);
+  assert.doesNotMatch(liveQuad.parameters.find((r) => r.name === "Начальный капитал").value, /\bseed\b/i);
 
   const trio = getPassport("moex_trio_360_clean_v1");
   assert.equal(trio.title, "Трио-360 · Всепогодный");
   assert.equal(trio.accounts[0].currency, "RUB");
+  assert.equal(trio.parameters.find((r) => r.name === "Начальный капитал").known, false);
+  assert.equal(trio.parameters.find((r) => r.name === "Начальный капитал").value, NO_DATA);
   assert.match(trio.parameters.find((r) => r.name === "Канон (документация)").value, /MOEX_TRIO_360_CLEAN_v1/);
   assert.match(trio.essence.paragraphs.join("\n"), /мини-фьючерс/);
   assert.match(trio.parameters.find((r) => r.name.startsWith("Проверенный replay")).value, /\+46,01%/);
@@ -451,6 +463,15 @@ test("known facts stay tied to snapshot or pack, not invented numbers", () => {
     assert.doesNotMatch(s, /\bseed\b/i, s);
     assert.doesNotMatch(s, /включить ордера/, s);
   }
+  const liveTrio = getPassport("moex_trio_360_clean_v1", "", {
+    bot_id: "moex_trio_360_clean_v1",
+    account_id: "paper_moex_trio_360_clean_v1",
+    seed: "1000000",
+    equity: "999734.12",
+  });
+  assert.equal(liveTrio.parameters.find((r) => r.name === "Начальный капитал").known, true);
+  assert.match(liveTrio.parameters.find((r) => r.name === "Начальный капитал").value, /1\s?000\s?000\s?₽/);
+  assert.doesNotMatch(liveTrio.parameters.find((r) => r.name === "Начальный капитал").value, /\bseed\b/i);
 
   const rbc = getPassport("rf_bonds_rate_cycle");
   assert.equal(rbc.title, "Цикл ставки 80/20: дальние облигации и юань");

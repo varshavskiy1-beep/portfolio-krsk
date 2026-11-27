@@ -10,6 +10,7 @@ import {
   cnyMomFuturesSnapshotLine,
   hasCnyMomAccountLine,
 } from "./cnyMomCard.js";
+import { hasMoexMulti360AccountLine } from "./moexMulti360Card.js";
 import { parseFeedNumber } from "./rateCycleCard.js";
 import {
   ACCOUNT_SUBTITLE,
@@ -32,7 +33,10 @@ import {
   RF_BONDS_RATE_CYCLE_CANON_ID,
   RF_BONDS_RATE_CYCLE_LOGIC,
   isHiddenPortalId,
+  isMoexQuad360,
+  isMoexTrio360,
   mergePortalAccounts,
+  withMoexMulti360Aliases,
 } from "./strategyMeta.js";
 import { formatMoneyRu } from "./uiCopy.js";
 
@@ -1390,6 +1394,26 @@ export function hasAuthoredPassport(botId) {
   return Boolean(PASSPORTS[botId]);
 }
 
+function applyMoexMulti360AccountToPassport(passport, account) {
+  if (!account) return passport;
+  const matches =
+    (passport.botId === MOEX_QUAD_360_BOT_ID && isMoexQuad360(account)) ||
+    (passport.botId === MOEX_TRIO_360_BOT_ID && isMoexTrio360(account));
+  if (!matches) return passport;
+  const acc = withMoexMulti360Aliases(account);
+  const copy = {
+    ...passport,
+    parameters: passport.parameters.map((row) => ({ ...row })),
+  };
+  const seedN = parseFeedNumber(acc.seed);
+  const seedRow = copy.parameters.find((row) => row.name === "Начальный капитал");
+  if (seedRow && seedN != null && hasMoexMulti360AccountLine(acc)) {
+    seedRow.known = true;
+    seedRow.value = `${formatMoneyRu(seedN, "RUB")} ₽`;
+  }
+  return copy;
+}
+
 function applyCnyAccountToPassport(passport, account) {
   if (!account) return passport;
   const copy = {
@@ -1437,6 +1461,9 @@ export function getPassport(botId, fallbackLogic = "", account = null) {
   if (authored) {
     const base = { ...authored, authored: true };
     if (botId === "cny_mom_h360") return applyCnyAccountToPassport(base, account);
+    if (botId === MOEX_QUAD_360_BOT_ID || botId === MOEX_TRIO_360_BOT_ID) {
+      return applyMoexMulti360AccountToPassport(base, account);
+    }
     return base;
   }
   return stubPassport(botId, fallbackLogic);
