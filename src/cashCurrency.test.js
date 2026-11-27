@@ -46,6 +46,8 @@ test("currency chips: Young Bounce under USDT, OAC and Десятка under USD"
     { bot_id: "cny_mom_h360", account_id: "cny_mom_h360", currency: "USD", equity: "1" },
     { bot_id: "eth_okx_moex", account_id: "eth_okx_moex", currency: "USD", equity: "1" },
     { bot_id: "office_signals_comon_cny", account_id: "office_signals_comon_cny", currency: "USD", equity: "1" },
+    { bot_id: "moex_quad_360_carry_v1", account_id: "paper_moex_quad_360_carry_v1", currency: "USD", equity: "1" },
+    { bot_id: "moex_trio_360_clean_v1", account_id: "paper_moex_trio_360_clean_v1", currency: "USDT", equity: "1" },
     { bot_id: "mayak_imoex_lowvol10", account_id: "mayak_imoex_lowvol10", currency: "USD", equity: "1" },
     { bot_id: "mayak_imoex_mom10", account_id: "mayak_imoex_mom10", currency: "USDT", equity: "1" },
     { bot_id: "mayak_imoex_mom10_lev15", account_id: "mayak_imoex_mom10_lev15", currency: "USD", equity: "1" },
@@ -72,6 +74,8 @@ test("currency chips: Young Bounce under USDT, OAC and Десятка under USD"
       "cny_mom_h360",
       "eth_okx_moex",
       "office_signals_comon_cny",
+      "paper_moex_quad_360_carry_v1",
+      "paper_moex_trio_360_clean_v1",
       "mayak_imoex_lowvol10",
       "mayak_imoex_mom10",
       "mayak_imoex_mom10_lev15",
@@ -210,6 +214,16 @@ test("eth okx moex is always RUB and never remapped to USD/USDT", () => {
     }),
     "RUB",
   );
+});
+
+test("moex multi-360 paper books are always RUB and never remapped to USD/USDT", () => {
+  for (const row of [
+    { bot_id: "moex_quad_360_carry_v1", account_id: "paper_moex_quad_360_carry_v1" },
+    { bot_id: "moex_trio_360_clean_v1", account_id: "paper_moex_trio_360_clean_v1" },
+  ]) {
+    assert.equal(canonicalCurrency({ ...row, currency: "USD" }), "RUB");
+    assert.equal(canonicalCurrency({ ...row, venue: "US_EQ", currency: "USDT" }), "RUB");
+  }
 });
 
 test("office signals comon cny is always RUB and never remapped to USD/USDT", () => {

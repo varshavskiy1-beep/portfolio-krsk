@@ -26,6 +26,13 @@ import {
   hasEthOkxAccountLine,
 } from "./ethOkxCard.js";
 import {
+  hasMoexMulti360AccountLine,
+  moexMulti360ChartMoneyLabel,
+  moexMulti360Description,
+  moexMulti360EquityLine,
+  moexMulti360FromStartPctLine,
+} from "./moexMulti360Card.js";
+import {
   hasOfficeSignalsAccountLine,
   officeSignalsDescription,
   officeSignalsEquityLine,
@@ -46,6 +53,7 @@ import {
   isCnyMomH360,
   isEthOkxMoex,
   isHistoryOnlyRubPaper,
+  isMoexMulti360,
   isOfficeSignalsComonCny,
   isMayak,
   isRfBondsRateCycle,
@@ -97,7 +105,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         ? hasEthOkxAccountLine(a)
         : isOfficeSignalsComonCny(a)
           ? hasOfficeSignalsAccountLine(a)
-          : hasData;
+          : isMoexMulti360(a)
+            ? hasMoexMulti360AccountLine(a)
+            : hasData;
   const equity = showLine ? lastEquityValue(a) : null;
   const seed = showLine ? num(a.seed) : null;
   const delta = equity != null && seed != null ? equity - seed : null;
@@ -114,7 +124,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         ? ethOkxFromStartPctLine(a)
         : isOfficeSignalsComonCny(a)
           ? officeSignalsFromStartPctLine(a)
-          : "";
+          : isMoexMulti360(a)
+            ? moexMulti360FromStartPctLine(a)
+            : "";
   const noteText = isRfBondsRateCycle(a)
     ? rateCycleDescription(a)
     : isCnyMomH360(a)
@@ -123,7 +135,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         ? ethOkxDescription(a)
         : isOfficeSignalsComonCny(a)
           ? officeSignalsDescription(a)
-          : "";
+          : isMoexMulti360(a)
+            ? moexMulti360Description(a)
+            : "";
   const limits = showLine ? a.pending_limits || [] : [];
 
   return (
@@ -148,7 +162,9 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
                 ? ethOkxEquityLine(a)
                 : isOfficeSignalsComonCny(a)
                   ? officeSignalsEquityLine(a)
-                  : `${fmt(equity, "RUB")} ₽`
+                  : isMoexMulti360(a)
+                    ? moexMulti360EquityLine(a)
+                    : `${fmt(equity, "RUB")} ₽`
               : `${fmt(equity, currency)} ${currency}`}
       </div>
       {showLine && seed != null && historyCard && fromStart ? (
@@ -183,7 +199,7 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
             persistChartMode("money");
           }}
         >
-          {chartMoneyLabel(a)}
+          {isMoexMulti360(a) ? moexMulti360ChartMoneyLabel() : chartMoneyLabel(a)}
         </button>
         <button
           type="button"
@@ -204,7 +220,7 @@ function AccountCard({ a, historyPoints, backtests, onOpenStrategy }) {
         seed={chartBase.base}
         currency={currency}
         mode={mode}
-        priceDigits={isEthOkxMoex(a) || isOfficeSignalsComonCny(a) ? 2 : undefined}
+        priceDigits={isEthOkxMoex(a) || isOfficeSignalsComonCny(a) || isMoexMulti360(a) ? 2 : undefined}
         baseCaption={mode === "pct" ? chartBase.caption : null}
       />
       <MayakFromStart account={a} hasData={hasData} />
