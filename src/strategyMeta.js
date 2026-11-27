@@ -86,6 +86,26 @@ export const OFFICE_SIGNALS_COMON_CNY_CURRENCY = "RUB";
 export const OFFICE_SIGNALS_COMON_CNY_LOGIC =
   "РФ, акции MOEX + фьючерс MXI, парковка FMMM и юань CR 1,0×, старт 1 000 000 ₽. На биржу ордера не идут.";
 
+/** Paper id: moex_quad_360_carry_v1 / paper_moex_quad_360_carry_v1. Бумага, RUB. Канон: MOEX_QUAD_360_CARRY_v1. Пока нет в accounts[] — «нет данных». */
+export const MOEX_QUAD_360_BOT_ID = "moex_quad_360_carry_v1";
+export const MOEX_QUAD_360_ACCOUNT_ID = "paper_moex_quad_360_carry_v1";
+export const MOEX_QUAD_360_SERIES_KEY = `${MOEX_QUAD_360_BOT_ID}::${MOEX_QUAD_360_ACCOUNT_ID}`;
+export const MOEX_QUAD_360_TITLE = "Кватро-360 Ставка и Крипта";
+export const MOEX_QUAD_360_CANON_ID = "MOEX_QUAD_360_CARRY_v1";
+export const MOEX_QUAD_360_CURRENCY = "RUB";
+export const MOEX_QUAD_360_LOGIC =
+  "MOEX FORTS ЕДП, 4 фьючерса (CR, IMOEXF, GLDRUBF, EH) под 100% залог ближних ОФЗ ≤ 1 г., старт 1 000 000 ₽. На биржу ордера не идут.";
+
+/** Paper id: moex_trio_360_clean_v1 / paper_moex_trio_360_clean_v1. Бумага, RUB. Канон: MOEX_TRIO_360_CLEAN_v1. Пока нет в accounts[] — «нет данных». */
+export const MOEX_TRIO_360_BOT_ID = "moex_trio_360_clean_v1";
+export const MOEX_TRIO_360_ACCOUNT_ID = "paper_moex_trio_360_clean_v1";
+export const MOEX_TRIO_360_SERIES_KEY = `${MOEX_TRIO_360_BOT_ID}::${MOEX_TRIO_360_ACCOUNT_ID}`;
+export const MOEX_TRIO_360_TITLE = "Трио-360 · Всепогодный";
+export const MOEX_TRIO_360_CANON_ID = "MOEX_TRIO_360_CLEAN_v1";
+export const MOEX_TRIO_360_CURRENCY = "RUB";
+export const MOEX_TRIO_360_LOGIC =
+  "MOEX FORTS ЕДП, 3 фьючерса (CR, MXI, GLDRUBF) под 100% залог ближних ОФЗ ≤ 1 г., без внешних фидов, старт 1 000 000 ₽. На биржу ордера не идут.";
+
 /**
  * Семейство бумажных счетов «Маяк». Четыре отдельные карточки.
  * Стартовый капитал не зашит: только поле seed из accounts[] снимка.
@@ -197,6 +217,8 @@ export const BOT_TITLE = {
   [CNY_MOM_H360_BOT_ID]: CNY_MOM_H360_TITLE,
   [ETH_OKX_MOEX_BOT_ID]: ETH_OKX_MOEX_TITLE,
   [OFFICE_SIGNALS_COMON_CNY_BOT_ID]: OFFICE_SIGNALS_COMON_CNY_TITLE,
+  [MOEX_QUAD_360_BOT_ID]: MOEX_QUAD_360_TITLE,
+  [MOEX_TRIO_360_BOT_ID]: MOEX_TRIO_360_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.title])),
 };
 
@@ -210,6 +232,10 @@ export const ACCOUNT_TITLE = {
   [CNY_MOM_H360_ACCOUNT_ID]: CNY_MOM_H360_TITLE,
   [ETH_OKX_MOEX_ACCOUNT_ID]: ETH_OKX_MOEX_TITLE,
   [OFFICE_SIGNALS_COMON_CNY_ACCOUNT_ID]: OFFICE_SIGNALS_COMON_CNY_TITLE,
+  [MOEX_QUAD_360_ACCOUNT_ID]: MOEX_QUAD_360_TITLE,
+  [MOEX_QUAD_360_BOT_ID]: MOEX_QUAD_360_TITLE,
+  [MOEX_TRIO_360_ACCOUNT_ID]: MOEX_TRIO_360_TITLE,
+  [MOEX_TRIO_360_BOT_ID]: MOEX_TRIO_360_TITLE,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.account_id, s.title])),
 };
 
@@ -225,6 +251,8 @@ export const ACCOUNT_SUBTITLE = {
   [CNY_MOM_H360_BOT_ID]: "РФ, паи LQDT и фьючерс CR. На биржу ордера не идут.",
   [ETH_OKX_MOEX_BOT_ID]: "РФ, фьючерс ETH на Мосбирже. На биржу ордера не идут.",
   [OFFICE_SIGNALS_COMON_CNY_BOT_ID]: OFFICE_SIGNALS_COMON_CNY_LOGIC,
+  [MOEX_QUAD_360_BOT_ID]: MOEX_QUAD_360_LOGIC,
+  [MOEX_TRIO_360_BOT_ID]: MOEX_TRIO_360_LOGIC,
   ...Object.fromEntries(MAYAK_ACCOUNTS.map((s) => [s.bot_id, s.subtitle])),
 };
 
@@ -238,6 +266,10 @@ export const PAPER_NOT_LIVE_EXCLUDED = new Set([
   CNY_MOM_H360_BOT_ID,
   ETH_OKX_MOEX_BOT_ID,
   OFFICE_SIGNALS_COMON_CNY_BOT_ID,
+  MOEX_QUAD_360_BOT_ID,
+  MOEX_QUAD_360_ACCOUNT_ID,
+  MOEX_TRIO_360_BOT_ID,
+  MOEX_TRIO_360_ACCOUNT_ID,
   ...MAYAK_BOT_IDS,
 ]);
 
@@ -298,6 +330,16 @@ export const PORTAL_SHELLS = [
     account_id: s.account_id,
     currency: "RUB",
   })),
+  {
+    bot_id: MOEX_QUAD_360_BOT_ID,
+    account_id: MOEX_QUAD_360_ACCOUNT_ID,
+    currency: MOEX_QUAD_360_CURRENCY,
+  },
+  {
+    bot_id: MOEX_TRIO_360_BOT_ID,
+    account_id: MOEX_TRIO_360_ACCOUNT_ID,
+    currency: MOEX_TRIO_360_CURRENCY,
+  },
 ];
 
 export function accountKey(a) {
@@ -342,6 +384,8 @@ export function displayTitle(account) {
   ) {
     return OFFICE_SIGNALS_COMON_CNY_TITLE;
   }
+  if (isMoexQuad360(account)) return MOEX_QUAD_360_TITLE;
+  if (isMoexTrio360(account)) return MOEX_TRIO_360_TITLE;
   return (
     ACCOUNT_TITLE[account.account_id] ||
     BOT_TITLE[account.bot_id] ||
@@ -402,6 +446,16 @@ export function cardTitle(account) {
       ? OFFICE_SIGNALS_COMON_CNY_TITLE
       : title;
   }
+  if (isMoexQuad360(account)) {
+    return title === MOEX_QUAD_360_ACCOUNT_ID || title === MOEX_QUAD_360_BOT_ID
+      ? MOEX_QUAD_360_TITLE
+      : title;
+  }
+  if (isMoexTrio360(account)) {
+    return title === MOEX_TRIO_360_ACCOUNT_ID || title === MOEX_TRIO_360_BOT_ID
+      ? MOEX_TRIO_360_TITLE
+      : title;
+  }
   return title;
 }
 
@@ -417,6 +471,8 @@ export function chipLabel(botId) {
   if (botId === CNY_MOM_H360_BOT_ID) return CNY_MOM_H360_TITLE;
   if (botId === ETH_OKX_MOEX_BOT_ID) return ETH_OKX_MOEX_TITLE;
   if (botId === OFFICE_SIGNALS_COMON_CNY_BOT_ID) return OFFICE_SIGNALS_COMON_CNY_TITLE;
+  if (botId === MOEX_QUAD_360_BOT_ID) return MOEX_QUAD_360_TITLE;
+  if (botId === MOEX_TRIO_360_BOT_ID) return MOEX_TRIO_360_TITLE;
   return BOT_TITLE[botId] || botId;
 }
 
@@ -455,6 +511,8 @@ export function accountSubtitle(account) {
   ) {
     return ACCOUNT_SUBTITLE[OFFICE_SIGNALS_COMON_CNY_BOT_ID];
   }
+  if (isMoexQuad360(account)) return ACCOUNT_SUBTITLE[MOEX_QUAD_360_BOT_ID];
+  if (isMoexTrio360(account)) return ACCOUNT_SUBTITLE[MOEX_TRIO_360_BOT_ID];
   return ACCOUNT_SUBTITLE[account.bot_id] || ACCOUNT_SUBTITLE[account.account_id] || "";
 }
 
@@ -491,6 +549,8 @@ export function cardSubtitle(account) {
   ) {
     return ACCOUNT_SUBTITLE[OFFICE_SIGNALS_COMON_CNY_BOT_ID];
   }
+  if (isMoexQuad360(account)) return ACCOUNT_SUBTITLE[MOEX_QUAD_360_BOT_ID];
+  if (isMoexTrio360(account)) return ACCOUNT_SUBTITLE[MOEX_TRIO_360_BOT_ID];
   return "";
 }
 
@@ -535,6 +595,8 @@ export function accountIdBadge(account) {
   ) {
     return OFFICE_SIGNALS_COMON_CNY_CANON_ID;
   }
+  if (isMoexQuad360(account)) return MOEX_QUAD_360_CANON_ID;
+  if (isMoexTrio360(account)) return MOEX_TRIO_360_CANON_ID;
   if (isKnownPortalBot(account.bot_id)) return account.account_id;
   return null;
 }
@@ -611,13 +673,72 @@ export function isOfficeSignalsComonCny(account) {
   );
 }
 
-/** Цикл 80/20, Юань 360, ETH по сигналу OKX и Сигналы Офиса: линия только из history счёта, суммы в ₽. */
+function moexId(accountOrId) {
+  if (accountOrId == null || accountOrId === "") return "";
+  if (typeof accountOrId === "string") return accountOrId;
+  return accountOrId.bot_id || accountOrId.account_id || "";
+}
+
+/** Кватро-360: bot_id или account_id (нативный paper_… и упрощённый exporter). */
+export function isMoexQuad360(accountOrId) {
+  const bot = typeof accountOrId === "string" ? "" : accountOrId?.bot_id;
+  const acc = typeof accountOrId === "string" ? accountOrId : accountOrId?.account_id;
+  const id = moexId(accountOrId);
+  return (
+    bot === MOEX_QUAD_360_BOT_ID ||
+    acc === MOEX_QUAD_360_ACCOUNT_ID ||
+    acc === MOEX_QUAD_360_BOT_ID ||
+    id === MOEX_QUAD_360_BOT_ID ||
+    id === MOEX_QUAD_360_ACCOUNT_ID
+  );
+}
+
+/** Трио-360: bot_id или account_id (нативный paper_… и упрощённый exporter). */
+export function isMoexTrio360(accountOrId) {
+  const bot = typeof accountOrId === "string" ? "" : accountOrId?.bot_id;
+  const acc = typeof accountOrId === "string" ? accountOrId : accountOrId?.account_id;
+  const id = moexId(accountOrId);
+  return (
+    bot === MOEX_TRIO_360_BOT_ID ||
+    acc === MOEX_TRIO_360_ACCOUNT_ID ||
+    acc === MOEX_TRIO_360_BOT_ID ||
+    id === MOEX_TRIO_360_BOT_ID ||
+    id === MOEX_TRIO_360_ACCOUNT_ID
+  );
+}
+
+export function isMoexMulti360(accountOrId) {
+  return isMoexQuad360(accountOrId) || isMoexTrio360(accountOrId);
+}
+
+/** seed/cash/updated_utc из синонимов снимка; equity не подменяем. */
+export function withMoexMulti360Aliases(account) {
+  if (!account || !isMoexMulti360(account)) return account;
+  const seedMissing = account.seed == null || account.seed === "";
+  const cashMissing = account.cash == null || account.cash === "";
+  const updMissing = account.updated_utc == null || account.updated_utc === "";
+  if (!seedMissing && !cashMissing && !updMissing) return account;
+  const next = { ...account };
+  if (seedMissing && account.seed_capital != null && account.seed_capital !== "") {
+    next.seed = account.seed_capital;
+  }
+  if (cashMissing && account.cash_rub != null && account.cash_rub !== "") {
+    next.cash = account.cash_rub;
+  }
+  if (updMissing && account.updated_at_utc != null && account.updated_at_utc !== "") {
+    next.updated_utc = account.updated_at_utc;
+  }
+  return next;
+}
+
+/** Цикл 80/20, Юань 360, ETH по сигналу OKX, Сигналы Офиса и MOEX Multi-360: линия из снимка, суммы в ₽. */
 export function isHistoryOnlyRubPaper(account) {
   return (
     isRfBondsRateCycle(account) ||
     isCnyMomH360(account) ||
     isEthOkxMoex(account) ||
-    isOfficeSignalsComonCny(account)
+    isOfficeSignalsComonCny(account) ||
+    isMoexMulti360(account)
   );
 }
 
@@ -649,22 +770,26 @@ export function isKnownPortalBot(botId) {
 
 /** Добавляет shell-карточки для стратегий, которых ещё нет в accounts[]. */
 export function mergePortalAccounts(accounts = []) {
-  const visible = (accounts || []).filter(
-    (a) =>
-      a &&
-      typeof a === "object" &&
-      !Array.isArray(a) &&
-      typeof a.bot_id === "string" &&
-      a.bot_id.trim() !== "" &&
-      typeof a.account_id === "string" &&
-      a.account_id.trim() !== "" &&
-      !isHiddenPortalAccount(a),
-  );
+  const visible = (accounts || [])
+    .filter(
+      (a) =>
+        a &&
+        typeof a === "object" &&
+        !Array.isArray(a) &&
+        typeof a.bot_id === "string" &&
+        a.bot_id.trim() !== "" &&
+        typeof a.account_id === "string" &&
+        a.account_id.trim() !== "" &&
+        !isHiddenPortalAccount(a),
+    )
+    .map(withMoexMulti360Aliases);
   const present = new Set(visible.map(accountKey));
   const merged = [...visible];
   for (const shell of PORTAL_SHELLS) {
     const key = accountKey(shell);
     if (present.has(key)) continue;
+    if (isMoexQuad360(shell) && visible.some(isMoexQuad360)) continue;
+    if (isMoexTrio360(shell) && visible.some(isMoexTrio360)) continue;
     const row = {
       bot_id: shell.bot_id,
       account_id: shell.account_id,

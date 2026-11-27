@@ -7,12 +7,14 @@ import { cnyChartUnix, cnyFullHistoryPoints, cnyPointsHaveMixedClocks } from "./
 import { ethOkxHistoryPoints } from "./ethOkxCard.js";
 import { PCT_BASE_FROM_FIRST_POINT } from "./feedValidate.js";
 import { filterResetPoints, seriesKey } from "./historyReset.js";
+import { moexMulti360HistoryPoints } from "./moexMulti360Card.js";
 import { officeSignalsHistoryPoints } from "./officeSignalsComonCnyCard.js";
 import { rateCycleHistoryPoints } from "./rateCycleCard.js";
 import {
   hasAccountData,
   isCnyMomH360,
   isEthOkxMoex,
+  isMoexMulti360,
   isOfficeSignalsComonCny,
   isRfBondsRateCycle,
 } from "./strategyMeta.js";
@@ -150,6 +152,7 @@ export function resolveEquityPoints(account, history) {
   }
   if (isEthOkxMoex(account)) return ethOkxHistoryPoints(account);
   if (isOfficeSignalsComonCny(account)) return officeSignalsHistoryPoints(account);
+  if (isMoexMulti360(account)) return moexMulti360HistoryPoints(account, history);
   if (!hasAccountData(account)) return [];
   let points = [];
   if (Array.isArray(account.equity) && account.equity.length) {

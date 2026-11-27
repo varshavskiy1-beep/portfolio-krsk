@@ -22,6 +22,14 @@ import {
   OFFICE_SIGNALS_COMON_CNY_BOT_ID,
   OFFICE_SIGNALS_COMON_CNY_CANON_ID,
   OFFICE_SIGNALS_COMON_CNY_TITLE,
+  MOEX_QUAD_360_ACCOUNT_ID,
+  MOEX_QUAD_360_BOT_ID,
+  MOEX_QUAD_360_CANON_ID,
+  MOEX_QUAD_360_TITLE,
+  MOEX_TRIO_360_ACCOUNT_ID,
+  MOEX_TRIO_360_BOT_ID,
+  MOEX_TRIO_360_CANON_ID,
+  MOEX_TRIO_360_TITLE,
   DESYATKA_EARN_ACCOUNT_ID,
   DESYATKA_EARN_BOT_ID,
   DESYATKA_EARN_TITLE,
@@ -46,6 +54,8 @@ import {
   isDesyatkaEarn,
   isCnyMomH360,
   isEthOkxMoex,
+  isMoexQuad360,
+  isMoexTrio360,
   isOfficeSignalsComonCny,
   isRfBondsRateCycle,
   isRfConservative,
@@ -73,6 +83,10 @@ test("portalExcluded drops outdated live OKX mark and retired robot 2", () => {
     { id: "cny_mom_h360", reason: "live cluster" },
     { id: "eth_okx_moex", reason: "live cluster" },
     { id: "office_signals_comon_cny", reason: "live cluster" },
+    { id: "moex_quad_360_carry_v1", reason: "live cluster" },
+    { id: "paper_moex_quad_360_carry_v1", reason: "live cluster" },
+    { id: "moex_trio_360_clean_v1", reason: "live cluster" },
+    { id: "paper_moex_trio_360_clean_v1", reason: "live cluster" },
     { id: "mayak_imoex_lowvol10", reason: "live cluster" },
     { id: "mayak_imoex_mom10", reason: "live cluster" },
     { id: "mayak_imoex_mom10_lev15", reason: "live cluster" },
@@ -889,4 +903,73 @@ test("published office-signals book replaces the shell and keeps seed from the f
   assert.equal(hasAccountData(rows[0]), true);
   assert.equal(rows[0].seed, "1000000");
   assert.equal(rows[0].equity, "1000000.00");
+});
+
+test("displayTitle maps quatro/trio ids to card titles", () => {
+  assert.equal(
+    displayTitle({ bot_id: MOEX_QUAD_360_BOT_ID, account_id: MOEX_QUAD_360_ACCOUNT_ID }),
+    MOEX_QUAD_360_TITLE,
+  );
+  assert.equal(
+    cardTitle({ bot_id: MOEX_TRIO_360_BOT_ID, account_id: MOEX_TRIO_360_ACCOUNT_ID }),
+    MOEX_TRIO_360_TITLE,
+  );
+  assert.equal(chipLabel(MOEX_QUAD_360_BOT_ID), MOEX_QUAD_360_TITLE);
+  assert.equal(chipLabel(MOEX_TRIO_360_BOT_ID), MOEX_TRIO_360_TITLE);
+  assert.doesNotMatch(MOEX_QUAD_360_TITLE, /Трио-360|Юань 360|Сигналы Офиса/);
+  assert.doesNotMatch(MOEX_TRIO_360_TITLE, /Кватро-360|Юань 360|Сигналы Офиса/);
+});
+
+test("mergePortalAccounts adds quatro/trio shells when absent — нет данных, seed not hardcoded", () => {
+  const merged = mergePortalAccounts([
+    { bot_id: "young_bounce_combo", account_id: "young_bounce_combo", currency: "USDT", equity: "10000" },
+  ]);
+  const quad = merged.find((a) => a.bot_id === MOEX_QUAD_360_BOT_ID);
+  const trio = merged.find((a) => a.bot_id === MOEX_TRIO_360_BOT_ID);
+  assert.ok(quad);
+  assert.ok(trio);
+  assert.equal(quad.account_id, MOEX_QUAD_360_ACCOUNT_ID);
+  assert.equal(trio.account_id, MOEX_TRIO_360_ACCOUNT_ID);
+  for (const row of [quad, trio]) {
+    assert.equal(row.no_data, true);
+    assert.equal(row.currency, "RUB");
+    assert.equal(row.seed, undefined);
+    assert.equal(hasAccountData(row), false);
+    assert.equal(underTitleLabel(row), null);
+    assert.equal(showsPaperBadge(row), true);
+  }
+  assert.equal(isMoexQuad360(quad), true);
+  assert.equal(isMoexTrio360(trio), true);
+  assert.equal(isMoexQuad360(trio), false);
+  assert.equal(accountIdBadge(quad), MOEX_QUAD_360_CANON_ID);
+  assert.equal(accountIdBadge(trio), MOEX_TRIO_360_CANON_ID);
+});
+
+test("published quatro/trio books replace the shells and keep seed from the feed", () => {
+  const published = [
+    {
+      bot_id: MOEX_QUAD_360_BOT_ID,
+      account_id: MOEX_QUAD_360_ACCOUNT_ID,
+      currency: "RUB",
+      equity: "999705.16",
+      seed: "1000000",
+    },
+    {
+      bot_id: MOEX_TRIO_360_BOT_ID,
+      account_id: MOEX_TRIO_360_ACCOUNT_ID,
+      currency: "RUB",
+      equity: "999734.12",
+      seed: "1000000",
+    },
+  ];
+  const merged = mergePortalAccounts(published);
+  const quad = merged.filter((a) => a.bot_id === MOEX_QUAD_360_BOT_ID);
+  const trio = merged.filter((a) => a.bot_id === MOEX_TRIO_360_BOT_ID);
+  assert.equal(quad.length, 1);
+  assert.equal(trio.length, 1);
+  assert.equal(quad[0].no_data, undefined);
+  assert.equal(hasAccountData(quad[0]), true);
+  assert.equal(quad[0].seed, "1000000");
+  assert.equal(quad[0].equity, "999705.16");
+  assert.equal(trio[0].equity, "999734.12");
 });
