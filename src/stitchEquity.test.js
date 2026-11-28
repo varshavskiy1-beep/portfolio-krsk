@@ -62,7 +62,15 @@ const SERIES_KEYS = [
   "mayak_imoex_mom10::mayak_imoex_mom10",
   "mayak_imoex_mom10_lev15::mayak_imoex_mom10_lev15",
   "mayak_imoex_mom10_lev2::mayak_imoex_mom10_lev2",
+  "moex_quad_360_carry_v1::paper_moex_quad_360_carry_v1",
+  "moex_trio_360_clean_v1::paper_moex_trio_360_clean_v1",
 ];
+const MOEX_MULTI_360_KEYS = [
+  "moex_quad_360_carry_v1::paper_moex_quad_360_carry_v1",
+  "moex_trio_360_clean_v1::paper_moex_trio_360_clean_v1",
+];
+/** Bundled history.json is the Oct 24 fallback; live paper of these books starts 2026-11-27. */
+const MOEX_MULTI_360_PAPER_START = [{ t: "2026-11-27", equity: 1000000 }];
 /** Archived backtest curve still present in stitchEquity.js; portal card retired. */
 const V6B1 = { bot_id: "v6b1", account_id: "v6b1" };
 const WHO_PERP = { bot_id: "who_pays", account_id: "paper_crypto_perp" };
@@ -193,6 +201,26 @@ test("backtests.json has the live tester series — no invented keys", () => {
   assert.equal(backtestRowFor(backtests, WHO_PERP).kind, "backtest_in_sample");
   assert.equal(backtestRowFor(backtests, WHO_PERP).currency, "USDT");
   assert.equal(backtestRowFor(backtests, WHO_PERP).initial_equity, 15000);
+  const quadAcc = { bot_id: "moex_quad_360_carry_v1", account_id: "paper_moex_quad_360_carry_v1" };
+  const trioAcc = { bot_id: "moex_trio_360_clean_v1", account_id: "paper_moex_trio_360_clean_v1" };
+  const quad = backtestPointsFor(backtests, quadAcc);
+  assert.equal(quad.length, 856);
+  assert.equal(quad[0].t, "2023-12-18");
+  assert.equal(quad[0].equity, 994840.41);
+  assert.equal(quad.at(-1).t, "2026-11-27");
+  assert.equal(quad.at(-1).equity, 4899082.62);
+  assert.equal(backtestRowFor(backtests, quadAcc).kind, "backtest_in_sample_replay");
+  assert.equal(backtestRowFor(backtests, quadAcc).currency, "RUB");
+  assert.equal(backtestRowFor(backtests, quadAcc).initial_equity, 1000000);
+  const trio = backtestPointsFor(backtests, trioAcc);
+  assert.equal(trio.length, 1234);
+  assert.equal(trio[0].t, "2022-06-27");
+  assert.equal(trio[0].equity, 1007573.84);
+  assert.equal(trio.at(-1).t, "2026-11-27");
+  assert.equal(trio.at(-1).equity, 5366328.5);
+  assert.equal(backtestRowFor(backtests, trioAcc).kind, "backtest_in_sample_replay");
+  assert.equal(backtestRowFor(backtests, trioAcc).currency, "RUB");
+  assert.equal(backtestRowFor(backtests, trioAcc).initial_equity, 1000000);
 });
 
 test("kindHonestyLine maps known kinds and hides unknown", () => {
@@ -383,10 +411,15 @@ test("all remaining tester series stitch with history.json within GAP_DAYS", () 
     return { bot_id, account_id };
   });
   for (const a of accounts) {
-    const st = stitchAccount(a);
-    assert.equal(st.ok, true, seriesKey(a));
+    const key = seriesKey(a);
+    let paper = stitchPaperPoints(a, null, history);
+    if (!paper.length && MOEX_MULTI_360_KEYS.includes(key)) {
+      paper = MOEX_MULTI_360_PAPER_START;
+    }
+    const st = stitchEquity(backtestPointsFor(backtests, a), paper);
+    assert.equal(st.ok, true, key);
     const gapMs = Date.parse(`${st.paperStart}T00:00:00Z`) - Date.parse(`${st.joinDay}T00:00:00Z`);
-    assert.ok(Math.round(gapMs / 86400000) <= GAP_DAYS, seriesKey(a));
+    assert.ok(Math.round(gapMs / 86400000) <= GAP_DAYS, key);
   }
 });
 
@@ -436,6 +469,53 @@ test("mayak ×4: honest LQDT series from 2023-10-02, stitched with the gray line
     .update(readFileSync(join(root, "docs/backtests/mayak_imoex_mom10__mayak_imoex_mom10.csv")))
     .digest("hex");
   assert.equal(csvSha, "dce09bfb7ed8d9657f600f5b6e1fc3455927e57834ff741713ab15151b38cd26");
+});
+
+test("moex quad/trio official CSVs: sha256, window, stitch on 2026-11-27", () => {
+  const expected = [
+    {
+      key: "moex_quad_360_carry_v1::paper_moex_quad_360_carry_v1",
+      file: "moex_quad_360_carry_v1__paper_moex_quad_360_carry_v1.csv",
+      sha: "4739a90f6a106a19a99166abb850464f35086c15a63743910824cb552d599ce1",
+      n: 856,
+      first: ["2023-12-18", 994840.41],
+      last: ["2026-11-27", 4899082.62],
+    },
+    {
+      key: "moex_trio_360_clean_v1::paper_moex_trio_360_clean_v1",
+      file: "moex_trio_360_clean_v1__paper_moex_trio_360_clean_v1.csv",
+      sha: "6bc8217c3036ec21113d56771c3b7ebae0f7202485d687a73f56d3cbdea0cf06",
+      n: 1234,
+      first: ["2022-06-27", 1007573.84],
+      last: ["2026-11-27", 5366328.5],
+    },
+  ];
+  for (const spec of expected) {
+    const [bot_id, account_id] = spec.key.split("::");
+    const acc = { bot_id, account_id };
+    const csvSha = createHash("sha256")
+      .update(readFileSync(join(root, "docs/backtests", spec.file)))
+      .digest("hex");
+    assert.equal(csvSha, spec.sha, spec.key);
+    const row = backtestRowFor(backtests, acc);
+    assert.equal(row.file_sha256, spec.sha, spec.key);
+    assert.equal(row.kind, "backtest_in_sample_replay", spec.key);
+    const pts = backtestPointsFor(backtests, acc);
+    assert.equal(pts.length, spec.n, spec.key);
+    assert.equal(pts[0].t, spec.first[0], spec.key);
+    assert.equal(pts[0].equity, spec.first[1], spec.key);
+    assert.equal(pts.at(-1).t, spec.last[0], spec.key);
+    assert.equal(pts.at(-1).equity, spec.last[1], spec.key);
+    const st = stitchEquity(pts, MOEX_MULTI_360_PAPER_START);
+    assert.equal(st.ok, true, spec.key);
+    assert.equal(st.joinDay, "2026-11-27", spec.key);
+    assert.equal(st.paperStart, "2026-11-27", spec.key);
+    const src = backtestSourceDisplay(row, acc);
+    assert.equal(src, SOURCE_RU_BY_KEY[spec.key], spec.key);
+    assert.equal(cardLineHasTesterJargon(src), false, src);
+    assert.equal(cardLineHasTesterJargon(costsHonestyLine(row, acc)), false, spec.key);
+    assert.equal(kindHonestyLine(row.kind), IN_SAMPLE_ONLY, spec.key);
+  }
 });
 
 test("stitchPaperPoints: equity_curve wins over stale history.json", () => {
