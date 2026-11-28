@@ -59,3 +59,16 @@ CODE_GO с 2023-10-02 по всем четырём счетам, раньше �
 | mayak_imoex_mom10::mayak_imoex_mom10 | mayak_imoex_mom10__mayak_imoex_mom10.csv |
 | mayak_imoex_mom10_lev15::mayak_imoex_mom10_lev15 | mayak_imoex_mom10_lev15__mayak_imoex_mom10_lev15.csv |
 | mayak_imoex_mom10_lev2::mayak_imoex_mom10_lev2 | mayak_imoex_mom10_lev2__mayak_imoex_mom10_lev2.csv |
+
+## Кватро-360 и Трио-360 (2026-11-28)
+
+Официальные дневные ряды исторического replay замороженного канона. `WORK@9e3ddffa93ce769b61a14269f717c302ec1ef7aa` — integer-lot replay of the frozen canon on the verification cache. NOTE/deploy commit `edbed54715067dec69dcc832d8ab3072be739ece`. Артефакты WORK PR #649, коммит `b6459c51`. Не `audit_equity_curves.parquet` и не движок weekend-hold `2d00c70`. Стартовый капитал 1 000 000 ₽; первая дневная точка ряда меньше старта — так в официальном CSV, точки не правили.
+
+Шов с бумагой кабинета с 2026-11-27: 0 д (`GAP_DAYS=7`). Bundled `history.json` / `latest.json` не трогали (осенний fallback, не живая лента).
+
+| key | валюта/старт | период | шов | источник | IS/WF | издержки | csv sha256 |
+|---|---|---|---|---|---|---|---|
+| moex_quad_360_carry_v1::paper_moex_quad_360_carry_v1 | RUB 1 000 000 | 2023-12-18…2026-11-27 (856) | 0 д | WORK@9e3ddff integer-lot frozen canon | IS (`backtest_in_sample_replay`) | CR / IMOEXF / GLDRUBF 2,31 б.п., EH 2,00 б.п., ОФЗ 5 б.п., порог 1,5%, овердрафт 1 дн. 23% | 4739a90f6a106a19a99166abb850464f35086c15a63743910824cb552d599ce1 |
+| moex_trio_360_clean_v1::paper_moex_trio_360_clean_v1 | RUB 1 000 000 | 2022-06-27…2026-11-27 (1234) | 0 д | WORK@9e3ddff integer-lot frozen canon | IS (`backtest_in_sample_replay`) | фьючерсы 2,31 б.п., ОФЗ 8 б.п., порог 2,0% | 6bc8217c3036ec21113d56771c3b7ebae0f7202485d687a73f56d3cbdea0cf06 |
+
+Официальные метрики CSV: Кватро CAGR +71,89%, MaxDD −9,85% (104 дн.), MAR 7,30, Sharpe 3,33, итог 4 899 083 ₽ (4899082.62). Трио CAGR +46,01%, MaxDD −10,51% (98 дн.), MAR 4,38, Sharpe 2,69, итог 5 366 329 ₽ (5366328.50; точное 5366328.5047).
